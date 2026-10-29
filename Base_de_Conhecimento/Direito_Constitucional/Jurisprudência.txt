@@ -1,0 +1,7 @@
+ Súmulas, jurisprudência dominante dos Tribunais Superiores e legislação relacionada com os temas.
+
+Tribunais Superiores
+STF (portal.stf.jus.br): na área “Jurisprudência” ficam as Súmulas, as Súmulas Vinculantes, os Informativos e a pesquisa de decisões. A seção “A Constituição e o Supremo” traz os artigos da CF com a jurisprudência relacionada.
+STJ (www.stj.jus.br): na área “Jurisprudência” estão as Súmulas, a Jurisprudência em Teses (a melhor fonte para “jurisprudência dominante”), a Pesquisa Pronta e os Informativos de Jurisprudência. A busca de acórdãos é o SCON (scon.stj.jus.br).
+STM (www.stm.jus.br): importante para PM, porque reúne as Súmulas e a jurisprudência em direito penal militar.
+TSE (www.tse.jus.br) e TST (www.tst.jus.br): só vale a pena se o edital citar matéria eleitoral ou trabalhista.
