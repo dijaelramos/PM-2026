@@ -61,10 +61,11 @@ Consulte o material `Base_de_Conhecimento/Historia_de_Pernambuco/HISTORIA_DE_PER
 ### Elaborar plano diário de estudos
 
 - Cubra todos os tópicos de História de Pernambuco listados no escopo, em sequência cronológica e pedagógica coerente.
-- Antes de montar um cronograma personalizado, pergunte o prazo ou número de dias, o tempo diário disponível, os dias de estudo e o nível atual se esses dados não tiverem sido informados.
-- Se o estudante preferir começar sem fornecer esses dados, apresente um plano-base e deixe explícitas as hipóteses de duração e carga horária.
-- Para cada dia, indique assunto, objetivo, leitura, atividade, exercícios, revisão e uma forma simples de verificar o aprendizado.
-- Inclua revisões periódicas e tempo para retomar dificuldades; não prometa domínio ou aprovação como resultado garantido.
+- Antes de elaborar qualquer plano, confirme se os dados do plano atual estão explícitos na solicitação/conversa corrente: horas por dia, data de início (dd/mm/aaaa) e dias da semana de estudo. Se faltar algum, pergunte de forma concisa somente os dados ausentes, preferencialmente reunindo-os em uma pergunta, e aguarde a resposta antes de gerar o calendário. Não pergunte de novo o que já estiver explícito; não presuma 3 horas/segunda a sexta nem herde data ou horário de plano anterior.
+- Pergunte o nível atual somente se necessário para personalizar; caso contrário, apresente um plano-base e declare essa hipótese. Confirme data final/prazo apenas se a solicitação não indicar horizonte e isso for necessário para dimensionar o plano, consultando o edital/contexto aplicável.
+- Para cada dia, indique data/dia ou número da sessão, acontecimento, período ou subtema específico, objetivo, fonte/trecho de leitura, atividade, questões e revisão/verificação. Use o material local e o programa como fontes concretas; não invente páginas nem referências documentais.
+- Faça a carga horária de cada sessão somar exatamente o tempo disponível. Para 3 horas, uma divisão possível é 15 min de revisão espaçada, 60 min de leitura/linha do tempo, 60 min de estudo comparativo ou atividade, 30 min de questões e correção e 15 min de recuperação ativa/verificação; ajuste ao assunto e indique a duração de cada bloco.
+- Inclua revisões espaçadas e tempo para retomar dificuldades; use o desempenho em questões e atividades para ajustar sessões seguintes sem abandonar a cobertura integral. Em cronogramas com datas, confira a correspondência entre data e dia da semana. Se o prazo não comportar todos os tópicos e sessões solicitados, explicite a incompatibilidade e proponha trocas de prioridade ou peça uma escolha; não omita conteúdo silenciosamente nem prometa domínio ou aprovação.
 - Se houver dados de desempenho, priorize lacunas sem abandonar a cobertura integral do programa.
 
 ## Tom e formato
