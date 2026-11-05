@@ -1,0 +1,123 @@
+Raciocínio Lógico — Guia para iniciantes (PM-PE 2026)
+Material de estudo · Concurso PM-PE 2026 · Banca Instituto AOCP
+Raciocínio Lógico não tem um site oficial de regras como a Língua Portuguesa, porque é matéria de método. Estas são as fontes oficiais mais próximas:
+•	Instituto AOCP (institutoaocp.org.br): provas anteriores para ver como a banca cobra cada tópico.
+•	Loterias Caixa (loterias.caixa.gov.br): usada nos exemplos de combinatória, porque a Caixa publica as chances de cada jogo.
+•	Inep (inep.gov.br): provas anteriores do Enem, com questões de contagem e probabilidade.
+Os exemplos de prova abaixo são no estilo da AOCP. Não são questões reais de uma prova específica.
+1. Estruturas lógicas
+Proposição é uma frase declarativa que pode ser classificada como verdadeira (V) ou falsa (F).
+•	É proposição: “Recife é a capital de Pernambuco” (V).
+•	Não é proposição: perguntas (“Quem chegou?”), ordens (“Estude!”) e frases com incógnita (“x + 1 = 5”).
+Conectivos lógicos e suas tabelas-verdade
+p	q	p ∧ q (e)	p ∨ q (ou)	p ⊻ q (ou... ou)	p → q (se... então)	p ↔ q (se e somente se)
+V	V	V	V	F	V	V
+V	F	F	V	V	F	F
+F	V	F	V	V	V	F
+F	F	F	F	F	V	V
+Como decorar:
+•	“E” só é verdadeiro se as duas forem verdadeiras.
+•	“Ou” só é falso se as duas forem falsas.
+•	“Se... então” só é falso quando a primeira é V e a segunda é F.
+•	“Se e somente se” é verdadeiro quando as duas têm o mesmo valor.
+Exemplo do condicional: “Se passar, então comemoro.” A promessa só é quebrada se eu passar e não comemorar. Se não passar, a frase não é violada, seja qual for o meu comportamento.
+Negações que mais caem
+Proposição	Negação
+p ∧ q	¬p ∨ ¬q
+p ∨ q	¬p ∧ ¬q
+p → q	p ∧ ¬q
+•	A negação de “Estudo e treino” é “Não estudo ou não treino.”
+•	A negação de “Se chove, então molho” é “Chove e não molho.”
+Quantificadores (todo, algum, nenhum)
+•	Negação de “Todo policial é corajoso”: “Existe policial que não é corajoso.”
+•	Negação de “Algum soldado é fumante”: “Nenhum soldado é fumante.”
+Pegadinha clássica: a negação de “todo” não é “nenhum”.
+Falácias
+Falácias são raciocínios que parecem corretos, mas não são.
+•	Afirmação do consequente: “Se chove, a rua molha. A rua está molhada. Logo, choveu.” Está errado, porque a rua pode ter molhado de outro jeito, como com um caminhão-pipa.
+•	Negação do antecedente: “Se estudo, passo. Não estudei. Logo, não passei.” Também está errado.
+•	Generalização apressada: “Dois policiais que conheci eram rudes; logo, todos são.”
+•	Ad hominem: atacar quem fala em vez do argumento.
+2. Lógica de argumentação
+Argumento é um conjunto de premissas que leva a uma conclusão. Ele é válido quando, sendo as premissas verdadeiras, a conclusão necessariamente também é. Validade não é o mesmo que verdade.
+•	“Todo PM é servidor público. João é PM. Logo, João é servidor público.” É válido.
+•	“Todo gato tem asas. Mimi é gato. Logo, Mimi tem asas.” Também é válido, embora a premissa seja falsa, porque a conclusão segue das premissas.
+Regras de inferência (as que mais caem)
+Regra	Forma	Exemplo
+Modus ponens	p → q; p; logo q	Se chove, molha. Chove. Logo, molha.
+Modus tollens	p → q; ¬q; logo ¬p	Se chove, molha. Não molhou. Logo, não choveu.
+Silogismo hipotético	p → q; q → r; logo p → r	Se estudo, passo. Se passo, comemoro. Logo, se estudo, comemoro.
+Silogismo disjuntivo	p ∨ q; ¬p; logo q	Ou vai de ônibus ou de van. Não foi de ônibus. Logo, foi de van.
+Equivalência e implicação lógica
+Equivalência lógica é quando duas proposições têm sempre a mesma tabela-verdade. Para o condicional:
+•	p → q é equivalente a ¬q → ¬p (contrapositiva) e a ¬p ∨ q.
+•	“Se estudo, passo” equivale a “Se não passo, não estudei” e a “Não estudo ou passo.”
+•	Cuidado: “Se passo, estudo” (a recíproca) não é equivalente.
+Implicação lógica: p implica q quando, sempre que p é V, q também é V. Por exemplo, “p e q” implica “p”.
+Classificação de proposições
+•	Tautologia: sempre verdadeira, como “p ou não p”.
+•	Contradição: sempre falsa, como “p e não p”.
+•	Contingência: depende dos valores das partes.
+Analogias
+•	“Médico está para hospital assim como professor está para escola”: a relação é pessoa e local de trabalho.
+•	Sequência: 2, 4, 8, 16... O padrão é multiplicar por 2, então o próximo é 32.
+3. Diagramas lógicos
+A representação é feita com círculos (diagramas de Venn).
+Frase	Desenho
+Todo A é B	A dentro de B
+Algum A é B	A e B se cruzam
+Nenhum A é B	A e B separados
+Algum A não é B	uma parte de A fica fora de B
+Exemplo 1 (silogismo): “Todo soldado é policial. Todo policial é treinado.” O círculo dos soldados está dentro do dos policiais, que está dentro do dos treinados. Logo, todo soldado é treinado.
+Exemplo 2 (contagem com dois conjuntos): Em um grupo de 40 candidatos, 25 estudam Português, 20 estudam Matemática e 5 não estudam nenhuma das duas. Quantos estudam as duas?
+•	Quem estuda pelo menos uma: 40 − 5 = 35.
+•	Fórmula: n(A ∪ B) = n(A) + n(B) − n(A ∩ B).
+•	35 = 25 + 20 − x, então x = 10.
+Dica: comece sempre preenchendo a interseção e vá para fora.
+4. Combinatória e probabilidade
+Princípios da contagem
+Princípio multiplicativo: se uma escolha tem m formas e outra tem n formas, juntas elas têm m × n formas.
+•	3 fardas × 2 coturnos = 6 combinações.
+•	Senha de 3 dígitos (0 a 9, com repetição): 10 × 10 × 10 = 1.000.
+Princípio aditivo (“ou” soma): ir de Recife a Olinda por 2 ônibus ou 3 vans dá 2 + 3 = 5 opções.
+Fatorial: n! = n × (n−1) × ... × 1. Por exemplo, 5! = 120. E 0! = 1.
+Permutação (ordenar todos os elementos): n!
+•	4 policiais em fila: 4! = 24.
+•	Com letras repetidas: n! dividido pelo fatorial de cada repetição. Os anagramas de SOLDADO (7 letras, com O e D repetidos duas vezes cada): 7! ÷ (2! × 2!) = 5.040 ÷ 4 = 1.260.
+Arranjo (escolher p entre n, a ordem importa): A(n,p) = n! ÷ (n−p)!
+•	Pódio de 3 colocados entre 10 candidatos: 10 × 9 × 8 = 720.
+Combinação (escolher p entre n, a ordem não importa): C(n,p) = n! ÷ [p! × (n−p)!]
+•	Escolher 3 policiais entre 10 para uma patrulha: 720 ÷ 6 = 120.
+•	Exemplo com fonte oficial: a Mega-Sena sorteia 6 números entre 60. C(60,6) = 50.063.860 combinações, e é por isso que a Caixa informa que a chance de acertar com um jogo simples é de 1 em 50.063.860.
+Dica para escolher entre arranjo e combinação: pergunte “se eu trocar a ordem, muda o resultado?” Se muda, é arranjo. Se não muda, é combinação.
+Probabilidade
+Probabilidade = casos favoráveis ÷ casos possíveis. O resultado fica sempre entre 0 e 1.
+•	Dado: sair par = 3/6 = 1/2.
+•	Urna com 3 bolas vermelhas e 7 azuis: P(vermelha) = 3/10 = 30%.
+•	Complementar: P(não A) = 1 − P(A). Com 30% de chance de chover, não chover é 70%.
+•	“E” com eventos independentes multiplica: duas caras seguidas na moeda = 1/2 × 1/2 = 1/4.
+•	“Ou” com eventos que não acontecem juntos soma: sair 1 ou 2 no dado = 1/6 + 1/6 = 1/3.
+Probabilidade condicional
+Probabilidade condicional é a chance de A acontecer sabendo que B já aconteceu: P(A | B) = P(A e B) ÷ P(B).
+•	Exemplo didático: numa turma, 60% são homens; 20% dos homens e 30% das mulheres usam óculos.
+•	Homem e de óculos: 0,6 × 0,2 = 0,12 (12%). Mulher e de óculos: 0,4 × 0,3 = 0,12 (12%).
+•	Usar óculos (probabilidade total): 0,12 + 0,12 = 0,24 (24%).
+•	Sabendo que a pessoa usa óculos, a chance de ser homem: 0,12 ÷ 0,24 = 0,5 (50%).
+Dica: monte uma árvore ou uma tabela com os percentuais de cada grupo antes de calcular. A prova de 2023 cobrou esse tipo de questão (questão 21).
+5. Tipos de questão frequentes na AOCP
+Verdades e mentiras
+Método: suponha que uma pessoa diz a verdade, veja o que isso obriga nas outras falas e descarte a hipótese que gerar contradição.
+•	Exemplo didático: A diz “B mente”. B diz “C mente”. C diz “A e B mentem”.
+•	Se C dissesse a verdade, A e B mentiriam. Mas, se A mente, então B diz a verdade, o que contradiz a hipótese. Logo, C mente.
+•	Como C mente, B, ao dizer “C mente”, fala a verdade. Então A, ao dizer “B mente”, mente.
+•	Conclusão: só B diz a verdade. Confira: a fala de C (“A e B mentem”) é de fato falsa, porque B diz a verdade.
+Associação e ordenação
+•	Organize as informações numa tabela (pessoas × características) ou numa linha (do maior para o menor) e marque o que cada pista elimina.
+•	Exemplo didático: Ana é mais velha que Bia, e Caio é mais novo que Bia. A ordem, da mais velha para o mais novo, é Ana, Bia, Caio.
+•	Comece pelas pistas mais restritivas (“é o mais novo”, “não é de Recife”) e deixe as relativas (“é mais velho que”) para depois.
+A prova de 2023 cobrou ordenação de idades (questão 26) e verdades e mentiras (questão 29).
+Modelos de questão (estilo AOCP)
+1.	A negação de “Todos os candidatos estudaram” é: (a) Nenhum candidato estudou (b) Algum candidato não estudou (c) Todos não estudaram.
+2.	“Se chove, a rua molha. A rua não está molhada.” Conclusão: não choveu (modus tollens).
+3.	De 10 policiais, quantas comissões de 3 podem ser formadas? 120.
+4.	Quantos anagramas tem a palavra PMPE? 4! ÷ 2! = 12.

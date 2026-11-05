@@ -1,0 +1,200 @@
+
+Informática — Guia para iniciantes (PM-PE 2026)
+Material de estudo · Concurso PM-PE 2026 · Banca Instituto AOCP
+Os exemplos de prova abaixo são no estilo da AOCP. Não são questões reais de uma prova específica. Para ver questões reais, use as provas anteriores no site do Instituto AOCP (institutoaocp.org.br).
+Fontes oficiais para conferir cada assunto
+•	Cartilha de Segurança para Internet, do CERT.br (cartilha.cert.br): referência brasileira para malwares, phishing, senhas e backup.
+•	Registro.br e NIC.br (registro.br, nic.br): cuidam dos domínios “.br” e da internet no Brasil.
+•	ICP-Brasil / ITI (www.gov.br/iti): certificado digital e assinatura digital.
+•	Suporte da Microsoft (support.microsoft.com/pt-br): Windows 11, Word, Excel e PowerPoint.
+•	Ajuda do LibreOffice (help.libreoffice.org e documentation.libreoffice.org): Writer, Calc e Impress.
+1. Internet e intranet
+•	Internet: rede mundial pública que interliga computadores usando o protocolo TCP/IP.
+•	Intranet: rede privada de uma organização, com as mesmas tecnologias da internet (navegador, TCP/IP), mas de acesso restrito.
+•	Extranet: parte da intranet liberada a pessoas externas autorizadas, como fornecedores.
+Exemplos:
+•	O site do Instituto AOCP é acessível a qualquer pessoa: internet.
+•	Um sistema interno de pessoal que só abre dentro da rede da corporação: intranet.
+•	Para entrar na intranet de fora, usa-se VPN, que cria um “túnel” criptografado.
+2. Ferramentas, serviços e nuvem
+Navegadores
+Chrome, Edge, Firefox e Safari. Atalhos mais cobrados:
+Atalho	Função
+Ctrl + T	Nova guia
+Ctrl + Shift + T	Reabrir guia fechada
+Ctrl + N	Nova janela
+Ctrl + Shift + N	Janela anônima (Chrome e Edge)
+Ctrl + H	Histórico
+Ctrl + J	Downloads
+Ctrl + D	Adicionar aos favoritos
+F5	Atualizar a página
+Ctrl + Shift + Del	Limpar dados de navegação
+Cuidado: a janela anônima não grava histórico no seu computador, mas não esconde sua navegação do provedor de internet, do empregador nem dos sites.
+Protocolos e portas (muito cobrados)
+Serviço	Protocolo	Porta
+Páginas web	HTTP / HTTPS (seguro)	80 / 443
+Enviar e-mail	SMTP	25 (587 em envio autenticado)
+Baixar e-mail	POP3 (baixa e, em geral, apaga do servidor)	110
+Ler e-mail sincronizado	IMAP (mantém no servidor)	143
+Transferir arquivos	FTP	21
+Traduzir nome em IP	DNS	53
+Exemplo de URL: https://www.exemplo.gov.br/pagina.html. O “https” é o protocolo, “www.exemplo.gov.br” é o domínio e “/pagina.html” é o recurso. O “.gov.br” indica órgão do governo.
+Computação em nuvem
+•	SaaS (software como serviço): você usa o programa pronto. Exemplos: Gmail, Microsoft 365 no navegador.
+•	PaaS (plataforma): ambiente para desenvolver aplicações.
+•	IaaS (infraestrutura): servidores e armazenamento virtuais.
+•	Modelos de implantação: nuvem pública, privada e híbrida.
+•	Armazenamento em nuvem: OneDrive, Google Drive, Dropbox.
+•	Vantagem: acesso de qualquer lugar. Desvantagem: depende de internet e exige cuidado com privacidade.
+3. Segurança da informação
+Pilares (CIDA): Confidencialidade (só quem tem direito acessa), Integridade (não foi alterada), Disponibilidade (está acessível quando preciso) e Autenticidade (a origem é verdadeira). O não repúdio impede que o autor negue a autoria.
+•	Vulnerabilidade: fraqueza. Exemplo: sistema desatualizado.
+•	Ameaça: algo que pode explorar a fraqueza. Exemplo: um malware.
+•	Risco: chance de a ameaça explorar a vulnerabilidade.
+Malwares (descritos na Cartilha do CERT.br)
+Tipo	Característica
+Vírus	Infecta arquivos e depende de ser executado para agir
+Worm	Se replica sozinho pela rede, sem precisar de arquivo hospedeiro
+Cavalo de troia (trojan)	Parece programa legítimo, mas executa ações maliciosas; não se replica
+Spyware / Keylogger	Espiona o usuário; o keylogger captura o que é digitado
+Ransomware	Sequestra (criptografa) dados e pede resgate
+Backdoor	Deixa uma “porta dos fundos” para o invasor voltar
+Bot / Botnet	Computador controlado remotamente, em rede de máquinas infectadas
+Rootkit	Esconde a presença do invasor
+Ataques e golpes
+•	Phishing: mensagem falsa que tenta roubar dados. Exemplo: “Seu CPF será bloqueado, clique aqui.”
+•	Pharming: leva a vítima a um site falso mesmo digitando o endereço correto, por alteração de DNS.
+•	DDoS: derruba um serviço por excesso de acessos (ataca a disponibilidade).
+•	Força bruta: tenta senhas até acertar.
+•	Engenharia social: engana a pessoa, não a máquina.
+Criptografia
+•	Simétrica: uma só chave para cifrar e decifrar. É rápida. Exemplo: AES.
+•	Assimétrica: par de chaves, pública e privada. Exemplo: RSA.
+•	Para sigilo: o remetente cifra com a chave pública do destinatário, e só a chave privada dele decifra.
+•	Assinatura digital: o remetente assina com a própria chave privada, e todos verificam com a pública. Garante autenticidade, integridade e não repúdio.
+•	Hash (resumo): “impressão digital” do arquivo, usada para verificar integridade.
+•	Certificado digital: documento eletrônico que vincula uma chave a uma pessoa ou empresa. No Brasil, é emitido dentro da ICP-Brasil.
+Autenticação e boas práticas
+Autenticação: algo que você sabe (senha), tem (token, celular) ou é (biometria). Autenticação em dois fatores combina duas dessas categorias.
+Boas práticas: senhas longas e diferentes para cada serviço, atualizar sistema e programas, manter antivírus e firewall ativos, não clicar em links suspeitos, fazer backup.
+Pegadinha: o cadeado do HTTPS indica que a conexão é criptografada, não que o site é confiável.
+4. Armazenamento e backup
+Dispositivos
+Dispositivo	Observação
+HD	Magnético, com partes móveis; mais barato por GB
+SSD	Memória flash, sem partes móveis; mais rápido e resistente
+Pen drive, cartão SD	Memória flash removível
+CD / DVD / Blu-ray	Ótico; capacidades típicas de 700 MB, 4,7 GB e 25 GB
+Fita magnética	Backup corporativo de grande volume
+Nuvem	Armazenamento remoto pela internet
+Unidades: 1 byte = 8 bits. 1 KB = 1.024 bytes. A sequência é KB, MB, GB, TB.
+Tipos de backup
+Tipo	O que copia	Marca como copiado?
+Completo (normal)	Tudo	Sim
+Incremental	Só o que mudou desde o último backup (de qualquer tipo)	Sim
+Diferencial	Só o que mudou desde o último completo	Não
+Cópia	Tudo que foi selecionado	Não
+Diário	Arquivos modificados no dia	Não
+Restauração (a pegadinha favorita)
+•	Completo no domingo, incrementais de segunda a quarta. Para restaurar na quarta: domingo + segunda + terça + quarta, todos, em ordem.
+•	Completo no domingo, diferenciais de segunda a quarta. Para restaurar na quarta: domingo + só o diferencial de quarta.
+Boa prática: regra 3-2-1, com 3 cópias, em 2 tipos de mídia, sendo 1 fora do local.
+5. Arquivos, pastas e hardware
+Organização de arquivos (Explorador de Arquivos, Win + E)
+•	Nomes não podem ter os caracteres \ / : * ? " < > |.
+•	Extensões comuns: .docx, .xlsx, .pptx, .pdf, .txt, .jpg, .exe. No LibreOffice: .odt, .ods, .odp.
+•	Caminho de exemplo: C:\Users\Nome\Documents.
+Ação	Atalho
+Copiar / Recortar / Colar	Ctrl + C / Ctrl + X / Ctrl + V
+Renomear	F2
+Excluir (vai para a Lixeira)	Del
+Excluir definitivamente	Shift + Del
+•	Arrastar na mesma unidade move. Entre unidades diferentes, copia.
+•	Segurar Ctrl ao arrastar copia. Segurar Shift move. Segurar Alt cria atalho.
+•	Arquivos apagados de pen drive ou de pasta de rede não vão para a Lixeira.
+Hardware
+•	Processador (CPU): executa as instruções. Tem unidade de controle e ULA. Medido em GHz, com núcleos e cache.
+•	RAM: memória principal, volátil (perde tudo ao desligar).
+•	ROM: não volátil, guarda o programa de inicialização.
+•	Cache: memória pequena e muito rápida dentro ou junto da CPU.
+•	Armazenamento (HD/SSD): guarda os dados de forma permanente.
+•	Do mais rápido ao mais lento: registradores, cache, RAM, armazenamento.
+Periféricos
+•	Entrada: teclado, mouse, scanner, microfone, webcam.
+•	Saída: monitor, impressora comum, caixas de som.
+•	Entrada e saída: tela sensível ao toque, impressora multifuncional, pen drive, HD.
+•	Portas: USB, HDMI, VGA, RJ-45 (rede), P2 (áudio).
+•	Instalar periférico: conectar, deixar o sistema reconhecer (Plug and Play) e, se preciso, instalar o driver (programa que faz o equipamento “conversar” com o sistema). No Windows 11: Configurações, depois Bluetooth e dispositivos.
+6. Windows 11
+•	A Barra de Tarefas vem com o Menu Iniciar centralizado. As configurações principais ficam no aplicativo Configurações (Win + I). O Painel de Controle ainda existe e abre com Win + R, digitando control.
+•	A proteção nativa se chama Segurança do Windows, que inclui o antivírus. O Windows Update atualiza o sistema.
+Atalho	Função
+Win + E	Explorador de Arquivos
+Win + D	Mostrar a área de trabalho
+Win + L	Bloquear o computador
+Win + I	Configurações
+Win + R	Executar
+Win + V	Histórico da área de transferência
+Win + Shift + S	Captura de tela
+Win + Tab	Visão de tarefas
+Alt + Tab	Alternar entre janelas
+Alt + F4	Fechar a janela
+Ctrl + Shift + Esc	Gerenciador de Tarefas
+Novidade do Windows 11: layouts de janelas (Snap), que organizam janelas lado a lado.
+Prompt de Comando (cmd)
+Comando	Função
+dir	Lista arquivos e pastas
+cd	Entra em uma pasta (cd .. volta um nível)
+md ou mkdir	Cria pasta
+rd ou rmdir	Remove pasta
+copy, move, del, ren	Copia, move, apaga e renomeia arquivos
+cls	Limpa a tela
+ipconfig	Mostra a configuração de rede (endereço IP)
+ping	Testa a conexão com outro computador
+tracert	Mostra o caminho até o destino
+nslookup	Consulta o DNS
+tasklist / taskkill	Lista / encerra processos
+Exemplo: ping www.exemplo.com.br verifica se o servidor responde.
+7. Office 2019 e LibreOffice 7
+Função	Microsoft	LibreOffice
+Texto	Word (.docx)	Writer (.odt)
+Planilha	Excel (.xlsx)	Calc (.ods)
+Apresentação	PowerPoint (.pptx)	Impress (.odp)
+Todos abrem e salvam nos formatos uns dos outros e exportam para PDF (Word: Arquivo, Exportar. Writer: Arquivo, Exportar como PDF).
+Atalhos do Word em português e do Writer (pegadinha comum)
+Função	Word (pt-BR)	Writer
+Salvar	Ctrl + B	Ctrl + S
+Negrito	Ctrl + N	Ctrl + B
+Sublinhado	Ctrl + S	Ctrl + U
+Itálico	Ctrl + I	Ctrl + I
+Centralizar / Justificar	Ctrl + E / Ctrl + J	Ctrl + E / Ctrl + J
+Os atalhos podem variar com a configuração de idioma. Confirme na ajuda oficial de cada programa.
+Word e Writer
+Formatação de fonte e parágrafo, estilos, cabeçalho e rodapé, numeração de páginas, tabelas, sumário automático (Referências), revisão com controle de alterações, mala direta.
+Excel e Calc
+•	Toda fórmula começa com =. No Brasil, os argumentos se separam por ponto e vírgula.
+•	Referências: relativa A1, absoluta $A$1 e mista A$1 ou $A1. No Excel, a tecla F4 alterna entre elas; no Calc, o atalho é Shift + F4.
+•	Ordem das operações: parênteses, potência, multiplicação e divisão, soma e subtração.
+Função	Exemplo	Resultado
+SOMA	=SOMA(A1:A3) com 10, 20, 30	60
+MÉDIA	=MÉDIA(A1:A3)	20
+MÁXIMO / MÍNIMO	=MÁXIMO(A1:A3)	30
+SE	=SE(B2>=7;"Aprovado";"Reprovado") com B2 = 6	Reprovado
+CONT.SE	=CONT.SE(A1:A10;">5")	Conta quantas células são maiores que 5
+CONT.NÚM	=CONT.NÚM(A1:A10)	Conta apenas células com números
+PROCV	=PROCV(valor;tabela;coluna;0)	Busca exata
+•	O Office 2019 (fora do Microsoft 365) não tem PROCX. Use PROCV.
+•	Erros comuns: #DIV/0! (divisão por zero), #NOME? (função ou nome inexistente), #VALOR! (tipo errado), #REF! (referência inválida), #N/D (valor não encontrado), #### (coluna estreita).
+•	Para referenciar outra planilha: Excel usa Planilha2!A1; Calc usa $Planilha2.A1.
+•	Gráficos: colunas e barras comparam, linhas mostram evolução, pizza mostra partes de um total.
+PowerPoint e Impress
+•	Transição é o efeito entre slides. Animação é o efeito em objetos dentro do slide.
+•	Modo de apresentação: F5 inicia do primeiro slide e Shift + F5 inicia do slide atual, tanto no PowerPoint quanto no Impress.
+•	O slide mestre aplica o mesmo layout a todos os slides.
+•	Formatos: .pptx (editável), .ppsx (abre direto em apresentação), PDF.
+Modelos de questão (estilo AOCP)
+1.	Qual backup copia só o que mudou desde o último backup completo e não marca os arquivos? Diferencial.
+2.	Malware que se replica sozinho pela rede, sem precisar de arquivo hospedeiro: worm.
+3.	Qual comando do Prompt de Comando testa a conexão com outro equipamento? ping.
+4.	Com A1 = 3, a fórmula =SE(A1>5;"Sim";"Não") retorna: Não.
+5.	Protocolo que lê o e-mail mantendo-o no servidor, sincronizado entre dispositivos: IMAP.

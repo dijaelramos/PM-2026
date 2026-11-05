@@ -1,0 +1,128 @@
+Língua Portuguesa — Guia para iniciantes (PM-PE 2026)
+Material de estudo · Concurso PM-PE 2026 · Banca Instituto AOCP
+Os exemplos abaixo foram montados no estilo da AOCP. Não são questões reais de uma prova específica. As provas reais ficam no site do Instituto AOCP (institutoaocp.org.br), na área de provas anteriores.
+Fontes oficiais para conferir as regras
+•	VOLP, da Academia Brasileira de Letras (www.academia.org.br): vocabulário oficial de ortografia.
+•	Decreto 6.583/2008, no Planalto: promulga o Acordo Ortográfico.
+•	Manual de Redação da Presidência da República, no Planalto: mostra pontuação, crase e concordância na prática, em ofícios.
+1.1 Interpretação e Semântica
+1. Compreensão e interpretação de textos
+Compreender é entender o que está escrito. Interpretar é concluir o que o texto sugere sem dizer.
+•	“João deixou o guarda-chuva pingando no corredor.” Conclusão: choveu (inferência).
+•	“O quartel só abre às 8h.” Isso é informação explícita.
+Pegadinha: a banca inventa alternativas que extrapolam (dizem mais que o texto), reduzem ou contradizem o texto.
+2. Tipologias e gêneros
+Tipo é a estrutura do texto: narração, descrição, dissertação, injunção (ordem ou instrução) e exposição. Gênero é o formato social: notícia, boletim de ocorrência, ofício, receita.
+•	Boletim de ocorrência: gênero, com tipo predominantemente narrativo.
+•	Edital: gênero, com tipo injuntivo e expositivo.
+3. Figuras de linguagem
+•	Metáfora: “O policial é o escudo da população.”
+•	Metonímia: “Li Machado de Assis” (o autor no lugar da obra).
+•	Hipérbole: “Chorei um oceano.”
+•	Eufemismo: “Ele nos deixou” (morreu).
+•	Antítese: “O soldado vive entre a calma e o caos.” (ideias opostas lado a lado)
+•	Paradoxo: “Amor é fogo que arde sem se ver.” (ideias opostas que, juntas, parecem impossíveis; não confundir com antítese)
+4. Relações entre orações
+Relação	Conectivos	Exemplo
+Oposição	mas, porém, contudo	Estudou, mas não passou.
+Concessão	embora, ainda que	Embora estudasse, não passou.
+Conclusão	logo, portanto	Estudou; logo, passará.
+Causa	porque, já que	Passou porque estudou.
+Adição	e, além disso	Estudou e treinou.
+Alternância	ou, ora... ora	Ou estuda ou perde.
+Cuidado: concessão e oposição parecem iguais, mas só a concessão admite o conectivo “embora”.
+17. Significação das palavras
+•	Sinônimo e antônimo: feliz e alegre; feliz e triste.
+•	Polissemia: “banco” (de sentar ou de dinheiro).
+•	Parônimos, que parecem iguais e confundem: ratificar (confirmar) e retificar (corrigir); infringir (violar a lei) e infligir (aplicar pena).
+•	Sentido denotativo é o literal; conotativo é o figurado.
+18. Variação linguística
+A língua muda conforme a região, a época, o grupo social e a situação.
+•	Regional: macaxeira, aipim e mandioca são a mesma raiz, com nomes diferentes.
+•	Situacional: num ofício se usa a norma culta; numa conversa informal, “tá”.
+Cuidado: variação não é “erro”. A banca costuma perguntar qual registro é adequado a cada situação.
+1.2 Ortografia e Acentuação
+5. Ortografia oficial (Acordo de 1990)
+•	O trema acabou: frequência, não “freqüência”.
+•	Ditongos abertos “ei” e “oi” em paroxítonas perderam o acento: ideia, heroico.
+•	O acento de hiato “oo” e “êem” caiu: voo, enjoo, leem.
+•	Hífen: “anti” + “social” vira antissocial; “anti” + “higiênico” vira anti-higiênico; “auto” + “escola” vira autoescola.
+•	As letras k, w e y voltaram ao alfabeto.
+6. Acentuação gráfica
+•	Oxítonas terminadas em a, e, o, em e ens: café, também.
+•	Paroxítonas que não terminam nessas letras: fácil, útil, órgão, álbum.
+•	Todas as proparoxítonas: médico, química.
+•	Hiatos: saída, baú.
+•	Plural de “ter” e “vir” em 3ª pessoa: ele tem, eles têm; ele vem, eles vêm.
+1.3 Morfologia
+7. Classes de palavras
+Substantivo, adjetivo, artigo, numeral, pronome, verbo, advérbio, preposição, conjunção e interjeição.
+•	“O policial rapidamente socorreu a vítima”: rapidamente é advérbio.
+•	“O bom é descansar”: bom normalmente é adjetivo, mas aqui virou substantivo.
+Dica: a classe depende do uso da palavra na frase, não da palavra isolada.
+8. Crase
+Crase é a junção da preposição a com o artigo ou pronome a(s).
+•	Teste: troque a palavra feminina por uma masculina. Se aparecer “ao”, há crase. “Fui à delegacia” (fui ao quartel).
+•	Teste do lugar: “vou a, volto da” pede crase. “Vou à Bahia; volto da Bahia.”
+•	“Vou a Recife; volto de Recife”: sem crase.
+•	Não há crase antes de verbo nem de pronome pessoal (“entreguei a ela”). Antes de palavra masculina, em regra, também não; a exceção é quando fica subentendida a expressão “à moda de” (“sapatos à Luís XV”).
+•	Com horas é obrigatória: “às 8h”.
+16. Formação de palavras
+•	Derivação prefixal: desleal.
+•	Derivação sufixal: lealdade.
+•	Parassintética (prefixo e sufixo juntos): entardecer.
+•	Regressiva (substantivo que vem do verbo): venda, de vender.
+•	Composição por justaposição: guarda-chuva.
+•	Composição por aglutinação: planalto (plano + alto).
+•	Siglas e abreviações: PM.
+1.4 Sintaxe
+9. Sintaxe da oração e do período
+•	Termos essenciais: sujeito e predicado.
+•	Termos integrantes: objeto direto, objeto indireto e complemento nominal.
+•	Termos acessórios: adjunto adnominal, adjunto adverbial, aposto e vocativo.
+•	“Os policiais prenderam o suspeito ontem”: sujeito = os policiais; objeto direto = o suspeito; adjunto adverbial de tempo = ontem.
+•	Período simples tem um verbo. Período composto tem mais de um.
+•	Coordenação: “Estudou, mas não passou.” Subordinação: “Espero que você passe.”
+10. Funções do “que” e do “se”
+•	QUE pronome relativo: “O candidato que estudou passou” (equivale a “o qual”).
+•	QUE conjunção integrante: “Disse que viria.”
+•	QUE advérbio de intensidade: “Que bonito!”
+•	SE conjunção integrante: “Não sei se ele virá.”
+•	SE conjunção condicional: “Se chover, não vou.”
+•	SE apassivador: “Vendem-se casas” (as casas são vendidas).
+•	SE indeterminador: “Precisa-se de policiais.”
+•	SE reflexivo: “Ele se feriu.”
+13. Concordância
+•	Verbal: “Faz dois anos que estudo” (verbo fazer indicando tempo é impessoal e fica no singular). “Há muitos candidatos” (haver no sentido de existir também).
+•	Verbal: “Vendem-se casas”, com o verbo no plural, e “Precisa-se de casas”, no singular.
+•	Nominal: “É proibida a entrada” (com artigo, concorda); “É proibido entrada” (sem artigo, fica no masculino).
+•	Meio como advérbio não varia: “Ela está meio cansada.”
+•	Anexo varia: “As fotos seguem anexas.”
+14. Regência
+•	Assistir (ver) pede “a”: “Assisti ao jogo.”
+•	Preferir pede “a”, nunca “do que”: “Prefiro estudar a dormir.”
+•	Obedecer a: “Obedeço às ordens.”
+•	Visar (ter como objetivo) pede “a”: “Visava ao cargo.”
+•	Chegar e ir pedem “a”: “Cheguei ao quartel.”
+•	Lembrar algo; lembrar-se de algo.
+15. Colocação pronominal
+•	Próclise (antes do verbo): depois de negação, de pronome relativo e de advérbio: “Não me disse”; “O policial que me atendeu.”
+•	Ênclise (depois do verbo): em início de frase e no imperativo afirmativo: “Disseram-me”; “Entregue-me.”
+•	Mesóclise (no meio): só com futuro do presente e do pretérito, e sem palavra atrativa: “Entregar-lhe-ei.”
+•	Nunca se usa ênclise após o particípio.
+1.5 Coesão e Pontuação
+11. Coesão textual
+Coesão é a “costura” entre as partes do texto.
+•	Referencial: “O delegado chegou. Ele pediu o relatório.” (ele retoma delegado)
+•	Por sinônimo: “O delegado recebeu o relatório. O documento estava incompleto.”
+•	Sequencial: conectivos como porém, além disso, portanto.
+12. Pontuação
+•	Vírgula separa aposto: “Maria, a delegada, chegou.” Também separa vocativo, adjunto adverbial deslocado e elementos de enumeração.
+•	Nunca se separa sujeito de verbo, nem verbo de complemento.
+•	A vírgula muda o sentido: “Os policiais, que estavam de folga, foram chamados” (todos estavam de folga). Sem vírgula, “Os policiais que estavam de folga foram chamados” (só alguns).
+•	Dois-pontos introduzem enumeração, citação ou explicação.
+•	Ponto e vírgula separa itens longos ou orações já pontuadas.
+Modelos de questão (estilo AOCP)
+1.	“Embora tenha estudado, não passou.” A relação entre as orações é de: (a) causa (b) concessão (c) conclusão (d) adição.
+2.	Em qual alternativa há erro de crase? (a) Fui à delegacia. (b) Vou à pé. (Incorreta.) (c) Cheguei às 8h.
+3.	“Assisti ao jogo ontem” está correta? Sim: assistir no sentido de ver exige a preposição “a”.
