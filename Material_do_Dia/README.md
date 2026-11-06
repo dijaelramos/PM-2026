@@ -7,6 +7,7 @@ Material de estudo de cada sessão do [plano](../Plano_de_Estudos_PMPE_2026.md),
 | Arquivo | Conteúdo |
 |---|---|
 | [2026-11-05_Lingua_Portuguesa.md](2026-11-05_Lingua_Portuguesa.md) | Quinta, 05/11: figuras de linguagem e relações semânticas (LP 3 e 4). Roteiro das 3 h, texto de estudo com exemplos de provas oficiais e 8 questões oficiais da AOCP com gabarito oficial comentado. |
+| [2026-11-06_Lingua_Portuguesa.md](2026-11-06_Lingua_Portuguesa.md) | Sexta, 06/11: significação das palavras e variação linguística (LP 17 e 18), revisão dos erros de 05/11 e 6 questões oficiais da AOCP com gabarito oficial comentado. |
 | [2026-11-06_Redacao_Producao.md](2026-11-06_Redacao_Producao.md) | Sexta, 06/11: 1 h de redação com a proposta oficial da PMES 2022 (AOCP), regras do edital da PMPE 2026, roteiro e lista de autorrevisão. |
 | [Exemplo_Correcao_de_Redacao.md](Exemplo_Correcao_de_Redacao.md) | Correção completa de uma redação de demonstração pela Tabela 12.2, com notas por critério, apontamentos e reescrita. Serve de modelo para a correção de 09/11. |
 
