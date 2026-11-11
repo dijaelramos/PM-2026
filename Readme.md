@@ -19,7 +19,7 @@ O edital e seus anexos são a referência definitiva em caso de divergência. A 
 | Pasta/arquivo | Conteúdo |
 |---|---|
 | [`.github/copilot-instructions.md`](.github/copilot-instructions.md) | Regras comuns a todos os agentes: fatos do concurso, fontes, questões oficiais e autorais, busca na Web, planos de estudo e tom. |
-| [`.github/regras/`](.github/regras/) | Roteiros detalhados que as regras comuns mandam ler antes de cada tarefa: questões oficiais, questão autoral sobre lei, busca na Web e planos de estudo. |
+| [`.github/regras/`](.github/regras/) | Roteiros detalhados que as regras comuns mandam ler antes de cada tarefa: material de estudo e correção, questões oficiais, questão autoral sobre lei, busca na Web e planos de estudo. |
 | [`.github/agents/`](.github/agents/) | Definições dos agentes, cada um só com o que é específico da sua disciplina (única cópia; é a pasta que o VS Code lê). |
 | [`Perfil_do_Estudante.md`](Perfil_do_Estudante.md) | Disponibilidade, datas, nível e desempenho. Os agentes leem este arquivo para não perguntar de novo o que já está definido. |
 | [`Plano_de_Estudos_PMPE_2026.md`](Plano_de_Estudos_PMPE_2026.md) | Plano vigente, com redação semanal e dois simulados. Também em [planilha](Plano_de_Estudos_PMPE_2026.xlsx). |

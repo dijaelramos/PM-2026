@@ -10,6 +10,8 @@ Textos das normas do programa de **Direito Constitucional** e de **Direitos Huma
 | Item | Norma | Artigos | Fonte | Alteração mais recente | Alterações 2025–2026 | Alteração após 29/09/2026 |
 |---|---|---|---|---|---|---|
 | DC 1 a 5 | [Constituição da República Federativa do Brasil de 1988 — Títulos I a V (arts. 1º a 144)](Direito_Constitucional/CF_1988_arts_1_a_144.md) | 149 | Câmara dos Deputados | 16/10/2026 | 10 | ⚠️ sim |
+| DH 1 e 2 (trecho) | [Carta das Nações Unidas (1945) — Capítulo I, arts. 1º e 2º (propósitos e princípios)](Direitos_Humanos_e_Legislacao_Extravagante/Carta_ONU_1945_arts_1_e_2.md) — copiado em 10/11/2026 | 2 | Planalto (Decreto nº 19.841/1945) | — | — | não |
+| DH 1 (contexto, trecho) | [Decreto nº 7.037/2009 — PNDH-3, arts. 1º a 7º](Direitos_Humanos_e_Legislacao_Extravagante/Decreto_7037_2009_PNDH3_arts_1_a_7.md) — copiado em 10/11/2026; fora do Anexo II de forma expressa | 7 | Planalto | Decreto nº 10.087/2019 (revogou o art. 4º) | — | não |
 | DH 4 | [Declaração Universal dos Direitos Humanos (ONU, 1948)](Direitos_Humanos_e_Legislacao_Extravagante/DUDH_1948.md) | 30 | UNICEF Brasil | — | — | não |
 | DH 5 | [Convenção Americana sobre Direitos Humanos (Pacto de San José da Costa Rica, 1969)](Direitos_Humanos_e_Legislacao_Extravagante/CADH_Pacto_de_San_Jose_1969.md) | 82 | OEA/CIDH | — | — | não |
 | DH 6 | [Lei nº 8.069/1990 — Estatuto da Criança e do Adolescente](Direitos_Humanos_e_Legislacao_Extravagante/Lei_8069_1990_ECA.md) | 329 | Câmara dos Deputados | 22/09/2026 | 25 | não |

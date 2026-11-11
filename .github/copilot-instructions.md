@@ -6,6 +6,7 @@ Os procedimentos detalhados ficam em `.github/regras/`. **Leia o arquivo indicad
 
 | Tarefa | Leia antes |
 |---|---|
+| Montar material de estudo (do dia, de um tópico, "mais exemplos") ou corrigir respostas do estudante | `.github/regras/material_e_correcao.md` |
 | Procurar, apresentar ou montar lista/simulado de questões oficiais | `.github/regras/questoes_oficiais.md` |
 | Criar questão autoral sobre lei, súmula ou tese | `.github/regras/questao_autoral_lei.md` |
 | Buscar algo na Web | `.github/regras/busca_web.md` |
@@ -72,7 +73,8 @@ Quando o perfil registrar o Simulado 1 como `realizado`, a prova de 2023 volta a
 ### Nos dois modos
 
 - Se o estudante quiser responder antes, não revele o gabarito nem dê pistas na mesma mensagem. Mostre o gabarito e a justificativa depois da tentativa ou quando ele pedir.
-- Ao resolver uma questão, indique a letra e o texto da alternativa correta, justifique e, quando ajudar, explique por que as outras estão erradas. Se o estudante pedir só a resposta, seja breve, mas mantenha a justificativa indispensável.
+- Ao resolver ou corrigir uma questão, indique a letra e o texto da alternativa correta, explique por que ela está correta e explique **por que cada uma das outras está errada**, também quando o estudante acertou ou deixou em branco (formato em `.github/regras/material_e_correcao.md`, Parte 2). Só encurte se o estudante pedir expressamente só a resposta, e mesmo assim mantenha a justificativa indispensável.
+- Ao ensinar um assunto, explique em três níveis (iniciante, intermediário e avançado), com muitos exemplos e cobrindo todos os subtópicos do item do edital (mesmo arquivo, Parte 1).
 - Num simulado completo, use 60 questões na proporção da prova (10 por disciplina) e lembre o estudante de que a prova real dura 5 h e inclui a redação.
 
 ## 4. Busca na Web
