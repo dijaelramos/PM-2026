@@ -2,7 +2,7 @@
 
 > **Para que serve:** dar aos agentes o **texto oficial** das súmulas ligadas ao edital, sem depender da Web. Itens do Anexo II: Direito Constitucional 6 ("súmulas, jurisprudência dominante dos Tribunais Superiores") e Direitos Humanos 18.
 > **Fontes (baixadas em 05/11/2026):**
-> - STF — páginas oficiais de cada Súmula Vinculante no portal do STF (`portal.stf.jus.br/jurisprudencia/sumariosumulas.asp?base=26&sumula=...`), com o enunciado e as observações oficiais. Total: **63 súmulas vinculantes** (até a SV 63).
+> - STF — páginas oficiais de cada Súmula Vinculante no portal do STF (`portal.stf.jus.br/jurisprudencia/sumariosumulas.asp?base=26&sumula=...`), com o enunciado e as observações oficiais. Até a SV 63; na seção 4 ficaram só as **42** ligadas aos temas do edital (revisão de 13/11/2026).
 > - STJ — "Enunciados das Súmulas do STJ", PDF oficial (`www.stj.jus.br/docs_internet/VerbetesSTJ.pdf`), atualizado até a **Súmula 673** (setembro de 2024). **Súmulas do STJ aprovadas depois disso não estão aqui**; o buscador de súmulas do STJ (SCON) recusou acesso automatizado.
 > **Data-base da prova:** 29/09/2026. Súmulas vinculantes publicadas depois dela: nenhuma.
 > - STF — 10 teses de repercussão geral ligadas à atuação policial e ao edital (seção 3), copiadas das páginas oficiais de cada tema.
@@ -70,10 +70,6 @@
 
 - **Súmula 2 do STJ** — Não cabe o habeas data (CF, art. 5., LXXII, letra "a") se não houve recusa de informações por parte da autoridade administrativa.
 
-### Meio ambiente (DH 11, aspecto civil)
-
-- **Súmula 613 do STJ** — Não se admite a aplicação da teoria do fato consumado em tema de Direito Ambiental.
-
 ## 3. Teses de repercussão geral do STF ligadas à atuação policial e ao edital
 
 Texto oficial da tese, copiado da página de cada tema no portal do STF (`portal.stf.jus.br/jurisprudenciaRepercussao/verTeseTema.asp?numTema=...`) em 05/11/2026. A tese de repercussão geral orienta todos os tribunais, mas não é súmula vinculante.
@@ -89,7 +85,9 @@ Texto oficial da tese, copiado da página de cada tema no portal do STF (`portal
 - **Tema 60** (RE 466343) — *DH 3 e 5 — prisão civil do depositário infiel (origem da SV 25)* — É ilícita a prisão civil de depositário infiel, qualquer que seja a modalidade de depósito.
 - **Tema 1238** (ARE 1316369) — *DC 2 — provas ilícitas em processo administrativo* — São inadmissíveis, em processos administrativos de qualquer espécie, provas consideradas ilícitas pelo Poder Judiciário.
 
-## 4. Todas as súmulas vinculantes do STF (texto oficial)
+## 4. Súmulas vinculantes do STF ligadas aos temas do edital (texto oficial)
+
+> **Revisão de 13/11/2026:** ficaram aqui as **42** súmulas vinculantes ligadas aos temas de Direito Constitucional do Anexo II (CF, arts. 1º a 144: direitos e garantias, organização do Estado, Administração Pública e servidores, Poderes, competências dos tribunais) e às leis de Direitos Humanos do edital. Foram **retiradas 21** que tratam de temas fora do edital: SV 7 (sistema financeiro, CF art. 192); SV 8 (tributário); SV 9 (execução penal (LEP)); SV 12 (educação, CF art. 206); SV 19 (tributário); SV 24 (crime contra a ordem tributária); SV 29 (tributário); SV 30 (pendente de publicação); SV 31 (tributário); SV 32 (tributário); SV 35 (Juizados Especiais (Lei 9.099/1995)); SV 41 (tributário); SV 48 (tributário); SV 49 (ordem econômica, CF art. 170); SV 50 (tributário); SV 52 (tributário); SV 57 (tributário); SV 58 (tributário); SV 60 (saúde (SUS), CF art. 196); SV 61 (saúde (SUS), CF art. 196); SV 62 (tributário). Se o estudante perguntar por uma delas, diga que o tema está fora do programa da PMPE 2026 e indique o portal do STF.
 
 **SV 1** *(DJe 06/06/2007)* — Ofende a garantia constitucional do ato jurídico perfeito a decisão que, sem ponderar as circunstâncias do caso concreto, desconsidera a validez e a eficácia de acordo constante de termo de adesão instituído pela Lei Complementar 110/2001.
 
@@ -103,17 +101,9 @@ Texto oficial da tese, copiado da página de cada tema no portal do STF (`portal
 
 **SV 6** *(DJe 16/05/2008)* — Não viola a Constituição o estabelecimento de remuneração inferior ao salário mínimo para as praças prestadoras de serviço militar inicial.
 
-**SV 7** *(DJe 20/06/2008)* — A norma do § 3º do artigo 192 da Constituição, revogada pela Emenda Constitucional 40/2003, que limitava a taxa de juros reais a 12% ao ano, tinha sua aplicação condicionada à edição de lei complementar.
-
-**SV 8** *(DJe 20/06/2008)* — São inconstitucionais o parágrafo único do artigo 5º do Decreto-Lei 1.569/1977 e os artigos 45 e 46 da Lei 8.212/1991, que tratam da prescrição e decadência do crédito tributário.
-
-**SV 9** *(DJe 20/06/2008)* — O disposto no artigo 127 da Lei 7.210/1984 (Lei de Execução Penal) foi recebido pela ordem constitucional vigente, e não se lhe aplica o limite temporal previsto no caput do artigo 58.
-
 **SV 10** *(DJe 27/06/2008)* — Viola a cláusula de reserva de plenário (CF, artigo 97) a decisão de órgão fracionário de tribunal que, embora não declare expressamente a inconstitucionalidade de lei ou ato normativo do Poder Público, afasta sua incidência, no todo ou em parte.
 
 **SV 11** *(DJe 22/08/2008)* — Só é lícito o uso de algemas em casos de resistência e de fundado receio de fuga ou de perigo à integridade física própria ou alheia, por parte do preso ou de terceiros, justificada a excepcionalidade por escrito, sob pena de responsabilidade disciplinar, civil e penal do agente ou da autoridade e de nulidade da prisão ou do ato processual a que se refere, sem prejuízo da responsabilidade civil do Estado.
-
-**SV 12** *(DJe 22/08/2008)* — A cobrança de taxa de matrícula nas universidades públicas viola o disposto no art. 206, IV, da Constituição Federal.
 
 **SV 13** *(DJe 29/08/2008)* — A nomeação de cônjuge, companheiro ou parente em linha reta, colateral ou por afinidade, até o terceiro grau, inclusive, da autoridade nomeante ou de servidor da mesma pessoa jurídica investido em cargo de direção, chefia ou assessoramento, para o exercício de cargo em comissão ou de confiança ou, ainda, de função gratificada na administração pública direta e indireta em qualquer dos poderes da União, dos Estados, do Distrito Federal e dos Municípios, compreendido o ajuste mediante designações recíprocas, viola a Constituição Federal.
 
@@ -127,8 +117,6 @@ Texto oficial da tese, copiado da página de cada tema no portal do STF (`portal
 
 **SV 18** *(DJe —)* — A dissolução da sociedade ou do vínculo conjugal, no curso do mandato, não afasta a inelegibilidade prevista no § 7º do artigo 14 da Constituição Federal.
 
-**SV 19** *(DJe 10/11/2009)* — A taxa cobrada exclusivamente em razão dos serviços públicos de coleta, remoção e tratamento ou destinação de lixo ou resíduos provenientes de imóveis não viola o artigo 145, II, da Constituição Federal.
-
 **SV 20** *(DJe 10/11/2009)* — A Gratificação de Desempenho de Atividade Técnico-Administrativa - GDATA, instituída pela Lei 10.404/2002, deve ser deferida aos inativos nos valores correspondentes a 37,5 (trinta e sete vírgula cinco) pontos no período de fevereiro a maio de 2002 e, nos termos do artigo 5º, parágrafo único, da Lei 10.404/2002, no período de junho de 2002 até a conclusão dos efeitos do último ciclo de avaliação a que se refere o artigo 1º da Medida Provisória 198/2004, a partir da qual passa a ser de 60 (sessenta) pontos.
 
 **SV 21** *(DJe 10/11/2009)* — É inconstitucional a exigência de depósito ou arrolamento prévios de dinheiro ou bens para admissibilidade de recurso administrativo.
@@ -136,8 +124,6 @@ Texto oficial da tese, copiado da página de cada tema no portal do STF (`portal
 **SV 22** *(DJe 11/12/2009)* — A Justiça do Trabalho é competente para processar e julgar as ações de indenização por danos morais e patrimoniais decorrentes de acidente de trabalho propostas por empregado contra empregador, inclusive aquelas que ainda não possuíam sentença de mérito em primeiro grau quando da promulgação da Emenda Constitucional 45/2004.
 
 **SV 23** *(DJe 11/12/2009)* — A Justiça do Trabalho é competente para processar e julgar ação possessória ajuizada em decorrência do exercício do direito de greve pelos trabalhadores da iniciativa privada.
-
-**SV 24** *(DJe 11/12/2009)* — Não se tipifica crime material contra a ordem tributária, previsto no art. 1º, incisos I a IV, da Lei 8.137/1990, antes do lançamento definitivo do tributo.
 
 **SV 25** *(DJe 23/12/2009)* — É ilícita a prisão civil de depositário infiel, qualquer que seja a modalidade de depósito.
 
@@ -147,19 +133,9 @@ Texto oficial da tese, copiado da página de cada tema no portal do STF (`portal
 
 **SV 28** *(DJe 17/02/2010)* — É inconstitucional a exigência de depósito prévio como requisito de admissibilidade de ação judicial na qual se pretenda discutir a exigibilidade de crédito tributário.
 
-**SV 29** *(DJe 17/02/2010)* — É constitucional a adoção, no cálculo do valor de taxa, de um ou mais elementos da base de cálculo própria de determinado imposto, desde que não haja integral identidade entre uma base e outra.
-
-**SV 30** *(DJe —)* — A Súmula Vinculante 30 está pendente de publicação.
-
-**SV 31** *(DJe 17/02/2010)* — É inconstitucional a incidência do imposto sobre serviços de qualquer natureza - ISS sobre operações de locação de bens móveis.
-
-**SV 32** *(DJe 24/02/2011)* — O ICMS não incide sobre alienação de salvados de sinistro pelas seguradoras.
-
 **SV 33** *(DJe 24/04/2014)* — Aplicam-se ao servidor público, no que couber, as regras do regime geral da previdência social sobre aposentadoria especial de que trata o artigo 40, § 4º, inciso III da Constituição Federal, até a edição de lei complementar específica.
 
 **SV 34** *(DJe 24/04/2014)* — A Gratificação de Desempenho de Atividade de Seguridade Social e do Trabalho - GDASST, instituída pela Lei 10.483/2002, deve ser estendida aos inativos no valor correspondente a 60 (sessenta) pontos, desde o advento da Medida Provisória 198/2004, convertida na Lei 10.971/2004, quando tais inativos façam jus à paridade constitucional (EC 20/1998, 41/2003 e 47/2005).
-
-**SV 35** *(DJe 24/04/2014)* — A homologação da transação penal prevista no artigo 76 da Lei 9.099/1995 não faz coisa julgada material e, descumpridas suas cláusulas, retoma-se a situação anterior, possibilitando-se ao Ministério Público a continuidade da persecução penal mediante oferecimento de denúncia ou requisição de inquérito policial.
 
 **SV 36** *(DJe 24/10/2014)* — Compete à Justiça Federal comum processar e julgar civil denunciado pelos crimes de falsificação e de uso de documento falso quando se tratar de falsificação da Caderneta de Inscrição e Registro (CIR) ou de Carteira de Habilitação de Amador (CHA), ainda que expedidas pela Marinha do Brasil.
 
@@ -170,8 +146,6 @@ Texto oficial da tese, copiado da página de cada tema no portal do STF (`portal
 **SV 39** *(DJe —)* — Compete privativamente à União legislar sobre vencimentos dos membros das polícias civil e militar e do corpo de bombeiros militar do Distrito Federal.
 
 **SV 40** *(DJe 20/03/2015)* — A contribuição confederativa de que trata o art. 8º, IV, da Constituição Federal, só é exigível dos filiados ao sindicato respectivo.
-
-**SV 41** *(DJe —)* — O serviço de iluminação pública não pode ser remunerado mediante taxa.
 
 **SV 42** *(DJe 20/03/2015)* — É inconstitucional a vinculação do reajuste de vencimentos de servidores estaduais ou municipais a índices federais de correção monetária.
 
@@ -185,15 +159,7 @@ Texto oficial da tese, copiado da página de cada tema no portal do STF (`portal
 
 **SV 47** *(DJe 02/06/2015)* — Os honorários advocatícios incluídos na condenação ou destacados do montante principal devido ao credor consubstanciam verba de natureza alimentar cuja satisfação ocorrerá com a expedição de precatório ou requisição de pequeno valor, observada ordem especial restrita aos créditos dessa natureza.
 
-**SV 48** *(DJe —)* — Na entrada de mercadoria importada do exterior, é legítima a cobrança do ICMS por ocasião do desembaraço aduaneiro.
-
-**SV 49** *(DJe 23/06/2015)* — Ofende o princípio da livre concorrência lei municipal que impede a instalação de estabelecimentos comerciais do mesmo ramo em determinada área.
-
-**SV 50** *(DJe 23/06/2015)* — Norma legal que altera o prazo de recolhimento de obrigação tributária não se sujeita ao princípio da anterioridade.
-
 **SV 51** *(DJe 23/06/2015)* — O reajuste de 28,86%, concedido aos servidores militares pelas Leis 8622/1993 e 8627/1993, estende-se aos servidores civis do poder executivo, observadas as eventuais compensações decorrentes dos reajustes diferenciados concedidos pelos mesmos diplomas legais.
-
-**SV 52** *(DJe 22/06/2015)* — Ainda quando alugado a terceiros, permanece imune ao IPTU o imóvel pertencente a qualquer das entidades referidas pelo art. 150, VI, "c", da Constituição Federal, desde que o valor dos aluguéis seja aplicado nas atividades para as quais tais entidades foram constituídas.
 
 **SV 53** *(DJe 23/06/2015)* — A competência da Justiça do Trabalho prevista no art. 114, VIII, da Constituição Federal alcança a execução de ofício das contribuições previdenciárias relativas ao objeto da condenação constante das sentenças que proferir e acordos por ela homologados.
 
@@ -203,17 +169,7 @@ Texto oficial da tese, copiado da página de cada tema no portal do STF (`portal
 
 **SV 56** *(DJe 08/08/2016)* — A falta de estabelecimento penal adequado não autoriza a manutenção do condenado em regime prisional mais gravoso, devendo-se observar, nessa hipótese, os parâmetros fixados no RE 641.320/RS.
 
-**SV 57** *(DJe 24/04/2020)* — A imunidade tributária constante do art. 150, VI, d, da CF/88 aplica-se à importação e comercialização, no mercado interno, do livro eletrônico (e-book) e dos suportes exclusivamente utilizados para fixá-los, como leitores de livros eletrônicos (e-readers), ainda que possuam funcionalidades acessórias.
-
-**SV 58** *(DJe 07/05/2020)* — Inexiste direito a crédito presumido de IPI relativamente à entrada de insumos isentos, sujeitos à alíquota zero ou não tributáveis, o que não contraria o princípio da não cumulatividade.
-
 **SV 59** *(DJe 27/10/2023)* — É impositiva a fixação do regime aberto e a substituição da pena privativa de liberdade por restritiva de direitos quando reconhecida a figura do tráfico privilegiado (art. 33, § 4º, da Lei 11.343/06) e ausentes vetores negativos na primeira fase da dosimetria (art. 59 do CP), observados os requisitos do art. 33, § 2º, alínea c, e do art. 44, ambos do Código Penal.
-
-**SV 60** *(DJe 16/09/2024)* — O pedido e a análise administrativos de fármacos na rede pública de saúde, a judicialização do caso, bem ainda seus desdobramentos (administrativos e jurisdicionais), devem observar os termos dos 3 (três) acordos interfederativos (e seus fluxos) homologados pelo Supremo Tribunal Federal, em governança judicial colaborativa, no tema 1.234 da sistemática da repercussão geral RE 1.366.243.
-
-**SV 61** *(DJe 03/10/2024)* — A concessão judicial de medicamento registrado na ANVISA, mas não incorporado às listas de dispensação do Sistema Único de Saúde, deve observar as teses firmadas no julgamento do Tema 6 da Repercussão Geral (RE 566.471).
-
-**SV 62** *(DJe 09/01/2025)* — É legítima a revogação da isenção estabelecida no art. 6º, II, da Lei Complementar 70/1991 pelo art. 56 da Lei 9.430/1996, dado que a LC 70/1991 é apenas formalmente complementar, mas materialmente ordinária com relação aos dispositivos concernentes à contribuição social por ela instituída.
 
 **SV 63** *(DJe 22/10/2025)* — O tráfico privilegiado (art. 33, § 4º, da Lei 11.343/2006) não configura crime hediondo, afastando-se a aplicação dos parâmetros mais rigorosos de progressão de regime e de livramento condicional.
 

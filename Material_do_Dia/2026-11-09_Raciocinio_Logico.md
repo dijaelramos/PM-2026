@@ -82,7 +82,7 @@ Releia em [Perfil_do_Estudante.md](../Perfil_do_Estudante.md) as dificuldades re
 
 ## 7. Questões oficiais (resolva antes de ver a seção 8)
 
-> PMES 2022: no banco, o gabarito desta prova é **preliminar**.
+> PMES 2022: **atualizado em 13/11/2026** — o banco agora tem o gabarito **pós-recursos** desta prova. A questão 9 abaixo (PMES 2022, Q28) foi **anulada** pela banca; a questão 3 (Q38) manteve a resposta.
 
 ### Questão 1 — Câmara de Maringá 2017, Assistente Legislativo (AOCP), Q18
 
@@ -180,8 +180,8 @@ Considere que as proposições P e Q, a seguir, sejam verdadeiras: P: Todo polic
 
 | Questão | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
 |---|---|---|---|---|---|---|---|---|---|
-| **Gabarito** | A | B | C | B | D | B | B | E | C |
-| Situação | oficial pós-recursos | oficial pós-recursos | **preliminar** | oficial pós-recursos | oficial pós-recursos | oficial pós-recursos | oficial definitivo | oficial pós-recursos | **preliminar** |
+| **Gabarito** | A | B | C | B | D | B | B | E | **anulada** |
+| Situação | oficial pós-recursos | oficial pós-recursos | oficial pós-recursos (atualizado em 13/11) | oficial pós-recursos | oficial pós-recursos | oficial pós-recursos | oficial definitivo | oficial pós-recursos | **anulada** no gabarito pós-recursos (o preliminar dava C) |
 
 Comentários (**análise do tutor**):
 
@@ -193,7 +193,7 @@ Comentários (**análise do tutor**):
 6. **B.** Mesma regra da 5.
 7. **B.** Negação de "Todo A é B" = "Algum (existe) A não é B". (A) "Nenhum" é o contrário, não a negação.
 8. **E.** Se é falso que João é mais velho, ele pode ser mais novo **ou** da mesma idade. A única certeza é "não é mais velho". (A), (B), (C) e (D) escolhem um dos casos sem garantia.
-9. **C.** Os policiais (que existem) estão todos no ES e nenhum é judoca: então há alguém no ES que não é judoca. (A) e (E) falham porque um judoca não policial pode trabalhar no ES; (D) contradiz Q; (B) não decorre das premissas.
+9. **Anulada** pela banca no gabarito pós-recursos (o preliminar dava C). A banca não publica o motivo no gabarito; a explicação a seguir é **análise do tutor**. A (C) só seria certa se existisse pelo menos um policial: "Todo policial trabalha no ES" não garante que haja policiais, e sem nenhum policial não se pode concluir que "alguém no ES não é judoca". Por isso nenhuma alternativa decorre **necessariamente** das premissas. As outras continuam erradas: (A) e (E) falham porque um judoca que não é policial pode trabalhar no ES; (D) contradiz Q; (B) não decorre das premissas. **Na sua contagem de 09/11, conte esta questão como acerto** (num simulado, questão anulada conta como acerto, item 19.10 do edital).
 
 ## 9. Redação (30 min) — preparação para 13/11
 

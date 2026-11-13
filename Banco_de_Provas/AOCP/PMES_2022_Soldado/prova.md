@@ -3,7 +3,7 @@
 > **Banca:** Instituto AOCP · **Nível:** Médio · **Caderno:** Prova 01/Tipo 01 · **Questões:** 80
 > **Arquivo original:** [prova_tipo01.pdf](prova_tipo01.pdf) · **Índice e gabarito:** [indice.md](indice.md)
 > **Procedência:** Caderno: site oficial da PMES (https://pm.es.gov.br/Media/PMES/Concursos/CFSD2022_COMB/SOLDADO%20COMBATENTE%20(QPMP-C)(T872)%20agrupada.pdf), que reúne os 4 tipos; aqui está só o Tipo 01 (páginas 1 a 26).
-> **Gabarito:** oficial **preliminar** do Instituto AOCP, Soldado Combatente (QPMP-C) – Prova 1 (arquivo enviado pelo estudante em 05/11/2026). O gabarito definitivo (pós-recursos) não foi coletado: pode ter havido anulação ou troca de letra.
+> **Gabarito:** oficial **pós-recursos** (documento "Gabarito Pós-Recursos" com o timbre do Governo do Espírito Santo, SESP e PMES, Edital nº 01/2022, Soldado Combatente (QPMP-C) – Prova 1), arquivo [gabarito_pos_recursos.pdf](gabarito_pos_recursos.pdf): cópia do PDF original publicada pela Direção Concursos (https://cdn.direcaoconcursos.com.br/uploads/2023/03/PM-ES-2022_gabarito.pdf), baixada em 13/11/2026. Substitui o gabarito preliminar enviado pelo estudante em 05/11/2026. Mudanças em relação ao preliminar: **Q21, Q28 e Q60 anuladas; Q26 passou de B para A**.
 > Convertido automaticamente em 05/11/2026. As palavras **sublinhadas no caderno** (os "termos destacados" citados
 > nos enunciados) estão marcadas com `<u>…</u>`. O PDF tem duas colunas, então algum trecho pode ter saído fora
 > de ordem: antes de citar literalmente, confira a página no PDF original e nunca complete trechos por inferência.

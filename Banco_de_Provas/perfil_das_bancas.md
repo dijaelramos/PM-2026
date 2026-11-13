@@ -23,6 +23,7 @@ Conferido no edital (`Editais/2026/2026 - Edital de Abertura.md`):
 | PMPE 2023 – 2º Tenente (AOCP) | **Superior** | 70 | LP 10, Língua Estrangeira 5, RL 5, Estatística 5, Informática 5, Dir. Constitucional 5, Dir. Administrativo 5, Penal 5, Proc. Penal 5, Direitos e Garantias Fundamentais 10, Penal Militar 5, Proc. Penal Militar 5 | Dissertativo-argumentativa, 15 a 20 linhas, 30 pontos para Tenente (Soldado 2026: 40); tema "Obstáculos para a inserção da pessoa idosa no mercado de trabalho brasileiro" | 5 h | Caderno e gabarito definitivo (mesmo edital de 2023) |
 | PMGO 2022 (AOCP) | **Superior** | 50 (85 pontos) | Conhecimentos gerais (1 ponto cada): LP 10, Realidade de Goiás 5. Específicos (2 pontos cada): Dir. Penal 5, Dir. Constitucional 6, Proc. Penal 5, Dir. Administrativo 6, Penal Militar 4, Proc. Penal Militar 5, Leg. Extravagante 4 | "Dissertação", 20 a 30 linhas, 25 pontos em 5 critérios de 5: tema; coesão/coerência; estrutura; informatividade e argumentação; modalidade gramatical. Tema: "O tempo utilizado na internet é prejudicial para as pessoas ou é uma necessidade do mundo contemporâneo?" | 5 h | Edital 002/2022 retificado (tabela 8.1, itens 8.5, 11 e 17) |
 | PMES 2022 (AOCP) | Médio | 80 | LP 20, RL e Matemática 20, Geografia (Geral, do Brasil e do ES) 20, História (do Brasil e do ES) 20 | Texto dissertativo; tema "A importância da valorização da saúde mental no ambiente de trabalho"; folha de 30 linhas | 5 h | Caderno (edital não coletado) |
+| PMES 2018 (AOCP) | Médio | 80 | LP 20, RL e Matemática 20, Noções de Informática 10, Conhecimentos Específicos 30 (Estatuto da PMES 10, Código Penal Militar 2, Código de Processo Penal Militar 1, Regulamento Disciplinar 9, Dir. Constitucional 8) | Havia redação (o caderno cita a "Versão Definitiva da Redação"; a proposta não está no arquivo coletado) | 5 h | Capa do caderno e gabarito pós-recursos |
 | PMSP 2022 (FGV) | Médio | 60 | LP e Interpretação 20, Matemática 15, Conhecimentos Gerais 15, Informática 5, Administração Pública 5 | Dissertativo-argumentativa, "aproximadamente 30 linhas", com proposta de soluções para um problema concreto (turistas desrespeitando regras numa cidade) | 5 h | Caderno e gabarito definitivo |
 | PMCE 2025 (CEV/UECE) | Médio | 100 | LP 12, RL 10, Atualidades/História do CE 10, Adm. Pública/Ética 8, Dir. Constitucional 12, Direitos Humanos 10, Penal Militar/Proc. Penal Militar 12, Penal e Proc. Penal 12, Criminologia 8, Segurança Pública 6 | Não faz parte do caderno | 5 h | Capa do caderno e gabarito preliminar |
 
@@ -40,6 +41,7 @@ As regras de aprovação dessas provas não foram coletadas (os editais estão n
 | Câm. Maringá 2017 | Legislativo municipal | Médio | 50 | 5 | Língua Portuguesa 15, Raciocínio Lógico e Matemático 5, Conhecimentos Específicos 30 | Não consta no caderno |
 | EBSERH 2017 | Saúde (hospital universitário federal) | Superior | 50 | 5 | Língua Portuguesa 10, Raciocínio Lógico e Matemático 5, Legislação Aplicada à EBSERH 5, Legislação Aplicada ao SUS 5, Conhecimentos Específicos 25 | Não consta no caderno |
 | DESENBAHIA 2017 | Agência de fomento (banco público) | Médio | 50 | 5 | Língua Portuguesa 8, Raciocínio Lógico e Matemático 7, Informática 5, Legislação 5, Conhecimentos Específicos 25 | Sim (rascunho no caderno) |
+| DEPPEN-PR 2024 | Polícia Penal (segurança pública) | Médio | 75 | 5 | Língua Portuguesa 10, Raciocínio Lógico Matemático 10, Informática 5, Conhecimentos Específicos 50 (Dir. Administrativo, Dir. Constitucional, leis penais especiais, Código Penal, Processo Penal, Execução Penal, legislação do PR, Criminologia e Direitos Humanos) | Não (o caderno só tem a objetiva, 5 h) |
 
 **Regras de aprovação da AOCP comparadas:** a PMPE 2026 exige 30% por bloco e 30% no total; a PMGO 2022 exigia **60% do total** e nenhuma área zerada, e somava objetiva e redação na nota final. Nas duas, a redação só é corrigida para quem passa na objetiva e fica dentro de um limite de classificação, e as causas de nota zero são praticamente as mesmas (fuga ao tema ou à tipologia, desestruturação, texto a lápis ou fora da folha, identificação).
 
@@ -51,6 +53,7 @@ As regras de aprovação dessas provas não foram coletadas (os editais estão n
 | PMPE 2023 (2º Tenente) | 35 | 100% | 11% | 6% | 3% | 49% | 375 | 5 |
 | PMGO 2022 | 50 | 100% | 16% | 8% | 4% | 38% | 359 | 1 |
 | PMES 2022 | 80 | 100% | 1% | 1% | 2% | 19% | 247 | 8 |
+| PMES 2018 | 80 | 100% | 9% | 2% | 4% | 14% | 220 | 9 |
 | SEJUS-CE 2017 | 60 | 0% | 15% | 3% | 7% | 17% | 218 | 7 |
 | PC-ES 2019 | 100 | 99% | 10% | 0% | 4% | 6% | 145 | 3 |
 | TRT-1 2018 | 60 | 100% | 10% | 3% | 2% | 47% | 340 | 3 |
@@ -59,11 +62,12 @@ As regras de aprovação dessas provas não foram coletadas (os editais estão n
 | Câm. Maringá 2017 | 50 | 100% | 14% | 4% | 6% | 10% | 172 | 1 |
 | EBSERH 2017 | 50 | 100% | 8% | 0% | 2% | 20% | 236 | 5 |
 | DESENBAHIA 2017 | 50 | 98% | 0% | 2% | 2% | 12% | 221 | 2 |
+| DEPPEN-PR 2024 | 75 | 100% | 9% | 0% | 8% | 33% | 296 | 4 |
 | PMSP 2022 (FGV) | 60 | 100% | 0% | 3% | 8% | 32% | 326 | 12 |
 | PMCE 2025 (CEV/UECE) | 100 | 100% | 0% | 2% | 13% | 24% | 265 | 4 |
-| **AOCP – provas de PM (4)** | 225 | — | **10%** | **5%** | **4%** | **30%** | — | 20 |
-| **AOCP – outras áreas (8)** | 500 | — | **9%** | **2%** | **4%** | **18%** | — | 31 |
-| **AOCP – todas (12)** | 725 | — | **9%** | **3%** | **4%** | **22%** | — | 51 |
+| **AOCP – provas de PM (5)** | 305 | — | **10%** | **4%** | **4%** | **26%** | — | 29 |
+| **AOCP – outras áreas (9)** | 575 | — | **9%** | **2%** | **5%** | **20%** | — | 35 |
+| **AOCP – todas (14)** | 880 | — | **9%** | **3%** | **4%** | **22%** | — | 64 |
 
 Contagem automática por padrões de texto; serve como ordem de grandeza.
 
@@ -74,7 +78,8 @@ Contagem automática por padrões de texto; serve como ordem de grandeza.
 | PMPE 2023 (Soldado) | 11 (20%) | 9 (17%) | 12 (22%) | 14 (26%) | 8 (15%) | 6 |
 | PMPE 2023 (2º Tenente) | 14 (22%) | 13 (21%) | 9 (14%) | 15 (24%) | 12 (19%) | 2 |
 | PMGO 2022 | 10 (21%) | 11 (23%) | 9 (19%) | 9 (19%) | 9 (19%) | 2 |
-| PMES 2022 | 17 (21%) | 16 (20%) | 13 (16%) | 15 (19%) | 19 (24%) | 0 |
+| PMES 2022 | 17 (22%) | 15 (19%) | 11 (14%) | 15 (19%) | 19 (25%) | 3 |
+| PMES 2018 | 17 (22%) | 14 (18%) | 18 (23%) | 13 (17%) | 15 (19%) | 3 |
 | SEJUS-CE 2017 | 11 (19%) | 13 (23%) | 16 (28%) | 17 (30%) | 0 (0%) | 3 |
 | PC-ES 2019 | 15 (16%) | 18 (19%) | 20 (21%) | 27 (28%) | 15 (16%) | 5 |
 | TRT-1 2018 | 11 (20%) | 12 (21%) | 11 (20%) | 7 (12%) | 15 (27%) | 4 |
@@ -83,10 +88,11 @@ Contagem automática por padrões de texto; serve como ordem de grandeza.
 | Câm. Maringá 2017 | 12 (25%) | 7 (15%) | 13 (27%) | 8 (17%) | 8 (17%) | 2 |
 | EBSERH 2017 | 13 (27%) | 10 (20%) | 8 (16%) | 8 (16%) | 10 (20%) | 1 |
 | DESENBAHIA 2017 | 11 (22%) | 10 (20%) | 11 (22%) | 10 (20%) | 8 (16%) | 0 |
+| DEPPEN-PR 2024 | 15 (20%) | 19 (25%) | 15 (20%) | 14 (19%) | 12 (16%) | 0 |
 | PMSP 2022 (FGV) | 11 (19%) | 11 (19%) | 9 (16%) | 15 (26%) | 12 (21%) | 2 |
 | PMCE 2025 (CEV/UECE) | 23 (23%) | 22 (22%) | 24 (24%) | 21 (21%) | 10 (10%) | 0 |
 
-## 4. Como a AOCP cobra (o que observar nas 725 questões AOCP)
+## 4. Como a AOCP cobra (o que observar nas 880 questões AOCP)
 
 - **Formato:** cinco alternativas (A–E), uma correta, em todas as provas coletadas a partir de 2017, exceto a SEJUS-CE 2017, que tinha **quatro** (A–D). Não há certo/errado.
 - **Língua Portuguesa:** quase todas as questões partem de um texto de apoio comum a um bloco de questões (na PMPE 2023, só a questão 10 não depende do texto). Muitas perguntam sobre **termos sublinhados** do texto (função, referente, valor semântico, reescrita).
@@ -99,6 +105,6 @@ Contagem automática por padrões de texto; serve como ordem de grandeza.
 
 ## 5. Como usar este perfil para montar questões e simulados
 
-- **Simulado no formato da PMPE 2026:** 60 questões, 10 por disciplina do edital, nas proporções de comando da linha "AOCP – todas (12)" da tabela 3 (por exemplo, uma parte das questões com comando negativo e algumas em V/F ou assertivas).
+- **Simulado no formato da PMPE 2026:** 60 questões, 10 por disciplina do edital, nas proporções de comando da linha "AOCP – todas (14)" da tabela 3 (por exemplo, uma parte das questões com comando negativo e algumas em V/F ou assertivas).
 - **Questões autorais:** cinco alternativas; distratores plausíveis que troquem um detalhe da regra; em Português, partir de um texto de apoio e sublinhar o termo cobrado; em Direito, preferir situação-problema curta. Sempre com o rótulo de questão autoral.
 - **Distribuição das letras:** as bancas distribuem as respostas corretas de forma aproximadamente equilibrada (tabela acima). Faça o mesmo nas questões autorais.

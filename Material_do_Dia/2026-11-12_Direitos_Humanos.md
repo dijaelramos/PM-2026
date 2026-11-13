@@ -352,7 +352,7 @@ Estes são os artigos **mais ligados ao trabalho policial**. Eles dizem como uma
 | 8.1                | Ser ouvido com as devidas garantias, em **prazo razoável**, por juiz **competente, independente e imparcial**, estabelecido **anteriormente por lei** |
 | 8.2 (caput)        | **Presunção de inocência** "enquanto não se comprove legalmente sua culpa"                                                                                     |
 | 8.2, "a"           | **Tradutor ou intérprete** gratuito                                                                                                                               |
-| 8.2, "b"           | Comunicação **prévia e pormenorizada** da acusação                                                                                                            |
+| 8.2, "b"           | Comunicação **prévia e pormenorizada/detalhada** da acusação                                                                                                  |
 | 8.2, "c"           | Tempo e meios adequados para a defesa                                                                                                                                    |
 | 8.2, "d"           | Defender-se pessoalmente ou por **defensor de sua escolha**, comunicando-se com ele **livremente e em particular**                                           |
 | 8.2, "e"           | Direito **irrenunciável** a defensor **proporcionado pelo Estado**                                                                                          |

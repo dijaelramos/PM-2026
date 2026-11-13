@@ -278,7 +278,7 @@ Assinale a alternativa que apresenta APENAS extensões de arquivos de Vídeo.
 
 ### Questão 18 *(p. 7 do caderno)*
 
-Preencha a lacuna e assinale a alternativa correta. Um(a) se usado(a) de forma maliciosa e instalado(a) pode permitir estabelecer conexões cifradas com sites fraudulentos, sem que o navegador emita alertas indicativos de risco.
+Preencha a lacuna e assinale a alternativa correta. Um(a) ____________________ se usado(a) de forma maliciosa e instalado(a) pode permitir estabelecer conexões cifradas com sites fraudulentos, sem que o navegador emita alertas indicativos de risco.
 
 - **(A)** certificado EV SSL
 - **(B)** certificado auto-assinado

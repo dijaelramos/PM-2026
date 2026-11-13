@@ -1,6 +1,6 @@
 # Banco de Provas — Segurança Pública
 
-Provas oficiais coletadas para os agentes treinarem o estudante, entenderem como cada banca cobra e servirem de base para montar simulados e questões autorais no estilo da prova. Atualizado em 05/11/2026.
+Provas oficiais coletadas para os agentes treinarem o estudante, entenderem como cada banca cobra e servirem de base para montar simulados e questões autorais no estilo da prova. Atualizado em 13/11/2026.
 
 ## Catálogo
 
@@ -11,7 +11,8 @@ Provas oficiais coletadas para os agentes treinarem o estudante, entenderem como
 | [PMPE 2023 (Soldado)](../Editais/2023/2023%20-%20PMPE%20-%20Prova%20Soldado.md) | Instituto AOCP | Soldado da Polícia Militar | Médio | 60 | oficial | [índice](../Editais/2023/indice_questoes_2023.md) |
 | [PMPE 2023 (2º Tenente)](../Banco_de_Provas/AOCP/PMPE_2023_2Tenente/prova.md) | Instituto AOCP | 2º Tenente da Polícia Militar | Superior | 70 | oficial | [índice](AOCP/PMPE_2023_2Tenente/indice.md) |
 | [PMGO 2022](../Banco_de_Provas/AOCP/PMGO_2022_Soldado/prova.md) | Instituto AOCP | Soldado de 2ª Classe QPPM - Combatente | Superior | 50 | oficial | [índice](AOCP/PMGO_2022_Soldado/indice.md) |
-| [PMES 2022](../Banco_de_Provas/AOCP/PMES_2022_Soldado/prova.md) | Instituto AOCP | Soldado Combatente (QPMP-C) | Médio | 80 | preliminar | [índice](AOCP/PMES_2022_Soldado/indice.md) |
+| [PMES 2022](../Banco_de_Provas/AOCP/PMES_2022_Soldado/prova.md) | Instituto AOCP | Soldado Combatente (QPMP-C) | Médio | 80 | oficial pós-recursos (desde 13/11/2026) | [índice](AOCP/PMES_2022_Soldado/indice.md) |
+| [PMES 2018](../Banco_de_Provas/AOCP/PMES_2018_Soldado/prova.md) | Instituto AOCP | Soldado Combatente (QPMP-C), caderno comum a Soldado Músico e Bombeiro | Médio | 80 | oficial pós-recursos | [índice](AOCP/PMES_2018_Soldado/indice.md) |
 | [PMSP 2022 (FGV)](../Banco_de_Provas/Outras_Bancas/FGV_PMSP_2022_Soldado/prova.md) | FGV | Soldado PM de 2ª Classe do Quadro de Praças (QPPM) | Médio | 60 | oficial | [índice](Outras_Bancas/FGV_PMSP_2022_Soldado/indice.md) |
 | [PMCE 2025 (CEV/UECE)](../Banco_de_Provas/Outras_Bancas/CEV-UECE_PMCE_2025_Soldado/prova.md) | CEV/UECE | Soldado do Quadro de Praças Policiais Militares (QPPM) | Médio | 100 | preliminar | [índice](Outras_Bancas/CEV-UECE_PMCE_2025_Soldado/indice.md) |
 
@@ -29,8 +30,9 @@ Provas do Instituto AOCP para outros cargos, escolhidas porque cobram disciplina
 | [Câm. Maringá 2017](../Banco_de_Provas/AOCP/Outras_Areas/Camara_Maringa-PR_2017_Assistente_Legislativo/prova.md) | Legislativo municipal | Assistente Legislativo | Médio | 50 | 19 | 5 | oficial pós-recursos | [índice](AOCP/Outras_Areas/Camara_Maringa-PR_2017_Assistente_Legislativo/indice.md) |
 | [EBSERH 2017](../Banco_de_Provas/AOCP/Outras_Areas/EBSERH_2017_Assistente_Social/prova.md) | Saúde (hospital universitário federal) | Assistente Social | Superior | 50 | 13 | 5 | oficial definitivo | [índice](AOCP/Outras_Areas/EBSERH_2017_Assistente_Social/indice.md) |
 | [DESENBAHIA 2017](../Banco_de_Provas/AOCP/Outras_Areas/DESENBAHIA_2017_Tecnico_Escriturario/prova.md) | Agência de fomento (banco público) | Técnico Escriturário | Médio | 50 | 17 | 5 | oficial definitivo | [índice](AOCP/Outras_Areas/DESENBAHIA_2017_Tecnico_Escriturario/indice.md) |
+| [DEPPEN-PR 2024](../Banco_de_Provas/AOCP/Outras_Areas/DEPPEN-PR_2024_Policial_Penal/prova.md) | Polícia Penal (segurança pública) | Policial Penal | Médio | 75 | 44 | 5 | **não confirmado** (captura de tela; tratar como preliminar) | [índice](AOCP/Outras_Areas/DEPPEN-PR_2024_Policial_Penal/indice.md) |
 
-- **Gabarito "oficial"**: definitivo ou pós-recursos, publicado pela banca ou pelo órgão. **"Preliminar"**: pode ter mudado depois dos recursos; use como referência e avise o estudante. **"Pendente"**: ainda não coletado; não apresente nenhuma resposta como gabarito oficial.
+- **Gabarito "oficial"**: definitivo ou pós-recursos, publicado pela banca ou pelo órgão. **"Preliminar"**: pode ter mudado depois dos recursos; use como referência e avise o estudante. **"Não confirmado"**: a fonte não diz se é preliminar ou definitivo (DEPPEN-PR 2024); trate como preliminar. **"Pendente"**: ainda não coletado; não apresente nenhuma resposta como gabarito oficial.
 - A prova PMPE 2023 fica em `Editais/2023/` (é a mais importante: mesmo cargo, mesma banca).
 
 ## Documentos de consulta
@@ -53,7 +55,8 @@ Provas do Instituto AOCP para outros cargos, escolhidas porque cobram disciplina
 ## Procedência e limites
 
 - Os cadernos e gabaritos das provas de PM vêm de páginas oficiais dos órgãos ou das bancas, exceto o caderno da PMGO 2022, que é uma cópia do PDF original do Instituto AOCP hospedada pelo QConcursos (o gabarito e o edital dela são oficiais). As provas de outras áreas são cópias dos cadernos e gabaritos originais do Instituto AOCP publicadas pelo Estude Grátis (estudegratis.com.br). A procedência exata está no topo de cada `prova.md`.
-- O site do Instituto AOCP bloqueia acesso automatizado. Os gabaritos da PMPE 2023 (Soldado, definitivo) e da PMES 2022 (**preliminar**) foram enviados pelo estudante em 05/11/2026. O da PMES pode ter mudado depois dos recursos: trate-o como preliminar.
+- O site do Instituto AOCP bloqueia acesso automatizado. O gabarito da PMPE 2023 (Soldado, definitivo) foi enviado pelo estudante em 05/11/2026. O da PMES 2022 enviado na mesma data era **preliminar**; em 13/11/2026 ele foi trocado pelo **pós-recursos** oficial (Q21, Q28 e Q60 anuladas; Q26 de B para A).
+- **Acrescentadas em 13/11/2026:** **PMES 2018** (caderno e gabarito pós-recursos) e o gabarito pós-recursos da **PMES 2022** vêm de cópias dos PDFs originais publicadas pela **Direção Concursos** (cdn.direcaoconcursos.com.br); a **DEPPEN-PR 2024** vem de links diretos do **QConcursos** (arquivos.qconcursos.com) — o caderno é o original da AOCP e o gabarito é uma captura de tela da página da AOCP, sem status. Páginas com captcha ou bloqueio (PCI Concursos, páginas do QConcursos, Gran) não foram usadas. A URL exata está no topo de cada `prova.md`.
 - Os `.md` foram convertidos automaticamente do PDF. As palavras sublinhadas no caderno estão marcadas com `<u>…</u>`. A correspondência com o programa da PMPE é **automática por palavras-chave** (exceto na PMPE 2023, classificada manualmente) e pode errar.
 - Uso pessoal de estudo. As provas pertencem às bancas e aos órgãos que as publicaram.
 
