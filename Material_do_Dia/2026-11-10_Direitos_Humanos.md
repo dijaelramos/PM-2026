@@ -289,7 +289,7 @@ Diante dos direitos humanos, o Estado faz **duas coisas ao mesmo tempo**:
 
 - **Sinônimos que a banca pode usar:** indutor = **promotor**, fomentador, incentivador; garantidor = **defensor**, assegurador, protetor. Reconheça o papel pela **ação** descrita (estimular x assegurar), e não pela palavra exata.
 - **Os dois papéis andam juntos.** Só induzir, sem garantir, vira propaganda. Só garantir, sem induzir, vira apenas repressão depois da violação.
-- **De onde vem a cobrança:** a expressão "indutor e garantidor" foi cobrada pela CEV-UECE (PMCE 2025), com gabarito preliminar. Nenhum texto oficial da base local usa essas duas palavras juntas; a base legal mais próxima é a expressão "promoção e defesa" do PNDH-3.
+- **De onde vem a cobrança:** a expressão "indutor e garantidor" foi cobrada pela CEV-UECE (PMCE 2025); o gabarito definitivo (13/11/2026) manteve a resposta. Nenhum texto oficial da base local usa essas duas palavras juntas; a base legal mais próxima é a expressão "promoção e defesa" do PNDH-3.
 
 > **Ex. 4 — contraexemplo** *(criado pelo tutor)* — Um município só age depois que a violência acontece: prende, processa, mas não tem nenhum programa de prevenção, educação ou atendimento. Ele exerce o papel de **garantidor**, mas falha como **indutor**. Cumprir só um dos papéis não basta.
 >
@@ -623,7 +623,7 @@ Informe se é verdadeiro (V) ou falso (F) o que se afirma a seguir, acerca da Ca
 
 ### Questão 2 — PMCE 2025, Soldado (CEV-UECE), Q53 · item 1
 
-> Prova de **outra banca** (CEV-UECE), com gabarito **preliminar**.
+> Prova de **outra banca** (CEV-UECE). Gabarito **definitivo** desde 13/11/2026 (era preliminar quando este material foi feito; a resposta não mudou).
 
 O Estado tem, pelo menos, dois importantes papéis no campo dos direitos humanos, quais sejam:
 
@@ -635,7 +635,7 @@ O Estado tem, pelo menos, dois importantes papéis no campo dos direitos humanos
 
 ### Questão 3 — PMCE 2025, Soldado (CEV-UECE), Q56 · item 1
 
-> Prova de **outra banca** (CEV-UECE), com gabarito **preliminar**.
+> Prova de **outra banca** (CEV-UECE). Gabarito **definitivo** desde 13/11/2026 (era preliminar quando este material foi feito; a resposta não mudou).
 
 Segundo decreto presidencial, as metas, prazos e recursos necessários para a implementação do Programa Nacional de Direitos Humanos serão definidos e aprovados em Planos de Ação de Direitos Humanos com duração
 
@@ -673,7 +673,7 @@ Regra para conferir depois:
 | Questão | 1 | 2 | 3 |
 |---|---|---|---|
 | **Gabarito** | C | D | B |
-| Status | SEJUS-CE 2017, oficial **pós-recursos** | PMCE 2025, oficial **preliminar** | PMCE 2025, oficial **preliminar** |
+| Status | SEJUS-CE 2017, oficial **pós-recursos** | PMCE 2025, oficial **definitivo** (confirmado em 13/11/2026) | PMCE 2025, oficial **definitivo** (confirmado em 13/11/2026) |
 
 Comentários: **análise do tutor**.
 
@@ -702,9 +702,9 @@ Comentários: **análise do tutor**.
 
 **Atalho:** a afirmativa mais fácil de julgar é a 2ª ("meios bélicos" é absurdo). Com ela falsa, só sobram (B) e (C); a 1ª, verdadeira, decide pela (C).
 
-### Questão 2 — gabarito preliminar D (indutor e garantidor)
+### Questão 2 — gabarito D (indutor e garantidor)
 
-> Gabarito preliminar, sujeito a alteração, de outra banca (CEV-UECE).
+> Gabarito oficial definitivo de outra banca (CEV-UECE), Comunicado nº 136/2025; o preliminar dava a mesma letra.
 
 **Por que a (D) está correta:** no campo dos direitos humanos, o Estado tem dois papéis centrais:
 - **indutor:** estimula e promove a efetivação dos direitos, com políticas públicas, educação em direitos humanos e programas;
@@ -720,9 +720,9 @@ Os dois papéis correspondem aos deveres de **realizar/promover** e de **respeit
 
 **Dica:** quando duas palavras se repetem nas alternativas (aqui, "indutor" aparece 3 vezes e "garantidor" 2 vezes), a combinação das duas mais frequentes costuma ser a resposta. Use isso só como desempate, nunca no lugar do conteúdo.
 
-### Questão 3 — gabarito preliminar B (bienal)
+### Questão 3 — gabarito B (bienal)
 
-> Gabarito preliminar, sujeito a alteração, de outra banca (CEV-UECE). O Programa Nacional de Direitos Humanos não aparece de forma expressa no programa da PMPE 2026; serve como cultura geral do tema.
+> Gabarito oficial definitivo de outra banca (CEV-UECE), Comunicado nº 136/2025; o preliminar dava a mesma letra. O Programa Nacional de Direitos Humanos não aparece de forma expressa no programa da PMPE 2026; serve como cultura geral do tema.
 
 **Por que a (B) está correta:** o art. 3º do Decreto nº 7.037/2009 (PNDH-3) diz: "As metas, prazos e recursos necessários para a implementação do PNDH-3 serão definidos e aprovados em Planos de Ação de Direitos Humanos **bianuais**". Bianual = bienal = **2 anos** (seção 3-A.3).
 

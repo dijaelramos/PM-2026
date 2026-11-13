@@ -1,23 +1,23 @@
 # Análise de temas — o que as provas de segurança pública cobram
 
-Gerado em 05/11/2026 e atualizado em 13/11/2026 (PMES 2018 e DEPPEN-PR 2024) com as 1.075 questões do [banco](README.md). **477 delas** correspondem a disciplinas do programa da PMPE 2026; as demais são de disciplinas que a PMPE não cobra (tabela no fim).
+Gerado em 05/11/2026 e atualizado em 13/11/2026 (PMES 2018, DEPPEN-PR 2024, PC-ES 2019 Escrivão e Auxiliar de Perícia e TRT-1 2018 Técnico Administrativo) com as 1.335 questões do [banco](README.md). **607 delas** correspondem a disciplinas do programa da PMPE 2026; as demais são de disciplinas que a PMPE não cobra (tabela no fim).
 
 A correspondência com os itens do Anexo II é **automática por palavras-chave** (manual na PMPE 2023) e uma questão pode contar em até dois itens. Use os números como indicação de frequência, não como estatística exata.
 
 ## Tópicos mais cobrados
 
-1. **Língua Portuguesa – Compreensão e interpretação** (100 questões)
-2. **Direito Constitucional – Direitos e garantias fundamentais** (35 questões)
-3. **Língua Portuguesa – Coesão** (30 questões)
-4. **Raciocínio Lógico – Lógica de argumentação** (30 questões)
-5. **Informática – Office e LibreOffice (o edital cobra Office 2019 e LibreOffice 7)** (24 questões)
-6. **Informática – Arquivos, pastas e hardware** (20 questões)
-7. **Língua Portuguesa – Classes de palavras** (19 questões)
-8. **Direito Constitucional – Organização do Estado** (19 questões)
-9. **Língua Portuguesa – Significação das palavras** (15 questões)
-10. **Informática – Ferramentas de internet e nuvem** (15 questões)
-11. **Informática – Windows (o edital cobra o 11)** (15 questões)
-12. **Direito Constitucional – Organização dos Poderes** (15 questões)
+1. **Língua Portuguesa – Compreensão e interpretação** (124 questões)
+2. **Direito Constitucional – Direitos e garantias fundamentais** (59 questões)
+3. **Língua Portuguesa – Coesão** (45 questões)
+4. **Raciocínio Lógico – Lógica de argumentação** (33 questões)
+5. **Direito Constitucional – Organização dos Poderes** (29 questões)
+6. **Direito Constitucional – Organização do Estado** (26 questões)
+7. **Informática – Office e LibreOffice (o edital cobra Office 2019 e LibreOffice 7)** (25 questões)
+8. **Língua Portuguesa – Classes de palavras** (24 questões)
+9. **Informática – Arquivos, pastas e hardware** (23 questões)
+10. **Língua Portuguesa – Significação das palavras** (19 questões)
+11. **Raciocínio Lógico – Estruturas lógicas** (17 questões)
+12. **Informática – Ferramentas de internet e nuvem** (16 questões)
 
 ## Tópicos do programa da PMPE 2026 sem nenhuma questão no banco
 
@@ -29,76 +29,76 @@ Para esses tópicos, as questões oficiais precisam vir de outras provas (a cole
 
 ### Língua Portuguesa
 
-| Item do Anexo II (PMPE 2026) | PMPE 2023 (Soldado) | AOCP PM (PE Ten., GO, ES 2022 e 2018) | AOCP outras áreas (9) | Outras bancas (FGV, UECE) | Total | Só AOCP |
+| Item do Anexo II (PMPE 2026) | PMPE 2023 (Soldado) | AOCP PM (PE Ten., GO, ES 2022 e 2018) | AOCP outras áreas (12) | Outras bancas (FGV, UECE) | Total | Só AOCP |
 |---|---|---|---|---|---|---|
-| 1. Compreensão e interpretação | 1 | 20 | 59 | 20 | **100** | 80 |
-| 2. Tipologias e gêneros | 1 | 1 | 2 |  | **4** | 4 |
-| 3. Figuras de linguagem |  | 1 | 1 |  | **2** | 2 |
-| 4. Relações semânticas | 1 | 4 | 1 |  | **6** | 6 |
-| 5. Ortografia | 1 | 1 | 1 |  | **3** | 3 |
+| 1. Compreensão e interpretação | 1 | 20 | 83 | 20 | **124** | 104 |
+| 2. Tipologias e gêneros | 1 | 1 | 4 |  | **6** | 6 |
+| 3. Figuras de linguagem |  | 1 | 2 |  | **3** | 3 |
+| 4. Relações semânticas | 1 | 4 | 2 |  | **7** | 7 |
+| 5. Ortografia | 1 | 1 | 4 |  | **6** | 6 |
 | 6. Acentuação | 1 |  | 5 | 1 | **7** | 6 |
-| 7. Classes de palavras | 1 | 9 | 6 | 3 | **19** | 16 |
-| 8. Crase |  | 1 | 3 |  | **4** | 4 |
+| 7. Classes de palavras | 1 | 9 | 11 | 3 | **24** | 21 |
+| 8. Crase |  | 1 | 4 |  | **5** | 5 |
 | 9. Sintaxe da oração e do período | 2 | 3 | 5 | 2 | **12** | 10 |
 | 10. Funções do “que” e do “se” | 1 | 1 | 2 |  | **4** | 4 |
-| 11. Coesão | 2 | 7 | 17 | 4 | **30** | 26 |
-| 12. Pontuação | 1 | 4 | 3 | 2 | **10** | 8 |
-| 13. Concordância | 1 | 1 |  |  | **2** | 2 |
-| 14. Regência |  | 2 | 3 | 1 | **6** | 5 |
-| 15. Colocação pronominal |  |  | 3 |  | **3** | 3 |
-| 16. Formação de palavras |  | 3 |  | 1 | **4** | 3 |
-| 17. Significação das palavras | 1 | 5 | 7 | 2 | **15** | 13 |
-| 18. Variação linguística |  | 1 | 1 |  | **2** | 2 |
+| 11. Coesão | 2 | 7 | 32 | 4 | **45** | 41 |
+| 12. Pontuação | 1 | 4 | 4 | 2 | **11** | 9 |
+| 13. Concordância | 1 | 1 | 2 |  | **4** | 4 |
+| 14. Regência |  | 2 | 5 | 1 | **8** | 7 |
+| 15. Colocação pronominal |  |  | 4 |  | **4** | 4 |
+| 16. Formação de palavras |  | 3 | 1 | 1 | **5** | 4 |
+| 17. Significação das palavras | 1 | 5 | 11 | 2 | **19** | 17 |
+| 18. Variação linguística |  | 1 | 2 |  | **3** | 3 |
 
 ### Raciocínio Lógico
 
-| Item do Anexo II (PMPE 2026) | PMPE 2023 (Soldado) | AOCP PM (PE Ten., GO, ES 2022 e 2018) | AOCP outras áreas (9) | Outras bancas (FGV, UECE) | Total | Só AOCP |
+| Item do Anexo II (PMPE 2026) | PMPE 2023 (Soldado) | AOCP PM (PE Ten., GO, ES 2022 e 2018) | AOCP outras áreas (12) | Outras bancas (FGV, UECE) | Total | Só AOCP |
 |---|---|---|---|---|---|---|
-| 1. Estruturas lógicas | 2 | 4 | 8 |  | **14** | 14 |
-| 2. Lógica de argumentação | 7 | 7 | 12 | 4 | **30** | 26 |
+| 1. Estruturas lógicas | 2 | 4 | 11 |  | **17** | 17 |
+| 2. Lógica de argumentação | 7 | 7 | 15 | 4 | **33** | 29 |
 | 3. Diagramas lógicos |  | 9 | 2 | 3 | **14** | 11 |
-| 4. Contagem e probabilidade | 2 | 6 | 1 |  | **9** | 9 |
+| 4. Contagem e probabilidade | 2 | 6 | 2 |  | **10** | 10 |
 
 ### Informática
 
-| Item do Anexo II (PMPE 2026) | PMPE 2023 (Soldado) | AOCP PM (PE Ten., GO, ES 2022 e 2018) | AOCP outras áreas (9) | Outras bancas (FGV, UECE) | Total | Só AOCP |
+| Item do Anexo II (PMPE 2026) | PMPE 2023 (Soldado) | AOCP PM (PE Ten., GO, ES 2022 e 2018) | AOCP outras áreas (12) | Outras bancas (FGV, UECE) | Total | Só AOCP |
 |---|---|---|---|---|---|---|
 | 1. Internet e intranet | 1 | 1 | 1 |  | **3** | 3 |
-| 2. Ferramentas de internet e nuvem | 1 | 2 | 11 | 1 | **15** | 14 |
-| 3. Segurança da informação | 1 | 2 | 6 |  | **9** | 9 |
+| 2. Ferramentas de internet e nuvem | 1 | 2 | 12 | 1 | **16** | 15 |
+| 3. Segurança da informação | 1 | 2 | 7 |  | **10** | 10 |
 | 4. Armazenamento e backup | 1 |  | 3 |  | **4** | 4 |
-| 5. Arquivos, pastas e hardware | 1 | 4 | 14 | 1 | **20** | 19 |
+| 5. Arquivos, pastas e hardware | 1 | 4 | 17 | 1 | **23** | 22 |
 | 6. Windows (o edital cobra o 11) | 1 | 3 | 10 | 1 | **15** | 14 |
-| 7. Office e LibreOffice (o edital cobra Office 2019 e LibreOffice 7) | 4 | 5 | 12 | 3 | **24** | 21 |
+| 7. Office e LibreOffice (o edital cobra Office 2019 e LibreOffice 7) | 4 | 5 | 13 | 3 | **25** | 22 |
 
 ### Direito Constitucional
 
-| Item do Anexo II (PMPE 2026) | PMPE 2023 (Soldado) | AOCP PM (PE Ten., GO, ES 2022 e 2018) | AOCP outras áreas (9) | Outras bancas (FGV, UECE) | Total | Só AOCP |
+| Item do Anexo II (PMPE 2026) | PMPE 2023 (Soldado) | AOCP PM (PE Ten., GO, ES 2022 e 2018) | AOCP outras áreas (12) | Outras bancas (FGV, UECE) | Total | Só AOCP |
 |---|---|---|---|---|---|---|
 | 1. Princípios fundamentais | 1 | 1 | 4 | 1 | **7** | 6 |
-| 2. Direitos e garantias fundamentais | 3 | 9 | 18 | 5 | **35** | 30 |
-| 3. Organização do Estado | 3 | 3 | 10 | 3 | **19** | 16 |
-| 4. Organização dos Poderes | 3 | 4 | 6 | 2 | **15** | 13 |
-| 5. Defesa do Estado | 1 | 2 | 5 | 1 | **9** | 8 |
+| 2. Direitos e garantias fundamentais | 3 | 9 | 42 | 5 | **59** | 54 |
+| 3. Organização do Estado | 3 | 3 | 17 | 3 | **26** | 23 |
+| 4. Organização dos Poderes | 3 | 4 | 20 | 2 | **29** | 27 |
+| 5. Defesa do Estado | 1 | 2 | 9 | 1 | **13** | 12 |
 | 6. Súmulas e jurisprudência | 2 | 3 |  |  | **5** | 5 |
 
 ### Direitos Humanos e Legislação Extravagante
 
-| Item do Anexo II (PMPE 2026) | PMPE 2023 (Soldado) | AOCP PM (PE Ten., GO, ES 2022 e 2018) | AOCP outras áreas (9) | Outras bancas (FGV, UECE) | Total | Só AOCP |
+| Item do Anexo II (PMPE 2026) | PMPE 2023 (Soldado) | AOCP PM (PE Ten., GO, ES 2022 e 2018) | AOCP outras áreas (12) | Outras bancas (FGV, UECE) | Total | Só AOCP |
 |---|---|---|---|---|---|---|
 | 1. Teoria geral | 1 |  | 2 | 2 | **5** | 3 |
 | 2. Evolução e gerações |  |  | 1 |  | **1** | 1 |
 | 3. Incorporação de tratados | 1 | 1 | 2 |  | **4** | 4 |
 | 4. DUDH | 1 | 1 | 1 |  | **3** | 3 |
 | 5. Convenção Americana | 1 |  | 2 |  | **3** | 3 |
-| 6. ECA |  | 2 | 3 |  | **5** | 5 |
-| 7. Abuso de autoridade | 1 |  | 1 |  | **2** | 2 |
+| 6. ECA |  | 2 | 5 |  | **7** | 7 |
+| 7. Abuso de autoridade | 1 |  | 2 |  | **3** | 3 |
 | 8. Tortura | 1 |  | 2 | 1 | **4** | 3 |
-| 9. Maria da Penha | 1 |  | 1 | 3 | **5** | 2 |
-| 10. Lei 7.716/1989 |  |  | 1 | 1 | **2** | 1 |
+| 9. Maria da Penha | 1 |  | 3 | 3 | **7** | 4 |
+| 10. Lei 7.716/1989 |  |  | 2 | 1 | **3** | 2 |
 | 11. Crimes ambientais |  |  | 1 | 1 | **2** | 1 |
-| 12. Crimes hediondos | 1 | 1 | 4 |  | **6** | 6 |
-| 13. Drogas | 1 | 2 | 4 |  | **7** | 7 |
+| 12. Crimes hediondos | 1 | 1 | 5 |  | **7** | 7 |
+| 13. Drogas | 1 | 2 | 6 |  | **9** | 9 |
 | 14. Estatuto dos PMs de PE | 2 |  |  |  | **2** | 2 |
 | 15. Estatuto da Pessoa Idosa |  |  | 1 |  | **1** | 1 |
 | 16. Estatuto da Juventude |  |  |  |  | **0** | 0 |
@@ -177,6 +177,16 @@ Só a PMPE 2023 cobra História de Pernambuco (10 questões, classificadas manua
 | PMES 2018 | Raciocínio Lógico e Matemático | 14 |
 | DEPPEN-PR 2024 | Conhecimentos Específicos | 28 |
 | DEPPEN-PR 2024 | Raciocínio Lógico Matemático | 3 |
+| PC-ES 2019 Escrivão | Direito Processual Penal / Legislação Extravagante | 26 |
+| PC-ES 2019 Escrivão | Direito Penal / Legislação Extravagante | 25 |
+| PC-ES 2019 Escrivão | Direito Administrativo | 10 |
+| PC-ES 2019 Escrivão | Estatuto da Polícia Civil do Espírito Santo | 5 |
+| PC-ES 2019 Aux. Perícia | Estatuto da Polícia Civil do Espírito Santo | 20 |
+| PC-ES 2019 Aux. Perícia | Noções de Direito Administrativo | 10 |
+| PC-ES 2019 Aux. Perícia | Raciocínio Lógico e Matemático | 3 |
+| TRT-1 2018 Téc. Adm. | Conhecimentos Específicos | 21 |
+| TRT-1 2018 Téc. Adm. | Legislação | 5 |
+| TRT-1 2018 Téc. Adm. | Noções sobre Direitos das Pessoas com Deficiência | 5 |
 
 ## Leituras para o estudo e para os simulados
 

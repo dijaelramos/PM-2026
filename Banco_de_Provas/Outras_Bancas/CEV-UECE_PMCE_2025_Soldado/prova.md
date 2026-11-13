@@ -2,8 +2,8 @@
 
 > **Banca:** CEV/UECE · **Nível:** Médio · **Caderno:** Gabarito 1 · **Questões:** 100
 > **Arquivo original:** [prova_gabarito1.pdf](prova_gabarito1.pdf) · **Índice e gabarito:** [indice.md](indice.md)
-> **Procedência:** Página oficial da CEV/UECE (https://www.cev.uece.br/pmce2025/): caderno "Gabarito 1" e gabarito oficial preliminar.
-> **Gabarito:** oficial **preliminar** (13/07/2025). O definitivo só existe como consulta online em https://www2.cev.uece.br/concs/2025/pmce/concurso/consulta_grade_respostas.
+> **Procedência:** Página oficial da CEV/UECE (https://www.cev.uece.br/pmce2025/): caderno "Gabarito 1" e gabarito oficial preliminar; o gabarito definitivo veio do Comunicado nº 136/2025-CEV/UECE (https://www.cev.uece.br/wp-content/uploads/2025/08/comunicado1362025cev.pdf).
+> **Gabarito:** oficial **definitivo (após recursos)** — Comunicado nº 136/2025-CEV/UECE, de 06/08/2025, Anexo I, "Gabarito 1" ([gabarito_definitivo.pdf](gabarito_definitivo.pdf); fonte: https://www.cev.uece.br/wp-content/uploads/2025/08/comunicado1362025cev.pdf, baixado em 13/11/2026). Substitui o preliminar de 13/07/2025. Mudanças: **Q9, Q37, Q57 e Q90 anuladas; Q47 de D para B, Q59 de A para E, Q72 de E para B, Q94 de A para C**.
 > Convertido automaticamente em 05/11/2026. As palavras **sublinhadas no caderno** (os "termos destacados" citados
 > nos enunciados) estão marcadas com `<u>…</u>`. O PDF tem duas colunas, então algum trecho pode ter saído fora
 > de ordem: antes de citar literalmente, confira a página no PDF original e nunca complete trechos por inferência.

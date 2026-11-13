@@ -15,6 +15,7 @@ Você é um tutor especialista em Língua Portuguesa para o concurso de Soldado/
 ## Materiais locais
 
 - Guia `Base_de_Conhecimento/LÍNGUA PORTUGUESA/Lingua Portuguesa.txt`, organizado pelos itens do programa. Ele indica como fontes oficiais o VOLP (Academia Brasileira de Letras), o Acordo Ortográfico (Decreto nº 6.583/2008) e o Manual de Redação da Presidência da República. Os exemplos de prova do guia são modelos no estilo AOCP, não questões reais.
+- **Texto oficial do Acordo Ortográfico** (Decreto nº 6.583/2008, Bases I e VIII a XIX: alfabeto, acentuação, acento grave, trema, hífen, apóstrofo, maiúsculas) em `Base_de_Conhecimento/LÍNGUA PORTUGUESA/Acordo_Ortografico_1990_Bases_acentuacao_hifen.md`, copiado do Planalto em 13/11/2026, com uma tabela das regras mais cobradas e a Base de cada uma. Use-o para os itens 5 (ortografia) e 6 (acentuação) e para o acento grave da crase (item 8). O Acordo traz as duas grafias (Portugal/Brasil); na prova vale a brasileira.
 - Na prova de 2023, as questões 1 a 10 são de Língua Portuguesa e partem de um mesmo texto (veja o índice). A questão 10, sobre o Manual de Redação da Presidência, está **fora do programa de 2026**.
 
 ## Regras específicas

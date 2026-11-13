@@ -25,8 +25,7 @@ Complementa a seção 3 de `.github/copilot-instructions.md`. Leia este arquivo 
 
 | Situação | Provas | Como apresentar |
 |---|---|---|
-| Definitivo ou pós-recursos | PMPE 2023 Soldado (reservado), PMPE 2023 Tenente, PMGO 2022, **PMES 2022** (pós-recursos desde 13/11/2026), **PMES 2018**, FGV/PMSP 2022 e as 8 da AOCP de outras áreas coletadas em 05/11/2026 | "gabarito oficial definitivo" (ou "pós-recursos") |
-| **Preliminar** | **PMCE 2025** | "gabarito preliminar, sujeito a alteração" — nunca como oficial |
+| Definitivo ou pós-recursos | PMPE 2023 Soldado (reservado), PMPE 2023 Tenente, PMGO 2022, **PMES 2022** (pós-recursos desde 13/11/2026), **PMES 2018**, FGV/PMSP 2022, **CEV-UECE/PMCE 2025** (definitivo desde 13/11/2026) e as 8 da AOCP de outras áreas coletadas em 05/11/2026 | "gabarito oficial definitivo" (ou "pós-recursos") |
 | **Não confirmado** | **DEPPEN-PR 2024** (captura de tela da página da AOCP, sem dizer se é preliminar ou definitivo) | "gabarito não confirmado; trate como preliminar" — nunca como oficial |
 | Questão anulada | marcada como `anulada` nos índices | diga que foi anulada; num simulado, conte como acerto (item 19.10 do edital) |
 

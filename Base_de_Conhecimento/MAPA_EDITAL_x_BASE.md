@@ -1,6 +1,6 @@
 # Mapa: edital da PMPE 2026 × base de conhecimento
 
-> Auditoria de 13/11/2026: cada item do Anexo II (Soldado, [Conteudos.txt](CONTEUDOS_PROGRAMATICOS/Conteudos.txt)) e a Redação (item 12 do edital), com o arquivo da base que o cobre. **Cobertura:** ✅ completa (texto oficial ou guia que cobre o item inteiro); 🟡 parcial (guia curto; o aprofundamento está nos materiais do dia); ➕ apoio (não citado no Anexo II, mas necessário para resolver questões de um item).
+> Auditoria de 13/11/2026 (duas passadas no mesmo dia): cada item do Anexo II (Soldado, [Conteudos.txt](CONTEUDOS_PROGRAMATICOS/Conteudos.txt)) e a Redação (item 12 do edital), com o arquivo da base que o cobre. **Cobertura:** ✅ completa (texto oficial ou guia que cobre o item inteiro); 🟡 parcial (guia curto; o aprofundamento está nos materiais do dia); ➕ apoio (não citado no Anexo II, mas necessário para resolver questões de um item).
 > Questões oficiais de cada item: [indice_por_topico.md](../Banco_de_Provas/indice_por_topico.md).
 
 ## O que mudou nesta auditoria
@@ -13,6 +13,9 @@
 | **Novo:** regras da Redação | [REDAÇÃO/Redacao_regras_do_edital.md](REDAÇÃO/Redacao_regras_do_edital.md) | A Redação vale 40 pontos e não estava na base |
 | **Novo:** quadros-resumo de Direito Constitucional | [Direito_Constitucional/Quadros_Resumo_DC.md](Direito_Constitucional/Quadros_Resumo_DC.md) | A base tinha só o texto da CF |
 | **Novo (13/11):** trechos da Cartilha do CERT.br | [INFORMÁTICA/Cartilha_CERTbr_2012_trechos.md](INFORMÁTICA/Cartilha_CERTbr_2012_trechos.md) | A AOCP copia as definições da Cartilha nos itens 3 e 4 |
+| **2ª passada — novo:** texto oficial do Acordo Ortográfico (Bases I e VIII a XIX) | [LÍNGUA PORTUGUESA/Acordo_Ortografico_1990_Bases_acentuacao_hifen.md](LÍNGUA%20PORTUGUESA/Acordo_Ortografico_1990_Bases_acentuacao_hifen.md) | LP 5 e 6 (ortografia e acentuação) tinham só duas linhas cada no guia |
+| **2ª passada — novo:** atalhos oficiais do Windows 11 e do LibreOffice 7.6 (Writer, Calc, Impress) | [INFORMÁTICA/Atalhos_oficiais_Windows11_e_LibreOffice7.md](INFORMÁTICA/Atalhos_oficiais_Windows11_e_LibreOffice7.md) | INF 6 e 7 cobram atalhos com versão e idioma. Word e Excel ficaram de fora: as páginas oficiais da Microsoft em português se contradizem |
+| **2ª passada — ajuste:** rótulo da SV 56 | [Sumulas_e_Jurisprudencia.md](Sumulas_e_Jurisprudencia.md) | Estava como "execução penal" (fora do edital); o fundamento é a CF, art. 5º, XLVI e XLVIII (DC 2) |
 | **Mantidos como apoio** (➕): Carta da ONU (arts. 1º e 2º) e PNDH-3 (arts. 1º a 7º) | [Carta da ONU](Direitos_Humanos_e_Legislacao_Extravagante/Carta_ONU_1945_arts_1_e_2.md) · [PNDH-3](Direitos_Humanos_e_Legislacao_Extravagante/Decreto_7037_2009_PNDH3_arts_1_a_7.md) | Não estão no Anexo II, mas fazem parte da "estrutura normativa" de DH 1 e foram cobrados em prova de Soldado (PMCE 2025); o material de 10/11 os usa |
 
 Nenhum outro conteúdo da base está fora do edital: a CF vai só até o art. 144 (Títulos I a V = DC 1 a 5), as leis são exatamente as do Anexo II e a apostila de História de Pernambuco segue os itens 1 a 8 (a "Guerra dos Bárbaros" entra como contato do europeu com o nativo, item 1).
@@ -21,7 +24,8 @@ Nenhum outro conteúdo da base está fora do edital: a CF vai só até o art. 14
 
 | Itens | Cobertura | Observação |
 |---|---|---|
-| 1 a 18 | 🟡 | O guia tem todos os 18 itens, em uma ou duas linhas cada. O aprofundamento está nos materiais de 05/11 e 06/11 (itens 3, 4, 17 e 18). Os itens 5, 12, 13, 14 e 15 também são o critério 4 da Redação |
+| 5 e 6 | ✅ | Texto oficial do [Acordo Ortográfico](LÍNGUA%20PORTUGUESA/Acordo_Ortografico_1990_Bases_acentuacao_hifen.md) (acentuação, trema, hífen, maiúsculas), com tabela das regras mais cobradas; a Base XII (acento grave) apoia o item 8 |
+| 1 a 4 e 7 a 18 | 🟡 | O guia tem todos os itens, em uma ou duas linhas cada. O aprofundamento está nos materiais de 05/11 e 06/11 (itens 3, 4, 17 e 18). Os itens 5, 12, 13, 14 e 15 também são o critério 4 da Redação. O guia cita o Manual de Redação da Presidência só como fonte de exemplos de pontuação e crase: redação oficial não está no edital de 2026 |
 
 ## História de Pernambuco — [apostila](Historia_de_Pernambuco/HISTORIA_DE_PERNAMBUCO.md) e [período republicano](Historia_de_Pernambuco/Periodo_Republicano_PE.md)
 
@@ -45,7 +49,9 @@ Não há questão oficial de História de PE fora da PMPE 2023 (reservada para o
 | 1 e 2 | 🟡 | Internet, intranet, navegadores, protocolos, nuvem |
 | 3 | ✅ | Guia + trechos literais da Cartilha (ameaças, malwares, golpes, criptografia, autenticação, boas práticas) |
 | 4 | ✅ | Guia (dispositivos, tipos de backup, restauração) + cuidados com backup da Cartilha |
-| 5 a 7 | 🟡 | Arquivos, hardware, periféricos, Windows 11, Prompt de Comando, Office 2019 e LibreOffice 7: guia com atalhos e funções; versões a conferir na ajuda oficial (Microsoft e LibreOffice) |
+| 5 | 🟡 | Arquivos, hardware e periféricos: guia |
+| 6 | ✅ | Windows 11: guia + [atalhos oficiais da Microsoft](INFORMÁTICA/Atalhos_oficiais_Windows11_e_LibreOffice7.md). Os comandos do Prompt (dir, cd, ipconfig…) estão só no guia |
+| 7 | 🟡 | LibreOffice 7: ✅ atalhos oficiais da Ajuda 7.6. Word, Excel e PowerPoint 2019: só o guia (as páginas da Microsoft em português são contraditórias) |
 
 ## Direito Constitucional — [CF, arts. 1º a 144](Direito_Constitucional/CF_1988_arts_1_a_144.md), [quadros-resumo](Direito_Constitucional/Quadros_Resumo_DC.md) e [súmulas](Sumulas_e_Jurisprudencia.md)
 

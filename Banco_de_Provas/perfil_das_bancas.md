@@ -25,7 +25,7 @@ Conferido no edital (`Editais/2026/2026 - Edital de Abertura.md`):
 | PMES 2022 (AOCP) | Médio | 80 | LP 20, RL e Matemática 20, Geografia (Geral, do Brasil e do ES) 20, História (do Brasil e do ES) 20 | Texto dissertativo; tema "A importância da valorização da saúde mental no ambiente de trabalho"; folha de 30 linhas | 5 h | Caderno (edital não coletado) |
 | PMES 2018 (AOCP) | Médio | 80 | LP 20, RL e Matemática 20, Noções de Informática 10, Conhecimentos Específicos 30 (Estatuto da PMES 10, Código Penal Militar 2, Código de Processo Penal Militar 1, Regulamento Disciplinar 9, Dir. Constitucional 8) | Havia redação (o caderno cita a "Versão Definitiva da Redação"; a proposta não está no arquivo coletado) | 5 h | Capa do caderno e gabarito pós-recursos |
 | PMSP 2022 (FGV) | Médio | 60 | LP e Interpretação 20, Matemática 15, Conhecimentos Gerais 15, Informática 5, Administração Pública 5 | Dissertativo-argumentativa, "aproximadamente 30 linhas", com proposta de soluções para um problema concreto (turistas desrespeitando regras numa cidade) | 5 h | Caderno e gabarito definitivo |
-| PMCE 2025 (CEV/UECE) | Médio | 100 | LP 12, RL 10, Atualidades/História do CE 10, Adm. Pública/Ética 8, Dir. Constitucional 12, Direitos Humanos 10, Penal Militar/Proc. Penal Militar 12, Penal e Proc. Penal 12, Criminologia 8, Segurança Pública 6 | Não faz parte do caderno | 5 h | Capa do caderno e gabarito preliminar |
+| PMCE 2025 (CEV/UECE) | Médio | 100 | LP 12, RL 10, Atualidades/História do CE 10, Adm. Pública/Ética 8, Dir. Constitucional 12, Direitos Humanos 10, Penal Militar/Proc. Penal Militar 12, Penal e Proc. Penal 12, Criminologia 8, Segurança Pública 6 | Não faz parte do caderno | 5 h | Capa do caderno e gabarito definitivo (Comunicado nº 136/2025-CEV/UECE) |
 
 ### Provas da AOCP de outras áreas
 
@@ -42,6 +42,9 @@ As regras de aprovação dessas provas não foram coletadas (os editais estão n
 | EBSERH 2017 | Saúde (hospital universitário federal) | Superior | 50 | 5 | Língua Portuguesa 10, Raciocínio Lógico e Matemático 5, Legislação Aplicada à EBSERH 5, Legislação Aplicada ao SUS 5, Conhecimentos Específicos 25 | Não consta no caderno |
 | DESENBAHIA 2017 | Agência de fomento (banco público) | Médio | 50 | 5 | Língua Portuguesa 8, Raciocínio Lógico e Matemático 7, Informática 5, Legislação 5, Conhecimentos Específicos 25 | Sim (rascunho no caderno) |
 | DEPPEN-PR 2024 | Polícia Penal (segurança pública) | Médio | 75 | 5 | Língua Portuguesa 10, Raciocínio Lógico Matemático 10, Informática 5, Conhecimentos Específicos 50 (Dir. Administrativo, Dir. Constitucional, leis penais especiais, Código Penal, Processo Penal, Execução Penal, legislação do PR, Criminologia e Direitos Humanos) | Não (o caderno só tem a objetiva, 5 h) |
+| PC-ES 2019 (Escrivão) | Polícia Civil (segurança pública) | Superior | 100 | 5 | Língua Portuguesa 15, Estatuto da PC-ES 5, Dir. Constitucional 10, Dir. Administrativo 10, Direito Penal / Legislação Extravagante 30, Processo Penal / Legislação Extravagante 30 | Não consta no caderno |
+| PC-ES 2019 (Aux. Perícia) | Polícia Civil (segurança pública) | Médio | 100 | 5 | Língua Portuguesa 30, Raciocínio Lógico e Matemático 10, Estatuto da PC-ES 20, Dir. Administrativo 10, Dir. Constitucional 30 | Não consta no caderno |
+| TRT-1 2018 (Téc. Adm.) | Judiciário (administração) | Médio | 60 | 5 | Língua Portuguesa 15, Legislação 5, Direitos das Pessoas com Deficiência 5, Informática 5, Conhecimentos Específicos 30 | Sim (redação; instruções no caderno) |
 
 **Regras de aprovação da AOCP comparadas:** a PMPE 2026 exige 30% por bloco e 30% no total; a PMGO 2022 exigia **60% do total** e nenhuma área zerada, e somava objetiva e redação na nota final. Nas duas, a redação só é corrigida para quem passa na objetiva e fica dentro de um limite de classificação, e as causas de nota zero são praticamente as mesmas (fuga ao tema ou à tipologia, desestruturação, texto a lápis ou fora da folha, identificação).
 
@@ -63,11 +66,14 @@ As regras de aprovação dessas provas não foram coletadas (os editais estão n
 | EBSERH 2017 | 50 | 100% | 8% | 0% | 2% | 20% | 236 | 5 |
 | DESENBAHIA 2017 | 50 | 98% | 0% | 2% | 2% | 12% | 221 | 2 |
 | DEPPEN-PR 2024 | 75 | 100% | 9% | 0% | 8% | 33% | 296 | 4 |
+| PC-ES 2019 (Escrivão) | 100 | 100% | 13% | 0% | 0% | 3% | 142 | 5 |
+| PC-ES 2019 (Aux. Perícia) | 100 | 100% | 3% | 0% | 1% | 7% | 160 | 11 |
+| TRT-1 2018 (Téc. Adm.) | 60 | 100% | 10% | 2% | 3% | 27% | 288 | 5 |
 | PMSP 2022 (FGV) | 60 | 100% | 0% | 3% | 8% | 32% | 326 | 12 |
 | PMCE 2025 (CEV/UECE) | 100 | 100% | 0% | 2% | 13% | 24% | 265 | 4 |
 | **AOCP – provas de PM (5)** | 305 | — | **10%** | **4%** | **4%** | **26%** | — | 29 |
-| **AOCP – outras áreas (9)** | 575 | — | **9%** | **2%** | **5%** | **20%** | — | 35 |
-| **AOCP – todas (14)** | 880 | — | **9%** | **3%** | **4%** | **22%** | — | 64 |
+| **AOCP – outras áreas (12)** | 835 | — | **9%** | **1%** | **3%** | **17%** | — | 56 |
+| **AOCP – todas (17)** | 1140 | — | **9%** | **2%** | **4%** | **19%** | — | 85 |
 
 Contagem automática por padrões de texto; serve como ordem de grandeza.
 
@@ -89,10 +95,13 @@ Contagem automática por padrões de texto; serve como ordem de grandeza.
 | EBSERH 2017 | 13 (27%) | 10 (20%) | 8 (16%) | 8 (16%) | 10 (20%) | 1 |
 | DESENBAHIA 2017 | 11 (22%) | 10 (20%) | 11 (22%) | 10 (20%) | 8 (16%) | 0 |
 | DEPPEN-PR 2024 | 15 (20%) | 19 (25%) | 15 (20%) | 14 (19%) | 12 (16%) | 0 |
+| PC-ES 2019 (Escrivão) | 20 (21%) | 21 (22%) | 18 (19%) | 20 (21%) | 16 (17%) | 5 |
+| PC-ES 2019 (Aux. Perícia) | 23 (23%) | 18 (18%) | 20 (20%) | 19 (19%) | 19 (19%) | 1 |
+| TRT-1 2018 (Téc. Adm.) | 9 (16%) | 14 (25%) | 7 (12%) | 15 (26%) | 12 (21%) | 3 |
 | PMSP 2022 (FGV) | 11 (19%) | 11 (19%) | 9 (16%) | 15 (26%) | 12 (21%) | 2 |
-| PMCE 2025 (CEV/UECE) | 23 (23%) | 22 (22%) | 24 (24%) | 21 (21%) | 10 (10%) | 0 |
+| PMCE 2025 (CEV/UECE) | 21 (22%) | 23 (24%) | 25 (26%) | 17 (18%) | 10 (10%) | 4 |
 
-## 4. Como a AOCP cobra (o que observar nas 880 questões AOCP)
+## 4. Como a AOCP cobra (o que observar nas 1140 questões AOCP)
 
 - **Formato:** cinco alternativas (A–E), uma correta, em todas as provas coletadas a partir de 2017, exceto a SEJUS-CE 2017, que tinha **quatro** (A–D). Não há certo/errado.
 - **Língua Portuguesa:** quase todas as questões partem de um texto de apoio comum a um bloco de questões (na PMPE 2023, só a questão 10 não depende do texto). Muitas perguntam sobre **termos sublinhados** do texto (função, referente, valor semântico, reescrita).
@@ -105,6 +114,6 @@ Contagem automática por padrões de texto; serve como ordem de grandeza.
 
 ## 5. Como usar este perfil para montar questões e simulados
 
-- **Simulado no formato da PMPE 2026:** 60 questões, 10 por disciplina do edital, nas proporções de comando da linha "AOCP – todas (14)" da tabela 3 (por exemplo, uma parte das questões com comando negativo e algumas em V/F ou assertivas).
+- **Simulado no formato da PMPE 2026:** 60 questões, 10 por disciplina do edital, nas proporções de comando da linha "AOCP – todas (17)" da tabela 3 (por exemplo, uma parte das questões com comando negativo e algumas em V/F ou assertivas).
 - **Questões autorais:** cinco alternativas; distratores plausíveis que troquem um detalhe da regra; em Português, partir de um texto de apoio e sublinhar o termo cobrado; em Direito, preferir situação-problema curta. Sempre com o rótulo de questão autoral.
 - **Distribuição das letras:** as bancas distribuem as respostas corretas de forma aproximadamente equilibrada (tabela acima). Faça o mesmo nas questões autorais.
