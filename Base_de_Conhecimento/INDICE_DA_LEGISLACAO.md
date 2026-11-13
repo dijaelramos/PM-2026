@@ -4,8 +4,10 @@ Textos das normas do programa de **Direito Constitucional** e de **Direitos Huma
 
 - **Data-base da prova:** legislação vigente em **29/09/2026** (item 1.4.2 do edital). O topo de cada arquivo traz a fonte, a data da cópia, as alterações de 2025 e 2026 e, se houver, as alterações posteriores à data-base, que **não** valem para a prova.
 - **Fontes:** o Planalto não respondeu a acesso automatizado; os textos atualizados vieram do Centro de Documentação e Informação da Câmara dos Deputados (legin), da Assembleia Legislativa de Pernambuco, do UNICEF Brasil (DUDH) e da Comissão Interamericana de Direitos Humanos/OEA (Convenção Americana). Textos atualizados não têm valor oficial: em caso de dúvida, confira no Diário Oficial ou no Planalto.
-- **Súmulas e jurisprudência (DC 6 e DH 18):** em [Sumulas_e_Jurisprudencia.md](Sumulas_e_Jurisprudencia.md) — as 63 súmulas vinculantes do STF (texto oficial) e as súmulas do STJ ligadas às leis do edital (até a Súmula 673, set./2024). Teses de repercussão geral e informativos não estão incluídos.
-- **Não estão aqui:** os itens doutrinários de DH (1 a 3: teoria geral, gerações, incorporação de tratados), que dependem do art. 5º, §§ 2º e 3º, da CF (no arquivo da Constituição) e de doutrina.
+- **Súmulas e jurisprudência (DC 6 e DH 18):** em [Sumulas_e_Jurisprudencia.md](Sumulas_e_Jurisprudencia.md) — as **42** súmulas vinculantes do STF ligadas aos temas do edital (as 21 de temas fora do Anexo II foram retiradas em 13/11/2026), as súmulas do STJ ligadas às leis do edital (até a Súmula 673, set./2024) e 10 teses de repercussão geral. Informativos não estão incluídos.
+- **Itens doutrinários de DH (1 a 3):** em [DH_1_a_3_Teoria_Geral_Geracoes_e_Tratados.md](Direitos_Humanos_e_Legislacao_Extravagante/DH_1_a_3_Teoria_Geral_Geracoes_e_Tratados.md) (13/11/2026), com a lista de casos do Brasil na Corte Interamericana como apoio a DH 5.
+- **Resumos e regras acrescentados em 13/11/2026:** [quadros-resumo de Direito Constitucional](Direito_Constitucional/Quadros_Resumo_DC.md) e [regras da Redação](REDAÇÃO/Redacao_regras_do_edital.md). O mapa completo edital × base está em [MAPA_EDITAL_x_BASE.md](MAPA_EDITAL_x_BASE.md).
+- **Recorte do edital:** o ECA e o Estatuto da Pessoa Idosa ficam com o texto integral, mas o topo de cada arquivo traz uma tabela com os artigos que o edital cobra (DH 6 e DH 15).
 
 | Item | Norma | Artigos | Fonte | Alteração mais recente | Alterações 2025–2026 | Alteração após 29/09/2026 |
 |---|---|---|---|---|---|---|

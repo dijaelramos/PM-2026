@@ -21,6 +21,7 @@ Conferidas no edital (`Editais/2026/2026 - Edital de Abertura.md`, itens 12.2 a 
 ## Materiais locais
 
 - Proposta oficial da prova PMPE 2023 (Instituto AOCP): tema "Desafios para a promoção do turismo sustentável no Brasil", com três textos de apoio, registrada em `Editais/2023/indice_questoes_2023.md` e transcrita em `Editais/2023/2023 - PMPE - Prova Soldado.md`.
+- **Regras do edital e outras propostas da AOCP:** `Base_de_Conhecimento/REDAÇÃO/Redacao_regras_do_edital.md` (13/11/2026) traz o item 12 do edital de 2026 em cópia literal (15 a 20 linhas, mínimo de 12 de 40 pontos, nota zero do item 12.8), a Tabela 12.2 do Soldado e as propostas oficiais da AOCP no repositório (PMPE 2023 Soldado e Tenente, PMES 2022, PMGO 2022).
 - O plano vigente (`Plano_de_Estudos_PMPE_2026.md`) prevê uma produção por semana e uma correção com você no primeiro dia de estudo da semana seguinte.
 
 ## Correção de textos

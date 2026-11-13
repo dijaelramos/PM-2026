@@ -6,6 +6,19 @@
 > **Data-base da prova:** legislação vigente em 29/09/2026 (item 1.4.2 do edital). Alteração mais recente citada no texto:
 > 03/07/2025. As notas entre parênteses indicam a norma que incluiu, alterou ou revogou cada dispositivo.
 
+> **Recorte do edital (revisão de 13/11/2026).** O item DH 15 cobra só "disposições pertinentes à atuação policial e crimes em espécie". O texto da lei fica completo aqui, mas o estudo deve seguir esta tabela:
+>
+> | Parte da lei | Artigos | No edital? |
+> |---|---|---|
+> | Disposições preliminares (quem é pessoa idosa, prioridade, dever de todos de prevenir e de **comunicar à autoridade** qualquer violação, arts. 4º e 6º) | 1º a 7º | **Sim**, como disposições pertinentes à atuação policial |
+> | Direitos fundamentais | 8º a 42 | Só o que toca a atuação policial: liberdade, respeito e dignidade (art. 10) e a comunicação obrigatória de violência contra pessoa idosa às autoridades, inclusive à **autoridade policial** (art. 19). O resto (alimentos, saúde, educação, trabalho, previdência, assistência, habitação, transporte) não é citado |
+> | Medidas de proteção (situação de risco e medidas aplicáveis) | 43 a 45 | **Sim**, como apoio à atuação policial |
+> | Política de atendimento, entidades, fiscalização, infrações administrativas e sua apuração | 46 a 68 | Não citado |
+> | Acesso à Justiça, Ministério Público e proteção judicial | 69 a 92 | Não citado |
+> | **Crimes: disposições gerais** (aplicação do CP e do CPP) | **93 e 94** | **Sim** |
+> | **Crimes em espécie**: art. 95 (ação penal pública incondicionada, sem as imunidades dos arts. 181 e 182 do CP) e os tipos penais dos arts. 96 a 108 | **95 a 108** | **Sim** (núcleo do item) |
+> | Disposições finais: o **art. 109** também é crime (impedir ou embaraçar ato do Ministério Público ou de agente fiscalizador); os arts. 110 em diante alteram outras leis | 109 em diante | **Sim** o art. 109; o resto não é citado |
+
 > **Alterações de 2025 e 2026 (até 29/09/2026), que valem para a prova** — confira se questões e materiais anteriores estão atualizados:
 > - (Parágrafo único acrescido pela Lei nº 15.163, de 3/7/2025)
 > - (Pena com redação dada pela Lei nº 15.163, de 3/7/2025)
