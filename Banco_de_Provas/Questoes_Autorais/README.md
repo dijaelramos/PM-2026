@@ -1,6 +1,6 @@
 # Questões autorais no estilo AOCP — não oficiais
 
-82 questões de treino criadas em 05/11/2026 a partir das provas oficiais do [Banco de Provas](../README.md), sobretudo das provas da AOCP de outras áreas (`AOCP/Outras_Areas/`) e da PMPE 2023. Elas **não são questões de concurso**.
+94 questões de treino: 82 criadas em 05/11/2026 e 12 do Estatuto da Juventude (EJ-01 a EJ-12) criadas em 16/11/2026, a partir das provas oficiais do [Banco de Provas](../README.md), sobretudo das provas da AOCP de outras áreas (`AOCP/Outras_Areas/`) e da PMPE 2023. Elas **não são questões de concurso**.
 
 ## Para que servem
 
@@ -19,7 +19,7 @@ Cada questão copia o **formato** de uma questão oficial da AOCP (indicada como
 - distratores que trocam um detalhe da regra (prazo, quórum, órgão, idade), como faz a AOCP;
 - respostas corretas distribuídas entre as cinco letras.
 
-Neste conjunto: 4 questões com comando negativo, 4 de verdadeiro ou falso, 2 de relacionar colunas e 12 situações-problema.
+No conjunto de 05/11/2026: 4 questões com comando negativo, 4 de verdadeiro ou falso, 2 de relacionar colunas e 12 situações-problema. No do Estatuto da Juventude: 1 com comando negativo, 1 de verdadeiro ou falso e 3 situações-problema.
 
 ## Arquivos
 
@@ -31,6 +31,7 @@ Neste conjunto: 4 questões com comando negativo, 4 de verdadeiro ou falso, 2 de
 | [Informática](Informatica.md) | 10 | INF 1 (1); INF 3 (1); INF 4 (1); INF 5 (1); INF 6 (2); INF 7 (4) | A2 B2 C2 D2 E2 |
 | [Direito Constitucional](Direito_Constitucional.md) | 10 | DC 1 (1); DC 2 (3); DC 3 (2); DC 4 (2); DC 5 (1); DC 6 (1) | A2 B2 C2 D2 E2 |
 | [Direitos Humanos e Legislação Extravagante](Direitos_Humanos_e_Legislacao.md) | 25 | DH 2 (2); DH 3 (1); DH 5 (1); DH 6 (3); DH 7 (1); DH 8 (2); DH 9 (1); DH 10 (1); DH 11 (1); DH 12 (2); DH 13 (2); DH 14 (3); DH 15 (3); DH 16 (2) | A5 B5 C5 D5 E5 |
+| [Estatuto da Juventude](Estatuto_da_Juventude.md) (16/11/2026) | 12 | DH 16 (12): princípios, diretrizes, participação, educação, trabalho, diversidade, saúde, meia-entrada, mobilidade, segurança pública, Sinajuve e conselhos | A2 B3 C2 D2 E3 |
 
 O gabarito comentado fica no fim de cada arquivo, com o porquê de cada alternativa errada e o fundamento (artigo de lei, súmula ou regra gramatical).
 

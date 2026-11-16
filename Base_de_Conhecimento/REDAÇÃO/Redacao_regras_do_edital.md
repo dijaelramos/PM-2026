@@ -50,8 +50,9 @@
 | **PMPE 2023, 2º Tenente** | "Obstáculos para a inserção da pessoa idosa no mercado de trabalho brasileiro" | 15 a 20 linhas, 30 pontos para Tenente | [prova do 2º Tenente](../../Banco_de_Provas/AOCP/PMPE_2023_2Tenente/prova.md) |
 | **PMES 2022, Soldado** | "A importância da valorização da saúde mental no ambiente de trabalho" | Texto dissertativo, folha de 30 linhas (na PMPE 2026 são 15 a 20) | [material de 06/11](../../Material_do_Dia/2026-11-06_Redacao_Producao.md) |
 | **PMGO 2022, Soldado** | "O tempo utilizado na internet é prejudicial para as pessoas ou é uma necessidade do mundo contemporâneo?" | "Dissertação", 20 a 30 linhas, outros critérios | [edital e caderno da PMGO](../../Banco_de_Provas/AOCP/PMGO_2022_Soldado/prova.md) |
+| **PMDF 2023, Soldado** | "Desafios para promover a segurança no trânsito brasileiro" | Dissertativo-argumentativo, 3 textos de apoio (ONU/Abramet, Pnatrans e imagem da PMDF), rascunho de 30 linhas | [prova da PMDF](../../Banco_de_Provas/AOCP/PMDF_2023_Soldado/prova.md) (fim do arquivo) |
 
-Os temas e formatos acima vêm de [perfil_das_bancas.md](../../Banco_de_Provas/perfil_das_bancas.md), seção 2. A PMES 2018 também teve redação, mas a proposta não está no arquivo coletado.
+Os temas e formatos acima vêm de [perfil_das_bancas.md](../../Banco_de_Provas/perfil_das_bancas.md), seção 2. A PMES 2018 também teve redação, mas a proposta não está no arquivo coletado. A proposta da PMDF 2023 foi acrescentada em 16/11/2026, com a prova baixada pelo estudante.
 
 ## 4. Como os agentes devem corrigir
 

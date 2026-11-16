@@ -8,16 +8,14 @@ Textos das normas do programa de **Direito Constitucional** e de **Direitos Huma
 - **Itens doutrinários de DH (1 a 3):** em [DH_1_a_3_Teoria_Geral_Geracoes_e_Tratados.md](Direitos_Humanos_e_Legislacao_Extravagante/DH_1_a_3_Teoria_Geral_Geracoes_e_Tratados.md) (13/11/2026), com a lista de casos do Brasil na Corte Interamericana como apoio a DH 5.
 - **Fontes oficiais de Português e Informática (13/11/2026, 2ª passada):** [Acordo Ortográfico — Decreto nº 6.583/2008, Bases I e VIII a XIX](LÍNGUA%20PORTUGUESA/Acordo_Ortografico_1990_Bases_acentuacao_hifen.md) (Planalto) e [atalhos do Windows 11 e do LibreOffice 7.6](INFORMÁTICA/Atalhos_oficiais_Windows11_e_LibreOffice7.md) (Microsoft e Ajuda do LibreOffice).
 - **Resumos e regras acrescentados em 13/11/2026:** [quadros-resumo de Direito Constitucional](Direito_Constitucional/Quadros_Resumo_DC.md) e [regras da Redação](REDAÇÃO/Redacao_regras_do_edital.md). O mapa completo edital × base está em [MAPA_EDITAL_x_BASE.md](MAPA_EDITAL_x_BASE.md).
-- **Recorte do edital:** o ECA e o Estatuto da Pessoa Idosa ficam com o texto integral, mas o topo de cada arquivo traz uma tabela com os artigos que o edital cobra (DH 6 e DH 15).
+- **Recorte do edital (16/11/2026):** o ECA e o Estatuto da Pessoa Idosa trazem **só os artigos que o edital cobra** (DH 6 e DH 15), mais alguns de apoio indicados na tabela do topo de cada arquivo; no lugar de cada trecho retirado há um aviso com o link do texto integral na Câmara. A Carta da ONU e o PNDH-3, que não estão no Anexo II, foram retirados da base na mesma data.
 
 | Item | Norma | Artigos | Fonte | Alteração mais recente | Alterações 2025–2026 | Alteração após 29/09/2026 |
 |---|---|---|---|---|---|---|
 | DC 1 a 5 | [Constituição da República Federativa do Brasil de 1988 — Títulos I a V (arts. 1º a 144)](Direito_Constitucional/CF_1988_arts_1_a_144.md) | 149 | Câmara dos Deputados | 16/10/2026 | 10 | ⚠️ sim |
-| DH 1 e 2 (trecho) | [Carta das Nações Unidas (1945) — Capítulo I, arts. 1º e 2º (propósitos e princípios)](Direitos_Humanos_e_Legislacao_Extravagante/Carta_ONU_1945_arts_1_e_2.md) — copiado em 10/11/2026 | 2 | Planalto (Decreto nº 19.841/1945) | — | — | não |
-| DH 1 (contexto, trecho) | [Decreto nº 7.037/2009 — PNDH-3, arts. 1º a 7º](Direitos_Humanos_e_Legislacao_Extravagante/Decreto_7037_2009_PNDH3_arts_1_a_7.md) — copiado em 10/11/2026; fora do Anexo II de forma expressa | 7 | Planalto | Decreto nº 10.087/2019 (revogou o art. 4º) | — | não |
 | DH 4 | [Declaração Universal dos Direitos Humanos (ONU, 1948)](Direitos_Humanos_e_Legislacao_Extravagante/DUDH_1948.md) | 30 | UNICEF Brasil | — | — | não |
 | DH 5 | [Convenção Americana sobre Direitos Humanos (Pacto de San José da Costa Rica, 1969)](Direitos_Humanos_e_Legislacao_Extravagante/CADH_Pacto_de_San_Jose_1969.md) | 82 | OEA/CIDH | — | — | não |
-| DH 6 | [Lei nº 8.069/1990 — Estatuto da Criança e do Adolescente](Direitos_Humanos_e_Legislacao_Extravagante/Lei_8069_1990_ECA.md) | 329 | Câmara dos Deputados | 22/09/2026 | 25 | não |
+| DH 6 | [Lei nº 8.069/1990 — Estatuto da Criança e do Adolescente](Direitos_Humanos_e_Legislacao_Extravagante/Lei_8069_1990_ECA.md) — só o recorte do edital | 204 de 329 | Câmara dos Deputados | 22/09/2026 | 31 | não |
 | DH 7 | [Lei nº 13.869/2019 — Abuso de Autoridade](Direitos_Humanos_e_Legislacao_Extravagante/Lei_13869_2019_Abuso_de_Autoridade.md) | 46 | Câmara dos Deputados | 31/03/2022 | — | não |
 | DH 8 | [Lei nº 9.455/1997 — Crimes de Tortura](Direitos_Humanos_e_Legislacao_Extravagante/Lei_9455_1997_Tortura.md) | 4 | Câmara dos Deputados | 20/05/2026 | 1 | não |
 | DH 9 | [Lei nº 11.340/2006 — Lei Maria da Penha](Direitos_Humanos_e_Legislacao_Extravagante/Lei_11340_2006_Maria_da_Penha.md) | 57 | Câmara dos Deputados | 18/06/2026 | 11 | não |
@@ -26,7 +24,7 @@ Textos das normas do programa de **Direito Constitucional** e de **Direitos Huma
 | DH 12 | [Lei nº 8.072/1990 — Crimes Hediondos](Direitos_Humanos_e_Legislacao_Extravagante/Lei_8072_1990_Crimes_Hediondos.md) | 19 | Câmara dos Deputados | 09/04/2026 | 4 | não |
 | DH 13 | [Lei nº 11.343/2006 — Lei de Drogas](Direitos_Humanos_e_Legislacao_Extravagante/Lei_11343_2006_Drogas.md) | 100 | Câmara dos Deputados | 24/03/2026 | 2 | não |
 | DH 14 | [Lei Estadual nº 6.783/1974 — Estatuto dos Militares do Estado de Pernambuco](Direitos_Humanos_e_Legislacao_Extravagante/Lei_PE_6783_1974_Estatuto_dos_Militares_de_PE.md) | 176 | ALEPE | — | — | não |
-| DH 15 | [Lei nº 10.741/2003 — Estatuto da Pessoa Idosa](Direitos_Humanos_e_Legislacao_Extravagante/Lei_10741_2003_Estatuto_da_Pessoa_Idosa.md) | 118 | Câmara dos Deputados | 03/07/2025 | 3 | não |
+| DH 15 | [Lei nº 10.741/2003 — Estatuto da Pessoa Idosa](Direitos_Humanos_e_Legislacao_Extravagante/Lei_10741_2003_Estatuto_da_Pessoa_Idosa.md) — só o recorte do edital | 29 de 118 | Câmara dos Deputados | 03/07/2025 | 3 | não |
 | DH 16 | [Lei nº 12.852/2013 — Estatuto da Juventude](Direitos_Humanos_e_Legislacao_Extravagante/Lei_12852_2013_Estatuto_da_Juventude.md) | 48 | Câmara dos Deputados | 23/07/2025 | 1 | não |
 
 ## Para atualizar

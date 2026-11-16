@@ -16,7 +16,7 @@
 | **2ª passada — novo:** texto oficial do Acordo Ortográfico (Bases I e VIII a XIX) | [LÍNGUA PORTUGUESA/Acordo_Ortografico_1990_Bases_acentuacao_hifen.md](LÍNGUA%20PORTUGUESA/Acordo_Ortografico_1990_Bases_acentuacao_hifen.md) | LP 5 e 6 (ortografia e acentuação) tinham só duas linhas cada no guia |
 | **2ª passada — novo:** atalhos oficiais do Windows 11 e do LibreOffice 7.6 (Writer, Calc, Impress) | [INFORMÁTICA/Atalhos_oficiais_Windows11_e_LibreOffice7.md](INFORMÁTICA/Atalhos_oficiais_Windows11_e_LibreOffice7.md) | INF 6 e 7 cobram atalhos com versão e idioma. Word e Excel ficaram de fora: as páginas oficiais da Microsoft em português se contradizem |
 | **2ª passada — ajuste:** rótulo da SV 56 | [Sumulas_e_Jurisprudencia.md](Sumulas_e_Jurisprudencia.md) | Estava como "execução penal" (fora do edital); o fundamento é a CF, art. 5º, XLVI e XLVIII (DC 2) |
-| **Mantidos como apoio** (➕): Carta da ONU (arts. 1º e 2º) e PNDH-3 (arts. 1º a 7º) | [Carta da ONU](Direitos_Humanos_e_Legislacao_Extravagante/Carta_ONU_1945_arts_1_e_2.md) · [PNDH-3](Direitos_Humanos_e_Legislacao_Extravagante/Decreto_7037_2009_PNDH3_arts_1_a_7.md) | Não estão no Anexo II, mas fazem parte da "estrutura normativa" de DH 1 e foram cobrados em prova de Soldado (PMCE 2025); o material de 10/11 os usa |
+| **Retirados em 16/11/2026:** Carta da ONU (arts. 1º e 2º) e PNDH-3 (arts. 1º a 7º); artigos do ECA e do Estatuto da Pessoa Idosa fora do recorte | — (texto integral no Planalto e na Câmara) | Não estão no Anexo II. A Carta e o PNDH continuam citados, com link para o Planalto, no material de 10/11 e no resumo de DH 1 a 3, porque foram cobrados em provas oficiais (SEJUS-CE 2017 e PMCE 2025) |
 
 Nenhum outro conteúdo da base está fora do edital: a CF vai só até o art. 144 (Títulos I a V = DC 1 a 5), as leis são exatamente as do Anexo II e a apostila de História de Pernambuco segue os itens 1 a 8 (a "Guerra dos Bárbaros" entra como contato do europeu com o nativo, item 1).
 
@@ -68,7 +68,7 @@ Não há questão oficial de História de PE fora da PMPE 2023 (reservada para o
 
 | Item | Cobertura | Onde |
 |---|---|---|
-| 1. Teoria geral | ✅ | [DH_1_a_3](Direitos_Humanos_e_Legislacao_Extravagante/DH_1_a_3_Teoria_Geral_Geracoes_e_Tratados.md), parte 1; ➕ Carta da ONU e PNDH-3 |
+| 1. Teoria geral | ✅ | [DH_1_a_3](Direitos_Humanos_e_Legislacao_Extravagante/DH_1_a_3_Teoria_Geral_Geracoes_e_Tratados.md), parte 1 (a Carta da ONU e o PNDH-3 aparecem só como citação, com link para o Planalto) |
 | 2. Evolução e gerações | ✅ | DH_1_a_3, parte 2 |
 | 3. Incorporação e hierarquia dos tratados | ✅ | DH_1_a_3, parte 3; CF, art. 5º, §§ 2º a 4º; SV 25 |
 | 4. DUDH | ✅ | [DUDH_1948.md](Direitos_Humanos_e_Legislacao_Extravagante/DUDH_1948.md) |
@@ -77,7 +77,7 @@ Não há questão oficial de História de PE fora da PMPE 2023 (reservada para o
 | 7 a 13. Abuso de autoridade, tortura, Maria da Penha, Lei 7.716, ambientais, hediondos, drogas | ✅ | Texto integral de cada lei ([índice da legislação](INDICE_DA_LEGISLACAO.md)) |
 | 14. Estatuto dos Militares de PE | ✅ | [Lei PE 6.783/1974](Direitos_Humanos_e_Legislacao_Extravagante/Lei_PE_6783_1974_Estatuto_dos_Militares_de_PE.md) |
 | 15. Pessoa Idosa (atuação policial e crimes) | ✅ | [Lei 10.741/2003](Direitos_Humanos_e_Legislacao_Extravagante/Lei_10741_2003_Estatuto_da_Pessoa_Idosa.md), com recorte do edital |
-| 16. Estatuto da Juventude | ✅ | [Lei 12.852/2013](Direitos_Humanos_e_Legislacao_Extravagante/Lei_12852_2013_Estatuto_da_Juventude.md) |
+| 16. Estatuto da Juventude | ✅ | [Lei 12.852/2013](Direitos_Humanos_e_Legislacao_Extravagante/Lei_12852_2013_Estatuto_da_Juventude.md); questões: [5 oficiais de outras bancas](../Banco_de_Provas/Outras_Bancas/Avulsas_Estatuto_da_Juventude/questoes.md) e [12 autorais](../Banco_de_Provas/Questoes_Autorais/Estatuto_da_Juventude.md) (16/11/2026) |
 | 17. Maria da Penha (repetido no edital) | ✅ | Mesmo arquivo do item 9 |
 | 18. Súmulas e jurisprudência | ✅ | [Sumulas_e_Jurisprudencia.md](Sumulas_e_Jurisprudencia.md), seções 2 e 3 |
 

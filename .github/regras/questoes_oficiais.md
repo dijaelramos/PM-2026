@@ -6,10 +6,10 @@ Complementa a seção 3 de `.github/copilot-instructions.md`. Leia este arquivo 
 
 1. **Prova de Soldado PMPE 2023** (Instituto AOCP), **só depois do Simulado 1** (veja a reserva nas regras comuns): `Editais/2023/indice_questoes_2023.md` (índice por tópico do edital de 2026, com gabarito definitivo) e `Editais/2023/2023 - PMPE - Prova Soldado.md` (texto das questões).
 2. **Banco de provas local** (`Banco_de_Provas/`): procure o tópico em `Banco_de_Provas/indice_por_topico.md`. A ordem de preferência é:
-   - outras provas de PM da AOCP: **PMPE 2023 – 2º Tenente** (mesmo concurso de 2023, liberada para treino), PMGO 2022 e PMES 2022;
-   - provas da AOCP de outras áreas (`AOCP/Outras_Areas/`: SEJUS-CE, PC-ES, TRT-1, ITEP-RN, UFPB, Câmara de Maringá, EBSERH, DESENBAHIA);
+   - outras provas de PM da AOCP: **PMPE 2023 – 2º Tenente** (mesmo concurso de 2023, liberada para treino), PMGO 2022, PMDF 2023 (caderno Tipo 03), PMES 2022 e PMES 2018;
+   - provas da AOCP de outras áreas (`AOCP/Outras_Areas/`: SEJUS-CE, PC-ES, PC-PA, Polícia Penal de SP 2026 e do DF 2022, DEPPEN-PR, TRT-1, ITEP-RN, UFPB, Câmara de Maringá, EBSERH, DESENBAHIA);
    - outras bancas (FGV/PMSP 2022, CEV-UECE/PMCE 2025).
-   Prefira nível médio (PMPE 2023 – 2º Tenente, PMGO 2022, PC-ES 2019 e EBSERH 2017 eram de nível superior). Avise o estudante quando a questão tiver 4 alternativas (SEJUS-CE 2017) ou cobrar versão de programa diferente da do edital (Windows 7, Office 2010/2016).
+   Prefira nível médio (PMPE 2023 – 2º Tenente, PMGO 2022, PMDF 2023, PC-ES 2019, PC-PA 2021, Polícia Penal do DF 2022 e EBSERH 2017 eram de nível superior). Avise o estudante quando a questão tiver 4 alternativas (SEJUS-CE 2017 e Polícia Penal de SP 2026), quando for item de **certo ou errado** (Polícia Penal do DF 2022: use só para revisão) ou cobrar versão de programa diferente da do edital (Windows 7, Office 2010/2016).
 3. **Se o banco local não tiver questão oficial do tópico, não vá para a Web por padrão** (a ferramenta `web` só abre páginas, não pesquisa, e o site da AOCP bloqueia acesso automatizado):
    - diga quantas questões oficiais existem no banco para o tópico (pode ser zero) e de quais provas;
    - ofereça, nesta ordem: (a) as questões autorais prontas de `Banco_de_Provas/Questoes_Autorais/`; (b) criar uma questão autoral nova, seguindo `.github/regras/questao_autoral_lei.md` quando o tema for lei;
@@ -25,7 +25,7 @@ Complementa a seção 3 de `.github/copilot-instructions.md`. Leia este arquivo 
 
 | Situação | Provas | Como apresentar |
 |---|---|---|
-| Definitivo ou pós-recursos | PMPE 2023 Soldado (reservado), PMPE 2023 Tenente, PMGO 2022, **PMES 2022** (pós-recursos desde 13/11/2026), **PMES 2018**, FGV/PMSP 2022, **CEV-UECE/PMCE 2025** (definitivo desde 13/11/2026) e as 8 da AOCP de outras áreas coletadas em 05/11/2026 | "gabarito oficial definitivo" (ou "pós-recursos") |
+| Definitivo ou pós-recursos | PMPE 2023 Soldado (reservado), PMPE 2023 Tenente, PMGO 2022, **PMES 2022** (pós-recursos desde 13/11/2026), **PMES 2018**, FGV/PMSP 2022, **CEV-UECE/PMCE 2025** (definitivo desde 13/11/2026) as 8 da AOCP de outras áreas coletadas em 05/11/2026, as 3 do Estude Grátis de 13/11/2026 e as baixadas pelo estudante em 16/11/2026: **PMDF 2023** (com anulações; vale para o caderno **Tipo 03**), **PC-PA 2021** (Delegado e Escrivão definitivos, Investigador pós-recursos), **Polícia Penal do DF 2022** (pós-recursos) e **Polícia Penal de SP 2026** (definitivo, DOE-SP) | "gabarito oficial definitivo" (ou "pós-recursos") |
 | **Não confirmado** | **DEPPEN-PR 2024** (captura de tela da página da AOCP, sem dizer se é preliminar ou definitivo) | "gabarito não confirmado; trate como preliminar" — nunca como oficial |
 | Questão anulada | marcada como `anulada` nos índices | diga que foi anulada; num simulado, conte como acerto (item 19.10 do edital) |
 

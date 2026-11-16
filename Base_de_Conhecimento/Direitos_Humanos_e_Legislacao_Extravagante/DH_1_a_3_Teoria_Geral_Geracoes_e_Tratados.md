@@ -1,7 +1,7 @@
 # Direitos Humanos, itens 1 a 3 — teoria geral, evolução e gerações, incorporação e hierarquia dos tratados (resumo de referência)
 
 > **Para que serve:** os itens DH 1 a 3 do Anexo II são **doutrinários** e não têm uma lei própria. Este arquivo reúne, em formato de consulta, o conteúdo já ensinado nos materiais de [10/11](../../Material_do_Dia/2026-11-10_Direitos_Humanos.md) e [11/11](../../Material_do_Dia/2026-11-11_Direitos_Humanos.md), para que os agentes respondam sem depender da Web.
-> **Fontes e rótulos:** o que é **texto de norma** foi conferido nos arquivos locais ([CF](../Direito_Constitucional/CF_1988_arts_1_a_144.md), [Carta da ONU](Carta_ONU_1945_arts_1_e_2.md), [CADH](CADH_Pacto_de_San_Jose_1969.md), [Súmulas](../Sumulas_e_Jurisprudencia.md)). O resto é **doutrina** (autores citados) ou **jurisprudência citada pelo tutor**, marcada assim: confira no portal do tribunal antes de usar num recurso. Compilado em 13/11/2026.
+> **Fontes e rótulos:** o que é **texto de norma** foi conferido nos arquivos locais ([CF](../Direito_Constitucional/CF_1988_arts_1_a_144.md), [Carta da ONU](https://www.planalto.gov.br/ccivil_03/decreto/1930-1949/d19841.htm) (Planalto), [CADH](CADH_Pacto_de_San_Jose_1969.md), [Súmulas](../Sumulas_e_Jurisprudencia.md)). O resto é **doutrina** (autores citados) ou **jurisprudência citada pelo tutor**, marcada assim: confira no portal do tribunal antes de usar num recurso. Compilado em 13/11/2026.
 > **Itens do edital:** 1. Teoria geral (conceito, terminologia, estrutura normativa, fundamento, classificação, especificidades). 2. Evolução histórica e gerações. 3. Incorporação dos tratados (CF, art. 5º, §§ 2º e 3º) e hierarquia normativa.
 
 ---
@@ -45,11 +45,11 @@ A CF usa vários nomes: "prevalência dos **direitos humanos**" (art. 4º, II, r
 | Africano | União Africana | Carta Africana (1981) |
 
 - **CF, art. 5º:** § 1º aplicação **imediata**; § 2º rol **aberto**; § 3º tratado de direitos humanos com rito especial = **emenda**; § 4º submissão ao **Tribunal Penal Internacional**.
-- **Deveres do Estado:** **respeitar** (não violar), **proteger** (impedir que terceiros violem), **realizar/promover** (criar condições). Papéis cobrados em prova: Estado **indutor** (promove políticas) e **garantidor** (assegura e repara); no PNDH-3, "**promoção e defesa**" *(Decreto nº 7.037/2009, [trecho local](Decreto_7037_2009_PNDH3_arts_1_a_7.md); o PNDH não é citado no Anexo II, é apoio)*.
+- **Deveres do Estado:** **respeitar** (não violar), **proteger** (impedir que terceiros violem), **realizar/promover** (criar condições). Papéis cobrados em prova: Estado **indutor** (promove políticas) e **garantidor** (assegura e repara); no PNDH-3, "**promoção e defesa**" *(Decreto nº 7.037/2009, [Planalto](https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2009/decreto/d7037.htm); o PNDH não é citado no Anexo II, é apoio)*.
 - **Eficácia:** **vertical** (contra o Estado) e **horizontal** (entre particulares); dimensão **subjetiva** (direito exigível) e **objetiva** (valor que obriga o Estado a criar leis e órgãos).
 - **Subsidiariedade:** o sistema internacional atua depois do interno; em regra exige **esgotamento dos recursos internos** (CADH, art. 46).
 - **Incidente de Deslocamento de Competência** (CF, art. 109, V-A e § 5º, EC 45/2004): em **grave violação** de direitos humanos, o **Procurador-Geral da República** pode pedir ao **STJ** o deslocamento para a **Justiça Federal**.
-- **Carta da ONU** (1945, São Francisco): 4 propósitos (paz e segurança por meios coletivos e pacíficos; relações amistosas com igualdade de direitos e autodeterminação; cooperação internacional e respeito aos direitos humanos sem distinção de raça, sexo, língua ou religião; centro harmonizador) — texto em [Carta_ONU_1945_arts_1_e_2.md](Carta_ONU_1945_arts_1_e_2.md).
+- **Carta da ONU** (1945, São Francisco): 4 propósitos (paz e segurança por meios coletivos e pacíficos; relações amistosas com igualdade de direitos e autodeterminação; cooperação internacional e respeito aos direitos humanos sem distinção de raça, sexo, língua ou religião; centro harmonizador) — texto oficial no [Planalto, Decreto nº 19.841/1945](https://www.planalto.gov.br/ccivil_03/decreto/1930-1949/d19841.htm) (fora do Anexo II; o trecho local foi retirado em 16/11/2026).
 
 ### 1.4 Fundamento
 

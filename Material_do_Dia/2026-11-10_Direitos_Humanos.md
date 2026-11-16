@@ -215,7 +215,7 @@ Depois da Segunda Guerra Mundial, os países decidiram criar uma organização p
 - **Assinatura:** São Francisco (EUA), **26/06/1945**. No Brasil, foi promulgada pelo **Decreto nº 19.841/1945**.
 - **Importância para os direitos humanos:** é o primeiro tratado de alcance mundial a colocar a **promoção dos direitos humanos** entre os propósitos de uma organização internacional. Marca a **internacionalização** dos direitos humanos: eles deixam de ser assunto só de cada país.
 
-**Os 4 propósitos (art. 1º)** — texto oficial ([trecho local](../Base_de_Conhecimento/Direitos_Humanos_e_Legislacao_Extravagante/Carta_ONU_1945_arts_1_e_2.md)):
+**Os 4 propósitos (art. 1º)** — texto oficial ([Planalto, Decreto nº 19.841/1945](https://www.planalto.gov.br/ccivil_03/decreto/1930-1949/d19841.htm); o trecho local foi retirado da base em 16/11/2026 por estar fora do Anexo II):
 
 | Nº | Propósito (texto da Carta) | Palavras-chave para memorizar |
 |---|---|---|
@@ -317,7 +317,7 @@ O PNDH é o **"plano de governo" do Brasil para os direitos humanos**: diz quais
 
 O PNDH nasceu de uma recomendação da **Conferência de Viena (1993)**, que sugeriu a cada país elaborar um plano nacional de ação em direitos humanos.
 
-**Regras do Decreto nº 7.037/2009** ([trecho local](../Base_de_Conhecimento/Direitos_Humanos_e_Legislacao_Extravagante/Decreto_7037_2009_PNDH3_arts_1_a_7.md)):
+**Regras do Decreto nº 7.037/2009** ([Planalto](https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2009/decreto/d7037.htm); o trecho local foi retirado da base em 16/11/2026 por estar fora do Anexo II):
 
 | Artigo | Regra |
 |---|---|
