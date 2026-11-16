@@ -40,7 +40,7 @@ Texto do Anexo II: *"1. Dos princípios fundamentais. 2. Direitos e garantias fu
 
 ### 🟢 Iniciante — entender
 
-O art. 1º é a "certidão de nascimento" do país. Numa frase, ele diz **três coisas**: que o Brasil é uma **República** (quem governa é eleito e tem mandato, não há rei; que é uma **Federação** (o poder é dividido entre União, Estados, Distrito Federal e Municípios, e essa união não pode ser desfeita); e que é um **Estado Democrático de Direito** (todos, inclusive o governo, obedecem às leis, e as leis são feitas pelo povo ou por seus representantes).
+O art. 1º é a "certidão de nascimento" do país. Numa frase, ele diz **três coisas**: que o Brasil é uma **República** (quem governa é eleito e tem mandato, não há rei); que é uma **Federação** (o poder é dividido entre União, Estados, Distrito Federal e Municípios, e essa união não pode ser desfeita); e que é um **Estado Democrático de Direito** (todos, inclusive o governo, obedecem às leis, e as leis são feitas pelo povo ou por seus representantes).
 
 > **Ex. 1** *(criado pelo tutor)* — Pense no Batalhão: há o comando-geral (União), os batalhões em cada região (Estados) e as companhias nas cidades (Municípios). Cada um tem sua área e sua autonomia, mas **nenhuma companhia pode "se separar" da corporação**. A Federação funciona assim: autonomia, sim; separação, nunca.
 

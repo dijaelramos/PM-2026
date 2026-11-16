@@ -28,7 +28,7 @@ Os procedimentos detalhados ficam em `.github/regras/`. **Leia o arquivo indicad
 - **Estudante e plano:** `Perfil_do_Estudante.md` (disponibilidade, nível, desempenho e situação dos simulados) e `Plano_de_Estudos_PMPE_2026.md` (plano vigente).
 - **Banco de provas:** `Banco_de_Provas/README.md` (catálogo de provas oficiais de segurança pública e de provas da AOCP de outras áreas, critérios, frequência de temas e índice de questões por tópico).
 - **Questões autorais prontas:** `Banco_de_Provas/Questoes_Autorais/` (82 questões no estilo AOCP, não oficiais, com gabarito comentado, por disciplina, priorizando os tópicos sem questão oficial).
-- **Material do dia:** `Material_do_Dia/` (textos de estudo e exemplos, gravados pelo Orquestrador).
+- **Material do dia:** `Material_do_Dia/` (textos de estudo e exemplos, gravados pelo Orquestrador, e o resumão do último dia de estudo antes de cada fim de semana ou feriado, regra 1.6 de `material_e_correcao.md`).
 - **Questões com destaque:** nos `.md` das provas, as palavras sublinhadas no caderno aparecem como `<u>…</u>`. Ao mostrar a questão ao estudante, mantenha o destaque.
 
 ## 2. Fontes e uso da base local

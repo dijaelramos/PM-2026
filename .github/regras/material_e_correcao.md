@@ -52,6 +52,38 @@ Para **cada subtópico**, apresente os três níveis nesta ordem, com estes rót
 
 O material fica longo, e isso é esperado: priorize clareza e cobertura em vez de brevidade. No chat, mostre o texto de estudo, o estudo dirigido e as questões; o gabarito fica só no arquivo.
 
+### 1.6 Resumão antes de fim de semana e feriado
+
+Fins de semana e feriados não têm sessão no plano. Para que o estudante revise nesses dias, **o último dia de estudo antes de cada pausa ganha, além do material do dia, um resumão em outro arquivo**. Monte-o **automaticamente, logo depois de salvar o material do dia**, sem esperar o estudante pedir. Os feriados são os "Dias sem estudo" do plano.
+
+| Situação | Quando montar | O que o resumão cobre | Para estudar em |
+|---|---|---|---|
+| Semana normal | Sexta, depois do material do dia | Segunda a sexta | Sábado e domingo |
+| Feriado no meio da semana (ex.: quarta) | Na véspera (terça), depois do material do dia | Os dias de estudo da semana até a véspera (segunda e terça) | O feriado |
+| Fim da semana que teve feriado no meio | Sexta, depois do material do dia | A semana inteira de novo (no exemplo: segunda, terça, quinta e sexta) | Sábado e domingo |
+| Feriado colado ao fim de semana (sexta, ou quinta e sexta) | No último dia de estudo da semana | Todos os dias de estudo da semana | Feriado e fim de semana (**um só resumão**) |
+
+- Vale a **data da sessão no plano**, mesmo que o pedido do material chegue em outro dia.
+- Se o feriado vier logo depois de um único dia de estudo (ex.: feriado na terça), o resumão cobre só esse dia.
+- Se a última sessão antes da pausa for um **simulado**, monte o resumão logo depois de entregar o simulado, com os dias de conteúdo da semana.
+- **Não repita o material.** Não transcreva os três níveis, os exemplos nem as questões; fique com o essencial para a memória (regras, quadros, mnemônicos) e mande ao material completo quem precisar de detalhe. Referência: até cerca de 1 página por dia de estudo, para ler e responder em cerca de 1 h. Essa revisão não conta nas horas do plano.
+- No resumão de fim de semana de uma semana com feriado, os pontos essenciais dos dias já resumidos podem ser reaproveitados, mas o teste-relâmpago traz perguntas novas e entram os erros corrigidos desde o resumão anterior.
+
+**Estrutura do resumão:**
+
+1. **Cabeçalho:** período coberto, sessões do plano (data, disciplina, itens do Anexo II) com o link de cada material completo e para quando é o resumão.
+2. **O essencial de cada dia:** por dia (ou por disciplina, se vários dias forem da mesma), os pontos que precisam ficar na memória, em tópicos curtos, com os quadros comparativos e os mnemônicos do material.
+3. **Pegadinhas da semana:** um único quadro "a banca escreve… / o certo é…", com as mais importantes.
+4. **Seus erros da semana:** as questões e os itens do estudo dirigido que o estudante errou, com a regra correta em uma linha. Se alguma correção ainda não foi feita, diga quais respostas faltam enviar.
+5. **Redação da semana:** tema, principais apontamentos da correção (se já houve) e o que falta enviar.
+6. **Teste-relâmpago:** 10 a 15 perguntas curtas de recuperação ativa, cobrindo todos os dias, com o rótulo "perguntas de revisão do tutor". Não use questões oficiais novas: elas ficam para as sessões e os simulados.
+7. **O que vem a seguir:** as próximas sessões do plano (datas e tópicos), em poucas linhas.
+8. **Respostas do teste-relâmpago,** só no fim do arquivo.
+
+**Nome do arquivo:** `AAAA-MM-DD_Resumao_da_Semana.md` (antes do fim de semana, inclusive quando o feriado emenda com ele) ou `AAAA-MM-DD_Resumao_Feriado.md` (feriado no meio da semana). A data é a do último dia de estudo coberto. Registre o arquivo em `Material_do_Dia/README.md`.
+
+**No chat:** depois de apresentar o material do dia, dê o link do resumão e diga o que ele cobre e para quando é. O conteúdo fica no arquivo.
+
 ## Parte 2 — Correção
 
 Vale para questões oficiais, autorais, exercícios do tutor e estudo dirigido. **Explique todos os itens, inclusive os que o estudante acertou e os que deixou em branco.**

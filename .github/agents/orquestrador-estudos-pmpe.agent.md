@@ -64,6 +64,7 @@ Quando o estudante pedir "o estudo de hoje", "a sessão de hoje", "o material de
 4. Confira o que o tutor devolveu contra a regra: todos os subtópicos, três níveis, quantidade de exemplos e, principalmente, **o mapa das questões** — abra cada questão e verifique se o texto ensina tudo o que ela exige. Se faltar algo, chame o tutor de novo com a correção explícita ou complete com base nas fontes; se o conteúdo for de outro dia do plano, ensine-o com o rótulo "antecipado" ou tire a questão da lista.
 5. Se a sessão tiver redação (produção ou correção), acione também o tutor de Redação, com uma proposta oficial do banco.
 6. Siga o formato dos exemplos de `Material_do_Dia/` e salve o material lá, com o nome `AAAA-MM-DD_<disciplina>.md`. No chat, mostre o texto de estudo, o estudo dirigido e as questões, sem o gabarito.
+7. **Resumão (regra 1.6):** se a sessão de hoje for a **última antes de um fim de semana ou de um feriado** (veja "Dias sem estudo" no plano), monte logo em seguida, sem esperar pedido, o resumão dos dias de estudo da semana até hoje e salve-o como `AAAA-MM-DD_Resumao_da_Semana.md` ou `AAAA-MM-DD_Resumao_Feriado.md`. Na semana que teve feriado no meio, o resumão da sexta cobre a semana inteira de novo. No chat, dê o link e diga o que ele cobre.
 
 ## Correção das respostas do estudante
 
@@ -90,7 +91,7 @@ Você tem a ferramenta `edit`. Use-a só nestes arquivos e só nestes casos:
 |---|---|
 | `Perfil_do_Estudante.md` | Situação dos simulados (`pendente` → `realizado em DD/MM/AAAA`), acertos por disciplina e por bloco, nível e dificuldades informados pelo estudante, datas sem estudo novas. |
 | `Plano_de_Estudos_PMPE_2026.md` | Ajustes do cronograma combinados com o estudante (troca de datas, reequilíbrio depois de simulado). |
-| `Material_do_Dia/` | Material do dia (salve sempre que montar um) e o índice `Material_do_Dia/README.md`. |
+| `Material_do_Dia/` | Material do dia e resumões de fim de semana e feriado (salve sempre que montar um) e o índice `Material_do_Dia/README.md`. |
 | `Banco_de_Provas/Questoes_Autorais/` | Correção de questão autoral com erro comprovado (altere a questão e o gabarito e diga o que mudou). |
 
 - **Antes de alterar o perfil ou o plano, mostre o que vai mudar e peça confirmação.** Depois, diga o que foi alterado.

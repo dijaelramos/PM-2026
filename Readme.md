@@ -28,7 +28,7 @@ O edital e seus anexos são a referência definitiva em caso de divergência. A 
 | [`Editais/2026/`](Editais/2026/) | Edital do concurso em foco, em PDF e em texto convertido (`.md`). |
 | [`Editais/2023/`](Editais/2023/) | Caderno de prova oficial de Soldado PMPE 2023 (Instituto AOCP), em PDF e em texto convertido, com índice de questões por tópico. |
 | [`Banco_de_Provas/`](Banco_de_Provas/README.md) | Outras provas oficiais de PM (AOCP: PMPE 2023 – 2º Tenente, PMGO 2022, PMES 2022, PMES 2018 e PMDF 2023; FGV: PMSP 2022; CEV/UECE: PMCE 2025) e 17 provas da AOCP de outras áreas (sistema prisional, polícia penal, polícia civil, perícia, judiciário, universidade, legislativo, saúde e banco público), com critérios e níveis de cada avaliação, frequência de temas e índice de questões por tópico do edital da PMPE 2026. |
-| [`Material_do_Dia/`](Material_do_Dia/README.md) | Material de cada sessão do plano (texto de estudo, questões oficiais com gabarito comentado e redação), feito só com provas oficiais. Peça ao Orquestrador "o estudo de hoje". |
+| [`Material_do_Dia/`](Material_do_Dia/README.md) | Material de cada sessão do plano (texto de estudo, questões oficiais com gabarito comentado e redação), feito só com provas oficiais, e o resumão do último dia de estudo antes de cada fim de semana ou feriado. Peça ao Orquestrador "o estudo de hoje". |
 | [`Banco_de_Provas/Questoes_Autorais/`](Banco_de_Provas/Questoes_Autorais/README.md) | 82 questões autorais no estilo AOCP (não oficiais), com gabarito comentado, para os tópicos com pouca ou nenhuma questão oficial e para completar o Simulado 2. |
 
 ### Materiais por disciplina
