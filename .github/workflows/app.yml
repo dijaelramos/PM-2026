@@ -1,0 +1,55 @@
+name: Publicar app PMPE Ouvir
+
+# Roda a cada push que muda o conteúdo ou o app. Os áudios já gerados ficam
+# em cache, então só os materiais novos ou alterados são sintetizados.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Material_do_Dia/**'
+      - 'Base_de_Conhecimento/**'
+      - 'Plano_de_Estudos_PMPE_2026.md'
+      - 'Editais/2026/**'
+      - 'app/**'
+      - '.github/workflows/app.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  gerar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r app/requirements.txt
+      - name: Restaurar áudios já gerados
+        uses: actions/cache@v4
+        with:
+          path: app/.cache
+          key: audio-${{ github.run_id }}
+          restore-keys: audio-
+      - name: Gerar o app
+        run: python app/build.py --limpar-cache
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: app/dist
+
+  publicar:
+    needs: gerar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

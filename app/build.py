@@ -1,0 +1,246 @@
+#!/usr/bin/env python3
+"""Gera o app "PMPE Ouvir" (PWA) em app/dist a partir do conteúdo do repositório.
+
+Uso:
+    python app/build.py                  # gera tudo, com MP3 dos 15 materiais mais recentes
+    python app/build.py --audios 0       # sem MP3 (rápido; só voz do celular)
+    python -m http.server -d app/dist    # testar no navegador em http://localhost:8000
+"""
+import argparse
+import asyncio
+import datetime as dt
+import hashlib
+import json
+import re
+import shutil
+import sys
+import unicodedata
+from pathlib import Path
+from urllib.parse import unquote
+
+from markdown_it import MarkdownIt
+
+sys.path.insert(0, str(Path(__file__).parent))
+from fala import capitulos  # noqa: E402
+from icone import gerar_icones  # noqa: E402
+
+RAIZ = Path(__file__).resolve().parent.parent
+APP = RAIZ / "app"
+DIAS = ["seg.", "ter.", "qua.", "qui.", "sex.", "sáb.", "dom."]
+
+GRUPOS_BASE = {
+    "CONTEUDOS_PROGRAMATICOS": "Conteúdo programático",
+    "LÍNGUA PORTUGUESA": "Língua Portuguesa",
+    "RACIOCÍNIO LÓGICO": "Raciocínio Lógico",
+    "INFORMÁTICA": "Informática",
+    "Direito_Constitucional": "Direito Constitucional",
+    "Direitos_Humanos_e_Legislacao_Extravagante": "Direitos Humanos e Legislação Extravagante",
+    "Historia_de_Pernambuco": "História de Pernambuco",
+    "REDAÇÃO": "Redação",
+}
+
+
+def slug(texto):
+    t = unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode()
+    return re.sub(r"[^A-Za-z0-9]+", "-", t).strip("-").lower()
+
+
+def hash_curto(dados: bytes, n=10):
+    return hashlib.sha256(dados).hexdigest()[:n]
+
+
+def rel(p: Path):
+    return unicodedata.normalize("NFC", p.relative_to(RAIZ).as_posix())
+
+
+def coletar():
+    """Lista os documentos que entram no app."""
+    docs = []
+    for p in sorted((RAIZ / "Material_do_Dia").glob("*.md")):
+        if p.name.lower() == "readme.md":
+            continue
+        docs.append({"caminho": p, "categoria": "material"})
+    plano = RAIZ / "Plano_de_Estudos_PMPE_2026.md"
+    if plano.exists():
+        docs.append({"caminho": plano, "categoria": "plano", "grupo": "Plano de estudos"})
+    for p in sorted((RAIZ / "Editais" / "2026").glob("*.md")):
+        docs.append({"caminho": p, "categoria": "plano", "grupo": "Edital 2026"})
+    base = RAIZ / "Base_de_Conhecimento"
+    for p in sorted(list(base.rglob("*.md")) + list(base.rglob("*.txt"))):
+        if p.suffix == ".txt" and p.stat().st_size < 1000:
+            continue  # arquivos que só guardam um link
+        pasta = p.parent.relative_to(base).parts
+        grupo = GRUPOS_BASE.get(pasta[0], pasta[0].replace("_", " ").title()) if pasta else "Geral"
+        docs.append({"caminho": p, "categoria": "base", "grupo": grupo})
+    return docs
+
+
+def titulo_material(h1, nome):
+    if not re.match(r"(Material do dia|Resumão)", h1, re.I):
+        return h1
+    partes = [x.strip() for x in h1.split(" — ")]
+    assunto = partes[-1] if partes else nome
+    assunto = re.sub(r"\s*\(\s*\d+\s?h(?:\s?\d+)?\s*\)|\s*\(\s*\d+\s?min\s*\)", "", assunto)
+    assunto = re.sub(r"\s+(?:\d+\s?h(?:\s?\d+)?|\d+\s?min)\b", "", assunto).strip()
+    if h1.startswith("Resumão"):
+        return "Resumão: " + assunto if not re.search(r"\d", assunto) else "Resumão da semana"
+    return assunto
+
+
+def preparar(doc, md, md_txt):
+    p = doc["caminho"]
+    texto = p.read_text(encoding="utf-8-sig", errors="replace")
+    eh_txt = p.suffix == ".txt"
+    m = re.search(r"^#\s+(.+)$", texto, re.M)
+    if m and not eh_txt:
+        h1 = m.group(1).strip()
+    else:
+        h1 = next((ln.strip() for ln in texto.splitlines() if ln.strip()), p.stem)
+    doc["h1"] = h1
+    doc["texto"] = texto
+    doc["md"] = md_txt if eh_txt else md
+    doc["rel"] = rel(p)
+    nome = p.stem
+    data = re.match(r"(\d{4})-(\d{2})-(\d{2})", nome)
+    if doc["categoria"] == "material":
+        doc["titulo"] = titulo_material(h1, nome)
+        if data:
+            d = dt.date(*map(int, data.groups()))
+            doc["data"] = d.isoformat()
+            doc["subtitulo"] = f"{DIAS[d.weekday()]} {d:%d/%m}"
+        else:
+            doc["subtitulo"] = "Extra"
+            doc["grupo"] = "Extras"
+    else:
+        doc["titulo"] = re.sub(r"\s*\(texto convertido\)$", "", h1)[:120] if len(h1) <= 120 else p.stem
+    doc["id"] = slug(nome) or hash_curto(doc["rel"].encode())
+
+
+def reescrever_links(tokens, doc, por_caminho):
+    base = doc["caminho"].parent
+    for tok in tokens:
+        for filho in tok.children or []:
+            if filho.type != "link_open":
+                continue
+            href = filho.attrGet("href") or ""
+            if re.match(r"^(https?:|mailto:)", href):
+                filho.attrSet("target", "_blank")
+                filho.attrSet("rel", "noopener")
+                continue
+            if href.startswith("#"):
+                filho.attrs.pop("href", None)
+                continue
+            alvo = unquote(href.split("#")[0])
+            try:
+                caminho = rel((base / alvo).resolve())
+            except ValueError:
+                caminho = None
+            if caminho in por_caminho:
+                filho.attrSet("href", f"#/doc/{por_caminho[caminho]}")
+            else:
+                filho.attrs.pop("href", None)
+                filho.attrSet("class", "semlink")
+
+
+async def gerar_audios(alvos, args, cache):
+    from audio import GeradorAudio
+    ger = GeradorAudio(cache, args.voz, args.taxa)
+    resultados = {}
+    for doc in alvos:
+        print(f"  áudio: {doc['rel']}")
+        try:
+            resultados[doc["id"]] = await ger.documento(doc["capitulos"])
+        except Exception as erro:
+            print(f"    AVISO: áudio não gerado ({erro}). O app usa a voz do celular para este material.")
+    if args.limpar_cache:
+        ger.limpar_cache()
+    return resultados
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--saida", type=Path, default=APP / "dist")
+    ap.add_argument("--audios", type=int, default=15,
+                    help="MP3 para os N materiais mais recentes (0 = nenhum). O GitHub Pages aceita até 1 GB.")
+    ap.add_argument("--voz", default="pt-BR-FranciscaNeural", help="ou pt-BR-AntonioNeural, pt-BR-ThalitaMultilingualNeural")
+    ap.add_argument("--taxa", default="+0%", help="velocidade da voz no MP3, ex.: +10%%")
+    ap.add_argument("--cache", type=Path, default=APP / ".cache" / "audio")
+    ap.add_argument("--limpar-cache", action="store_true", help="apaga do cache os trechos de áudio que não foram usados")
+    args = ap.parse_args()
+
+    md = MarkdownIt("commonmark", {"html": False}).enable(["table", "strikethrough"])
+    md_txt = MarkdownIt("commonmark", {"html": False, "breaks": True}).enable(["table"])
+
+    docs = coletar()
+    for d in docs:
+        preparar(d, md, md_txt)
+    ids = {}
+    for d in docs:  # ids únicos
+        base_id, n = d["id"], 2
+        while d["id"] in ids:
+            d["id"] = f"{base_id}-{n}"; n += 1
+        ids[d["id"]] = d
+    por_caminho = {d["rel"]: d["id"] for d in docs}
+
+    for d in docs:
+        tokens = d["md"].parse(d["texto"])
+        d["capitulos"] = capitulos(tokens, d["titulo"])
+        reescrever_links(tokens, d, por_caminho)
+        d["html"] = d["md"].renderer.render(tokens, d["md"].options, {})
+
+    saida = args.saida
+    if saida.exists():
+        shutil.rmtree(saida)
+    (saida / "data" / "docs").mkdir(parents=True)
+    (saida / "audio").mkdir()
+
+    materiais = sorted((d for d in docs if d.get("data")), key=lambda d: (d["data"], d["rel"]), reverse=True)
+    alvos = materiais[: max(args.audios, 0)]
+    audios = asyncio.run(gerar_audios(alvos, args, args.cache)) if alvos else {}
+
+    catalogo = []
+    for d in docs:
+        caps = d["capitulos"]
+        item = {k: d[k] for k in ("id", "titulo", "categoria") if k in d}
+        for k in ("subtitulo", "grupo", "data"):
+            if d.get(k):
+                item[k] = d[k]
+        if d["id"] in audios:
+            mp3, inicios = audios[d["id"]]
+            nome = f"audio/{d['id']}.{hash_curto(mp3)}.mp3"
+            (saida / nome).write_bytes(mp3)
+            for c, ini in zip(caps, inicios):
+                c["inicio"] = ini
+            item["audio"] = {"url": nome, "bytes": len(mp3), "duracao": round(len(mp3) / 6000)}
+        corpo = json.dumps({"id": d["id"], "titulo": d["titulo"], "origem": d["rel"], "html": d["html"],
+                            "capitulos": caps}, ensure_ascii=False, separators=(",", ":")).encode()
+        item["arquivo"] = f"data/docs/{d['id']}.{hash_curto(corpo)}.json"
+        item["palavras"] = sum(len(p.split()) for c in caps for p in c["paragrafos"])
+        (saida / item["arquivo"]).write_bytes(corpo)
+        catalogo.append(item)
+
+    ordem = {"material": 0, "plano": 1, "base": 2}
+    catalogo.sort(key=lambda i: (i.get("grupo", ""), i["titulo"]))
+    catalogo.sort(key=lambda i: i.get("data", ""), reverse=True)  # material mais recente primeiro
+    catalogo.sort(key=lambda i: ordem[i["categoria"]])
+    conteudo = json.dumps(catalogo, ensure_ascii=False, sort_keys=True).encode()
+    versao = hash_curto(conteudo, 12)
+    agora = dt.datetime.now(dt.timezone(dt.timedelta(hours=-3))).strftime("%d/%m/%Y %H:%M")
+    (saida / "data" / "catalogo.json").write_text(
+        json.dumps({"versao": versao, "gerado_em": agora, "docs": catalogo}, ensure_ascii=False), encoding="utf-8")
+
+    # Arquivos do app; a versão do service worker muda quando o código muda.
+    web = APP / "web"
+    gerar_icones(web / "icons")  # só desenha os que ainda não existem
+    shutil.copytree(web, saida, dirs_exist_ok=True)
+    codigo = b"".join((web / n).read_bytes() for n in sorted(x.name for x in web.iterdir() if x.is_file()))
+    sw = saida / "sw.js"
+    sw.write_text(sw.read_text(encoding="utf-8").replace("__VERSAO__", hash_curto(codigo)), encoding="utf-8")
+    (saida / ".nojekyll").write_text("")
+
+    total_audio = sum(a["bytes"] for a in (i.get("audio") for i in catalogo) if a)
+    print(f"Pronto: {len(catalogo)} documentos, {len(audios)} áudios ({total_audio / 1e6:.0f} MB) em {saida}")
+
+
+if __name__ == "__main__":
+    main()

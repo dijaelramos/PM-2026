@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PMPE Ouvir</title>
+<meta name="description" content="Material do Dia e Base de Conhecimento da PMPE 2026 para ler e ouvir, mesmo sem internet.">
+<meta name="theme-color" content="#14365c">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PMPE Ouvir">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topo">
+  <button id="voltar" class="icone-btn" aria-label="Voltar" hidden>‹</button>
+  <h1 id="titulo-topo">PMPE Ouvir</h1>
+  <span id="rede" class="rede" title="Situação da conexão"></span>
+</header>
+
+<main id="tela" tabindex="-1"></main>
+
+<section id="player" class="player" hidden aria-label="Reprodutor">
+  <div class="player-info">
+    <div class="player-textos">
+      <strong id="p-titulo"></strong>
+      <span id="p-capitulo"></span>
+    </div>
+    <button id="p-fechar" class="icone-btn" aria-label="Fechar reprodutor">×</button>
+  </div>
+  <div class="player-barra">
+    <span id="p-tempo">0:00</span>
+    <input id="p-progresso" type="range" min="0" max="1000" value="0" aria-label="Posição">
+    <span id="p-total">0:00</span>
+  </div>
+  <div class="player-controles">
+    <button id="p-cap-ant" aria-label="Capítulo anterior">⏮</button>
+    <button id="p-voltar" aria-label="Voltar 15 segundos">−15</button>
+    <button id="p-play" class="play" aria-label="Tocar">▶</button>
+    <button id="p-avancar" aria-label="Avançar 30 segundos">+30</button>
+    <button id="p-cap-prox" aria-label="Próximo capítulo">⏭</button>
+    <button id="p-vel" class="vel" aria-label="Velocidade">1×</button>
+  </div>
+</section>
+
+<audio id="audio" preload="metadata"></audio>
+<script src="app.js"></script>
+</body>
+</html>
