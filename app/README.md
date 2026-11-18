@@ -2,7 +2,7 @@
 
 App instalável no celular (Android e iPhone) com o **Material do Dia**, o **plano**, o **edital** e a **Base de Conhecimento**. Funciona sem internet depois da primeira abertura.
 
-- **Voz natural (MP3):** os materiais mais recentes ganham áudio com voz neural pt-BR. Toca com a tela apagada, no fone ou no carro, com controles na tela de bloqueio, capítulos e velocidade de 0,85× a 2×. O app lembra onde você parou.
+- **Voz natural (MP3):** os materiais mais recentes ganham áudio com voz neural pt-BR (Antonio, 10% mais lenta que o normal). Toca com a tela apagada, no fone ou no carro, com controles na tela de bloqueio, capítulos e velocidade de 0,85× a 2×. O app lembra onde você parou.
 - **Voz do celular:** qualquer texto (leis, apostilas, materiais antigos) pode ser lido pela voz do próprio aparelho. A tela fica acesa enquanto lê.
 
 ## Como o conteúdo chega ao celular
@@ -28,7 +28,7 @@ python app/build.py                     # com MP3 dos 15 materiais mais recentes
 python -m http.server -d app/dist 8000  # abrir http://localhost:8000
 ```
 
-Opções do `build.py`: `--audios N` (quantos materiais recebem MP3; o GitHub Pages aceita até 1 GB, e cada material tem de 10 a 35 MB), `--voz pt-BR-AntonioNeural` (voz masculina) e `--taxa +10%` (fala mais rápida já no MP3).
+Opções do `build.py`: `--audios N` (quantos materiais recebem MP3; o GitHub Pages aceita até 1 GB, e cada material tem de 10 a 35 MB), `--voz pt-BR-FranciscaNeural` (voz feminina; o padrão é `pt-BR-AntonioNeural`) e `--taxa -10%` (velocidade da fala no MP3; o padrão é `-10%`).
 
 ## Arquivos
 

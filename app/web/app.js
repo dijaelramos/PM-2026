@@ -450,7 +450,7 @@ const tts = { pedacos: [], idx: 0, tocando: false, atual: null, voz: null, palav
 function escolherVoz() {
   if (!('speechSynthesis' in window)) return null;
   const vozes = speechSynthesis.getVoices().filter((v) => /^pt[-_]BR/i.test(v.lang));
-  const pref = ['Francisca', 'Luciana', 'Google português do Brasil', 'Thalita', 'Antonio'];
+  const pref = ['Antonio', 'Google português do Brasil', 'Luciana', 'Francisca', 'Thalita'];
   for (const p of pref) { const v = vozes.find((x) => x.name.includes(p)); if (v) return v; }
   return vozes.find((v) => v.localService) || vozes[0] || null;
 }

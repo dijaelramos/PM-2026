@@ -162,8 +162,9 @@ def main():
     ap.add_argument("--saida", type=Path, default=APP / "dist")
     ap.add_argument("--audios", type=int, default=15,
                     help="MP3 para os N materiais mais recentes (0 = nenhum). O GitHub Pages aceita até 1 GB.")
-    ap.add_argument("--voz", default="pt-BR-FranciscaNeural", help="ou pt-BR-AntonioNeural, pt-BR-ThalitaMultilingualNeural")
-    ap.add_argument("--taxa", default="+0%", help="velocidade da voz no MP3, ex.: +10%%")
+    ap.add_argument("--voz", default="pt-BR-AntonioNeural",
+                    help="voz do MP3 (escolhida pelo usuário em 18/11/2026); outras: pt-BR-FranciscaNeural, pt-BR-ThalitaMultilingualNeural")
+    ap.add_argument("--taxa", default="-10%", help="velocidade da voz no MP3, ex.: -10%% (mais lenta) ou +10%%")
     ap.add_argument("--cache", type=Path, default=APP / ".cache" / "audio")
     ap.add_argument("--limpar-cache", action="store_true", help="apaga do cache os trechos de áudio que não foram usados")
     args = ap.parse_args()
