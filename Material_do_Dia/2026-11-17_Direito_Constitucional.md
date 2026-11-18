@@ -9,29 +9,29 @@
 
 ## Roteiro
 
-| Bloco | O que fazer |
-|---|---|
-| **1 h — retomada** | Comece pela revisão espaçada (seção 16, 10 min). Depois leia os níveis 🟢 e 🟡 das seções 1 a 6. Ao fim de cada seção, diga em voz alta o "Para levar para a prova". |
-| **1 h — aprofundamento** | Leia os níveis 🟢 e 🟡 das seções 7 a 11 e depois os níveis 🔴 de todas as seções. Estude os quadros da seção 12 e as pegadinhas da seção 13. Se sobrar tempo, comece o estudo dirigido (seção 14); o que faltar fica para a 1ª hora de amanhã (síntese). |
-| **1 h — questões com correção** | Confira o mapa, resolva as 10 questões da seção 15 (cerca de 4 min cada) e mande as respostas para correção (ou confira na seção 17). |
+| Bloco                                     | O que fazer                                                                                                                                                                                                                                                              |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **1 h — retomada**                 | Comece pela revisão espaçada (seção 16, 10 min). Depois leia os níveis 🟢 e 🟡 das seções 1 a 6. Ao fim de cada seção, diga em voz alta o "Para levar para a prova".                                                                                            |
+| **1 h — aprofundamento**           | Leia os níveis 🟢 e 🟡 das seções 7 a 11 e depois os níveis 🔴 de todas as seções. Estude os quadros da seção 12 e as pegadinhas da seção 13. Se sobrar tempo, comece o estudo dirigido (seção 14); o que faltar fica para a 1ª hora de amanhã (síntese). |
+| **1 h — questões com correção** | Confira o mapa, resolva as 10 questões da seção 15 (cerca de 4 min cada) e mande as respostas para correção (ou confira na seção 17).                                                                                                                             |
 
 ## Cobertura do edital
 
 Texto do Anexo II: *"2. Direitos e garantias fundamentais: direitos e deveres individuais e coletivos; direito à vida, à liberdade, à igualdade, à segurança e à propriedade, direitos sociais, nacionalidade e direitos políticos; remédios constitucionais."*
 
-| Item | Subtópico | Situação |
-|---|---|---|
-| 2 | Direitos e deveres individuais e coletivos: titulares, direito × garantia, deveres e §§ 1º a 4º do art. 5º | **explicado hoje** (seção 1) |
-| 2 | Direito à igualdade | **explicado hoje** (seção 2) |
-| 2 | Direito à vida e à integridade | **explicado hoje** (seção 3) |
-| 2 | Direito à liberdade: legalidade, pensamento, crença, expressão, profissão, informação, locomoção, reunião e associação | **explicado hoje** (seções 4, 5 e 6) |
-| 2 | Direito à segurança: privacidade e casa, segurança jurídica e processo, garantias penais e prisão | **explicado hoje** (seções 7 a 10) |
-| 2 | Direito à propriedade | **explicado hoje** (seção 11) |
-| 2 | Direitos sociais (arts. 6º a 11) | **18/11** |
-| 2 | Nacionalidade (arts. 12 e 13) | **02/12** (hoje só a extradição, que está no art. 5º, LI e LII — seção 9) |
-| 2 | Direitos políticos (arts. 14 a 16) e partidos (art. 17) | **02/12** |
-| 2 | Remédios constitucionais (art. 5º, LXVIII a LXXIII) | **03/12** (antecipados em 11/11; hoje só a gratuidade do habeas corpus e do habeas data, LXXVII — seção 10) |
-| 1 | Princípios fundamentais (arts. 1º a 4º) | **16/11** (revisão na seção 16) |
+| Item | Subtópico                                                                                                                        | Situação                                                                                                            |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| 2    | Direitos e deveres individuais e coletivos: titulares, direito × garantia, deveres e §§ 1º a 4º do art. 5º                  | **explicado hoje** (seção 1)                                                                                  |
+| 2    | Direito à igualdade                                                                                                              | **explicado hoje** (seção 2)                                                                                  |
+| 2    | Direito à vida e à integridade                                                                                                  | **explicado hoje** (seção 3)                                                                                  |
+| 2    | Direito à liberdade: legalidade, pensamento, crença, expressão, profissão, informação, locomoção, reunião e associação | **explicado hoje** (seções 4, 5 e 6)                                                                          |
+| 2    | Direito à segurança: privacidade e casa, segurança jurídica e processo, garantias penais e prisão                            | **explicado hoje** (seções 7 a 10)                                                                            |
+| 2    | Direito à propriedade                                                                                                            | **explicado hoje** (seção 11)                                                                                 |
+| 2    | Direitos sociais (arts. 6º a 11)                                                                                                 | **18/11**                                                                                                       |
+| 2    | Nacionalidade (arts. 12 e 13)                                                                                                     | **02/12** (hoje só a extradição, que está no art. 5º, LI e LII — seção 9)                               |
+| 2    | Direitos políticos (arts. 14 a 16) e partidos (art. 17)                                                                          | **02/12**                                                                                                       |
+| 2    | Remédios constitucionais (art. 5º, LXVIII a LXXIII)                                                                             | **03/12** (antecipados em 11/11; hoje só a gratuidade do habeas corpus e do habeas data, LXXVII — seção 10) |
+| 1    | Princípios fundamentais (arts. 1º a 4º)                                                                                        | **16/11** (revisão na seção 16)                                                                              |
 
 > **Como o art. 5º está organizado.** São 79 incisos e 4 parágrafos. A CF não diz qual inciso protege qual dos cinco direitos do caput. A divisão das seções 2 a 11 é **didática** (*doutrina*), para facilitar a memória. Na prova, o que importa é a **letra** de cada inciso.
 
@@ -44,6 +44,7 @@ Texto do Anexo II: *"2. Direitos e garantias fundamentais: direitos e deveres in
 O art. 5º é a lista de proteção de cada pessoa **contra abusos**, inclusive do próprio Estado. O caput (a "cabeça" do artigo) diz quem é protegido e o que é protegido. São cinco bens. Para memorizar, use **VI-LI-GUA-SE-PRO** *(memorização criada pelo tutor)*: **VI**da, **LI**berdade, i**GUA**ldade, **SE**gurança e **PRO**priedade.
 
 > **Ex. 1** *(criado pelo tutor)* — Numa blitz em Caruaru, o motorista abordado tem os cinco bens protegidos ao mesmo tempo:
+>
 > - **vida e integridade:** não pode ser agredido;
 > - **liberdade:** só fica detido se houver flagrante ou ordem judicial;
 > - **igualdade:** é tratado como qualquer outro motorista;
@@ -54,13 +55,13 @@ O art. 5º é a lista de proteção de cada pessoa **contra abusos**, inclusive 
 
 Texto (caput): "Todos são iguais perante a lei, sem distinção de qualquer natureza, garantindo-se aos **brasileiros e aos estrangeiros residentes no País** a inviolabilidade do direito **à vida, à liberdade, à igualdade, à segurança e à propriedade**, nos termos seguintes:"
 
-| Conceito | O que é | Exemplo no art. 5º |
-|---|---|---|
-| **Direito** | O bem protegido (*doutrina*: a norma **declara**) | "é garantido o direito de propriedade" (XXII) |
-| **Garantia** | O instrumento que protege o direito (*doutrina*: a norma **assegura**) | "não haverá juízo ou tribunal de exceção" (XXXVII) |
-| **Individual** | Exercido por cada pessoa | manifestação do pensamento (IV) |
-| **Coletivo** | Exercido em grupo ou protege um grupo | reunião (XVI), associação (XVII), defesa do consumidor (XXXII) |
-| **Dever** | O título do capítulo fala em "**deveres**": quem tem direito também tem obrigações | o proprietário deve dar **função social** à propriedade (XXIII); quem se manifesta não pode ficar **anônimo** (IV) |
+| Conceito             | O que é                                                                                      | Exemplo no art. 5º                                                                                                                  |
+| -------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Direito**    | O bem protegido (*doutrina*: a norma **declara**)                                     | "é garantido o direito de propriedade" (XXII)                                                                                       |
+| **Garantia**   | O instrumento que protege o direito (*doutrina*: a norma **assegura**)                | "não haverá juízo ou tribunal de exceção" (XXXVII)                                                                              |
+| **Individual** | Exercido por cada pessoa                                                                      | manifestação do pensamento (IV)                                                                                                    |
+| **Coletivo**   | Exercido em grupo ou protege um grupo                                                         | reunião (XVI), associação (XVII), defesa do consumidor (XXXII)                                                                    |
+| **Dever**      | O título do capítulo fala em "**deveres**": quem tem direito também tem obrigações | o proprietário deve dar **função social** à propriedade (XXIII); quem se manifesta não pode ficar **anônimo** (IV) |
 
 **Os quatro parágrafos:**
 
@@ -99,16 +100,16 @@ A lei vale do mesmo jeito para todos. Mas igualdade de verdade às vezes exige *
 
 ### 🟡 Intermediário — aplicar
 
-| Dispositivo | Texto |
-|---|---|
-| Caput | "Todos são iguais perante a lei, **sem distinção de qualquer natureza**" |
-| I | "homens e mulheres são iguais em direitos e obrigações, **nos termos desta Constituição**" |
-| XLI | "a lei punirá qualquer discriminação atentatória dos direitos e liberdades fundamentais" |
-| XLII | "a prática do racismo constitui crime **inafiançável e imprescritível**, sujeito à pena de **reclusão**, nos termos da lei" |
+| Dispositivo | Texto                                                                                                                                         |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Caput       | "Todos são iguais perante a lei, **sem distinção de qualquer natureza**"                                                             |
+| I           | "homens e mulheres são iguais em direitos e obrigações, **nos termos desta Constituição**"                                         |
+| XLI         | "a lei punirá qualquer discriminação atentatória dos direitos e liberdades fundamentais"                                                  |
+| XLII        | "a prática do racismo constitui crime **inafiançável e imprescritível**, sujeito à pena de **reclusão**, nos termos da lei" |
 
-| Igualdade | O que é (*doutrina*) | Exemplo |
-|---|---|---|
-| **Formal** | A mesma regra para todos ("perante a lei") | O mesmo limite de velocidade vale para todos os motoristas |
+| Igualdade          | O que é (*doutrina*)                                      | Exemplo                                                          |
+| ------------------ | ------------------------------------------------------------ | ---------------------------------------------------------------- |
+| **Formal**   | A mesma regra para todos ("perante a lei")                   | O mesmo limite de velocidade vale para todos os motoristas       |
 | **Material** | Tratar desigualmente os desiguais, na medida da desigualdade | Ações afirmativas, como as cotas, e o atendimento prioritário |
 
 > **Ex. 2** *(trecho de lei, XLII)* — Quem pratica racismo **não pode** ser solto mediante fiança, e o Estado pode puni-lo **a qualquer tempo**: o crime não prescreve. A pena é de **reclusão**, a mais grave.
@@ -139,12 +140,12 @@ A vida é o direito mais básico. Não basta estar vivo: é preciso viver com **
 
 ### 🟡 Intermediário — aplicar
 
-| Dispositivo | Texto | Palavra-chave |
-|---|---|---|
-| III | "ninguém será submetido a **tortura** nem a tratamento **desumano ou degradante**" | Sem exceção |
-| XLVII | "não haverá penas: a) de **morte**, salvo em caso de **guerra declarada**, nos termos do art. 84, XIX; b) de caráter **perpétuo**; c) de **trabalhos forçados**; d) de **banimento**; e) **cruéis**" | **MO-PER-TRA-BA-CRU** *(memorização do tutor)* |
-| XLIX | "é assegurado aos presos o respeito à **integridade física e moral**" | Preso continua com dignidade |
-| L | "às presidiárias serão asseguradas condições para que possam permanecer com seus filhos durante o período de **amamentação**" | Amamentação |
+| Dispositivo | Texto                                                                                                                                                                                                                                          | Palavra-chave                                            |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| III         | "ninguém será submetido a **tortura** nem a tratamento **desumano ou degradante**"                                                                                                                                               | Sem exceção                                            |
+| XLVII       | "não haverá penas: a) de **morte**, salvo em caso de **guerra declarada**, nos termos do art. 84, XIX; b) de caráter **perpétuo**; c) de **trabalhos forçados**; d) de **banimento**; e) **cruéis**" | **MO-PER-TRA-BA-CRU** *(memorização do tutor)* |
+| XLIX        | "é assegurado aos presos o respeito à **integridade física e moral**"                                                                                                                                                                 | Preso continua com dignidade                             |
+| L           | "às presidiárias serão asseguradas condições para que possam permanecer com seus filhos durante o período de **amamentação**"                                                                                                    | Amamentação                                            |
 
 > **Ex. 2** *(trecho de lei, XLIX)* — O preso perde a liberdade, mas **não** perde a integridade física e moral. Agressão a preso algemado na viatura viola o inciso XLIX.
 
@@ -178,17 +179,18 @@ A vida é o direito mais básico. Não basta estar vivo: é preciso viver com **
 
 ### 🟡 Intermediário — aplicar
 
-| Inciso | Texto | Palavra-chave |
-|---|---|---|
-| II | "ninguém será obrigado a fazer ou deixar de fazer alguma coisa senão **em virtude de lei**" | Legalidade |
-| IV | "é livre a manifestação do pensamento, sendo **vedado o anonimato**" | Anonimato vedado |
-| V | "é assegurado o **direito de resposta, proporcional ao agravo**, além da indenização por dano **material, moral ou à imagem**" | Resposta proporcional + 3 danos |
-| VI | "é **inviolável** a liberdade de consciência e de crença, sendo assegurado o livre exercício dos cultos religiosos e garantida, **na forma da lei**, a proteção aos locais de culto e a suas liturgias" | Crença inviolável |
-| VII | "é assegurada, **nos termos da lei**, a prestação de **assistência religiosa** nas entidades **civis e militares** de internação coletiva" | Assistência religiosa |
-| VIII | "ninguém será privado de direitos por motivo de crença religiosa ou de convicção filosófica ou política, **salvo** se as invocar para eximir-se de obrigação legal a todos imposta **e** recusar-se a cumprir **prestação alternativa**, fixada em lei" | Escusa de consciência |
-| IX | "é livre a expressão da atividade intelectual, artística, científica e de comunicação, independentemente de **censura ou licença**" | Nem censura, nem licença |
+| Inciso | Texto                                                                                                                                                                                                                                                                                | Palavra-chave                   |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- |
+| II     | "ninguém será obrigado a fazer ou deixar de fazer alguma coisa senão **em virtude de lei**"                                                                                                                                                                                 | Legalidade                      |
+| IV     | "é livre a manifestação do pensamento, sendo **vedado o anonimato**"                                                                                                                                                                                                        | Anonimato vedado                |
+| V      | "é assegurado o **direito de resposta, proporcional ao agravo**, além da indenização por dano **material, moral ou à imagem**"                                                                                                                                      | Resposta proporcional + 3 danos |
+| VI     | "é **inviolável** a liberdade de consciência e de crença, sendo assegurado o livre exercício dos cultos religiosos e garantida, **na forma da lei**, a proteção aos locais de culto e a suas liturgias"                                                           | Crença inviolável             |
+| VII    | "é assegurada, **nos termos da lei**, a prestação de **assistência religiosa** nas entidades **civis e militares** de internação coletiva"                                                                                                                   | Assistência religiosa          |
+| VIII   | "ninguém será privado de direitos por motivo de crença religiosa ou de convicção filosófica ou política, **salvo** se as invocar para eximir-se de obrigação legal a todos imposta **e** recusar-se a cumprir **prestação alternativa**, fixada em lei" | Escusa de consciência          |
+| IX     | "é livre a expressão da atividade intelectual, artística, científica e de comunicação, independentemente de **censura ou licença**"                                                                                                                                     | Nem censura, nem licença       |
 
 > **Ex. 2** *(criado pelo tutor, passo a passo)* — Um site publica que um sargento recebeu propina, o que é falso. Pelo inciso V:
+>
 > 1. o sargento tem **direito de resposta**, **proporcional** ao agravo (no mesmo espaço e com o mesmo destaque, *doutrina*);
 > 2. **além disso**, pode pedir indenização por dano **material** (se perdeu dinheiro), **moral** (sofrimento) **ou à imagem** (reputação).
 >
@@ -221,13 +223,13 @@ Você escolhe sua profissão, mas a lei pode exigir preparo. Você tem direito d
 
 ### 🟡 Intermediário — aplicar
 
-| Inciso | Texto | Palavra-chave |
-|---|---|---|
-| XIII | "é livre o exercício de qualquer trabalho, ofício ou profissão, **atendidas as qualificações profissionais que a lei estabelecer**" | A lei pode exigir qualificação |
-| XIV | "é assegurado a todos o acesso à informação e **resguardado o sigilo da fonte**, quando necessário ao exercício profissional" | Sigilo da fonte |
-| XV | "é livre a locomoção no território nacional **em tempo de paz**, podendo qualquer pessoa, **nos termos da lei**, nele entrar, permanecer ou dele sair **com seus bens**" | Ir e vir |
-| XXXIII | "todos têm direito a receber dos órgãos públicos informações de seu interesse particular, ou de interesse coletivo ou geral, que serão prestadas **no prazo da lei**, sob pena de responsabilidade, **ressalvadas** aquelas cujo sigilo seja imprescindível à segurança da sociedade e do Estado" | Informação dos órgãos públicos |
-| XXXIV | "são a todos assegurados, **independentemente do pagamento de taxas**: a) o direito de **petição** aos poderes públicos em defesa de direitos ou contra ilegalidade ou abuso de poder; b) a obtenção de **certidões** em repartições públicas, para defesa de direitos e esclarecimento de situações de interesse pessoal" | Petição e certidão sem taxa |
+| Inciso | Texto                                                                                                                                                                                                                                                                                                                                                    | Palavra-chave                       |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| XIII   | "é livre o exercício de qualquer trabalho, ofício ou profissão, **atendidas as qualificações profissionais que a lei estabelecer**"                                                                                                                                                                                                          | A lei pode exigir qualificação    |
+| XIV    | "é assegurado a todos o acesso à informação e **resguardado o sigilo da fonte**, quando necessário ao exercício profissional"                                                                                                                                                                                                                | Sigilo da fonte                     |
+| XV     | "é livre a locomoção no território nacional **em tempo de paz**, podendo qualquer pessoa, **nos termos da lei**, nele entrar, permanecer ou dele sair **com seus bens**"                                                                                                                                                           | Ir e vir                            |
+| XXXIII | "todos têm direito a receber dos órgãos públicos informações de seu interesse particular, ou de interesse coletivo ou geral, que serão prestadas **no prazo da lei**, sob pena de responsabilidade, **ressalvadas** aquelas cujo sigilo seja imprescindível à segurança da sociedade e do Estado"                                  | Informação dos órgãos públicos |
+| XXXIV  | "são a todos assegurados, **independentemente do pagamento de taxas**: a) o direito de **petição** aos poderes públicos em defesa de direitos ou contra ilegalidade ou abuso de poder; b) a obtenção de **certidões** em repartições públicas, para defesa de direitos e esclarecimento de situações de interesse pessoal" | Petição e certidão sem taxa      |
 
 > **Ex. 2** *(criado pelo tutor)* — Uma repórter publica denúncia sobre desvio de verbas e não revela quem lhe passou os documentos. O sigilo da fonte está **resguardado**, porque é necessário ao trabalho jornalístico (XIV).
 
@@ -264,25 +266,26 @@ As duas são livres, desde que sejam **pacíficas e para fins lícitos**.
 
 **Reunião (XVI):** "todos podem reunir-se **pacificamente, sem armas**, em **locais abertos ao público**, **independentemente de autorização**, desde que não frustrem outra reunião **anteriormente convocada** para o mesmo local, sendo apenas exigido **prévio aviso** à autoridade competente".
 
-| Requisito da reunião | Pegadinha comum |
-|---|---|
-| Pacífica e sem armas | — |
-| Local aberto ao público | — |
-| **Independe de autorização** | Trocar por "depende de autorização" |
-| Não frustrar reunião **anteriormente convocada** para o mesmo local | — |
-| **Prévio aviso** à autoridade competente | Trocar "aviso" por "autorização" |
+| Requisito da reunião                                                       | Pegadinha comum                       |
+| --------------------------------------------------------------------------- | ------------------------------------- |
+| Pacífica e sem armas                                                       | —                                    |
+| Local aberto ao público                                                    | —                                    |
+| **Independe de autorização**                                        | Trocar por "depende de autorização" |
+| Não frustrar reunião **anteriormente convocada** para o mesmo local | —                                    |
+| **Prévio aviso** à autoridade competente                            | Trocar "aviso" por "autorização"    |
 
 **Associação:**
 
-| Inciso | Texto | Palavra-chave |
-|---|---|---|
-| XVII | "é plena a liberdade de associação para **fins lícitos**, **vedada** a de caráter **paramilitar**" | Fins lícitos; paramilitar vedada |
-| XVIII | "a criação de associações e, **na forma da lei**, a de cooperativas **independem de autorização**, sendo **vedada a interferência estatal** em seu funcionamento" | Sem autorização, sem interferência |
-| XIX | "as associações só poderão ser compulsoriamente **dissolvidas** ou ter suas atividades **suspensas** por **decisão judicial**, exigindo-se, **no primeiro caso**, o **trânsito em julgado**" | Dissolver = decisão judicial **definitiva**; suspender = decisão judicial |
-| XX | "ninguém poderá ser compelido a associar-se ou a permanecer associado" | Ninguém é obrigado |
-| XXI | "as entidades associativas, quando **expressamente autorizadas**, têm legitimidade para representar seus filiados judicial ou extrajudicialmente" | Autorização expressa |
+| Inciso | Texto                                                                                                                                                                                                                            | Palavra-chave                                                                     |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| XVII   | "é plena a liberdade de associação para **fins lícitos**, **vedada** a de caráter **paramilitar**"                                                                                                        | Fins lícitos; paramilitar vedada                                                 |
+| XVIII  | "a criação de associações e, **na forma da lei**, a de cooperativas **independem de autorização**, sendo **vedada a interferência estatal** em seu funcionamento"                                       | Sem autorização, sem interferência                                             |
+| XIX    | "as associações só poderão ser compulsoriamente **dissolvidas** ou ter suas atividades **suspensas** por **decisão judicial**, exigindo-se, **no primeiro caso**, o **trânsito em julgado**" | Dissolver = decisão judicial **definitiva**; suspender = decisão judicial |
+| XX     | "ninguém poderá ser compelido a associar-se ou a permanecer associado"                                                                                                                                                         | Ninguém é obrigado                                                              |
+| XXI    | "as entidades associativas, quando **expressamente autorizadas**, têm legitimidade para representar seus filiados judicial ou extrajudicialmente"                                                                         | Autorização expressa                                                            |
 
 > **Ex. 2** *(criado pelo tutor, passo a passo)* — Uma associação de feirantes passa a cobrar "taxa de proteção" dos comerciantes, com ameaças. O Ministério Público vai à Justiça.
+>
 > 1. Para **suspender** as atividades logo, basta uma **decisão judicial** (por exemplo, uma liminar), **sem** esperar o fim do processo.
 > 2. Para **dissolver** de vez, é preciso decisão judicial **transitada em julgado** (sem mais recurso).
 > 3. Nem o prefeito nem o delegado podem fazer uma coisa ou outra por **ato administrativo**.
@@ -315,21 +318,21 @@ Sua vida privada, sua casa e suas conversas são protegidas. A polícia só entr
 
 ### 🟡 Intermediário — aplicar
 
-| Inciso | Texto |
-|---|---|
-| X | "são invioláveis a **intimidade, a vida privada, a honra e a imagem** das pessoas, assegurado o direito a indenização pelo dano material ou moral decorrente de sua violação" |
-| XI | "a casa é asilo inviolável do indivíduo, ninguém nela podendo penetrar sem **consentimento do morador**, salvo em caso de **flagrante delito** ou **desastre**, ou para **prestar socorro**, ou, **durante o dia**, por **determinação judicial**" |
-| XII | "é inviolável o sigilo da correspondência e das comunicações telegráficas, de dados e das comunicações telefônicas, salvo, **no último caso**, por **ordem judicial**, nas hipóteses e na forma que a lei estabelecer para fins de **investigação criminal ou instrução processual penal**" |
-| LXXIX | "é assegurado, nos termos da lei, o direito à **proteção dos dados pessoais**, inclusive nos meios digitais" (EC 115/2022) |
+| Inciso | Texto                                                                                                                                                                                                                                                                                                                        |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| X      | "são invioláveis a **intimidade, a vida privada, a honra e a imagem** das pessoas, assegurado o direito a indenização pelo dano material ou moral decorrente de sua violação"                                                                                                                                    |
+| XI     | "a casa é asilo inviolável do indivíduo, ninguém nela podendo penetrar sem **consentimento do morador**, salvo em caso de **flagrante delito** ou **desastre**, ou para **prestar socorro**, ou, **durante o dia**, por **determinação judicial**"                                 |
+| XII    | "é inviolável o sigilo da correspondência e das comunicações telegráficas, de dados e das comunicações telefônicas, salvo, **no último caso**, por **ordem judicial**, nas hipóteses e na forma que a lei estabelecer para fins de **investigação criminal ou instrução processual penal**" |
+| LXXIX  | "é assegurado, nos termos da lei, o direito à **proteção dos dados pessoais**, inclusive nos meios digitais" (EC 115/2022)                                                                                                                                                                                         |
 
 **Quando se pode entrar numa casa sem consentimento do morador (XI):**
 
-| Hipótese | Horário |
-|---|---|
-| Flagrante delito | **Qualquer hora** |
-| Desastre | **Qualquer hora** |
-| Prestar socorro | **Qualquer hora** |
-| Determinação judicial (mandado) | **Só durante o dia** |
+| Hipótese                         | Horário                                                  |
+| --------------------------------- | --------------------------------------------------------- |
+| Flagrante delito                  | **Qualquer hora**                                   |
+| Desastre                          | **Qualquer hora**                                   |
+| Prestar socorro                   | **Qualquer hora**                                   |
+| Determinação judicial (mandado) | **Só durante o dia, a partir das 5h até as 21h** |
 
 *Memorização do tutor:* "**Flagrante, Desastre e Socorro, 24 horas; Juiz, só de dia.**"
 
@@ -369,25 +372,26 @@ Ninguém pode ser punido sem um processo justo: com juiz definido **antes** do f
 
 ### 🟡 Intermediário — aplicar
 
-| Inciso | Texto (trechos literais) | Palavra-chave |
-|---|---|---|
-| XXXV | "a lei não excluirá da apreciação do Poder Judiciário lesão ou ameaça a direito" | Acesso à Justiça |
-| XXXVI | "a lei não prejudicará o direito adquirido, o ato jurídico perfeito e a coisa julgada" | Segurança jurídica |
-| XXXVII | "**não haverá** juízo ou tribunal de exceção" | Sem exceção |
+| Inciso  | Texto (trechos literais)                                                                                                                                                                                                                                       | Palavra-chave                                        |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| XXXV    | "a lei não excluirá da apreciação do Poder Judiciário lesão ou ameaça a direito"                                                                                                                                                                        | Acesso à Justiça                                   |
+| XXXVI   | "a lei não prejudicará o direito adquirido, o ato jurídico perfeito e a coisa julgada"                                                                                                                                                                      | Segurança jurídica                                 |
+| XXXVII  | "**não haverá** juízo ou tribunal de exceção"                                                                                                                                                                                                       | Sem exceção                                        |
 | XXXVIII | júri, "com a organização que lhe der a lei, assegurados: a) a **plenitude de defesa**; b) o **sigilo das votações**; c) a **soberania dos veredictos**; d) a competência para o julgamento dos **crimes dolosos contra a vida**" | **PLE-SI-SO-COM** *(memorização do tutor)* |
-| LIII | "ninguém será processado nem sentenciado senão pela **autoridade competente**" | Juiz natural |
-| LIV | "ninguém será privado da liberdade ou de seus bens sem o **devido processo legal**" | Devido processo |
-| LV | "aos litigantes, em processo **judicial ou administrativo**, e aos acusados em geral são assegurados o **contraditório e a ampla defesa**, com os meios e recursos a ela inerentes" | Judicial **ou** administrativo |
-| LVI | "são **inadmissíveis**, no processo, as provas obtidas por **meios ilícitos**" | Sem exceção no texto |
-| LVII | "ninguém será considerado culpado até o **trânsito em julgado** de sentença penal condenatória" | Presunção de inocência |
-| LVIII | "o **civilmente identificado** não será submetido a identificação criminal, **salvo nas hipóteses previstas em lei**" | Exceção só por lei |
-| LIX | "**será admitida** ação privada nos crimes de ação pública, **se esta não for intentada no prazo legal**" | Ação privada subsidiária |
-| LX | "a lei só poderá restringir a publicidade dos atos processuais quando a defesa da intimidade ou o interesse social o exigirem" | Publicidade |
-| LXXIV | "o Estado prestará assistência jurídica **integral e gratuita** aos que **comprovarem** insuficiência de recursos" | Defensoria |
-| LXXV | "o Estado indenizará o condenado por **erro judiciário**, assim como o que ficar **preso além do tempo** fixado na sentença" | Duas indenizações |
-| LXXVIII | "a todos, no âmbito **judicial e administrativo**, são assegurados a **razoável duração do processo** e os meios que garantam a celeridade de sua tramitação" (EC 45/2004) | Duração razoável |
+| LIII    | "ninguém será processado nem sentenciado senão pela **autoridade competente**"                                                                                                                                                                        | Juiz natural                                         |
+| LIV     | "ninguém será privado da liberdade ou de seus bens sem o **devido processo legal**"                                                                                                                                                                    | Devido processo                                      |
+| LV      | "aos litigantes, em processo **judicial ou administrativo**, e aos acusados em geral são assegurados o **contraditório e a ampla defesa**, com os meios e recursos a ela inerentes"                                                              | Judicial **ou** administrativo                 |
+| LVI     | "são **inadmissíveis**, no processo, as provas obtidas por **meios ilícitos**"                                                                                                                                                                  | Sem exceção no texto                               |
+| LVII    | "ninguém será considerado culpado até o **trânsito em julgado** de sentença penal condenatória"                                                                                                                                                    | Presunção de inocência                            |
+| LVIII   | "o **civilmente identificado** não será submetido a identificação criminal, **salvo nas hipóteses previstas em lei**"                                                                                                                         | Exceção só por lei                                |
+| LIX     | "**será admitida** ação privada nos crimes de ação pública, **se esta não for intentada no prazo legal**"                                                                                                                                   | Ação privada subsidiária                          |
+| LX      | "a lei só poderá restringir a publicidade dos atos processuais quando a defesa da intimidade ou o interesse social o exigirem"                                                                                                                               | Publicidade                                          |
+| LXXIV   | "o Estado prestará assistência jurídica **integral e gratuita** aos que **comprovarem** insuficiência de recursos"                                                                                                                             | Defensoria                                           |
+| LXXV    | "o Estado indenizará o condenado por **erro judiciário**, assim como o que ficar **preso além do tempo** fixado na sentença"                                                                                                                   | Duas indenizações                                  |
+| LXXVIII | "a todos, no âmbito **judicial e administrativo**, são assegurados a **razoável duração do processo** e os meios que garantam a celeridade de sua tramitação" (EC 45/2004)                                                                  | Duração razoável                                  |
 
 > **Ex. 2** *(criado pelo tutor, passo a passo)* — Quem julga cada caso no júri?
+>
 > 1. Homicídio **doloso** (com intenção), tentado ou consumado → **júri**.
 > 2. Homicídio **culposo** (sem intenção, como um atropelamento por imprudência) → **juiz singular**, não o júri.
 > 3. Regra: o júri julga os crimes **dolosos** contra a vida (XXXVIII, d).
@@ -420,31 +424,32 @@ Só é crime o que a lei já dizia ser crime **antes** do fato. A lei penal nova
 
 ### 🟡 Intermediário — aplicar
 
-| Inciso | Texto | Palavra-chave |
-|---|---|---|
-| XXXIX | "não há crime sem lei anterior que o defina, nem pena sem prévia cominação legal" | Lei **anterior** |
-| XL | "a lei penal não retroagirá, **salvo para beneficiar o réu**" | Retroage para beneficiar |
-| XLIII | "a lei considerará crimes **inafiançáveis e insuscetíveis de graça ou anistia** a prática da **tortura**, o **tráfico** ilícito de entorpecentes e drogas afins, o **terrorismo** e os definidos como crimes **hediondos**, por eles respondendo os **mandantes, os executores e os que, podendo evitá-los, se omitirem**" | 3T + H |
-| XLIV | "constitui crime **inafiançável e imprescritível** a ação de **grupos armados**, civis ou militares, contra a ordem constitucional e o Estado democrático" | Inafiançável + imprescritível |
-| XLV | "nenhuma pena passará da pessoa do condenado, podendo a **obrigação de reparar o dano** e a decretação do **perdimento de bens** ser, nos termos da lei, estendidas aos sucessores e contra eles executadas, **até o limite do valor do patrimônio transferido**" | Pena não passa; reparação sim |
-| XLVI | penas que a lei adotará, "entre outras": privação ou restrição da liberdade; perda de bens; multa; prestação social alternativa; suspensão ou interdição de direitos | Penas permitidas |
-| XLVIII | "a pena será cumprida em estabelecimentos distintos, de acordo com a **natureza do delito, a idade e o sexo** do apenado" | 3 critérios |
-| LI | "**nenhum brasileiro será extraditado, salvo o naturalizado**, em caso de **crime comum, praticado antes da naturalização**, ou de **comprovado envolvimento em tráfico** ilícito de entorpecentes e drogas afins, na forma da lei" | Nato nunca |
-| LII | "não será concedida extradição de estrangeiro por **crime político ou de opinião**" | Político ou de opinião |
+| Inciso | Texto                                                                                                                                                                                                                                                                                                                                                                   | Palavra-chave                    |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| XXXIX  | "não há crime sem lei anterior que o defina, nem pena sem prévia cominação legal"                                                                                                                                                                                                                                                                                  | Lei **anterior**           |
+| XL     | "a lei penal não retroagirá, **salvo para beneficiar o réu**"                                                                                                                                                                                                                                                                                                  | Retroage para beneficiar         |
+| XLIII  | "a lei considerará crimes **inafiançáveis e insuscetíveis de graça ou anistia** a prática da **tortura**, o **tráfico** ilícito de entorpecentes e drogas afins, o **terrorismo** e os definidos como crimes **hediondos**, por eles respondendo os **mandantes, os executores e os que, podendo evitá-los, se omitirem**" | 3T + H                           |
+| XLIV   | "constitui crime **inafiançável e imprescritível** a ação de **grupos armados**, civis ou militares, contra a ordem constitucional e o Estado democrático"                                                                                                                                                                                            | Inafiançável + imprescritível |
+| XLV    | "nenhuma pena passará da pessoa do condenado, podendo a **obrigação de reparar o dano** e a decretação do **perdimento de bens** ser, nos termos da lei, estendidas aos sucessores e contra eles executadas, **até o limite do valor do patrimônio transferido**"                                                                              | Pena não passa; reparação sim |
+| XLVI   | penas que a lei adotará, "entre outras": privação ou restrição da liberdade; perda de bens; multa; prestação social alternativa; suspensão ou interdição de direitos                                                                                                                                                                                          | Penas permitidas                 |
+| XLVIII | "a pena será cumprida em estabelecimentos distintos, de acordo com a **natureza do delito, a idade e o sexo** do apenado"                                                                                                                                                                                                                                        | 3 critérios                     |
+| LI     | "**nenhum brasileiro será extraditado, salvo o naturalizado**, em caso de **crime comum, praticado antes da naturalização**, ou de **comprovado envolvimento em tráfico** ilícito de entorpecentes e drogas afins, na forma da lei"                                                                                                              | Nato nunca                       |
+| LII    | "não será concedida extradição de estrangeiro por **crime político ou de opinião**"                                                                                                                                                                                                                                                                         | Político ou de opinião         |
 
 **O quadro que mais cai:**
 
-| Crime | Inafiançável | Imprescritível | Sem graça ou anistia |
-|---|---|---|---|
-| **Racismo** (XLII) | ✅ | ✅ | — (o inciso não diz) |
-| **Ação de grupos armados** contra a ordem constitucional (XLIV) | ✅ | ✅ | — (o inciso não diz) |
-| **Tortura, tráfico, terrorismo e hediondos** (XLIII) | ✅ | ❌ (prescrevem) | ✅ |
+| Crime                                                                   | Inafiançável | Imprescritível | Sem graça ou anistia  |
+| ----------------------------------------------------------------------- | -------------- | --------------- | ---------------------- |
+| **Racismo** (XLII)                                                | ✅             | ✅              | — (o inciso não diz) |
+| **Ação de grupos armados** contra a ordem constitucional (XLIV) | ✅             | ✅              | — (o inciso não diz) |
+| **Tortura, tráfico, terrorismo e hediondos** (XLIII)             | ✅             | ❌ (prescrevem) | ✅                     |
 
 *Memorização do tutor:* imprescritíveis = **RA-AÇÃO** (**RA**cismo + **AÇÃO** de grupos armados). Sem graça ou anistia = **3T + H** (**T**ortura, **T**ráfico, **T**errorismo + **H**ediondos). Todos os seis são **inafiançáveis**.
 
 > **Ex. 2** *(criado pelo tutor)* — Durante uma ocorrência, um policial vê o colega torturar um preso e, podendo impedir, não faz nada. Pela CF, respondem pela tortura os "executores e os que, podendo evitá-los, se omitirem" (XLIII). A omissão também é punida. A Lei 9.455/1997 detalha isso (item 8 de Direitos Humanos, 14/12).
 
 > **Ex. 3** *(criado pelo tutor, passo a passo)* — Um condenado morre devendo multa penal e indenização à vítima.
+>
 > 1. A **multa** é pena e **não passa** aos herdeiros (XLV).
 > 2. A **obrigação de reparar o dano** pode ser cobrada dos herdeiros.
 > 3. Limite: até o **valor do patrimônio transferido** (a herança). O herdeiro não paga com o próprio dinheiro.
@@ -474,6 +479,7 @@ Só é crime o que a lei já dizia ser crime **antes** do fato. A lei penal nova
 Para prender alguém é preciso **flagrante** ou **ordem escrita do juiz**. Quem é preso tem direitos: avisar a família, ficar calado, ter advogado e saber quem o prendeu. Prisão ilegal acaba **na hora**.
 
 > **Ex. 1** *(criado pelo tutor, passo a passo)* — Uma guarnição prende em flagrante um homem que acabou de furtar uma moto. O que a CF exige:
+>
 > 1. **Informar os direitos** ao preso, entre eles o de **permanecer calado** (LXIII).
 > 2. **Comunicar imediatamente** a prisão e o local ao **juiz** e à **família** ou a quem o preso indicar (LXII).
 > 3. **Identificar-se**: o preso tem direito de saber **quem** o prendeu e quem o interrogou (LXIV).
@@ -481,17 +487,17 @@ Para prender alguém é preciso **flagrante** ou **ordem escrita do juiz**. Quem
 
 ### 🟡 Intermediário — aplicar
 
-| Inciso | Texto (trechos literais) | Palavra-chave |
-|---|---|---|
-| LXI | "ninguém será preso senão em **flagrante delito** ou por **ordem escrita e fundamentada de autoridade judiciária competente**, salvo nos casos de **transgressão militar ou crime propriamente militar**, definidos em lei" | Flagrante ou ordem do juiz |
-| LXII | "a prisão de qualquer pessoa e o local onde se encontre serão comunicados **imediatamente** ao juiz competente e à família do preso ou à pessoa por ele indicada" | Comunicação imediata |
-| LXIII | "o preso será informado de seus direitos, entre os quais o de **permanecer calado**, sendo-lhe assegurada a assistência da família e de advogado" | Silêncio |
-| LXIV | "o preso tem direito à **identificação dos responsáveis** por sua prisão ou por seu interrogatório policial" | Quem prendeu |
-| LXV | "a prisão ilegal será imediatamente **relaxada** pela autoridade judiciária" | **Relaxada** |
-| LXVI | "ninguém será levado à prisão ou nela mantido quando a lei admitir a liberdade provisória, **com ou sem fiança**" | Com ou sem fiança |
-| LXVII | "não haverá prisão civil por dívida, salvo a do responsável pelo inadimplemento voluntário e inescusável de **obrigação alimentícia** e a do depositário infiel" | Ver SV 25 |
-| LXXVI | "são gratuitos para os **reconhecidamente pobres**, na forma da lei: a) o **registro civil de nascimento**; b) a **certidão de óbito**" | Nascimento e óbito |
-| LXXVII | "são gratuitas as ações de **habeas corpus e habeas data**, e, na forma da lei, os atos necessários ao exercício da cidadania" | HC e HD |
+| Inciso | Texto (trechos literais)                                                                                                                                                                                                                           | Palavra-chave              |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| LXI    | "ninguém será preso senão em **flagrante delito** ou por **ordem escrita e fundamentada de autoridade judiciária competente**, salvo nos casos de **transgressão militar ou crime propriamente militar**, definidos em lei" | Flagrante ou ordem do juiz |
+| LXII   | "a prisão de qualquer pessoa e o local onde se encontre serão comunicados **imediatamente** ao juiz competente e à família do preso ou à pessoa por ele indicada"                                                                       | Comunicação imediata     |
+| LXIII  | "o preso será informado de seus direitos, entre os quais o de **permanecer calado**, sendo-lhe assegurada a assistência da família e de advogado"                                                                                         | Silêncio                  |
+| LXIV   | "o preso tem direito à **identificação dos responsáveis** por sua prisão ou por seu interrogatório policial"                                                                                                                           | Quem prendeu               |
+| LXV    | "a prisão ilegal será imediatamente **relaxada** pela autoridade judiciária"                                                                                                                                                              | **Relaxada**         |
+| LXVI   | "ninguém será levado à prisão ou nela mantido quando a lei admitir a liberdade provisória, **com ou sem fiança**"                                                                                                                      | Com ou sem fiança         |
+| LXVII  | "não haverá prisão civil por dívida, salvo a do responsável pelo inadimplemento voluntário e inescusável de **obrigação alimentícia** e a do depositário infiel"                                                                  | Ver SV 25                  |
+| LXXVI  | "são gratuitos para os **reconhecidamente pobres**, na forma da lei: a) o **registro civil de nascimento**; b) a **certidão de óbito**"                                                                                       | Nascimento e óbito        |
+| LXXVII | "são gratuitas as ações de **habeas corpus e habeas data**, e, na forma da lei, os atos necessários ao exercício da cidadania"                                                                                                          | HC e HD                    |
 
 **Súmulas vinculantes do STF ligadas à prisão:**
 
@@ -528,26 +534,26 @@ A Constituição garante que você seja dono das suas coisas, mas a propriedade 
 
 ### 🟡 Intermediário — aplicar
 
-| Inciso | Texto (trechos literais) | Palavra-chave |
-|---|---|---|
-| XXII | "é garantido o direito de propriedade" | Garantido |
-| XXIII | "a propriedade **atenderá a sua função social**" | Função social |
-| XXIV | desapropriação "por necessidade ou utilidade pública, ou por interesse social, mediante **justa e prévia indenização em dinheiro**, ressalvados os casos previstos nesta Constituição" | Prévia, justa, em dinheiro |
-| XXV | "no caso de **iminente perigo público**, a autoridade competente poderá **usar** de propriedade particular, assegurada ao proprietário **indenização ulterior, se houver dano**" | Requisição |
-| XXVI | "a **pequena propriedade rural**, assim definida em lei, desde que **trabalhada pela família**, **não será objeto de penhora** para pagamento de débitos decorrentes de sua **atividade produtiva** [...]" | Impenhorável |
-| XXVII | aos autores, "o direito exclusivo de utilização, publicação ou reprodução de suas obras, **transmissível aos herdeiros pelo tempo que a lei fixar**" | Direito autoral |
-| XXVIII e XXIX | proteção às participações em obras coletivas, à imagem e voz humanas; privilégio **temporário** aos inventos industriais, proteção às marcas e aos nomes de empresas | Propriedade intelectual |
-| XXX | "é garantido o direito de herança" | Herança |
-| XXXI | sucessão de bens de estrangeiros no País regulada pela **lei brasileira** em benefício do cônjuge ou dos filhos **brasileiros**, "sempre que não lhes seja mais favorável a lei pessoal do *de cujus*" | Lei mais favorável |
-| XXXII | "o Estado promoverá, na forma da lei, a **defesa do consumidor**" | Consumidor |
+| Inciso        | Texto (trechos literais)                                                                                                                                                                                                               | Palavra-chave               |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| XXII          | "é garantido o direito de propriedade"                                                                                                                                                                                                | Garantido                   |
+| XXIII         | "a propriedade **atenderá a sua função social**"                                                                                                                                                                              | Função social             |
+| XXIV          | desapropriação "por necessidade ou utilidade pública, ou por interesse social, mediante **justa e prévia indenização em dinheiro**, ressalvados os casos previstos nesta Constituição"                                   | Prévia, justa, em dinheiro |
+| XXV           | "no caso de **iminente perigo público**, a autoridade competente poderá **usar** de propriedade particular, assegurada ao proprietário **indenização ulterior, se houver dano**"                                | Requisição                |
+| XXVI          | "a **pequena propriedade rural**, assim definida em lei, desde que **trabalhada pela família**, **não será objeto de penhora** para pagamento de débitos decorrentes de sua **atividade produtiva** [...]" | Impenhorável               |
+| XXVII         | aos autores, "o direito exclusivo de utilização, publicação ou reprodução de suas obras, **transmissível aos herdeiros pelo tempo que a lei fixar**"                                                                      | Direito autoral             |
+| XXVIII e XXIX | proteção às participações em obras coletivas, à imagem e voz humanas; privilégio **temporário** aos inventos industriais, proteção às marcas e aos nomes de empresas                                                  | Propriedade intelectual     |
+| XXX           | "é garantido o direito de herança"                                                                                                                                                                                                   | Herança                    |
+| XXXI          | sucessão de bens de estrangeiros no País regulada pela **lei brasileira** em benefício do cônjuge ou dos filhos **brasileiros**, "sempre que não lhes seja mais favorável a lei pessoal do *de cujus*"             | Lei mais favorável         |
+| XXXII         | "o Estado promoverá, na forma da lei, a **defesa do consumidor**"                                                                                                                                                               | Consumidor                  |
 
 **Desapropriação × requisição:**
 
-| | Desapropriação (XXIV) | Requisição (XXV) |
-|---|---|---|
-| Motivo | Necessidade ou utilidade pública, ou interesse social | **Iminente perigo público** |
-| O que acontece com o bem | O Estado **fica** com o bem | O Estado **usa** o bem temporariamente |
-| Indenização | **Prévia**, justa, em dinheiro (regra) | **Ulterior** (depois), **se houver dano** |
+|                          | Desapropriação (XXIV)                                | Requisição (XXV)                                    |
+| ------------------------ | ------------------------------------------------------ | ----------------------------------------------------- |
+| Motivo                   | Necessidade ou utilidade pública, ou interesse social | **Iminente perigo público**                    |
+| O que acontece com o bem | O Estado **fica** com o bem                      | O Estado **usa** o bem temporariamente          |
+| Indenização            | **Prévia**, justa, em dinheiro (regra)          | **Ulterior** (depois), **se houver dano** |
 
 > **Ex. 2** *(criado pelo tutor)* — O Estado precisa de um terreno para construir um hospital. É **desapropriação por utilidade pública**: o dono recebe indenização **justa, prévia e em dinheiro**, antes de perder o terreno.
 
@@ -572,72 +578,72 @@ A Constituição garante que você seja dono das suas coisas, mas a propriedade 
 
 ### Quem decide: só o juiz (*reserva de jurisdição*, nos incisos estudados)
 
-| Situação | Inciso |
-|---|---|
-| Entrar na casa **sem consentimento**, fora de flagrante, desastre ou socorro (e só de dia) | XI |
-| Quebrar o sigilo das **comunicações telefônicas** (só para fins penais) | XII |
-| **Suspender** atividades ou **dissolver** associação (dissolver: com trânsito em julgado) | XIX |
-| **Prender** fora do flagrante (salvo transgressão militar e crime propriamente militar) | LXI |
-| **Relaxar** a prisão ilegal | LXV |
+| Situação                                                                                               | Inciso |
+| -------------------------------------------------------------------------------------------------------- | ------ |
+| Entrar na casa **sem consentimento**, fora de flagrante, desastre ou socorro (e só de dia)        | XI     |
+| Quebrar o sigilo das **comunicações telefônicas** (só para fins penais)                        | XII    |
+| **Suspender** atividades ou **dissolver** associação (dissolver: com trânsito em julgado) | XIX    |
+| **Prender** fora do flagrante (salvo transgressão militar e crime propriamente militar)           | LXI    |
+| **Relaxar** a prisão ilegal                                                                       | LXV    |
 
 ### Sem exceção × com exceção
 
-| Sem nenhuma exceção no texto | Com exceção no próprio inciso |
-|---|---|
-| Tortura e tratamento desumano ou degradante (III) | Pena de morte (XLVII, a): salvo **guerra declarada** |
-| Tribunal de exceção (XXXVII) | Casa (XI): flagrante, desastre, socorro, ordem judicial de dia |
-| Provas ilícitas (LVI) | Sigilo (XII): só o **telefônico**, por ordem judicial, para fins penais |
-| Penas de caráter perpétuo, trabalhos forçados, banimento e cruéis (XLVII, b a e) | Extradição (LI): naturalizado, em **crime comum anterior** ou **tráfico** |
-| | Prisão sem flagrante ou ordem judicial (LXI): **transgressão militar** e **crime propriamente militar** |
-| | Prisão civil (LXVII): **alimentos** (o depositário infiel caiu pela SV 25) |
+| Sem nenhuma exceção no texto                                                       | Com exceção no próprio inciso                                                                                      |
+| ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| Tortura e tratamento desumano ou degradante (III)                                    | Pena de morte (XLVII, a): salvo **guerra declarada**                                                            |
+| Tribunal de exceção (XXXVII)                                                       | Casa (XI): flagrante, desastre, socorro, ordem judicial de dia                                                        |
+| Provas ilícitas (LVI)                                                               | Sigilo (XII): só o **telefônico**, por ordem judicial, para fins penais                                       |
+| Penas de caráter perpétuo, trabalhos forçados, banimento e cruéis (XLVII, b a e) | Extradição (LI): naturalizado, em **crime comum anterior** ou **tráfico**                              |
+|                                                                                      | Prisão sem flagrante ou ordem judicial (LXI): **transgressão militar** e **crime propriamente militar** |
+|                                                                                      | Prisão civil (LXVII): **alimentos** (o depositário infiel caiu pela SV 25)                                    |
 
 ### O que é gratuito
 
-| O quê | Para quem | Inciso |
-|---|---|---|
-| Petição e certidões (para defesa de direitos e esclarecimento de situações de interesse pessoal) | Todos ("independentemente do pagamento de taxas") | XXXIV |
-| Ação popular (isenta de custas e sucumbência) | O autor, **salvo comprovada má-fé** | LXXIII |
-| Assistência jurídica integral | Quem **comprovar** insuficiência de recursos | LXXIV |
-| Registro civil de nascimento e certidão de óbito | Os **reconhecidamente pobres** | LXXVI |
-| Habeas corpus e habeas data; atos necessários ao exercício da cidadania | Todos | LXXVII |
+| O quê                                                                                                | Para quem                                           | Inciso |
+| ----------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ------ |
+| Petição e certidões (para defesa de direitos e esclarecimento de situações de interesse pessoal) | Todos ("independentemente do pagamento de taxas")   | XXXIV  |
+| Ação popular (isenta de custas e sucumbência)                                                      | O autor, **salvo comprovada má-fé**         | LXXIII |
+| Assistência jurídica integral                                                                       | Quem **comprovar** insuficiência de recursos | LXXIV  |
+| Registro civil de nascimento e certidão de óbito                                                    | Os **reconhecidamente pobres**                | LXXVI  |
+| Habeas corpus e habeas data; atos necessários ao exercício da cidadania                             | Todos                                               | LXXVII |
 
 ---
 
 ## 13. Pegadinhas da banca
 
-| A banca escreve… | O certo é… | Onde |
-|---|---|---|
-| Estrangeiros "em geral" como titulares, na letra do caput | A letra diz "brasileiros e **estrangeiros residentes**" | Caput |
-| Os direitos fundamentais "excluem" outros não escritos | **Não excluem**: o rol é aberto | § 2º |
-| As normas de direitos fundamentais têm aplicação "mediata" ou "dependem de lei" | Aplicação **imediata** | § 1º |
-| Racismo sujeito a "detenção" | **Reclusão** | XLII |
-| Anonimato "permitido" ou "garantido" | Anonimato **vedado** | IV |
-| Indenização "só" por dano material, no direito de resposta | Dano **material, moral ou à imagem** | V |
-| Expressão livre, mas "com licença prévia" | Sem **censura ou licença** | IX |
-| Profissão livre "independentemente de qualificação" | **Atendidas** as qualificações que a lei estabelecer | XIII |
-| Sigilo da fonte "vedado" | Sigilo da fonte **resguardado** | XIV |
-| Reunião que "depende de autorização" | Independe de autorização; só **prévio aviso** | XVI |
-| Associação paramilitar "permitida para fins lícitos" | Paramilitar **vedada** | XVII |
-| Dissolução ou suspensão de associação por processo **administrativo** | Só por **decisão judicial**; dissolver exige **trânsito em julgado** | XIX |
-| Entrada na casa "somente com ordem judicial" | Também em **flagrante, desastre e socorro**, a qualquer hora | XI |
-| Limite do dia aplicado ao flagrante, ao desastre ou ao socorro | O limite do dia vale só para a **determinação judicial** | XI |
-| Entrada sem mandado lícita "exceto à noite" | Lícita **mesmo à noite**, com fundadas razões | Tema 280 |
-| Achado posterior que "justifica" a entrada sem razões prévias | As fundadas razões têm de existir **antes**; o achado não legitima | Tema 280 |
-| Contraditório e ampla defesa "exclusivamente" no processo judicial | **Judicial ou administrativo** | LV |
-| Provas ilícitas admitidas "quando provarem a culpa" | **Inadmissíveis**, sem exceção no texto | LVI |
-| Júri para crimes "dolosos e culposos" contra a vida | Só **dolosos** | XXXVIII, d |
-| Tribunal de exceção "salvo em casos graves" | **Não haverá**, sem exceção | XXXVII |
-| Identificação criminal "a critério da autoridade policial" | Só **nas hipóteses previstas em lei** | LVIII |
-| Lei penal que "não retroage, ainda que para beneficiar" | Retroage **para beneficiar** | XL |
-| Tortura "imprescritível" | Imprescritíveis = **racismo** e **ação de grupos armados** | XLII a XLIV |
-| Extradição do brasileiro nato em algum caso | **Nunca** | LI |
-| Extradição de estrangeiro por crime político "com devido processo" | **Proibida** por crime político ou de opinião | LII |
-| Prisão sem ordem judicial em "crimes hediondos" | Só **transgressão militar** e **crime propriamente militar** | LXI |
-| Prisão ilegal "revogada" | **Relaxada**, pela autoridade **judiciária** | LXV |
-| Liberdade provisória "desde que com fiança" | **Com ou sem** fiança | LXVI |
-| Requisição com indenização "prévia" ou "independentemente de dano" | **Ulterior**, **se houver dano** | XXV |
-| Ação privada nos crimes de ação pública "não será admitida" | **Será admitida**, se a pública não vier no prazo legal | LIX |
-| O Brasil "não se submete" ao TPI | **Se submete** | § 4º |
+| A banca escreve…                                                                  | O certo é…                                                                        | Onde        |
+| ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------- |
+| Estrangeiros "em geral" como titulares, na letra do caput                          | A letra diz "brasileiros e **estrangeiros residentes**"                       | Caput       |
+| Os direitos fundamentais "excluem" outros não escritos                            | **Não excluem**: o rol é aberto                                             | § 2º      |
+| As normas de direitos fundamentais têm aplicação "mediata" ou "dependem de lei" | Aplicação **imediata**                                                      | § 1º      |
+| Racismo sujeito a "detenção"                                                     | **Reclusão**                                                                 | XLII        |
+| Anonimato "permitido" ou "garantido"                                               | Anonimato **vedado**                                                          | IV          |
+| Indenização "só" por dano material, no direito de resposta                      | Dano **material, moral ou à imagem**                                         | V           |
+| Expressão livre, mas "com licença prévia"                                       | Sem **censura ou licença**                                                   | IX          |
+| Profissão livre "independentemente de qualificação"                             | **Atendidas** as qualificações que a lei estabelecer                        | XIII        |
+| Sigilo da fonte "vedado"                                                           | Sigilo da fonte **resguardado**                                               | XIV         |
+| Reunião que "depende de autorização"                                            | Independe de autorização; só **prévio aviso**                             | XVI         |
+| Associação paramilitar "permitida para fins lícitos"                            | Paramilitar **vedada**                                                        | XVII        |
+| Dissolução ou suspensão de associação por processo **administrativo**   | Só por **decisão judicial**; dissolver exige **trânsito em julgado** | XIX         |
+| Entrada na casa "somente com ordem judicial"                                       | Também em **flagrante, desastre e socorro**, a qualquer hora                 | XI          |
+| Limite do dia aplicado ao flagrante, ao desastre ou ao socorro                     | O limite do dia vale só para a **determinação judicial**                   | XI          |
+| Entrada sem mandado lícita "exceto à noite"                                      | Lícita **mesmo à noite**, com fundadas razões                              | Tema 280    |
+| Achado posterior que "justifica" a entrada sem razões prévias                    | As fundadas razões têm de existir **antes**; o achado não legitima         | Tema 280    |
+| Contraditório e ampla defesa "exclusivamente" no processo judicial                | **Judicial ou administrativo**                                                | LV          |
+| Provas ilícitas admitidas "quando provarem a culpa"                               | **Inadmissíveis**, sem exceção no texto                                    | LVI         |
+| Júri para crimes "dolosos e culposos" contra a vida                               | Só **dolosos**                                                               | XXXVIII, d  |
+| Tribunal de exceção "salvo em casos graves"                                      | **Não haverá**, sem exceção                                               | XXXVII      |
+| Identificação criminal "a critério da autoridade policial"                      | Só **nas hipóteses previstas em lei**                                       | LVIII       |
+| Lei penal que "não retroage, ainda que para beneficiar"                           | Retroage **para beneficiar**                                                  | XL          |
+| Tortura "imprescritível"                                                          | Imprescritíveis = **racismo** e **ação de grupos armados**           | XLII a XLIV |
+| Extradição do brasileiro nato em algum caso                                      | **Nunca**                                                                     | LI          |
+| Extradição de estrangeiro por crime político "com devido processo"              | **Proibida** por crime político ou de opinião                               | LII         |
+| Prisão sem ordem judicial em "crimes hediondos"                                   | Só **transgressão militar** e **crime propriamente militar**          | LXI         |
+| Prisão ilegal "revogada"                                                          | **Relaxada**, pela autoridade **judiciária**                           | LXV         |
+| Liberdade provisória "desde que com fiança"                                      | **Com ou sem** fiança                                                        | LXVI        |
+| Requisição com indenização "prévia" ou "independentemente de dano"            | **Ulterior**, **se houver dano**                                        | XXV         |
+| Ação privada nos crimes de ação pública "não será admitida"                 | **Será admitida**, se a pública não vier no prazo legal                    | LIX         |
+| O Brasil "não se submete" ao TPI                                                  | **Se submete**                                                                | § 4º      |
 
 ---
 
@@ -668,18 +674,18 @@ A Constituição garante que você seja dono das suas coisas, mas a propriedade 
 
 ## Mapa das questões
 
-| Questão | Conteúdo exigido | Onde foi ensinado |
-|---|---|---|
-| 1 — ITEP-RN 2018, Q42 | Anonimato (IV); associação paramilitar (XVII); qualificação profissional (XIII); tribunal de exceção (XXXVII); casa (XI) | Seções 4, 5, 6, 7 e 8 |
-| 2 — SEJUS-CE 2017, Q19 | Exceções à inviolabilidade da casa (XI); associação paramilitar (XVII); ação de grupos armados (XLIV); extradição (LI) | Seções 6, 7 e 9 |
-| 3 — PMES 2018, Q74 | Anonimato (IV); direito de resposta e danos (V); sigilo da fonte (XIV); retroatividade da lei penal (XL); associações e cooperativas (XVIII) | Seções 4, 5, 6 e 9 |
-| 4 — PMES 2018, Q76 | Legalidade (II); tortura (III); crença e cultos (VI); assistência religiosa (VII); censura ou licença (IX); **comando "INCORRETA"** | Seções 3 e 4 |
-| 5 — PMES 2018, Q77 | Extradição de brasileiro e de estrangeiro (LI e LII); contraditório e ampla defesa (LV); provas ilícitas (LVI); função social (XXIII) | Seções 8, 9 e 11 |
-| 6 — PMES 2018, Q80 | Competência do júri (XXXVIII); racismo (XLII); identificação criminal (LVIII); tribunal de exceção (XXXVII); certidões sem taxa (XXXIV) | Seções 2, 5, 8 e 9 |
-| 7 — PMES 2018, Q78 | Hipóteses de prisão (LXI); gratuidade de nascimento e óbito (LXXVI); TPI (§ 4º); liberdade provisória (LXVI); prisão ilegal (LXV) | Seções 1 e 10 |
-| 8 — PMES 2018, Q75 | Requisição (XXV); gratuidade do HC e HD (LXXVII); §§ 1º e 2º; ação privada subsidiária (LIX) | Seções 1, 8, 10 e 11 |
-| 9 — PMGO 2022, Q21 | Dissolução × suspensão de associação (XIX); fins lícitos e paramilitar (XVII) | Seção 6 |
-| 10 — PMPE 2023 (2º Tenente), Q31 | Casa e exceções (XI); horário; Tema 280 do STF; crime permanente | Seção 7 |
+| Questão                           | Conteúdo exigido                                                                                                                              | Onde foi ensinado       |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 1 — ITEP-RN 2018, Q42             | Anonimato (IV); associação paramilitar (XVII); qualificação profissional (XIII); tribunal de exceção (XXXVII); casa (XI)                 | Seções 4, 5, 6, 7 e 8 |
+| 2 — SEJUS-CE 2017, Q19            | Exceções à inviolabilidade da casa (XI); associação paramilitar (XVII); ação de grupos armados (XLIV); extradição (LI)                | Seções 6, 7 e 9       |
+| 3 — PMES 2018, Q74                | Anonimato (IV); direito de resposta e danos (V); sigilo da fonte (XIV); retroatividade da lei penal (XL); associações e cooperativas (XVIII) | Seções 4, 5, 6 e 9    |
+| 4 — PMES 2018, Q76                | Legalidade (II); tortura (III); crença e cultos (VI); assistência religiosa (VII); censura ou licença (IX); **comando "INCORRETA"**   | Seções 3 e 4          |
+| 5 — PMES 2018, Q77                | Extradição de brasileiro e de estrangeiro (LI e LII); contraditório e ampla defesa (LV); provas ilícitas (LVI); função social (XXIII)    | Seções 8, 9 e 11      |
+| 6 — PMES 2018, Q80                | Competência do júri (XXXVIII); racismo (XLII); identificação criminal (LVIII); tribunal de exceção (XXXVII); certidões sem taxa (XXXIV) | Seções 2, 5, 8 e 9    |
+| 7 — PMES 2018, Q78                | Hipóteses de prisão (LXI); gratuidade de nascimento e óbito (LXXVI); TPI (§ 4º); liberdade provisória (LXVI); prisão ilegal (LXV)       | Seções 1 e 10         |
+| 8 — PMES 2018, Q75                | Requisição (XXV); gratuidade do HC e HD (LXXVII); §§ 1º e 2º; ação privada subsidiária (LIX)                                          | Seções 1, 8, 10 e 11  |
+| 9 — PMGO 2022, Q21                | Dissolução × suspensão de associação (XIX); fins lícitos e paramilitar (XVII)                                                           | Seção 6               |
+| 10 — PMPE 2023 (2º Tenente), Q31 | Casa e exceções (XI); horário; Tema 280 do STF; crime permanente                                                                            | Seção 7               |
 
 ---
 
@@ -829,18 +835,18 @@ Silvio é Policial Militar no Estado de Pernambuco e está intrigado com a grand
 
 ### Placar de referência
 
-| Questão | Gabarito | Tema |
-|---|---|---|
-| 1 — ITEP-RN 2018 Q42 | **E** | Liberdades e casa |
-| 2 — SEJUS-CE 2017 Q19 | **C** | Casa, associação, grupos armados, extradição |
-| 3 — PMES 2018 Q74 | **E** | Pensamento, resposta, fonte, lei penal, associações |
-| 4 — PMES 2018 Q76 | **E** (a incorreta) | Legalidade, tortura, crença, expressão |
-| 5 — PMES 2018 Q77 | **A** | Extradição, processo, provas, propriedade |
-| 6 — PMES 2018 Q80 | **E** | Júri, racismo, identificação, certidões |
-| 7 — PMES 2018 Q78 | **B** | Prisão e gratuidades |
-| 8 — PMES 2018 Q75 | **B** | Requisição, gratuidades, §§ 1º e 2º, ação privada |
-| 9 — PMGO 2022 Q21 | **E** | Suspensão de associação |
-| 10 — PMPE 2023 Ten Q31 | **A** | Domicílio e Tema 280 |
+| Questão                | Gabarito                  | Tema                                                      |
+| ----------------------- | ------------------------- | --------------------------------------------------------- |
+| 1 — ITEP-RN 2018 Q42   | **E**               | Liberdades e casa                                         |
+| 2 — SEJUS-CE 2017 Q19  | **C**               | Casa, associação, grupos armados, extradição          |
+| 3 — PMES 2018 Q74      | **E**               | Pensamento, resposta, fonte, lei penal, associações     |
+| 4 — PMES 2018 Q76      | **E** (a incorreta) | Legalidade, tortura, crença, expressão                  |
+| 5 — PMES 2018 Q77      | **A**               | Extradição, processo, provas, propriedade               |
+| 6 — PMES 2018 Q80      | **E**               | Júri, racismo, identificação, certidões               |
+| 7 — PMES 2018 Q78      | **B**               | Prisão e gratuidades                                     |
+| 8 — PMES 2018 Q75      | **B**               | Requisição, gratuidades, §§ 1º e 2º, ação privada |
+| 9 — PMGO 2022 Q21      | **E**               | Suspensão de associação                                |
+| 10 — PMPE 2023 Ten Q31 | **A**               | Domicílio e Tema 280                                     |
 
 ### Questão 1 — gabarito E
 
