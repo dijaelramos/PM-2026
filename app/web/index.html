@@ -45,7 +45,25 @@
 
 <main id="tela" tabindex="-1"></main>
 
-<button id="daqui" class="daqui" hidden>▶ Ouvir daqui</button>
+<div id="acoes-bloco" class="acoes-bloco" role="toolbar" aria-label="Ações do trecho" hidden>
+  <button id="ab-ouvir">▶ Ouvir daqui</button>
+  <button id="ab-destacar">🖍 Destacar</button>
+  <button id="ab-anotar">📝 Anotar</button>
+</div>
+
+<div id="editor-nota" class="editor-nota" role="dialog" aria-modal="true" aria-labelledby="en-titulo" hidden>
+  <div class="editor-caixa">
+    <h2 id="en-titulo">Anotação</h2>
+    <p id="en-trecho" class="en-trecho"></p>
+    <textarea id="en-texto" rows="5" placeholder="Escreva sua anotação sobre este trecho…"></textarea>
+    <div class="editor-botoes">
+      <button id="en-apagar" class="btn-link">Apagar anotação</button>
+      <span class="espaco"></span>
+      <button id="en-cancelar" class="btn">Cancelar</button>
+      <button id="en-salvar" class="btn primario">Salvar</button>
+    </div>
+  </div>
+</div>
 <button id="seguir" class="seguir" hidden>↓ Voltar para a leitura</button>
 
 <section id="player" class="player" hidden aria-label="Reprodutor">

@@ -165,6 +165,7 @@ function rota() {
   const h = location.hash;
   if (h === '#/questoes') { telaQuestoes(); return; }
   if (h === '#/progresso') { telaProgresso(); return; }
+  if (h === '#/destaques') { telaDestaques(); return; }
   if (h === '#/questoes/resolver') { telaResolver(); return; }
   const m = h.match(/^#\/doc\/(.+)$/);
   if (m) telaDoc(decodeURIComponent(m[1]));
@@ -282,7 +283,10 @@ function desenharLista(filtro) {
       <div class="corpo"><strong>${esc(itUlt.titulo)}</strong><span class="meta">${esc(ultimo.onde || '')}</span></div><span>▶</span></a>`;
   }
   if (!f) {
-    const blocos = resumoProgressoHome() + resumoQuestoesHome();
+    const nDest = contarDestaques();
+    const blocos = resumoProgressoHome() + resumoQuestoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
+      <div class="icone-q" aria-hidden="true">🖍</div><div class="corpo"><strong>Meus destaques</strong>
+      <span class="meta">${nDest} ${nDest === 1 ? 'trecho destacado' : 'trechos destacados'}, por disciplina</span></div><span aria-hidden="true">›</span></a>` : '');
     if (blocos) html += `<h2 class="secao">Seu estudo</h2>${blocos}`;
   }
   if (revisoes.length) html += secaoRevisoes(revisoes, !!f);
@@ -339,12 +343,29 @@ async function telaDoc(id) {
   const art = tela.querySelector('article');
   art.addEventListener('click', (e) => {
     if (e.target.closest('a, button, summary, input') || String(window.getSelection() || '').trim()) return;
+    const nota = e.target.closest('.nota-bloco');
+    if (nota) {
+      const alvo = art.querySelector(`[data-f="${nota.dataset.notaDe}"]`);
+      if (alvo) abrirEditorNota(item, alvo);
+      return;
+    }
     const bloco = e.target.closest('[data-f]');
     if (!bloco) { esconderDaqui(); return; }
-    mostrarDaqui(bloco, e.clientY, () => ouvirDaqui(item, doc, Number(bloco.dataset.f)));
+    mostrarDaqui(bloco, e.clientY, item, doc);
   });
+  aplicarDestaques(item);
+  if (irParaDestaque && irParaDestaque.id === id) {
+    const el = acharBloco(art, irParaDestaque.h);
+    irParaDestaque = null;
+    if (el) {
+      seguir = false;
+      el.scrollIntoView({ block: 'center' });
+      el.classList.add('escolhido');
+      setTimeout(() => el.classList.remove('escolhido'), 2500);
+    }
+  }
   const aviso = $('#aviso-doc');
-  aviso.textContent = `${aviso.textContent} Dica: toque num parágrafo para ouvir a partir dele.`.trim();
+  aviso.textContent = `${aviso.textContent} Dica: toque num parágrafo para ouvir daqui, destacar ou anotar.`.trim();
   const bd = $('#b-depois');
   if (bd) bd.addEventListener('click', () => {
     if (!disponivel(item)) { $('#aviso-doc').textContent = 'Sem internet e o áudio não foi baixado.'; return; }
@@ -919,29 +940,209 @@ function ouvirDaqui(item, doc, f) {
   else iniciarTts(item, doc, null, f);
 }
 
-function mostrarDaqui(bloco, y, acao) {
+/* Barra de ações do trecho tocado: ouvir daqui, destacar e anotar. */
+function mostrarDaqui(bloco, y, item, doc) {
   esconderDaqui();
   bloco.classList.add('escolhido');
-  const b = $('#daqui');
+  blocoAtual = { item, doc, el: bloco };
+  const h = destaqueDoBloco(item, bloco);
+  $('#ab-destacar').textContent = h ? '✕ Tirar destaque' : '🖍 Destacar';
+  $('#ab-anotar').textContent = h && h.nota ? '📝 Editar anotação' : '📝 Anotar';
+  const b = $('#acoes-bloco');
   const topo = $('.topo').offsetHeight + 8;
   const baixo = window.innerHeight - ($('#player').hidden ? 0 : $('#player').offsetHeight) - 56;
-  b.style.top = `${Math.min(Math.max(y - 60, topo), baixo)}px`;
+  b.style.top = `${Math.min(Math.max(y - 64, topo), baixo)}px`;
   b.hidden = false;
-  acaoDaqui = acao;
+  acaoDaqui = true;
 }
 
 function esconderDaqui() {
-  $('#daqui').hidden = true;
+  $('#acoes-bloco').hidden = true;
   acaoDaqui = null;
   const e = tela.querySelector('.escolhido');
   if (e) e.classList.remove('escolhido');
 }
 
-$('#daqui').addEventListener('click', () => {
-  const acao = acaoDaqui;
+$('#ab-ouvir').addEventListener('click', () => {
+  const b = blocoAtual;
   esconderDaqui();
-  if (acao) acao();
+  if (b) ouvirDaqui(b.item, b.doc, Number(b.el.dataset.f));
 });
+$('#ab-destacar').addEventListener('click', () => {
+  const b = blocoAtual;
+  esconderDaqui();
+  if (b) alternarDestaque(b.item, b.el);
+});
+$('#ab-anotar').addEventListener('click', () => {
+  const b = blocoAtual;
+  esconderDaqui();
+  if (b) abrirEditorNota(b.item, b.el);
+});
+
+/* ---------- destaques e anotações ---------- */
+/* guardado 'destaques': { idDoc: [{ f, texto, nota, t }] }. O trecho é achado pelo número do bloco
+   e, se o texto do documento mudou, pelo começo do texto. */
+
+let blocoAtual = null;
+let irParaDestaque = null; // { id, h }: abrir o documento já no trecho
+
+const textoBloco = (el) => el.textContent.replace(/\s+/g, ' ').trim();
+const todosDestaques = () => guardado.get('destaques', {});
+const destaquesDoc = (id) => todosDestaques()[id] || [];
+function salvarDestaquesDoc(id, lista) {
+  const d = todosDestaques();
+  if (lista.length) d[id] = lista; else delete d[id];
+  guardado.set('destaques', d);
+}
+
+function acharBloco(raiz, h) {
+  const inicio = h.texto.slice(0, 60);
+  const el = raiz.querySelector(`[data-f="${h.f}"]`);
+  if (el && textoBloco(el).startsWith(inicio)) return el;
+  return [...raiz.querySelectorAll('[data-f]')].find((x) => textoBloco(x).startsWith(inicio)) || null;
+}
+
+function destaqueDoBloco(item, el) {
+  const art = tela.querySelector('article');
+  return art ? destaquesDoc(item.id).find((h) => acharBloco(art, h) === el) : null;
+}
+
+function aplicarDestaques(item) {
+  const art = tela.querySelector('article');
+  if (!art) return;
+  art.querySelectorAll('.destacado').forEach((e) => e.classList.remove('destacado'));
+  art.querySelectorAll('.nota-bloco').forEach((e) => e.remove());
+  for (const h of destaquesDoc(item.id)) {
+    const el = acharBloco(art, h);
+    if (!el) continue;
+    el.classList.add('destacado');
+    if (h.nota) {
+      const n = document.createElement('div');
+      n.className = 'nota-bloco';
+      n.textContent = h.nota;
+      n.dataset.notaDe = el.dataset.f;
+      if (el.tagName === 'TR') el.lastElementChild.appendChild(n);
+      else el.insertAdjacentElement('afterend', n);
+    }
+  }
+}
+
+function alternarDestaque(item, el) {
+  const h = destaqueDoBloco(item, el);
+  let lista = destaquesDoc(item.id);
+  if (h) {
+    if (h.nota && !window.confirm('Tirar o destaque apaga também a anotação deste trecho. Continuar?')) return;
+    const art = tela.querySelector('article');
+    lista = lista.filter((x) => acharBloco(art, x) !== el);
+  } else {
+    lista.push({ f: Number(el.dataset.f), texto: textoBloco(el).slice(0, 500), nota: '', t: Date.now() });
+  }
+  salvarDestaquesDoc(item.id, lista);
+  aplicarDestaques(item);
+}
+
+let editorAberto = null;
+function abrirEditorNota(item, el) {
+  const h = destaqueDoBloco(item, el);
+  editorAberto = { item, el };
+  const trecho = textoBloco(el);
+  $('#en-trecho').textContent = trecho.length > 220 ? `${trecho.slice(0, 220)}…` : trecho;
+  $('#en-texto').value = h ? h.nota : '';
+  $('#en-apagar').hidden = !(h && h.nota);
+  $('#editor-nota').hidden = false;
+  setTimeout(() => $('#en-texto').focus(), 50);
+}
+function fecharEditorNota() {
+  $('#editor-nota').hidden = true;
+  editorAberto = null;
+}
+function salvarNota(texto) {
+  if (!editorAberto) return;
+  const { item, el } = editorAberto;
+  const art = tela.querySelector('article');
+  const lista = destaquesDoc(item.id);
+  let h = lista.find((x) => acharBloco(art, x) === el);
+  if (!h) {
+    h = { f: Number(el.dataset.f), texto: textoBloco(el).slice(0, 500), nota: '', t: Date.now() };
+    lista.push(h);
+  }
+  h.nota = texto.trim();
+  h.t = Date.now();
+  salvarDestaquesDoc(item.id, lista);
+  fecharEditorNota();
+  aplicarDestaques(item);
+}
+$('#en-salvar').addEventListener('click', () => salvarNota($('#en-texto').value));
+$('#en-apagar').addEventListener('click', () => salvarNota(''));
+$('#en-cancelar').addEventListener('click', fecharEditorNota);
+$('#editor-nota').addEventListener('click', (e) => { if (e.target.id === 'editor-nota') fecharEditorNota(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && editorAberto) fecharEditorNota(); });
+
+const disciplinaDoc = (it) => ((it.categoria === 'material' || it.categoria === 'revisao')
+  ? tituloCurto(it).replace(/\s*(?:e|\+)\s*Redação$/, '') : (it.grupo || 'Outros'));
+
+function contarDestaques() {
+  return Object.values(todosDestaques()).reduce((s, l) => s + l.length, 0);
+}
+
+function telaDestaques() {
+  setTopo('Meus destaques', true);
+  const grupos = new Map();
+  for (const [id, lista] of Object.entries(todosDestaques())) {
+    const it = catalogo.docs.find((x) => x.id === id);
+    if (!it) continue;
+    const g = disciplinaDoc(it);
+    if (!grupos.has(g)) grupos.set(g, []);
+    lista.forEach((h) => grupos.get(g).push({ it, h }));
+  }
+  if (!grupos.size) {
+    tela.innerHTML = `<p class="aviso">Você ainda não destacou nenhum trecho. Abra um material, toque num parágrafo e escolha
+      <b>🖍 Destacar</b> ou <b>📝 Anotar</b>.</p>`;
+    return;
+  }
+  const ordenados = [...grupos].sort((a, b) => a[0].localeCompare(b[0], 'pt-BR'));
+  for (const [, l] of ordenados) {
+    l.sort((a, b) => ((b.it.data || '') + b.it.id).localeCompare((a.it.data || '') + a.it.id) || a.h.f - b.h.f);
+  }
+  let n = 0;
+  const refs = [];
+  tela.innerHTML = `
+    <div class="acoes"><button class="btn" id="d-copiar">📋 Copiar tudo como texto</button></div>
+    <p class="aviso" id="d-aviso">${contarDestaques()} trechos destacados. Eles ficam só neste celular: copie de vez em quando para guardar.</p>
+    ${ordenados.map(([g, l]) => `<details class="grupo" open><summary>${esc(g)} <small>(${l.length})</small></summary>
+      ${l.map(({ it, h }) => {
+        refs.push({ it, h });
+        return `<div class="destaque-item">
+          <div class="meta">${esc(it.subtitulo ? `${it.subtitulo.split(' ').pop()} · ` : '')}${esc(it.titulo)}</div>
+          <blockquote>${esc(h.texto)}</blockquote>
+          ${h.nota ? `<p class="nota">${esc(h.nota)}</p>` : ''}
+          <div class="acoes-item"><button class="btn-link" data-abrir="${n}">Abrir no texto</button>
+            <button class="btn-link" data-remover="${n++}">Remover</button></div>
+        </div>`;
+      }).join('')}</details>`).join('')}`;
+
+  tela.querySelectorAll('[data-abrir]').forEach((b) => b.addEventListener('click', () => {
+    const { it, h } = refs[Number(b.dataset.abrir)];
+    irParaDestaque = { id: it.id, h };
+    location.hash = `#/doc/${encodeURIComponent(it.id)}`;
+  }));
+  tela.querySelectorAll('[data-remover]').forEach((b) => b.addEventListener('click', () => {
+    const { it, h } = refs[Number(b.dataset.remover)];
+    if (h.nota && !window.confirm('Remover este destaque e a anotação?')) return;
+    salvarDestaquesDoc(it.id, destaquesDoc(it.id).filter((x) => !(x.f === h.f && x.texto === h.texto)));
+    telaDestaques();
+  }));
+  $('#d-copiar').addEventListener('click', async () => {
+    const texto = ordenados.map(([g, l]) => `# ${g}\n\n${l.map(({ it, h }) =>
+      `- ${it.subtitulo ? `${it.subtitulo.split(' ').pop()} · ` : ''}${it.titulo}\n  "${h.texto}"${h.nota ? `\n  Anotação: ${h.nota}` : ''}`).join('\n\n')}`).join('\n\n');
+    try {
+      await navigator.clipboard.writeText(texto);
+      $('#d-aviso').textContent = 'Copiado. Cole num e-mail, nas notas do celular ou onde preferir.';
+    } catch {
+      $('#d-aviso').textContent = 'Não deu para copiar neste navegador.';
+    }
+  });
+}
 
 /* ---------- timer de sono ---------- */
 
