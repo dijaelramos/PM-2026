@@ -163,6 +163,7 @@ function rota() {
   $('#seguir').hidden = true;
   const h = location.hash;
   if (h === '#/questoes') { telaQuestoes(); return; }
+  if (h === '#/progresso') { telaProgresso(); return; }
   if (h === '#/questoes/resolver') { telaResolver(); return; }
   const m = h.match(/^#\/doc\/(.+)$/);
   if (m) telaDoc(decodeURIComponent(m[1]));
@@ -270,7 +271,10 @@ function desenharLista(filtro) {
       <a class="cartao continuar" href="#/doc/${encodeURIComponent(itUlt.id)}">
       <div class="corpo"><strong>${esc(itUlt.titulo)}</strong><span class="meta">${esc(ultimo.onde || '')}</span></div><span>▶</span></a>`;
   }
-  if (!f) html += resumoQuestoesHome();
+  if (!f) {
+    const blocos = resumoProgressoHome() + resumoQuestoesHome();
+    if (blocos) html += `<h2 class="secao">Seu estudo</h2>${blocos}`;
+  }
   if (revisoes.length) html += secaoRevisoes(revisoes, !!f);
   if (materiais.length) html += `<h2 class="secao">Material do Dia</h2>${materiais.map(cartaoMaterial).join('')}`;
   if (extras.length || plano.length) html += `<h2 class="secao">Plano, edital e extras</h2>${grupos([...plano, ...extras], !!f)}`;
@@ -310,6 +314,7 @@ async function telaDoc(id) {
       ${item.questoes ? `<button class="btn" id="b-questoes">✍ Resolver as ${item.questoes} questões</button>` : ''}
       ${rev ? `<a class="btn" href="#/doc/${encodeURIComponent(rev.id)}">⚡ Revisão rápida · ${minutos(duracaoItem(rev))}</a>` : ''}
       ${mat ? `<a class="btn" href="#/doc/${encodeURIComponent(mat.id)}">📄 Material completo</a>` : ''}
+      ${item.categoria === 'material' ? `<button class="btn" id="b-estudado" aria-pressed="${concluido(item)}">${concluido(item) ? '✓ Estudado' : '☐ Marcar como estudado'}</button>` : ''}
     </div>
     <p class="aviso" id="aviso-doc">${item.audio ? '' : 'Este texto é lido pela voz do celular. A tela fica acesa durante a leitura.'}</p>
     <details class="capitulos"><summary>Capítulos (${caps.length})</summary><ol>
@@ -320,6 +325,15 @@ async function telaDoc(id) {
 
   const ouvir = $('#b-ouvir');
   if (ouvir) ouvir.addEventListener('click', () => iniciarAudio(item, doc, null));
+  const be = $('#b-estudado');
+  if (be) be.addEventListener('click', () => {
+    const novo = !concluido(item);
+    guardado.set(`estudado:${item.id}`, novo);
+    if (!novo) guardado.set(`ouvido:${item.id}`, false);
+    if (novo) registrarAtividade({ m: 1 });
+    be.textContent = novo ? '✓ Estudado' : '☐ Marcar como estudado';
+    be.setAttribute('aria-pressed', String(novo));
+  });
   const bq = $('#b-questoes');
   if (bq) bq.addEventListener('click', async () => {
     try {
@@ -362,6 +376,157 @@ function atualizarBotaoBaixar(item) {
   if (baixando.has(url)) b.textContent = `Baixando… ${Math.round(baixando.get(url) * 100)}%`;
   else if (baixados.has(url)) b.textContent = '✓ Áudio no celular (remover)';
   else b.textContent = `⬇ Baixar áudio (${mb} MB)`;
+}
+
+/* ---------- progresso ---------- */
+/* guardado 'atividade': { 'AAAA-MM-DD': { s: segundos ouvindo, q: questões, a: acertos, m: materiais marcados } } */
+
+const doisDig = (n) => String(n).padStart(2, '0');
+const dataISO = (d = new Date()) => `${d.getFullYear()}-${doisDig(d.getMonth() + 1)}-${doisDig(d.getDate())}`;
+const deISO = (s) => { const [a, m, d] = s.split('-').map(Number); return new Date(a, m - 1, d); };
+const diasEntre = (de, ate) => Math.round((deISO(ate) - deISO(de)) / 864e5);
+const DIAS_CURTOS = ['dom.', 'seg.', 'ter.', 'qua.', 'qui.', 'sex.', 'sáb.'];
+const dataCurta = (s) => `${DIAS_CURTOS[deISO(s).getDay()]} ${s.slice(8, 10)}/${s.slice(5, 7)}`;
+
+let segPendentes = 0;
+let ultimoTempoAudio = null;
+
+function registrarAtividade(valores) {
+  const at = guardado.get('atividade', {});
+  const k = dataISO();
+  const dia = at[k] || {};
+  for (const [campo, v] of Object.entries(valores)) dia[campo] = Math.round(((dia[campo] || 0) + v) * 10) / 10;
+  at[k] = dia;
+  guardado.set('atividade', at);
+}
+function registrarAudioPendente() {
+  if (segPendentes >= 1) registrarAtividade({ s: segPendentes });
+  segPendentes = 0;
+}
+
+const estudouNoDia = (dia) => !!dia && ((dia.s || 0) >= 60 || (dia.q || 0) > 0 || (dia.m || 0) > 0);
+const concluido = (it) => guardado.get(`estudado:${it.id}`, false) || guardado.get(`ouvido:${it.id}`, false);
+const sessoesDeEstudo = () => ((catalogo.plano && catalogo.plano.sessoes) || []).filter((s) => s.h + s.r > 0);
+
+/* Dias de estudo do plano seguidos com atividade; hoje sem atividade ainda não quebra a sequência. */
+function sequencia() {
+  const at = guardado.get('atividade', {});
+  const hoje = dataISO();
+  let n = 0;
+  for (const s of sessoesDeEstudo().filter((x) => x.data <= hoje).reverse()) {
+    if (estudouNoDia(at[s.data])) n++;
+    else if (s.data !== hoje) break;
+  }
+  return n;
+}
+
+function resumoProgressoHome() {
+  const datas = catalogo.plano || {};
+  if (!datas.prova) return '';
+  const faltam = diasEntre(dataISO(), datas.prova);
+  const seq = sequencia();
+  return `<a class="cartao cartao-q" href="#/progresso">
+      <div class="icone-q" aria-hidden="true">📊</div>
+      <div class="corpo"><strong>${faltam > 0 ? `Faltam ${faltam} dias para a prova` : 'Dia da prova'}</strong>
+        <span class="meta">${seq ? `Sequência: ${seq} ${seq === 1 ? 'dia' : 'dias'} de estudo` : 'Veja o seu progresso no plano'}</span></div>
+      <span aria-hidden="true">›</span></a>`;
+}
+
+function telaProgresso() {
+  pararRelogio();
+  registrarAudioPendente();
+  setTopo('Progresso', true);
+  const plano = catalogo.plano || {};
+  const hoje = dataISO();
+  const at = guardado.get('atividade', {});
+  const sessoes = sessoesDeEstudo();
+  const faltam = plano.prova ? diasEntre(hoje, plano.prova) : null;
+  const diasRestantes = sessoes.filter((s) => s.data >= hoje).length;
+  const minHoje = Math.round(((at[hoje] && at[hoje].s) || 0) / 60);
+  let minSemana = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    minSemana += ((at[dataISO(d)] && at[dataISO(d)].s) || 0) / 60;
+  }
+  const seq = sequencia();
+
+  // gráfico: minutos ouvindo nos últimos 14 dias
+  const dias = [];
+  for (let i = 13; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); dias.push(dataISO(d)); }
+  const valores = dias.map((d) => Math.round(((at[d] && at[d].s) || 0) / 60));
+  const maximo = Math.max(10, ...valores);
+  const descricaoDia = (d, v) => {
+    const a = at[d] || {};
+    const q = a.q ? ` · ${a.q} ${a.q === 1 ? 'questão' : 'questões'} (${a.a || 0} certas)` : '';
+    return `${dataCurta(d)}: ${v} min ouvindo${q}`;
+  };
+  const totalPeriodo = valores.reduce((s, v) => s + v, 0);
+
+  // plano por disciplina: horas já previstas até hoje e materiais concluídos
+  const porDisc = new Map();
+  const soma = (nome, campo, s) => {
+    if (!porDisc.has(nome)) porDisc.set(nome, { total: 0, ate: 0, mats: 0, feitos: 0 });
+    const x = porDisc.get(nome);
+    x.total += s[campo];
+    if (s.data <= hoje) x.ate += s[campo];
+  };
+  for (const s of sessoes) {
+    if (s.h) soma(s.disciplina, 'h', s);
+    if (s.r) soma('Redação', 'r', s);
+  }
+  const materiais = catalogo.docs.filter((d) => d.categoria === 'material' && d.data);
+  for (const m of materiais) {
+    const s = sessoes.find((x) => x.data === m.data && porDisc.has(x.disciplina));
+    if (!s) continue;
+    const x = porDisc.get(s.disciplina);
+    x.mats++;
+    if (concluido(m)) x.feitos++;
+  }
+  const fmtH = (h) => String(Math.round(h * 10) / 10).replace('.', ',');
+  const proximas = sessoes.filter((s) => s.data >= hoje).slice(0, 5);
+  const simulados = (plano.simulados || []).filter((s) => s.situacao === 'pendente' && s.data >= hoje);
+
+  tela.innerHTML = `
+    ${faltam != null ? `<div class="contagem">
+      <b>${Math.max(faltam, 0)}</b>
+      <span>${faltam === 1 ? 'dia' : 'dias'} para a prova · ${esc(dataCurta(plano.prova))}/${plano.prova.slice(0, 4)}</span>
+      <small>${diasRestantes} dias de estudo no plano${simulados.map((s) => ` · ${esc(s.nome)} em ${s.data.slice(8, 10)}/${s.data.slice(5, 7)} (faltam ${diasEntre(hoje, s.data)} dias)`).join('')}</small>
+    </div>` : ''}
+    <div class="placar">
+      <div><b>${seq}</b><span>${seq === 1 ? 'dia seguido' : 'dias seguidos'}</span></div>
+      <div><b>${minHoje}</b><span>min hoje</span></div>
+      <div><b>${Math.round(minSemana)}</b><span>min em 7 dias</span></div>
+    </div>
+
+    <figure class="grafico">
+      <figcaption>Minutos ouvindo por dia · últimos 14 dias</figcaption>
+      <div class="grafico-area">
+        <span class="grafico-max">${maximo} min</span>
+        <div class="barras" role="group" aria-label="Minutos ouvindo nos últimos 14 dias: ${totalPeriodo} no total">
+          ${dias.map((d, i) => `<button class="barra-dia${d === hoje ? ' hoje' : ''}" data-i="${i}" aria-label="${esc(descricaoDia(d, valores[i]))}" title="${esc(descricaoDia(d, valores[i]))}">
+            <span class="b" style="height:${valores[i] ? Math.max(3, (valores[i] / maximo) * 100) : 0}%"></span></button>`).join('')}
+        </div>
+        <div class="rotulos" aria-hidden="true">${dias.map((d) => `<span${d === hoje ? ' class="hoje"' : ''}>${d.slice(8, 10)}</span>`).join('')}</div>
+      </div>
+      <p class="dica" id="g-dica" aria-live="polite">${totalPeriodo ? 'Toque numa barra para ver o dia.' : 'O app começa a contar a partir de agora: ouça um material ou resolva questões.'}</p>
+    </figure>
+
+    <h2 class="secao">Plano por disciplina</h2>
+    <p class="aviso">Horas que o plano previu até hoje e materiais que você concluiu (ouviu até o fim ou marcou como estudado).</p>
+    ${[...porDisc].map(([nome, x]) => `<div class="cartao linha-q"><div class="corpo"><strong>${esc(nome)}</strong>
+      <span class="meta">${fmtH(x.ate)} de ${fmtH(x.total)} h do plano${x.mats ? ` · ${x.feitos} de ${x.mats} materiais concluídos` : ''}</span>
+      <span class="barra" aria-hidden="true"><span style="width:${x.total ? Math.round((x.ate / x.total) * 100) : 0}%"></span></span></div></div>`).join('')}
+
+    ${proximas.length ? `<h2 class="secao">Próximas sessões</h2>
+      ${proximas.map((s) => `<div class="cartao"><div class="data"><b>${s.data.slice(8, 10)}/${s.data.slice(5, 7)}</b>${esc(DIAS_CURTOS[deISO(s.data).getDay()])}</div>
+        <div class="corpo"><strong>${esc(s.disciplina)}</strong><span class="meta">${esc(s.sessao)}${s.topicos ? ` · ${esc(s.topicos)}` : ''}</span></div></div>`).join('')}` : ''}
+
+    <p class="rodape">A atividade é registrada só neste celular.</p>`;
+
+  tela.querySelectorAll('.barra-dia').forEach((b) => b.addEventListener('click', () => {
+    tela.querySelectorAll('.barra-dia').forEach((x) => x.classList.toggle('ativa', x === b));
+    $('#g-dica').textContent = b.getAttribute('aria-label');
+  }));
 }
 
 /* ---------- questões ---------- */
@@ -409,8 +574,7 @@ function resumoQuestoesHome() {
   if (!total) return '';
   const vals = Object.values(respostas());
   const erros = vals.filter((r) => !r.ok).length;
-  return `<h2 class="secao">Treino</h2>
-    <a class="cartao cartao-q" href="#/questoes">
+  return `<a class="cartao cartao-q" href="#/questoes">
       <div class="icone-q" aria-hidden="true">✍</div>
       <div class="corpo"><strong>Questões</strong>
         <span class="meta">${total} questões · ${vals.length} resolvidas${erros ? ` · ${erros} no caderno de erros` : ''}</span></div>
@@ -579,6 +743,7 @@ function responder(s, q, k) {
   const r = resp[q.id] || { n: 0, a: 0 };
   resp[q.id] = { u: k, ok, n: r.n + 1, a: r.a + (ok ? 1 : 0), t: Date.now() };
   guardado.set('respostas', resp);
+  registrarAtividade({ q: 1, a: ok ? 1 : 0 });
   mostrarCorrecao(s, q);
 }
 
@@ -674,6 +839,8 @@ function iniciarAudio(item, doc, cap, fila = []) {
   }));
   const inicio = cap != null ? (doc.capitulos[cap].inicio || 0) : guardado.get(`pos:${item.id}`, 0);
   player.cap = capituloNoTempo(inicio);
+  registrarAudioPendente();
+  ultimoTempoAudio = null;
   audio.src = item.audio.url;
   audio.playbackRate = velocidade;
   audio.addEventListener('loadedmetadata', () => {
@@ -766,6 +933,13 @@ audio.addEventListener('timeupdate', () => {
   $('#p-tempo').textContent = fmt(t);
   $('#p-total').textContent = fmt(d);
   if (!arrastando) $('#p-progresso').value = String(Math.round((t / d) * 1000) || 0);
+  // tempo real ouvindo (saltos e avanços não contam)
+  if (!audio.paused && ultimoTempoAudio != null) {
+    const delta = t - ultimoTempoAudio;
+    if (delta > 0 && delta < 3) segPendentes += delta / (audio.playbackRate || 1);
+    if (segPendentes >= 20) registrarAudioPendente();
+  }
+  ultimoTempoAudio = t;
   const cap = capituloNoTempo(t);
   if (cap !== player.cap) { player.cap = cap; aoMudarCapitulo(); }
   if (player.marcas.length) marcarLeitura(blocoNoTempo(t));
@@ -775,7 +949,7 @@ audio.addEventListener('timeupdate', () => {
   }
 });
 audio.addEventListener('play', () => atualizarPlay(true));
-audio.addEventListener('pause', () => { atualizarPlay(false); salvarPosicao(true); });
+audio.addEventListener('pause', () => { atualizarPlay(false); salvarPosicao(true); registrarAudioPendente(); });
 audio.addEventListener('ended', () => {
   if (player.modo !== 'audio' || !player.item) return;
   guardado.set(`pos:${player.item.id}`, 0);
@@ -942,8 +1116,11 @@ function ttsFalar() {
   u.lang = 'pt-BR';
   if (tts.voz) u.voice = tts.voz;
   u.rate = velocidade;
+  const inicioFala = Date.now();
   u.onend = () => {
     if (u !== tts.atual || !tts.tocando) return;
+    const seg = (Date.now() - inicioFala) / 1000;
+    if (seg > 0 && seg < 120) registrarAtividade({ s: seg });
     tts.idx++;
     salvarPosicao(false);
     ttsFalar();
@@ -991,6 +1168,9 @@ function soltarTela() {
 }
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible' && player.modo === 'tts' && tts.tocando) { tts.trava = null; segurarTela(); }
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') registrarAudioPendente();
 });
 function pararLeituraNaTela() { /* a leitura continua ao voltar para o início */ }
 

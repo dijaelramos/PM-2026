@@ -26,6 +26,7 @@ from icone import gerar_icones  # noqa: E402
 from questoes import DISCIPLINAS_AUTORAIS, simulado1_pendente  # noqa: E402
 from questoes import extrair as extrair_questoes  # noqa: E402
 from revisao import montar as montar_revisao  # noqa: E402
+from plano import ler_datas, ler_plano  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
 APP = RAIZ / "app"
@@ -296,10 +297,14 @@ def main():
     catalogo.sort(key=lambda i: ordem[i["categoria"]])
     conteudo = json.dumps(catalogo, ensure_ascii=False, sort_keys=True).encode()
     versao = hash_curto(conteudo, 12)
+    arq_plano, arq_perfil = RAIZ / "Plano_de_Estudos_PMPE_2026.md", RAIZ / "Perfil_do_Estudante.md"
+    plano = {"sessoes": ler_plano(arq_plano.read_text(encoding="utf-8")) if arq_plano.exists() else [],
+             **(ler_datas(arq_perfil.read_text(encoding="utf-8")) if arq_perfil.exists() else {})}
     agora = dt.datetime.now(dt.timezone(dt.timedelta(hours=-3))).strftime("%d/%m/%Y %H:%M")
     (saida / "data" / "catalogo.json").write_text(
         json.dumps({"versao": versao, "gerado_em": agora, "docs": catalogo,
-                    "questoes": {"arquivo": arquivo_q, "total": len(questoes)}}, ensure_ascii=False), encoding="utf-8")
+                    "questoes": {"arquivo": arquivo_q, "total": len(questoes)}, "plano": plano},
+                   ensure_ascii=False), encoding="utf-8")
 
     # Arquivos do app; a versão do service worker muda quando o código muda.
     web = APP / "web"

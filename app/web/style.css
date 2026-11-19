@@ -13,6 +13,7 @@
   --certo-fundo: #e2f3e8; --certo: #1f7a46;
   --errado-fundo: #fbe3e1; --errado: #b3261e;
   --autoral: #9a5b00;
+  --grafico-barra: #1d4f86;
   --player-h: 150px;
   color-scheme: light;
 }
@@ -22,6 +23,7 @@
     --linha: #2b3645; --marca: #1d4877; --destaque: #f2b632; --ok: #4cc283; --citacao: #1f2a38;
     --marcado: #5b4813;
     --certo-fundo: #143826; --certo: #5fd395; --errado-fundo: #46191a; --errado: #ff8a80; --autoral: #f2b632;
+    --grafico-barra: #f2b632;
     color-scheme: dark;
   }
 }
@@ -30,6 +32,7 @@
   --linha: #2b3645; --marca: #1d4877; --destaque: #f2b632; --ok: #4cc283; --citacao: #1f2a38;
   --marcado: #5b4813;
   --certo-fundo: #143826; --certo: #5fd395; --errado-fundo: #46191a; --errado: #ff8a80; --autoral: #f2b632;
+  --grafico-barra: #f2b632;
   color-scheme: dark;
 }
 
@@ -127,6 +130,30 @@ article tr.lendo td, article tr.lendo th { background: var(--marcado); }
   background: var(--marca); color: var(--marca-texto); border: 0; border-radius: 999px;
   padding: 10px 18px; font-weight: 600; box-shadow: 0 4px 14px rgba(0,0,0,.25);
 }
+
+/* ---------- progresso ---------- */
+.contagem {
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px;
+  background: var(--marca); color: var(--marca-texto); border-radius: 16px; padding: 18px 16px; margin: 8px 0 12px;
+}
+.contagem b { font-size: 52px; line-height: 1; font-variant-numeric: tabular-nums; }
+.contagem span { font-weight: 600; }
+.contagem small { opacity: .85; font-size: 13px; }
+
+.grafico { margin: 0 0 8px; background: var(--superficie); border: 1px solid var(--linha); border-radius: 14px; padding: 12px 14px 8px; }
+.grafico figcaption { font-weight: 600; font-size: 15px; margin-bottom: 8px; }
+.grafico-area { position: relative; padding-top: 16px; }
+.grafico-max { position: absolute; top: 0; left: 0; font-size: 11px; color: var(--suave); }
+.barras {
+  height: 120px; display: grid; grid-template-columns: repeat(14, 1fr); align-items: end; gap: 2px;
+  border-bottom: 1px solid var(--linha);
+}
+.barra-dia { height: 100%; background: none; border: 0; padding: 0; display: flex; align-items: flex-end; justify-content: center; }
+.barra-dia .b { width: 60%; max-width: 18px; background: var(--grafico-barra); border-radius: 4px 4px 0 0; }
+.barra-dia.ativa .b, .barra-dia:focus-visible .b { outline: 2px solid var(--texto); outline-offset: 2px; }
+.rotulos { display: grid; grid-template-columns: repeat(14, 1fr); gap: 2px; font-size: 11px; color: var(--suave); text-align: center; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.rotulos .hoje { color: var(--texto); font-weight: 700; }
+.dica { font-size: 13px; color: var(--suave); margin: 6px 0 0; min-height: 1.4em; }
 
 /* ---------- questões ---------- */
 .cartao-q { border-color: var(--marca); }
