@@ -322,7 +322,7 @@ function desenharLista(filtro) {
   }
   if (!f) {
     const nDest = contarDestaques();
-    const blocos = resumoCronoHome() + resumoProgressoHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
+    const blocos = resumoConviteHome() + resumoCronoHome() + resumoProgressoHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
       <div class="icone-q" aria-hidden="true">🖍</div><div class="corpo"><strong>Meus destaques</strong>
       <span class="meta">${nDest} ${nDest === 1 ? 'trecho destacado' : 'trechos destacados'}, por disciplina</span></div><span aria-hidden="true">›</span></a>` : '');
     if (blocos) html += `<h2 class="secao">Seu estudo</h2>${blocos}`;
@@ -335,6 +335,8 @@ function desenharLista(filtro) {
   if (f.length >= 3) html += '<div id="busca-textos" aria-live="polite"><p class="aviso">Buscando dentro dos textos…</p></div>';
   $('#lista').innerHTML = html;
   if (f.length >= 3) agendarBuscaTextos(filtro);
+  const cf = $('#convite-fechar');
+  if (cf) cf.addEventListener('click', () => { esquecerConvite(); desenharLista(filtro); });
   const bs = $('#b-semana');
   if (bs) {
     const semana = revisoesDaSemana();
@@ -347,6 +349,7 @@ async function telaDoc(id) {
   const item = catalogo && catalogo.docs.find((d) => d.id === id);
   if (!item) { location.hash = '#/'; return; }
   setTopo(item.titulo, true);
+  if (item.categoria === 'questoes') esquecerConvite(item.id);
   tela.innerHTML = '<p class="aviso">Abrindo…</p>';
   let doc;
   try { doc = await obterDoc(item); } catch {
@@ -1346,6 +1349,7 @@ function mostrarPlayer() {
   $('#p-avancar').textContent = player.modo === 'tts' ? '⟳' : '+30';
   aoMudarCapitulo();
   mostrarASeguir();
+  mostrarConvitePlayer();
 }
 
 function pararTudo() {
@@ -1771,11 +1775,11 @@ function bipar(n) {
   } catch { /* sem som */ }
 }
 
-async function notificar(titulo, corpo) {
+async function notificar(titulo, corpo, { tag = 'cronometro', url = '#/cronometro' } = {}) {
   if (!('Notification' in window) || Notification.permission !== 'granted' || document.visibilityState === 'visible') return;
   try {
     const reg = await navigator.serviceWorker.ready;
-    await reg.showNotification(titulo, { body: corpo, tag: 'cronometro', renotify: true, icon: 'icons/icon-192.png' });
+    await reg.showNotification(titulo, { body: corpo, tag, renotify: true, icon: 'icons/icon-192.png', data: { url } });
   } catch { /* ok */ }
 }
 
@@ -2220,9 +2224,74 @@ audio.addEventListener('ended', () => {
   guardado.set(`pos:${player.item.id}`, 0);
   guardado.set(`ouvido:${player.item.id}`, true);
   atualizarPlay(false);
+  convidarQuestoes(player.item);
   if (sono.modo === 'cap') { dormir(); return; } // o fim do material também é fim de capítulo
   avancarFila();
 });
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('message', (e) => {
+    if (e.data && typeof e.data.abrir === 'string' && e.data.abrir.startsWith('#/')) location.hash = e.data.abrir;
+  });
+}
+
+/* ---------- convite para as questões quando o áudio do material termina ---------- */
+/* Quem estuda ouvindo não vê o cartão do fim do texto: o convite aparece no reprodutor,
+   na tela inicial (até abrir as questões, dispensar ou passar 3 dias) e, com a tela apagada, como notificação. */
+const DIAS_CONVITE = 3;
+
+function conviteAtual() {
+  const c = guardado.get('convite', null);
+  if (!c || !catalogo || Date.now() - c.t > DIAS_CONVITE * 864e5) return null;
+  const mat = catalogo.docs.find((d) => d.id === c.id);
+  const cad = mat && mat.caderno && catalogo.docs.find((d) => d.id === mat.caderno);
+  return cad ? { mat, cad } : null;
+}
+
+const textoConvite = (cad) => (cad.titulo.startsWith('Teste-relâmpago') ? '⚡ Fazer o teste-relâmpago'
+  : `📝 Responder as questões${cad.data === dataISO() ? ' de hoje' : ''}`);
+
+function mostrarConvitePlayer() {
+  const el = $('#p-convite');
+  const c = conviteAtual();
+  el.hidden = !c;
+  if (c) {
+    el.href = `#/doc/${encodeURIComponent(c.cad.id)}`;
+    el.textContent = `Fim de "${tituloCurto(c.mat)}". ${textoConvite(c.cad)} ›`;
+  }
+}
+
+function convidarQuestoes(item) {
+  if (!item || !item.caderno || !catalogo.docs.some((d) => d.id === item.caderno)) return;
+  guardado.set('convite', { id: item.id, t: Date.now() });
+  mostrarConvitePlayer();
+  const c = conviteAtual();
+  if (!c) return;
+  const teste = c.cad.titulo.startsWith('Teste-relâmpago');
+  notificar(teste ? 'Resumão ouvido! Hora do teste-relâmpago' : 'Material ouvido! Agora é praticar',
+    teste ? 'Toque para fazer o teste-relâmpago, sem consultar.'
+      : `Toque para responder ${c.cad.questoes ? `as ${c.cad.questoes} questões` : 'as questões'} de ${(c.mat.subtitulo || '').split(' ').pop() || 'hoje'}.`,
+    { tag: 'convite', url: `#/doc/${encodeURIComponent(c.cad.id)}` });
+}
+
+function esquecerConvite(idCaderno) {
+  const c = conviteAtual();
+  if (idCaderno && (!c || c.cad.id !== idCaderno)) return;
+  guardado.set('convite', null);
+  const el = $('#p-convite');
+  if (el) el.hidden = true;
+}
+
+function resumoConviteHome() {
+  const c = conviteAtual();
+  if (!c) return '';
+  const meta = c.cad.titulo.startsWith('Teste-relâmpago') ? 'Perguntas rápidas, sem consultar, com as respostas no fim'
+    : `Estudo dirigido${c.cad.questoes ? ` e ${c.cad.questoes} questões oficiais` : ''}, com o gabarito no fim`;
+  return `<div class="cartao cartao-q convite-home">
+    <a class="corpo" href="#/doc/${encodeURIComponent(c.cad.id)}"><strong>🎧 Você ouviu "${esc(tituloCurto(c.mat))}" (${esc((c.mat.subtitulo || '').split(' ').pop())}). ${esc(textoConvite(c.cad))}</strong>
+    <span class="meta">${esc(meta)}</span></a>
+    <button class="icone-btn" id="convite-fechar" aria-label="Dispensar o convite">×</button></div>`;
+}
 
 const disponivel = (it) => !!it && !!it.audio && (navigator.onLine || baixados.has(abs(it.audio.url)));
 const aoTerminar = () => guardado.get('aoTerminar', 'seguir');
@@ -2430,6 +2499,7 @@ function ttsFalar(natural = false) {
     guardado.set(`ouvido:${player.item.id}`, true);
     atualizarPlay(false);
     soltarTela();
+    convidarQuestoes(player.item);
     return;
   }
   if (p.cap !== player.cap) {

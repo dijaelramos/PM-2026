@@ -91,8 +91,12 @@ self.addEventListener('fetch', (e) => {
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();
   e.waitUntil((async () => {
+    const destino = (e.notification.data && e.notification.data.url) || '#/cronometro';
     const janelas = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
-    if (janelas.length) return janelas[0].focus();
-    return self.clients.openWindow('./#/cronometro');
+    if (janelas.length) {
+      janelas[0].postMessage({ abrir: destino });
+      return janelas[0].focus();
+    }
+    return self.clients.openWindow(`./${destino}`);
   })());
 });
