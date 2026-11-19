@@ -223,6 +223,13 @@ body.tocando .q-botoes { bottom: calc(var(--player-h) + env(safe-area-inset-bott
 .player > * { max-width: 760px; margin-left: auto; margin-right: auto; }
 .player-info { display: flex; align-items: flex-start; gap: 8px; }
 .player-textos { flex: 1; min-width: 0; }
+.sono {
+  display: inline-flex; align-items: center; gap: 4px; min-height: 36px; padding: 0 10px; border-radius: 999px;
+  border: 1px solid var(--linha); background: none; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums;
+  color: var(--suave); white-space: nowrap;
+}
+.sono svg { width: 18px; height: 18px; }
+.sono.ativo { color: var(--marca-texto); background: var(--marca); border-color: var(--marca); }
 .player-textos strong, .player-textos span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .player-textos span { font-size: 13px; color: var(--suave); }
 .player-barra { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--suave); font-variant-numeric: tabular-nums; }

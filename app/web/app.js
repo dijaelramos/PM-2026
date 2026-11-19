@@ -859,6 +859,55 @@ function capituloNoTempo(t) {
   return i;
 }
 
+/* ---------- timer de sono ---------- */
+
+const OPCOES_SONO = [0, 15, 30, 45, 60, 'cap'];
+const ICONE_SONO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
+let sono = { modo: 0, fim: 0, id: null };
+
+function definirSono(modo) {
+  if (sono.id) clearInterval(sono.id);
+  sono = { modo, fim: typeof modo === 'number' && modo ? Date.now() + modo * 60000 : 0, id: null };
+  if (sono.fim) sono.id = setInterval(tickSono, 1000);
+  audio.volume = 1;
+  desenharSono();
+}
+
+function tickSono() {
+  const resta = sono.fim - Date.now();
+  if (resta <= 0) { dormir(); return; }
+  if (player.modo === 'audio' && !audio.paused && resta < 10000) audio.volume = Math.max(0.05, resta / 10000); // some no iPhone
+  desenharSono();
+}
+
+/* Pausa a leitura e desliga o timer. */
+function dormir() {
+  if (player.modo === 'audio') audio.pause();
+  else if (player.modo === 'tts' && tts.tocando) ttsPausar();
+  definirSono(0);
+  $('#p-capitulo').textContent = 'Timer de sono: leitura pausada. Toque em ▶ para continuar.';
+}
+
+function desenharSono() {
+  const b = $('#p-sono');
+  let texto = '', rotulo = 'Timer de sono: desligado';
+  if (sono.modo === 'cap') { texto = 'fim do cap.'; rotulo = 'Timer de sono: para no fim do capítulo'; }
+  else if (sono.fim) {
+    texto = fmt((sono.fim - Date.now()) / 1000);
+    rotulo = `Timer de sono: ${Math.ceil((sono.fim - Date.now()) / 60000)} min`;
+  }
+  b.innerHTML = ICONE_SONO + (texto ? `<span>${texto}</span>` : '');
+  b.classList.toggle('ativo', !!sono.modo);
+  b.setAttribute('aria-label', rotulo);
+  b.title = rotulo;
+}
+
+$('#p-sono').addEventListener('click', () => {
+  const i = OPCOES_SONO.indexOf(sono.modo);
+  definirSono(OPCOES_SONO[(i + 1) % OPCOES_SONO.length]);
+});
+desenharSono();
+
 /* ---------- marcação do trecho que está sendo lido ---------- */
 
 let seguir = true; // a tela acompanha a leitura até o usuário rolar com o dedo
@@ -934,27 +983,42 @@ audio.addEventListener('timeupdate', () => {
   $('#p-total').textContent = fmt(d);
   if (!arrastando) $('#p-progresso').value = String(Math.round((t / d) * 1000) || 0);
   // tempo real ouvindo (saltos e avanços não contam)
-  if (!audio.paused && ultimoTempoAudio != null) {
-    const delta = t - ultimoTempoAudio;
-    if (delta > 0 && delta < 3) segPendentes += delta / (audio.playbackRate || 1);
+  const delta = ultimoTempoAudio == null ? -1 : t - ultimoTempoAudio;
+  const natural = delta > 0 && delta < 3; // tocando normalmente, sem salto
+  if (!audio.paused && natural) {
+    segPendentes += delta / (audio.playbackRate || 1);
     if (segPendentes >= 20) registrarAudioPendente();
   }
   ultimoTempoAudio = t;
   const cap = capituloNoTempo(t);
-  if (cap !== player.cap) { player.cap = cap; aoMudarCapitulo(); }
+  if (cap !== player.cap) {
+    const anterior = player.cap;
+    player.cap = cap;
+    if (sono.modo === 'cap' && natural && cap === anterior + 1) {
+      audio.currentTime = player.doc.capitulos[cap].inicio || t; // continua do começo do próximo
+      aoMudarCapitulo();
+      dormir();
+      return;
+    }
+    aoMudarCapitulo();
+  }
   if (player.marcas.length) marcarLeitura(blocoNoTempo(t));
   salvarPosicao(false);
   if ('mediaSession' in navigator && navigator.mediaSession.setPositionState && isFinite(d)) {
     try { navigator.mediaSession.setPositionState({ duration: d, position: Math.min(t, d), playbackRate: audio.playbackRate }); } catch { /* ok */ }
   }
 });
-audio.addEventListener('play', () => atualizarPlay(true));
+audio.addEventListener('play', () => {
+  if (!sono.fim || sono.fim - Date.now() > 10000) audio.volume = 1;
+  atualizarPlay(true);
+});
 audio.addEventListener('pause', () => { atualizarPlay(false); salvarPosicao(true); registrarAudioPendente(); });
 audio.addEventListener('ended', () => {
   if (player.modo !== 'audio' || !player.item) return;
   guardado.set(`pos:${player.item.id}`, 0);
   guardado.set(`ouvido:${player.item.id}`, true);
   atualizarPlay(false);
+  if (sono.modo === 'cap') { dormir(); return; } // o fim do material também é fim de capítulo
   avancarFila();
 });
 
@@ -1097,8 +1161,11 @@ function iniciarTts(item, doc, cap) {
   ttsTocar();
 }
 
-function ttsFalar() {
+function ttsFalar(natural = false) {
   const p = tts.pedacos[tts.idx];
+  if (!p && natural && sono.modo === 'cap') { // fim do texto com o timer em "fim do capítulo"
+    definirSono(0);
+  }
   if (!p) { // fim
     tts.tocando = false;
     guardado.set(`tts:${player.item.id}`, 0);
@@ -1110,6 +1177,7 @@ function ttsFalar() {
   if (p.cap !== player.cap) {
     player.cap = p.cap;
     aoMudarCapitulo();
+    if (natural && sono.modo === 'cap') { dormir(); return; } // para antes do próximo capítulo
   }
   marcarLeitura(p.f);
   const u = new SpeechSynthesisUtterance(p.texto);
@@ -1123,7 +1191,7 @@ function ttsFalar() {
     if (seg > 0 && seg < 120) registrarAtividade({ s: seg });
     tts.idx++;
     salvarPosicao(false);
-    ttsFalar();
+    ttsFalar(true);
   };
   u.onerror = (e) => {
     if (u !== tts.atual || e.error === 'interrupted' || e.error === 'canceled') return;
@@ -1204,6 +1272,7 @@ $('#p-vel').addEventListener('click', () => {
   if (player.modo === 'tts' && tts.tocando) ttsTocar();
 });
 $('#p-fechar').addEventListener('click', () => {
+  definirSono(0);
   pararTudo();
   marcarLeitura(-1);
   player.item = null;
