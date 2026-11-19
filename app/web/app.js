@@ -159,6 +159,7 @@ function setTopo(titulo, comVoltar) {
 }
 
 function rota() {
+  esconderDaqui();
   seguir = true;
   $('#seguir').hidden = true;
   const h = location.hash;
@@ -335,6 +336,15 @@ async function telaDoc(id) {
 
   const ouvir = $('#b-ouvir');
   if (ouvir) ouvir.addEventListener('click', () => iniciarAudio(item, doc, null));
+  const art = tela.querySelector('article');
+  art.addEventListener('click', (e) => {
+    if (e.target.closest('a, button, summary, input') || String(window.getSelection() || '').trim()) return;
+    const bloco = e.target.closest('[data-f]');
+    if (!bloco) { esconderDaqui(); return; }
+    mostrarDaqui(bloco, e.clientY, () => ouvirDaqui(item, doc, Number(bloco.dataset.f)));
+  });
+  const aviso = $('#aviso-doc');
+  aviso.textContent = `${aviso.textContent} Dica: toque num parágrafo para ouvir a partir dele.`.trim();
   const bd = $('#b-depois');
   if (bd) bd.addEventListener('click', () => {
     if (!disponivel(item)) { $('#aviso-doc').textContent = 'Sem internet e o áudio não foi baixado.'; return; }
@@ -840,7 +850,7 @@ function pararTudo() {
   player.modo = null;
 }
 
-function iniciarAudio(item, doc, cap, fila = []) {
+function iniciarAudio(item, doc, cap, fila = [], inicioForcado = null) {
   const url = abs(item.audio.url);
   if (!navigator.onLine && !baixados.has(url)) {
     const av = $('#aviso-doc');
@@ -853,7 +863,8 @@ function iniciarAudio(item, doc, cap, fila = []) {
     const f = (c.f || [])[i];
     if (f != null && f >= 0) player.marcas.push([t, f]);
   }));
-  const inicio = cap != null ? (doc.capitulos[cap].inicio || 0) : guardado.get(`pos:${item.id}`, 0);
+  const inicio = inicioForcado != null ? inicioForcado
+    : cap != null ? (doc.capitulos[cap].inicio || 0) : guardado.get(`pos:${item.id}`, 0);
   player.cap = capituloNoTempo(inicio);
   registrarAudioPendente();
   ultimoTempoAudio = null;
@@ -874,6 +885,63 @@ function capituloNoTempo(t) {
   while (i + 1 < caps.length && caps[i + 1].inicio != null && caps[i + 1].inicio <= t + 0.3) i++;
   return i;
 }
+
+/* ---------- ouvir a partir de um parágrafo ---------- */
+
+let acaoDaqui = null;
+
+function tempoDoBloco(doc, f) {
+  for (const c of doc.capitulos) {
+    const i = (c.f || []).indexOf(f);
+    if (i >= 0) return c.t ? c.t[i] : (c.inicio != null ? c.inicio : null);
+  }
+  return null;
+}
+
+function ouvirDaqui(item, doc, f) {
+  seguir = true;
+  $('#seguir').hidden = true;
+  if (player.item && player.item.id === item.id) {
+    if (player.modo === 'audio') {
+      const t = tempoDoBloco(doc, f);
+      if (t != null) {
+        audio.currentTime = t;
+        if (audio.paused) audio.play().catch(() => {});
+        return;
+      }
+    } else if (player.modo === 'tts') {
+      const i = tts.pedacos.findIndex((p) => p.f === f);
+      if (i >= 0) { tts.idx = i; ttsTocar(); }
+      return;
+    }
+  }
+  if (item.audio && disponivel(item)) iniciarAudio(item, doc, null, [], tempoDoBloco(doc, f));
+  else iniciarTts(item, doc, null, f);
+}
+
+function mostrarDaqui(bloco, y, acao) {
+  esconderDaqui();
+  bloco.classList.add('escolhido');
+  const b = $('#daqui');
+  const topo = $('.topo').offsetHeight + 8;
+  const baixo = window.innerHeight - ($('#player').hidden ? 0 : $('#player').offsetHeight) - 56;
+  b.style.top = `${Math.min(Math.max(y - 60, topo), baixo)}px`;
+  b.hidden = false;
+  acaoDaqui = acao;
+}
+
+function esconderDaqui() {
+  $('#daqui').hidden = true;
+  acaoDaqui = null;
+  const e = tela.querySelector('.escolhido');
+  if (e) e.classList.remove('escolhido');
+}
+
+$('#daqui').addEventListener('click', () => {
+  const acao = acaoDaqui;
+  esconderDaqui();
+  if (acao) acao();
+});
 
 /* ---------- timer de sono ---------- */
 
@@ -1203,7 +1271,7 @@ function quebrar(texto, max = 220) {
   return out;
 }
 
-function iniciarTts(item, doc, cap) {
+function iniciarTts(item, doc, cap, bloco = null) {
   if (!('speechSynthesis' in window)) {
     const av = $('#aviso-doc');
     if (av) av.textContent = 'Este navegador não tem leitura em voz alta.';
@@ -1221,6 +1289,10 @@ function iniciarTts(item, doc, cap) {
   for (const p of tts.pedacos) { tts.palavrasAntes.push(soma); soma += p.texto.split(/\s+/).length; }
   tts.total = soma;
   tts.idx = cap != null ? tts.pedacos.findIndex((p) => p.cap === cap) : Math.min(guardado.get(`tts:${item.id}`, 0), tts.pedacos.length - 1);
+  if (bloco != null) {
+    const i = tts.pedacos.findIndex((p) => p.f === bloco);
+    if (i >= 0) tts.idx = i;
+  }
   if (tts.idx < 0) tts.idx = 0;
   tts.voz = tts.voz || escolherVoz();
   player.cap = tts.pedacos[tts.idx] ? tts.pedacos[tts.idx].cap : 0;
@@ -1360,6 +1432,9 @@ window.addEventListener('hashchange', () => {
 window.addEventListener('touchmove', pararDeSeguir, { passive: true });
 window.addEventListener('wheel', pararDeSeguir, { passive: true });
 $('#seguir').addEventListener('click', voltarASeguir);
+const esconderDaquiAoRolar = () => { if (acaoDaqui) esconderDaqui(); }; // só rolagem feita pelo usuário
+window.addEventListener('touchmove', esconderDaquiAoRolar, { passive: true });
+window.addEventListener('wheel', esconderDaquiAoRolar, { passive: true });
 window.addEventListener('scroll', () => {
   if (!location.hash || location.hash === '#/' || location.hash === '#') rolagemInicio = window.scrollY;
 }, { passive: true });
