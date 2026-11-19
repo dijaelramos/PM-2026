@@ -87,13 +87,19 @@ Fins de semana e feriados não têm sessão no plano. Para que o estudante revis
 3. **Pegadinhas da semana:** um único quadro "a banca escreve… / o certo é…", com as mais importantes.
 4. **Seus erros da semana:** as questões e os itens do estudo dirigido que o estudante errou, com a regra correta em uma linha. Se alguma correção ainda não foi feita, diga quais respostas faltam enviar.
 5. **Redação da semana:** tema, principais apontamentos da correção (se já houve) e o que falta enviar.
-6. **Teste-relâmpago:** 10 a 15 perguntas curtas de recuperação ativa, cobrindo todos os dias, com o rótulo "perguntas de revisão do tutor". Não use questões oficiais novas: elas ficam para as sessões e os simulados.
-7. **O que vem a seguir:** as próximas sessões do plano (datas e tópicos), em poucas linhas.
-8. **Respostas do teste-relâmpago,** só no fim do arquivo.
+6. **O que vem a seguir:** as próximas sessões do plano (datas e tópicos), em poucas linhas.
 
-**Nome do arquivo:** `AAAA-MM-DD_Resumao_da_Semana.md` (antes do fim de semana, inclusive quando o feriado emenda com ele) ou `AAAA-MM-DD_Resumao_Feriado.md` (feriado no meio da semana). A data é a do último dia de estudo coberto. Registre o arquivo em `Material_do_Dia/README.md`.
+Como no material do dia (1.5), o que é para responder fica **em outro arquivo**, `<nome do resumão>_Questoes.md`:
 
-**No chat:** depois de apresentar o material do dia, dê o link do resumão e diga o que ele cobre e para quando é. O conteúdo fica no arquivo.
+1. Título `# Teste-relâmpago — <título do resumão>`, com o link do resumão e a instrução de responder por escrito, sem consultar, e conferir no fim.
+2. **Teste-relâmpago:** 10 a 15 perguntas curtas de recuperação ativa, cobrindo todos os dias, com o rótulo "perguntas de revisão do tutor". Não use questões oficiais novas: elas ficam para as sessões e os simulados.
+3. **Respostas do teste-relâmpago,** só no fim do arquivo.
+
+O cabeçalho do resumão dá o link desse arquivo.
+
+**Nome do arquivo:** `AAAA-MM-DD_Resumao_da_Semana.md` (antes do fim de semana, inclusive quando o feriado emenda com ele) ou `AAAA-MM-DD_Resumao_Feriado.md` (feriado no meio da semana), mais o `_Questoes.md` correspondente. A data é a do último dia de estudo coberto. Registre os dois em `Material_do_Dia/README.md`.
+
+**No chat:** depois de apresentar o material do dia, dê o link do resumão e o do teste-relâmpago e diga o que eles cobrem e para quando são. O conteúdo fica nos arquivos.
 
 ## Parte 2 — Correção
 

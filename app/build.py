@@ -245,6 +245,8 @@ def main():
             mat = por_arquivo.get(d["caminho"].with_name(d["caminho"].stem[: -len("_Questoes")] + ".md"))
             if mat:
                 d["material"], mat["caderno"] = mat["id"], d["id"]
+                if mat["h1"].startswith("Resumão"):  # resumão: o arquivo separado é o teste-relâmpago
+                    d["titulo"] = "Teste-relâmpago: " + mat["titulo"].replace("Resumão: ", "")
 
     # Revisão rápida de cada material (documento derivado, com áudio próprio).
     revisoes = []

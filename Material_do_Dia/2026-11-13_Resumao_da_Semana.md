@@ -11,7 +11,7 @@
 > | Sex, 13/11 | Informática, sessão 2/10 + Redação | INF 3 — segurança da informação | [13/11](2026-11-13_Informatica_e_Redacao.md) |
 >
 > **Para quando:** revisão extra, montada em 16/11/2026 a pedido (antes de existir a regra do resumão). Leve cerca de 1 h; não conta nas horas do plano.
-> **Como usar:** leia as seções 1 a 5, depois responda o teste-relâmpago (seção 9) **sem consultar** e confira no fim do arquivo.
+> **Como usar:** leia as seções 1 a 5, depois responda o teste-relâmpago **sem consultar**. Ele fica em arquivo separado, [2026-11-13_Resumao_da_Semana_Questoes.md](2026-11-13_Resumao_da_Semana_Questoes.md), com as respostas no fim.
 
 ## 1. Segunda, 09/11 — Raciocínio Lógico: estruturas lógicas
 
@@ -182,45 +182,7 @@
 - **13/11:** produção com a proposta oficial da **PMES 2022** (AOCP), *A importância da valorização da saúde mental no ambiente de trabalho*, juntada à de 06/11.
 - **Ainda falta enviar o texto para correção** (prevista para 16/11). Digite-o exatamente como escreveu e diga quantas linhas ocupou.
 
-## 9. Teste-relâmpago *(perguntas de revisão do tutor, não oficiais)*
-
-1. Quantas linhas tem a tabela-verdade de "Se o alarme toca, a equipe sai ou o sargento liga"?
-2. Escreva a contrapositiva de "Se o cão late, há estranho no quintal".
-3. Escreva a negação de "Se o cão late, há estranho no quintal".
-4. Negue: "Carla não dirige e Davi patrulha".
-5. Negue: "Todo recruta concluiu o curso".
-6. "Se o suspeito fugiu, a porta estava aberta. A porta estava aberta. Logo, o suspeito fugiu." O argumento é válido? Qual é o nome dele?
-7. Qual é a diferença entre "direitos humanos" e "direitos fundamentais"?
-8. Ponha na ordem: promulgação, celebração, ratificação, aprovação pelo Congresso. Quem faz cada uma?
-9. Qual é o status de um tratado de direitos humanos aprovado **sem** o rito do § 3º? E de um tratado comum?
-10. A que dimensão pertence cada direito: (a) votar; (b) educação pública; (c) meio ambiente equilibrado?
-11. A DUDH é tratado? Que órgão a aprovou e em que data?
-12. Pela Convenção Americana, quem pode levar um caso à Comissão? E à Corte?
-13. Cite três artigos da Convenção que não podem ser suspensos e um direito que pode.
-14. Que malware se espalha sozinho pela rede, sem hospedeiro? E qual permite que o invasor volte ao computador?
-15. Na criptografia assimétrica, com que chave se cifra uma mensagem sigilosa? E com que chave se assina?
-
 ## 10. O que vem a seguir
 
 - **Esta semana:** 16 a 18/11, Direito Constitucional (princípios fundamentais, direitos e deveres individuais e coletivos, direitos sociais; volta o art. 5º); **19/11, Raciocínio Lógico item 2** (argumentação, equivalência e implicação), que usa direto as regras de 09/11. Em 19/11 sai o primeiro resumão pela nova regra, para o feriado de 20/11 e o fim de semana.
 - **Quando estes assuntos voltam:** Informática, item 4 (backup) em 26/11 e revisão integrada em 28/01/2027 · Raciocínio Lógico, revisões do item 1 em 22/12 e 29/12 · Direitos Humanos, itens 6 a 8 (ECA, abuso de autoridade, tortura) de 10 a 14/12 e revisão dos itens 1 a 18 em 11/02/2027 · remédios constitucionais em 03/12.
-
----
-
-## Respostas do teste-relâmpago
-
-1. Três proposições (o alarme toca; a equipe sai; o sargento liga) → 2³ = **8 linhas**.
-2. "Se **não** há estranho no quintal, **então** o cão **não** late."
-3. "O cão late **e não** há estranho no quintal."
-4. "Carla **dirige ou** Davi **não** patrulha." (Negar "não dirige" tira o "não"; o "e" vira "ou".)
-5. "**Algum** recruta **não** concluiu o curso."
-6. **Inválido:** é a falácia de **afirmar o consequente** (a porta pode ter sido aberta por outro motivo).
-7. O conteúdo é parecido; muda o plano: direitos humanos = plano **internacional**; direitos fundamentais = os reconhecidos na **Constituição**.
-8. **Celebração** (Presidente) → **aprovação** por decreto legislativo (Congresso) → **ratificação** (Presidente, plano internacional) → **promulgação** por decreto (Presidente, plano interno).
-9. Sem o rito: **supralegal**. Tratado comum: **lei ordinária**.
-10. (a) **1ª** (direito político); (b) **2ª** (social); (c) **3ª** (difuso).
-11. **Não**: é resolução (217 A III) da **Assembleia Geral** da ONU, de **10/12/1948**.
-12. Comissão: **qualquer pessoa, grupo ou ONG**. Corte: **só os Estados e a Comissão**.
-13. Três entre: 3 (personalidade jurídica), 4 (vida), 5 (integridade), 6 (proibição da escravidão), 9 (legalidade e retroatividade), 12 (consciência e religião), 17 (família), 18 (nome), 19 (criança), 20 (nacionalidade), 23 (direitos políticos). Podem ser suspensos, por exemplo: expressão, reunião, associação, circulação.
-14. **Worm.** O que permite a volta do invasor é o **backdoor**.
-15. Sigilo: **chave pública do destinatário**. Assinatura: **chave privada do remetente**.

@@ -3,7 +3,7 @@
 > **Cobre:** quinta, 05/11 (Língua Portuguesa, Bloco 1/4, dia 2/3 — itens **3** e **4** do Anexo II) e sexta, 06/11 (Língua Portuguesa, dia 3/3 — itens **17** e **18**; Redação, 1 h). As sessões de 03/11 (Informática) e 04/11 (interpretação e tipologia) não têm material salvo e ficaram de fora.
 > **Materiais completos:** [05/11 — figuras e relações semânticas](2026-11-05_Lingua_Portuguesa.md) · [06/11 — significação e variação](2026-11-06_Lingua_Portuguesa.md) · [06/11 — Redação](2026-11-06_Redacao_Producao.md)
 > **Para quando:** revisão extra, montada em 16/11/2026 a pedido (antes de existir a regra do resumão). Leve cerca de 40 min; não conta nas horas do plano.
-> **Como usar:** leia as seções 1 a 5, depois responda o teste-relâmpago (seção 6) **sem consultar** e confira no fim do arquivo.
+> **Como usar:** leia as seções 1 a 5, depois responda o teste-relâmpago **sem consultar**. Ele fica em arquivo separado, [2026-11-06_Resumao_da_Semana_Questoes.md](2026-11-06_Resumao_da_Semana_Questoes.md), com as respostas no fim.
 
 ## 1. O essencial — quinta, 05/11
 
@@ -134,47 +134,9 @@
 - **Ainda falta enviar o texto para correção** (prevista para 16/11). Digite-o exatamente como escreveu e diga quantas linhas ocupou.
 - Lembretes do edital: dissertação de **15 a 20 linhas**; 4 critérios de 10 pontos; é preciso ter **12 ou mais**; qualquer identificação zera.
 
-## 6. Teste-relâmpago *(perguntas de revisão do tutor, não oficiais)*
-
-1. Qual é a diferença entre comparação e metáfora?
-2. "O relógio da praça cochilou depois do meio-dia." Que figura há na frase?
-3. Que relação expressa cada conectivo: (a) *porquanto*; (b) *conquanto*; (c) *destarte*?
-4. "Saí cedo para que o trânsito não me atrasasse." Que relação a oração iniciada por *para que* expressa?
-5. "Choveu tanto que a avenida alagou." Que relação há entre as orações?
-6. Reescreva com um conectivo adversativo, mantendo o sentido: "Embora estivesse cansado, o sargento terminou o relatório."
-7. Em qual frase o *se* é condicional? (a) "O suspeito se escondeu no beco." (b) "Se houver testemunhas, ouça todas."
-8. Qual destas locuções pode virar verbo simples sem mudar o sentido: "vou registrar", "devo registrar", "costumo registrar"? Escreva a forma simples.
-9. Que sentido o auxiliar acrescenta em (a) "voltou a beber" e (b) "está patrulhando"?
-10. Complete: "O juiz expediu o ______ de busca" (mandado/mandato) e "O ______ de veículos ficou lento" (tráfico/tráfego).
-11. Complete com *infringir* ou *infligir*: "Quem estaciona na vaga de idoso ______ o Código de Trânsito."
-12. "Na feira de Caruaru ele comprou jerimum; em São Paulo, pediria abóbora." Que tipo de variação linguística aparece?
-13. Aponte as marcas de coloquialidade: "A gente marcou às oito, mas ele furou."
-14. Dê um antônimo de *efêmero*.
-15. Uma questão diz "assinale a alternativa **incorreta**". O que você faz antes de ler as alternativas?
-
 ## 7. Quando estes assuntos voltam no plano
 
 - **27/11 a 01/12:** Língua Portuguesa, bloco 2 (ortografia, acentuação, classes de palavras, crase e **formação de palavras**).
 - **05/01/2027:** funções do **"que" e do "se"** (volta o "se" condicional).
 - **29/01 a 02/02/2027:** coesão (conectores) e **revisão ativa dos itens 1 a 18**.
 - **Redação:** a correção do texto da PMES 2022 está pendente desde 16/11.
-
----
-
-## Respostas do teste-relâmpago
-
-1. A comparação usa conectivo (*como, tal qual, parece*); a metáfora aproxima sem conectivo.
-2. Prosopopeia (personificação): o relógio "cochila", ação humana.
-3. (a) causa; (b) concessão; (c) conclusão.
-4. Finalidade (objetivo de sair cedo).
-5. Consequência (oração consecutiva: *tanto... que*).
-6. "O sargento estava cansado, **mas** (porém, contudo...) terminou o relatório."
-7. (b), porque dá para trocar por "caso": "Caso haja testemunhas...". Em (a), *se* é pronome.
-8. "Vou registrar" = **registrarei**. Em "devo" (obrigação) e "costumo" (hábito), o auxiliar acrescenta sentido.
-9. (a) repetição; (b) ação em andamento.
-10. **mandado** (ordem judicial); **tráfego** (movimento de veículos).
-11. **infringe** (viola a norma). *Infligir* é aplicar pena ou castigo.
-12. Variação **regional** (diatópica): *jerimum* é mais usado no Nordeste.
-13. "A gente" (no lugar de "nós") e "furou" (no sentido de faltar ao compromisso).
-14. Duradouro, permanente, perene.
-15. Sublinha a palavra "incorreta" e procura a alternativa **errada**, conferindo cada uma.

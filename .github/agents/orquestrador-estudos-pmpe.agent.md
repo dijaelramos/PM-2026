@@ -68,7 +68,7 @@ Quando o estudante pedir "o estudo de hoje", "a sessão de hoje", "o material de
    - `AAAA-MM-DD_<disciplina>_Questoes.md`, só com o que é para responder: estudo dirigido, mapa das questões, questões oficiais e, no fim, o gabarito comentado.
 
    O arquivo de estudo não pode ter nenhuma questão, enunciado ou gabarito; ele só dá o link do arquivo de questões. No chat, entregue as duas partes separadas: primeiro o material de estudo, depois o estudo dirigido e as questões, sem o gabarito.
-7. **Resumão (regra 1.6):** se a sessão de hoje for a **última antes de um fim de semana ou de um feriado** (veja "Dias sem estudo" no plano), monte logo em seguida, sem esperar pedido, o resumão dos dias de estudo da semana até hoje e salve-o como `AAAA-MM-DD_Resumao_da_Semana.md` ou `AAAA-MM-DD_Resumao_Feriado.md`. Na semana que teve feriado no meio, o resumão da sexta cobre a semana inteira de novo. No chat, dê o link e diga o que ele cobre.
+7. **Resumão (regra 1.6):** se a sessão de hoje for a **última antes de um fim de semana ou de um feriado** (veja "Dias sem estudo" no plano), monte logo em seguida, sem esperar pedido, o resumão dos dias de estudo da semana até hoje e salve-o como `AAAA-MM-DD_Resumao_da_Semana.md` ou `AAAA-MM-DD_Resumao_Feriado.md`, com o teste-relâmpago e as respostas num arquivo separado com o mesmo nome e `_Questoes` no fim. Na semana que teve feriado no meio, o resumão da sexta cobre a semana inteira de novo. No chat, dê o link e diga o que ele cobre.
 
 ## Correção das respostas do estudante
 

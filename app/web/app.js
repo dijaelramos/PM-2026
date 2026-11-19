@@ -186,10 +186,28 @@ function seloOffline(it) {
 }
 
 const tituloCurto = (it) => ({ revisao: it.titulo.replace(/^Revisão rápida: /, ''), questoes: it.titulo.replace(/^Questões: /, '') })[it.categoria] || it.titulo;
+/* No fim do material, o próximo passo: ir praticar com as questões de hoje (ou o teste-relâmpago do resumão). */
+function fimDoMaterial(item) {
+  const cad = item.caderno && catalogo.docs.find((d) => d.id === item.caderno);
+  if (!cad) return '';
+  const teste = cad.titulo.startsWith('Teste-relâmpago');
+  const hoje = item.data === dataISO();
+  const titulo = teste ? 'Leu o resumão? Agora teste a memória' : 'Terminou o estudo? Agora é praticar';
+  const botao = teste ? '⚡ Fazer o teste-relâmpago' : `📝 Responder as questões ${hoje ? 'de hoje' : 'deste dia'}`;
+  const meta = teste ? 'Perguntas rápidas, sem consultar, com as respostas no fim'
+    : `Estudo dirigido${cad.questoes ? ` e ${cad.questoes} ${cad.questoes === 1 ? 'questão oficial' : 'questões oficiais'}` : ''}, com o gabarito comentado no fim`;
+  return `<section class="fim-material" aria-label="Próximo passo">
+    <p class="fim-titulo">${titulo}</p>
+    <a class="btn primario largo" href="#/doc/${encodeURIComponent(cad.id)}">${botao} →</a>
+    <p class="meta">${meta}</p></section>`;
+}
+
 /* Botão para o arquivo de questões do dia (estudo dirigido, questões e gabarito), separado do material. */
 const linkCaderno = (item, classe = 'btn') => {
   const cad = item.caderno && catalogo.docs.find((d) => d.id === item.caderno);
-  return cad ? `<a class="${classe}" href="#/doc/${encodeURIComponent(cad.id)}">📝 Questões do dia${cad.questoes ? ` · ${cad.questoes}` : ''}</a>` : '';
+  if (!cad) return '';
+  const rotulo = cad.titulo.startsWith('Teste-relâmpago') ? '⚡ Teste-relâmpago' : `📝 Questões do dia${cad.questoes ? ` · ${cad.questoes}` : ''}`;
+  return `<a class="${classe}" href="#/doc/${encodeURIComponent(cad.id)}">${rotulo}</a>`;
 };
 
 function cartaoMaterial(it) {
@@ -352,7 +370,7 @@ async function telaDoc(id) {
       ${item.questoes && !item.caderno ? `<button class="btn${item.categoria === 'questoes' ? ' primario' : ''}" id="b-questoes">✍ Resolver as ${item.questoes} questões no app</button>` : ''}
       ${item.cartoes ? `<button class="btn" id="b-cartoes">🃏 ${item.cartoes} flashcards</button>` : ''}
       ${rev ? `<a class="btn" href="#/doc/${encodeURIComponent(rev.id)}">⚡ Revisão rápida · ${minutos(duracaoItem(rev))}</a>` : ''}
-      ${mat ? `<a class="btn" href="#/doc/${encodeURIComponent(mat.id)}">📄 ${item.categoria === 'questoes' ? 'Material de estudo' : 'Material completo'}</a>` : ''}
+      ${mat ? `<a class="btn" href="#/doc/${encodeURIComponent(mat.id)}">📄 ${item.categoria !== 'questoes' ? 'Material completo' : item.titulo.startsWith('Teste-relâmpago') ? 'Voltar ao resumão' : 'Material de estudo'}</a>` : ''}
       ${item.audio ? '<button class="btn" id="b-depois">➕ Ouvir depois</button>' : ''}
       ${item.categoria === 'material' ? `<button class="btn" id="b-estudado" aria-pressed="${concluido(item)}">${concluido(item) ? '✓ Estudado' : '☐ Marcar como estudado'}</button>` : ''}
     </div>
@@ -360,7 +378,8 @@ async function telaDoc(id) {
     <details class="capitulos"><summary>Capítulos (${caps.length})</summary><ol>
       ${caps.map((c, i) => `<li data-i="${i}"><button>${esc(c.titulo)}${c.inicio != null ? ` <small>${fmt(c.inicio)}</small>` : ''}</button></li>`).join('')}
     </ol></details>
-    <article>${doc.html}</article>`;
+    <article>${doc.html}</article>
+    ${fimDoMaterial(item)}`;
   window.scrollTo(0, 0);
 
   const ouvir = $('#b-ouvir');
