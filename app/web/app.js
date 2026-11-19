@@ -244,11 +244,20 @@ function telaInicio() {
     <div id="lista"></div>
     <div class="rodape">
       <div id="status-sync">${esc(textoStatus())}</div>
+      <label>Ao terminar um áudio:
+        <select id="ao-terminar">
+          <option value="seguir">tocar a revisão e o próximo material</option>
+          <option value="revisao">tocar só a revisão do material</option>
+          <option value="parar">parar</option>
+        </select></label><br>
       <label><input id="auto" type="checkbox" ${guardado.get('autoBaixar', true) ? 'checked' : ''}> Baixar sozinho o áudio das 5 revisões e dos 3 materiais mais recentes</label>
     </div>`;
   const busca = $('#busca');
   busca.value = guardado.get('busca', '');
   busca.addEventListener('input', () => { guardado.set('busca', busca.value); desenharLista(busca.value); });
+  const sel = $('#ao-terminar');
+  sel.value = aoTerminar();
+  sel.addEventListener('change', () => { guardado.set('aoTerminar', sel.value); if (player.item) mostrarASeguir(); });
   $('#auto').addEventListener('change', (e) => { guardado.set('autoBaixar', e.target.checked); if (e.target.checked) sincronizar(); });
   desenharLista(busca.value);
   requestAnimationFrame(() => window.scrollTo(0, rolagemInicio));
@@ -314,6 +323,7 @@ async function telaDoc(id) {
       ${item.questoes ? `<button class="btn" id="b-questoes">✍ Resolver as ${item.questoes} questões</button>` : ''}
       ${rev ? `<a class="btn" href="#/doc/${encodeURIComponent(rev.id)}">⚡ Revisão rápida · ${minutos(duracaoItem(rev))}</a>` : ''}
       ${mat ? `<a class="btn" href="#/doc/${encodeURIComponent(mat.id)}">📄 Material completo</a>` : ''}
+      ${item.audio ? '<button class="btn" id="b-depois">➕ Ouvir depois</button>' : ''}
       ${item.categoria === 'material' ? `<button class="btn" id="b-estudado" aria-pressed="${concluido(item)}">${concluido(item) ? '✓ Estudado' : '☐ Marcar como estudado'}</button>` : ''}
     </div>
     <p class="aviso" id="aviso-doc">${item.audio ? '' : 'Este texto é lido pela voz do celular. A tela fica acesa durante a leitura.'}</p>
@@ -325,6 +335,11 @@ async function telaDoc(id) {
 
   const ouvir = $('#b-ouvir');
   if (ouvir) ouvir.addEventListener('click', () => iniciarAudio(item, doc, null));
+  const bd = $('#b-depois');
+  if (bd) bd.addEventListener('click', () => {
+    if (!disponivel(item)) { $('#aviso-doc').textContent = 'Sem internet e o áudio não foi baixado.'; return; }
+    $('#aviso-doc').textContent = ouvirDepois(item);
+  });
   const be = $('#b-estudado');
   if (be) be.addEventListener('click', () => {
     const novo = !concluido(item);
@@ -816,6 +831,7 @@ function mostrarPlayer() {
   $('#p-voltar').textContent = player.modo === 'tts' ? '⟲' : '−15';
   $('#p-avancar').textContent = player.modo === 'tts' ? '⟳' : '+30';
   aoMudarCapitulo();
+  mostrarASeguir();
 }
 
 function pararTudo() {
@@ -1022,17 +1038,69 @@ audio.addEventListener('ended', () => {
   avancarFila();
 });
 
+const disponivel = (it) => !!it && !!it.audio && (navigator.onLine || baixados.has(abs(it.audio.url)));
+const aoTerminar = () => guardado.get('aoTerminar', 'seguir');
+
+/* O que tocar quando este áudio acabar, se a fila estiver vazia:
+   material → a revisão dele; depois (modo "seguir") → o próximo material, mais novo, ainda não concluído. */
+function proximoAutomatico(item) {
+  const modo = aoTerminar();
+  if (!item || modo === 'parar') return null;
+  const achar = (id) => catalogo.docs.find((d) => d.id === id);
+  if (item.categoria === 'material' && item.revisao && disponivel(achar(item.revisao))) return achar(item.revisao);
+  if (modo !== 'seguir') return null;
+  const base = item.categoria === 'revisao' ? achar(item.material) : item;
+  if (!base || !base.data) return null;
+  const chave = (d) => `${d.data} ${d.id}`;
+  return catalogo.docs
+    .filter((d) => d.categoria === 'material' && d.data && chave(d) > chave(base) && disponivel(d) && !concluido(d))
+    .sort((a, b) => (chave(a) < chave(b) ? -1 : 1))[0] || null;
+}
+
+function proximoItem() {
+  const it = (player.fila || []).map((id) => catalogo.docs.find((d) => d.id === id)).find(disponivel);
+  return it || (player.modo === 'audio' ? proximoAutomatico(player.item) : null);
+}
+
+function mostrarASeguir() {
+  const prox = player.item ? proximoItem() : null;
+  $('#p-aseguir').hidden = !prox;
+  if (prox) {
+    $('#p-aseguir-txt').textContent = `A seguir: ${prox.titulo}${prox.subtitulo ? ` (${prox.subtitulo.split(' ').pop()})` : ''}`;
+    obterDoc(prox).catch(() => {}); // deixa pronto para começar sem espera
+  }
+}
+
+/* Passa para o próximo: primeiro a fila montada; se ela estiver vazia, a fila automática. */
 function avancarFila() {
   while (player.fila && player.fila.length) {
     const it = catalogo.docs.find((d) => d.id === player.fila.shift());
-    if (!it || !it.audio || (!navigator.onLine && !baixados.has(abs(it.audio.url)))) continue;
-    const resto = player.fila.slice();
-    const comecar = (doc) => iniciarAudio(it, doc, 0, resto);
-    if (docs.has(it.id)) comecar(docs.get(it.id));
-    else obterDoc(it).then(comecar).catch(() => {});
+    if (!disponivel(it)) continue;
+    comecarItem(it, player.fila.slice());
     return;
   }
+  const prox = player.modo === 'audio' ? proximoAutomatico(player.item) : null;
+  if (prox) comecarItem(prox, []);
 }
+
+function comecarItem(it, resto) {
+  const comecar = (doc) => iniciarAudio(it, doc, it.categoria === 'revisao' ? 0 : null, resto);
+  if (docs.has(it.id)) comecar(docs.get(it.id));
+  else obterDoc(it).then(comecar).catch(() => {});
+}
+
+function ouvirDepois(item) {
+  if (!player.item || player.modo !== 'audio') { comecarItem(item, []); return 'Tocando agora.'; }
+  if (player.item.id === item.id || player.fila.includes(item.id)) return 'Já está na fila.';
+  player.fila.push(item.id);
+  mostrarPlayer();
+  return `Adicionado à fila (${player.fila.length}º).`;
+}
+
+$('#p-pular').addEventListener('click', () => {
+  if (player.modo === 'audio') { salvarPosicao(true); audio.pause(); }
+  avancarFila();
+});
 
 function atualizarPlay(tocando) {
   $('#p-play').textContent = tocando ? '⏸' : '▶';

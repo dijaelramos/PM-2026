@@ -14,7 +14,7 @@
   --errado-fundo: #fbe3e1; --errado: #b3261e;
   --autoral: #9a5b00;
   --grafico-barra: #1d4f86;
-  --player-h: 150px;
+  --player-h: 170px;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -232,6 +232,11 @@ body.tocando .q-botoes { bottom: calc(var(--player-h) + env(safe-area-inset-bott
 .sono.ativo { color: var(--marca-texto); background: var(--marca); border-color: var(--marca); }
 .player-textos strong, .player-textos span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .player-textos span { font-size: 13px; color: var(--suave); }
+.player-textos .aseguir { display: flex; align-items: baseline; gap: 6px; }
+.player-textos .aseguir[hidden] { display: none; }
+.player-textos .aseguir > span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.aseguir .btn-link { padding: 0; font-size: 13px; flex: none; }
+.rodape select { font: inherit; font-size: 13px; color: var(--texto); background: var(--superficie); border: 1px solid var(--linha); border-radius: 8px; padding: 4px 6px; max-width: 100%; }
 .player-barra { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--suave); font-variant-numeric: tabular-nums; }
 .player-barra input { flex: 1; accent-color: var(--destaque); }
 .player.tts .player-barra input { pointer-events: none; }
