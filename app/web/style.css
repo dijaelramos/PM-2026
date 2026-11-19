@@ -83,10 +83,19 @@ main {
   padding: 12px clamp(16px, 3vw, 40px) 32px; /* a margem lateral cresce um pouco em telas grandes */
 }
 
-.busca {
-  width: 100%; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--linha);
-  background: var(--superficie); color: var(--texto); font: inherit; margin: 4px 0 12px;
+.busca-caixa {
+  border-radius: 12px; border: 1px solid var(--linha); background: var(--superficie); margin: 4px 0 12px;
 }
+.busca-caixa:focus-within { border-color: var(--destaque); box-shadow: 0 0 0 2px var(--destaque); }
+.busca {
+  display: block; width: 100%; padding: 11px 14px; border: 0; border-radius: 12px; outline: none;
+  background: transparent; color: var(--texto); font: inherit;
+}
+/* Dicas de busca: aparecem com a barra fora de foco e somem ao tocar nela. */
+.busca-dica { display: flex; flex-direction: column; gap: 3px; padding: 0 14px 10px; font-size: 13px; line-height: 1.4; color: var(--suave); cursor: text; }
+.busca-dica b { color: var(--texto); font-weight: 600; }
+.busca-dica code { font-size: 12.5px; padding: 0 4px; border-radius: 4px; background: var(--citacao); color: var(--texto); }
+.busca-caixa:focus-within .busca-dica { display: none; }
 h2.secao { font-size: 14px; text-transform: uppercase; letter-spacing: .06em; color: var(--suave); margin: 22px 0 8px; }
 
 .cartao {

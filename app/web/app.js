@@ -243,8 +243,14 @@ function telaInicio() {
     tela.innerHTML = '<p class="aviso">Não foi possível carregar o conteúdo. Abra o app uma vez com internet.</p>';
     return;
   }
-  tela.innerHTML = `<input id="busca" class="busca" type="search" placeholder="Buscar material, lei, assunto ou trecho…" autocomplete="off"
-      aria-label="Buscar nos títulos e dentro dos textos">
+  tela.innerHTML = `<div class="busca-caixa">
+      <input id="busca" class="busca" type="search" placeholder="Buscar material, lei, assunto ou trecho…" autocomplete="off"
+        aria-label="Buscar nos títulos e dentro dos textos" aria-describedby="busca-dica">
+      <label for="busca" id="busca-dica" class="busca-dica">
+        <span><b>Várias palavras:</b> mostra os trechos que têm todas elas, em qualquer ordem. Ex.: <code>prisão flagrante</code></span>
+        <span><b>Frase entre aspas:</b> busca a frase exata. Ex.: <code>"cláusula pétrea"</code></span>
+      </label>
+    </div>
     <div id="lista"></div>
     <div class="rodape">
       <div id="status-sync">${esc(textoStatus())}</div>
