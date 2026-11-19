@@ -10,6 +10,9 @@
   --ok: #1f7a46;
   --citacao: #eef2f8;
   --marcado: #ffe7a0;
+  --certo-fundo: #e2f3e8; --certo: #1f7a46;
+  --errado-fundo: #fbe3e1; --errado: #b3261e;
+  --autoral: #9a5b00;
   --player-h: 150px;
   color-scheme: light;
 }
@@ -18,6 +21,7 @@
     --fundo: #10151c; --superficie: #19212c; --texto: #e6eaf0; --suave: #9aa6b5;
     --linha: #2b3645; --marca: #1d4877; --destaque: #f2b632; --ok: #4cc283; --citacao: #1f2a38;
     --marcado: #5b4813;
+    --certo-fundo: #143826; --certo: #5fd395; --errado-fundo: #46191a; --errado: #ff8a80; --autoral: #f2b632;
     color-scheme: dark;
   }
 }
@@ -25,6 +29,7 @@
   --fundo: #10151c; --superficie: #19212c; --texto: #e6eaf0; --suave: #9aa6b5;
   --linha: #2b3645; --marca: #1d4877; --destaque: #f2b632; --ok: #4cc283; --citacao: #1f2a38;
   --marcado: #5b4813;
+  --certo-fundo: #143826; --certo: #5fd395; --errado-fundo: #46191a; --errado: #ff8a80; --autoral: #f2b632;
   color-scheme: dark;
 }
 
@@ -120,6 +125,66 @@ article tr.lendo td, article tr.lendo th { background: var(--marcado); }
   background: var(--marca); color: var(--marca-texto); border: 0; border-radius: 999px;
   padding: 10px 18px; font-weight: 600; box-shadow: 0 4px 14px rgba(0,0,0,.25);
 }
+
+/* ---------- questões ---------- */
+.cartao-q { border-color: var(--marca); }
+.icone-q { font-size: 26px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: var(--citacao); }
+.linha-q .barra { display: block; height: 6px; border-radius: 999px; background: var(--linha); margin-top: 8px; overflow: hidden; }
+.linha-q .barra span { display: block; height: 100%; background: var(--destaque); border-radius: inherit; }
+.placar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0 14px; }
+.placar div { background: var(--superficie); border: 1px solid var(--linha); border-radius: 14px; padding: 12px 8px; text-align: center; }
+.placar b { display: block; font-size: 24px; line-height: 1.2; }
+.placar span { font-size: 12px; color: var(--suave); }
+.btn-link { background: none; border: 0; padding: 6px 0; color: var(--destaque); text-decoration: underline; font-size: 14px; }
+
+.q-topo { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--suave); font-variant-numeric: tabular-nums; }
+.q-topo b { color: var(--texto); }
+.q-progresso { height: 4px; background: var(--linha); border-radius: 999px; margin: 8px 0 12px; overflow: hidden; }
+.q-progresso span { display: block; height: 100%; background: var(--destaque); }
+.q-fonte { font-size: 14px; font-weight: 600; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.selo.oficial { color: var(--certo); border-color: currentColor; }
+.selo.autoral { color: var(--autoral); border-color: currentColor; }
+.q-meta { font-size: 13px; color: var(--suave); margin: 6px 0 10px; }
+.q-html { overflow-wrap: anywhere; }
+.q-html table { display: block; overflow-x: auto; border-collapse: collapse; font-size: 15px; }
+.q-html th, .q-html td { border: 1px solid var(--linha); padding: 6px 8px; }
+.q-html blockquote { margin: 1em 0; padding: 4px 14px; background: var(--citacao); border-left: 4px solid var(--destaque); border-radius: 6px; }
+.q-apoio { background: var(--superficie); border: 1px solid var(--linha); border-radius: 14px; padding: 4px 14px; margin-bottom: 10px; }
+.q-apoio summary { font-weight: 600; padding: 6px 0; }
+.q-alts { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; }
+.q-alt { display: flex; align-items: stretch; gap: 6px; }
+.alt {
+  flex: 1; display: flex; align-items: flex-start; gap: 12px; text-align: left; padding: 12px;
+  background: var(--superficie); border: 2px solid var(--linha); border-radius: 14px; min-height: 52px;
+}
+.alt .letra {
+  flex: none; width: 30px; height: 30px; border-radius: 999px; display: grid; place-items: center;
+  font-weight: 700; border: 2px solid var(--linha); font-size: 15px;
+}
+.alt .txt { flex: 1; padding-top: 3px; }
+.alt.escolhida { border-color: var(--marca); }
+.alt.escolhida .letra { background: var(--marca); color: var(--marca-texto); border-color: var(--marca); }
+:root[data-theme="dark"] .alt.escolhida, :root[data-theme="dark"] .alt.escolhida .letra { border-color: var(--destaque); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .alt.escolhida, :root:not([data-theme="light"]) .alt.escolhida .letra { border-color: var(--destaque); } }
+.alt.certa { background: var(--certo-fundo); border-color: var(--certo); }
+.alt.certa .letra { background: var(--certo); border-color: var(--certo); color: var(--superficie); }
+.alt.errada { background: var(--errado-fundo); border-color: var(--errado); }
+.alt.errada .letra { background: var(--errado); border-color: var(--errado); color: var(--superficie); }
+.alt:disabled { cursor: default; color: inherit; }
+.riscar { flex: none; width: 40px; background: none; border: 1px solid var(--linha); border-radius: 12px; color: var(--suave); }
+.q-alt.riscada .alt .txt { text-decoration: line-through; opacity: .45; }
+.q-alt.riscada .riscar { color: var(--errado); border-color: var(--errado); }
+.q-veredito { font-weight: 700; padding: 12px 14px; border-radius: 12px; margin-bottom: 10px; }
+.q-veredito.ok { background: var(--certo-fundo); color: var(--certo); }
+.q-veredito.erro { background: var(--errado-fundo); color: var(--errado); }
+.q-comentario { background: var(--superficie); border: 1px solid var(--linha); border-radius: 14px; padding: 4px 14px; }
+.q-comentario h3 { font-size: 15px; margin: 10px 0 0; color: var(--suave); text-transform: uppercase; letter-spacing: .05em; }
+.q-botoes { position: sticky; bottom: 0; padding: 12px 0 16px; background: linear-gradient(transparent, var(--fundo) 30%); }
+body.tocando .q-botoes { bottom: calc(var(--player-h) + env(safe-area-inset-bottom)); }
+.q-botoes .btn { width: 100%; font-size: 17px; padding: 14px; }
+.q-fim { text-align: center; padding: 24px 0 8px; }
+.q-fim-pct { font-size: 56px; font-weight: 800; margin: 0; color: var(--destaque); }
+.q-fim .meta { color: var(--suave); }
 
 .player {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--superficie);

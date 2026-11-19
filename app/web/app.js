@@ -65,15 +65,17 @@ async function sincronizar() {
   if (!navigator.onLine || !catalogo || !('caches' in window)) return;
   try {
     const dados = await caches.open(CACHE_DADOS);
-    const atuais = new Set(catalogo.docs.map((d) => abs(d.arquivo)));
+    const arquivos = catalogo.docs.map((d) => d.arquivo);
+    if (catalogo.questoes) arquivos.push(catalogo.questoes.arquivo);
+    const atuais = new Set(arquivos.map(abs));
     const faltam = [];
-    for (const d of catalogo.docs) if (!(await dados.match(abs(d.arquivo)))) faltam.push(d.arquivo);
+    for (const a of arquivos) if (!(await dados.match(abs(a)))) faltam.push(a);
     for (let i = 0; i < faltam.length; i += 8) {
       setStatus(`Guardando textos para usar offline… ${Math.min(i + 8, faltam.length)} de ${faltam.length}`);
       await dados.addAll(faltam.slice(i, i + 8));
     }
     for (const k of await dados.keys()) {
-      if (k.url.includes('/data/docs/') && !atuais.has(k.url)) await dados.delete(k);
+      if ((k.url.includes('/data/docs/') || k.url.includes('/data/questoes.')) && !atuais.has(k.url)) await dados.delete(k);
     }
     const audiosAtuais = new Set(catalogo.docs.filter((d) => d.audio).map((d) => abs(d.audio.url)));
     const cacheAudio = await caches.open(CACHE_AUDIO);
@@ -155,7 +157,12 @@ function setTopo(titulo, comVoltar) {
 }
 
 function rota() {
-  const m = location.hash.match(/^#\/doc\/(.+)$/);
+  seguir = true;
+  $('#seguir').hidden = true;
+  const h = location.hash;
+  if (h === '#/questoes') { telaQuestoes(); return; }
+  if (h === '#/questoes/resolver') { telaResolver(); return; }
+  const m = h.match(/^#\/doc\/(.+)$/);
   if (m) telaDoc(decodeURIComponent(m[1]));
   else telaInicio();
 }
@@ -227,6 +234,7 @@ function desenharLista(filtro) {
       <a class="cartao continuar" href="#/doc/${encodeURIComponent(itUlt.id)}">
       <div class="corpo"><strong>${esc(itUlt.titulo)}</strong><span class="meta">${esc(ultimo.onde || '')}</span></div><span>▶</span></a>`;
   }
+  if (!f) html += resumoQuestoesHome();
   if (materiais.length) html += `<h2 class="secao">Material do Dia</h2>${materiais.map(cartaoMaterial).join('')}`;
   if (extras.length || plano.length) html += `<h2 class="secao">Plano, edital e extras</h2>${grupos([...plano, ...extras], !!f)}`;
   if (base.length) html += `<h2 class="secao">Base de Conhecimento</h2>${grupos(base, !!f)}`;
@@ -254,6 +262,7 @@ async function telaDoc(id) {
       ${item.audio ? `<button class="btn primario" id="b-ouvir">▶ ${pos > 5 ? `Continuar de ${fmt(pos)}` : `Ouvir · voz natural · ${minutos(item.audio.duracao)}`}</button>` : ''}
       <button class="btn ${item.audio ? '' : 'primario'}" id="b-tts">🔊 ${posTts > 0 ? 'Continuar com a voz do celular' : 'Ouvir com a voz do celular'}</button>
       ${item.audio ? '<button class="btn" id="b-baixar"></button>' : ''}
+      ${item.questoes ? `<button class="btn" id="b-questoes">✍ Resolver as ${item.questoes} questões</button>` : ''}
     </div>
     <p class="aviso" id="aviso-doc">${item.audio ? '' : 'Este texto é lido pela voz do celular. A tela fica acesa durante a leitura.'}</p>
     <details class="capitulos"><summary>Capítulos (${caps.length})</summary><ol>
@@ -264,6 +273,14 @@ async function telaDoc(id) {
 
   const ouvir = $('#b-ouvir');
   if (ouvir) ouvir.addEventListener('click', () => iniciarAudio(item, doc, null));
+  const bq = $('#b-questoes');
+  if (bq) bq.addEventListener('click', async () => {
+    try {
+      const todas = await obterQuestoes();
+      const titulo = item.subtitulo ? `Material de ${item.subtitulo.split(' ').pop()}` : item.titulo;
+      iniciarSessao(todas.filter((q) => q.doc === item.id).map((q) => q.id), titulo);
+    } catch { $('#aviso-doc').textContent = 'As questões ainda não foram guardadas no celular. Abra o app com internet.'; }
+  });
   $('#b-tts').addEventListener('click', () => iniciarTts(item, doc, null));
   if (item.audio) {
     atualizarBotaoBaixar(item);
@@ -298,6 +315,277 @@ function atualizarBotaoBaixar(item) {
   if (baixando.has(url)) b.textContent = `Baixando… ${Math.round(baixando.get(url) * 100)}%`;
   else if (baixados.has(url)) b.textContent = '✓ Áudio no celular (remover)';
   else b.textContent = `⬇ Baixar áudio (${mb} MB)`;
+}
+
+/* ---------- questões ---------- */
+/* Respostas ficam em guardado 'respostas': { id: { u: última, ok: acertou a última, n: tentativas, a: acertos, t: quando } }.
+   O caderno de erros são as questões cuja última resposta foi errada. */
+
+let questoes = null;
+let relogioQ = null;
+
+async function obterQuestoes() {
+  if (questoes) return questoes;
+  const info = catalogo && catalogo.questoes;
+  if (!info) return [];
+  let r = await caches.match(abs(info.arquivo));
+  if (!r) {
+    r = await fetch(info.arquivo);
+    if (!r.ok) throw new Error('questões indisponíveis');
+    try { (await caches.open(CACHE_DADOS)).put(abs(info.arquivo), r.clone()); } catch { /* ok */ }
+  }
+  questoes = await r.json();
+  return questoes;
+}
+
+const respostas = () => guardado.get('respostas', {});
+const incluirAutorais = () => guardado.get('incluirAutorais', true);
+const filtrarAutorais = (lista) => (incluirAutorais() ? lista : lista.filter((q) => q.tipo === 'oficial'));
+const rotuloResp = (k) => (k === 'CERTO' ? 'Certo' : k === 'ERRADO' ? 'Errado' : k);
+
+function estatisticas(lista) {
+  const resp = respostas();
+  let resolvidas = 0, tentativas = 0, acertos = 0, erros = 0;
+  for (const q of lista) {
+    const r = resp[q.id];
+    if (!r) continue;
+    resolvidas++;
+    tentativas += r.n;
+    acertos += r.a;
+    if (!r.ok) erros++;
+  }
+  return { total: lista.length, resolvidas, erros, pct: tentativas ? Math.round((acertos / tentativas) * 100) : null };
+}
+
+function resumoQuestoesHome() {
+  const total = catalogo.questoes ? catalogo.questoes.total : 0;
+  if (!total) return '';
+  const vals = Object.values(respostas());
+  const erros = vals.filter((r) => !r.ok).length;
+  return `<h2 class="secao">Treino</h2>
+    <a class="cartao cartao-q" href="#/questoes">
+      <div class="icone-q" aria-hidden="true">✍</div>
+      <div class="corpo"><strong>Questões</strong>
+        <span class="meta">${total} questões · ${vals.length} resolvidas${erros ? ` · ${erros} no caderno de erros` : ''}</span></div>
+      <span aria-hidden="true">›</span></a>`;
+}
+
+function embaralhar(lista) {
+  const a = lista.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function iniciarSessao(ids, titulo) {
+  if (!ids.length) return;
+  guardado.set('sessaoQ', { titulo, ids, idx: 0, certas: 0, feitas: 0, tempo: 0, erradas: [], resp: null });
+  if (location.hash === '#/questoes/resolver') rota();
+  else location.hash = '#/questoes/resolver';
+}
+
+async function telaQuestoes() {
+  pararRelogio();
+  setTopo('Questões', true);
+  tela.innerHTML = '<p class="aviso">Carregando questões…</p>';
+  let todas;
+  try { todas = await obterQuestoes(); } catch {
+    tela.innerHTML = '<p class="aviso">As questões ainda não foram guardadas no celular. Abra o app com internet uma vez.</p>';
+    return;
+  }
+  if (location.hash !== '#/questoes') return;
+  const lista = filtrarAutorais(todas);
+  const resp = respostas();
+  const st = estatisticas(lista);
+  const novas = lista.filter((q) => !resp[q.id]);
+  const erradas = lista.filter((q) => resp[q.id] && !resp[q.id].ok);
+  const porDisc = new Map();
+  for (const q of lista) {
+    if (!porDisc.has(q.disciplina)) porDisc.set(q.disciplina, []);
+    porDisc.get(q.disciplina).push(q);
+  }
+  const disciplinas = [...porDisc].sort((a, b) => a[0].localeCompare(b[0], 'pt-BR'));
+  const materiais = catalogo.docs.filter((d) => d.questoes);
+  const sessao = guardado.get('sessaoQ', null);
+  const emAndamento = sessao && sessao.idx < sessao.ids.length;
+
+  const linha = (nome, l, attr) => {
+    const s = estatisticas(l);
+    const pr = s.total ? Math.round((s.resolvidas / s.total) * 100) : 0;
+    return `<button class="cartao linha-q" ${attr}><div class="corpo"><strong>${esc(nome)}</strong>
+      <span class="meta">${s.resolvidas} de ${s.total} resolvidas${s.pct != null ? ` · ${s.pct}% de acerto` : ''}${s.erros ? ` · ${s.erros} para revisar` : ''}</span>
+      <span class="barra" aria-hidden="true"><span style="width:${pr}%"></span></span></div><span aria-hidden="true">›</span></button>`;
+  };
+
+  tela.innerHTML = `
+    <div class="placar">
+      <div><b>${st.resolvidas}</b><span>de ${st.total} resolvidas</span></div>
+      <div><b>${st.pct != null ? `${st.pct}%` : '–'}</b><span>de acerto</span></div>
+      <div><b>${st.erros}</b><span>no caderno de erros</span></div>
+    </div>
+    ${emAndamento ? `<a class="cartao continuar" href="#/questoes/resolver"><div class="corpo"><strong>Continuar: ${esc(sessao.titulo)}</strong>
+      <span class="meta">questão ${sessao.idx + 1} de ${sessao.ids.length}</span></div><span aria-hidden="true">▶</span></a>` : ''}
+    <div class="acoes">
+      <button class="btn primario" id="q-novas" ${novas.length ? '' : 'disabled'}>▶ Não resolvidas (${novas.length})</button>
+      <button class="btn" id="q-erros" ${erradas.length ? '' : 'disabled'}>Caderno de erros (${erradas.length})</button>
+      <button class="btn" id="q-aleatorias">10 aleatórias</button>
+    </div>
+    <h2 class="secao">Por disciplina</h2>
+    ${disciplinas.map(([d, l], i) => linha(d, l, `data-disc="${i}"`)).join('')}
+    <h2 class="secao">Por material do dia</h2>
+    ${materiais.map((d) => linha(`${(d.subtitulo || '').split(' ').pop()} · ${d.titulo}`, todas.filter((q) => q.doc === d.id), `data-doc="${esc(d.id)}"`)).join('')}
+    <div class="rodape">
+      <label><input type="checkbox" id="q-autorais" ${incluirAutorais() ? 'checked' : ''}> Incluir questões autorais (no estilo AOCP, não oficiais)</label>
+      <div><button class="btn-link" id="q-zerar">Apagar meu histórico de questões</button></div>
+    </div>`;
+
+  const ordemTreino = (l) => [...l.filter((q) => !resp[q.id]), ...l.filter((q) => resp[q.id] && !resp[q.id].ok), ...l.filter((q) => resp[q.id] && resp[q.id].ok)];
+  $('#q-novas').addEventListener('click', () => iniciarSessao(novas.map((q) => q.id), 'Não resolvidas'));
+  $('#q-erros').addEventListener('click', () => iniciarSessao(embaralhar(erradas).map((q) => q.id), 'Caderno de erros'));
+  $('#q-aleatorias').addEventListener('click', () => iniciarSessao(embaralhar(lista).slice(0, 10).map((q) => q.id), '10 aleatórias'));
+  tela.querySelectorAll('[data-disc]').forEach((b) => b.addEventListener('click', () => {
+    const [nome, l] = disciplinas[Number(b.dataset.disc)];
+    iniciarSessao(ordemTreino(l).map((q) => q.id), nome);
+  }));
+  tela.querySelectorAll('[data-doc]').forEach((b) => b.addEventListener('click', () => {
+    const d = materiais.find((x) => x.id === b.dataset.doc);
+    iniciarSessao(todas.filter((q) => q.doc === d.id).map((q) => q.id), `Material de ${(d.subtitulo || '').split(' ').pop()}`);
+  }));
+  $('#q-autorais').addEventListener('change', (e) => { guardado.set('incluirAutorais', e.target.checked); telaQuestoes(); });
+  $('#q-zerar').addEventListener('click', () => {
+    if (!window.confirm('Apagar todas as suas respostas e o caderno de erros? Não dá para desfazer.')) return;
+    guardado.set('respostas', {});
+    guardado.set('sessaoQ', null);
+    telaQuestoes();
+  });
+}
+
+async function telaResolver() {
+  setTopo('Questões', true);
+  const s = guardado.get('sessaoQ', null);
+  if (!s) { location.hash = '#/questoes'; return; }
+  let todas;
+  try { todas = await obterQuestoes(); } catch {
+    tela.innerHTML = '<p class="aviso">As questões ainda não foram guardadas no celular. Abra o app com internet uma vez.</p>';
+    return;
+  }
+  if (location.hash !== '#/questoes/resolver') return;
+  const mapa = new Map(todas.map((q) => [q.id, q]));
+  s.ids = s.ids.filter((id) => mapa.has(id));
+  if (s.idx >= s.ids.length) { telaFimSessao(s); return; }
+  const q = mapa.get(s.ids[s.idx]);
+  const fonte = [q.fonte, q.meta].filter(Boolean).join(' · ');
+
+  tela.innerHTML = `
+    <div class="q-topo"><span>${esc(s.titulo)} · <b>${s.idx + 1}</b> de ${s.ids.length}</span><span id="q-relogio" aria-label="Tempo nesta questão"></span></div>
+    <div class="q-progresso" aria-hidden="true"><span style="width:${(s.idx / s.ids.length) * 100}%"></span></div>
+    <div class="q-fonte"><span class="selo ${q.tipo === 'oficial' ? 'oficial' : 'autoral'}">${q.tipo === 'oficial' ? 'Oficial' : 'Autoral · não oficial'}</span>
+      ${esc(q.disciplina)}${q.tema ? ` · ${esc(q.tema)}` : ''}</div>
+    <p class="q-meta">${esc(fonte)}${fonte ? ' · ' : ''}${esc(q.origem)}</p>
+    ${q.apoio ? `<details class="q-apoio"><summary>Texto de apoio</summary><div class="q-html">${q.apoio}</div></details>` : ''}
+    <div class="q-html q-enunciado">${q.enunciado}</div>
+    <div class="q-alts" role="radiogroup" aria-label="Alternativas">
+      ${q.alternativas.map(([k, html]) => `<div class="q-alt">
+        <button class="alt" data-k="${k}" role="radio" aria-checked="false"><span class="letra">${k.length > 1 ? k[0] : k}</span><span class="txt">${html}</span></button>
+        ${k.length === 1 ? `<button class="riscar" aria-label="Riscar a alternativa ${k}" title="Riscar alternativa">✂</button>` : ''}
+      </div>`).join('')}
+    </div>
+    <div id="q-resultado" aria-live="polite"></div>
+    <div class="q-botoes"><button id="q-acao" class="btn primario" disabled>Responder</button></div>`;
+  window.scrollTo(0, 0);
+
+  let escolhida = null;
+  tela.querySelectorAll('.alt').forEach((b) => b.addEventListener('click', () => {
+    if (s.resp) return;
+    escolhida = b.dataset.k;
+    tela.querySelectorAll('.alt').forEach((x) => {
+      x.classList.toggle('escolhida', x === b);
+      x.setAttribute('aria-checked', String(x === b));
+    });
+    $('#q-acao').disabled = false;
+  }));
+  tela.querySelectorAll('.riscar').forEach((b) => b.addEventListener('click', () => b.parentElement.classList.toggle('riscada')));
+  $('#q-acao').addEventListener('click', () => {
+    if (!s.resp) { responder(s, q, escolhida); return; }
+    s.idx++;
+    s.resp = null;
+    guardado.set('sessaoQ', s);
+    telaResolver();
+  });
+  if (s.resp) mostrarCorrecao(s, q);
+  else iniciarRelogio();
+}
+
+function responder(s, q, k) {
+  if (!k || s.resp) return;
+  const ok = k === q.resposta;
+  const seg = relogioQ ? Math.round((Date.now() - relogioQ.inicio) / 1000) : 0;
+  pararRelogio();
+  s.resp = k;
+  s.feitas++;
+  s.tempo += seg;
+  if (ok) s.certas++; else s.erradas.push(q.id);
+  guardado.set('sessaoQ', s);
+  const resp = respostas();
+  const r = resp[q.id] || { n: 0, a: 0 };
+  resp[q.id] = { u: k, ok, n: r.n + 1, a: r.a + (ok ? 1 : 0), t: Date.now() };
+  guardado.set('respostas', resp);
+  mostrarCorrecao(s, q);
+}
+
+function mostrarCorrecao(s, q) {
+  const ok = s.resp === q.resposta;
+  tela.querySelectorAll('.alt').forEach((b) => {
+    b.disabled = true;
+    b.classList.toggle('certa', b.dataset.k === q.resposta);
+    b.classList.toggle('errada', b.dataset.k === s.resp && !ok);
+    b.classList.toggle('escolhida', b.dataset.k === s.resp);
+  });
+  tela.querySelectorAll('.riscar').forEach((b) => { b.disabled = true; });
+  const naCatalogo = q.doc && catalogo.docs.some((d) => d.id === q.doc);
+  $('#q-resultado').innerHTML = `
+    <div class="q-veredito ${ok ? 'ok' : 'erro'}">${ok ? '✓ Você acertou!' : `✗ Você marcou ${rotuloResp(s.resp)}. Resposta: ${rotuloResp(q.resposta)}`}</div>
+    ${q.comentario ? `<div class="q-comentario"><h3>Comentário</h3><div class="q-html">${q.comentario}</div></div>` : ''}
+    ${naCatalogo ? `<p><a class="btn-link" href="#/doc/${encodeURIComponent(q.doc)}">Abrir o material desta questão</a></p>` : ''}`;
+  const b = $('#q-acao');
+  b.textContent = s.idx + 1 >= s.ids.length ? 'Ver resultado' : 'Próxima questão ›';
+  b.disabled = false;
+}
+
+function telaFimSessao(s) {
+  pararRelogio();
+  const pct = s.feitas ? Math.round((s.certas / s.feitas) * 100) : 0;
+  tela.innerHTML = `
+    <div class="q-fim">
+      <p class="q-fim-pct">${pct}%</p>
+      <p>Você acertou <b>${s.certas}</b> de <b>${s.feitas}</b> ${s.feitas === 1 ? 'questão' : 'questões'} em “${esc(s.titulo)}”.</p>
+      <p class="meta">Tempo médio por questão: ${fmt(s.feitas ? s.tempo / s.feitas : 0)}</p>
+    </div>
+    <div class="acoes">
+      ${s.erradas.length ? `<button class="btn primario" id="q-refazer">Refazer as que errei (${s.erradas.length})</button>` : ''}
+      <button class="btn" id="q-painel">Voltar às questões</button>
+    </div>`;
+  const refazer = $('#q-refazer');
+  if (refazer) refazer.addEventListener('click', () => iniciarSessao(s.erradas.slice(), 'Refazer as que errei'));
+  $('#q-painel').addEventListener('click', () => { guardado.set('sessaoQ', null); location.hash = '#/questoes'; });
+}
+
+function iniciarRelogio() {
+  pararRelogio();
+  const el = $('#q-relogio');
+  if (el) el.textContent = '0:00';
+  relogioQ = { inicio: Date.now(), id: null };
+  relogioQ.id = setInterval(() => {
+    const e = $('#q-relogio');
+    if (!e || !relogioQ) { pararRelogio(); return; }
+    e.textContent = fmt((Date.now() - relogioQ.inicio) / 1000);
+  }, 1000);
+}
+function pararRelogio() {
+  if (relogioQ && relogioQ.id) clearInterval(relogioQ.id);
+  if (relogioQ) relogioQ.id = null;
 }
 
 /* ---------- reprodutor ---------- */
@@ -693,7 +981,9 @@ window.addEventListener('hashchange', () => {
 window.addEventListener('touchmove', pararDeSeguir, { passive: true });
 window.addEventListener('wheel', pararDeSeguir, { passive: true });
 $('#seguir').addEventListener('click', voltarASeguir);
-window.addEventListener('scroll', () => { if (!location.hash.startsWith('#/doc/')) rolagemInicio = window.scrollY; }, { passive: true });
+window.addEventListener('scroll', () => {
+  if (!location.hash || location.hash === '#/' || location.hash === '#') rolagemInicio = window.scrollY;
+}, { passive: true });
 
 function atualizarRede() {
   $('#rede').textContent = navigator.onLine ? '' : '● offline';

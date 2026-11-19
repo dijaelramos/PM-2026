@@ -23,6 +23,8 @@ from markdown_it import MarkdownIt
 sys.path.insert(0, str(Path(__file__).parent))
 from fala import capitulos  # noqa: E402
 from icone import gerar_icones  # noqa: E402
+from questoes import DISCIPLINAS_AUTORAIS, simulado1_pendente  # noqa: E402
+from questoes import extrair as extrair_questoes  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
 APP = RAIZ / "app"
@@ -142,6 +144,29 @@ def reescrever_links(tokens, doc, por_caminho):
                 filho.attrSet("class", "semlink")
 
 
+def coletar_questoes(docs, md):
+    """Questões dos materiais (oficiais) e dos arquivos de questões autorais."""
+    perfil = RAIZ / "Perfil_do_Estudante.md"
+    pendente = simulado1_pendente(perfil.read_text(encoding="utf-8")) if perfil.exists() else True
+    avisos, questoes = [], []
+    for d in docs:
+        if d["categoria"] == "material" and d.get("data"):
+            disciplina = re.sub(r"\s*(?:e|\+)\s*Redação$", "", d["titulo"]).strip()
+            questoes += extrair_questoes(d["texto"], doc_id=d["id"], disciplina=disciplina,
+                                         origem=f"Material de {d['subtitulo'].split(' ')[-1]}", autoral=False,
+                                         md=md, pendente_simulado=pendente, avisos=avisos)
+    for p in sorted((RAIZ / "Banco_de_Provas" / "Questoes_Autorais").glob("*.md")):
+        if p.stem in DISCIPLINAS_AUTORAIS:
+            questoes += extrair_questoes(p.read_text(encoding="utf-8-sig"), doc_id=f"autorais-{slug(p.stem)}",
+                                         disciplina=DISCIPLINAS_AUTORAIS[p.stem], origem="Questões autorais",
+                                         autoral=True, md=md, pendente_simulado=pendente, avisos=avisos)
+    for a in avisos:
+        print(f"  AVISO (questão ignorada): {a}")
+    if pendente:
+        print("  Simulado 1 pendente: questões reservadas ficaram de fora.")
+    return questoes
+
+
 async def gerar_audios(alvos, args, cache):
     from audio import GeradorAudio
     ger = GeradorAudio(cache, args.voz, args.taxa)
@@ -199,10 +224,20 @@ def main():
     alvos = materiais[: max(args.audios, 0)]
     audios = asyncio.run(gerar_audios(alvos, args, args.cache)) if alvos else {}
 
+    questoes = coletar_questoes(docs, md)
+    por_doc = {}
+    for q in questoes:
+        por_doc[q["doc"]] = por_doc.get(q["doc"], 0) + 1
+    corpo_q = json.dumps(questoes, ensure_ascii=False, separators=(",", ":")).encode()
+    arquivo_q = f"data/questoes.{hash_curto(corpo_q)}.json"
+    (saida / arquivo_q).write_bytes(corpo_q)
+
     catalogo = []
     for d in docs:
         caps = d["capitulos"]
         item = {k: d[k] for k in ("id", "titulo", "categoria") if k in d}
+        if por_doc.get(d["id"]):
+            item["questoes"] = por_doc[d["id"]]
         for k in ("subtitulo", "grupo", "data"):
             if d.get(k):
                 item[k] = d[k]
@@ -229,7 +264,8 @@ def main():
     versao = hash_curto(conteudo, 12)
     agora = dt.datetime.now(dt.timezone(dt.timedelta(hours=-3))).strftime("%d/%m/%Y %H:%M")
     (saida / "data" / "catalogo.json").write_text(
-        json.dumps({"versao": versao, "gerado_em": agora, "docs": catalogo}, ensure_ascii=False), encoding="utf-8")
+        json.dumps({"versao": versao, "gerado_em": agora, "docs": catalogo,
+                    "questoes": {"arquivo": arquivo_q, "total": len(questoes)}}, ensure_ascii=False), encoding="utf-8")
 
     # Arquivos do app; a versão do service worker muda quando o código muda.
     web = APP / "web"
@@ -241,7 +277,7 @@ def main():
     (saida / ".nojekyll").write_text("")
 
     total_audio = sum(a["bytes"] for a in (i.get("audio") for i in catalogo) if a)
-    print(f"Pronto: {len(catalogo)} documentos, {len(audios)} áudios ({total_audio / 1e6:.0f} MB) em {saida}")
+    print(f"Pronto: {len(catalogo)} documentos, {len(questoes)} questões, {len(audios)} áudios ({total_audio / 1e6:.0f} MB) em {saida}")
 
 
 if __name__ == "__main__":

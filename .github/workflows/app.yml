@@ -10,6 +10,8 @@ on:
       - 'Base_de_Conhecimento/**'
       - 'Plano_de_Estudos_PMPE_2026.md'
       - 'Editais/2026/**'
+      - 'Banco_de_Provas/Questoes_Autorais/**'
+      - 'Perfil_do_Estudante.md'
       - 'app/**'
       - '.github/workflows/app.yml'
   workflow_dispatch:
