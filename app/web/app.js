@@ -2186,7 +2186,7 @@ audio.addEventListener('timeupdate', () => {
   if (player.modo !== 'audio') return;
   const t = audio.currentTime, d = audio.duration || player.item.audio.duracao;
   $('#p-tempo').textContent = fmt(t);
-  $('#p-total').textContent = fmt(d);
+  mostrarFim(t, d, audio.playbackRate || 1);
   if (!arrastando) $('#p-progresso').value = String(Math.round((t / d) * 1000) || 0);
   // tempo real ouvindo (saltos e avanços não contam)
   const delta = ultimoTempoAudio == null ? -1 : t - ultimoTempoAudio;
@@ -2552,7 +2552,7 @@ function ttsParar() { ttsPausar(); }
 function ttsAtualizarBarra() {
   const seg = (n) => (n / PALAVRAS_POR_MIN / velocidade) * 60;
   $('#p-tempo').textContent = `~${fmt(seg(tts.palavrasAntes[tts.idx] || 0))}`;
-  $('#p-total').textContent = `~${fmt(seg(tts.total))}`;
+  mostrarFim(seg(tts.palavrasAntes[tts.idx] || 0), seg(tts.total), 1, '~'); // seg() já conta a velocidade
   $('#p-progresso').value = String(Math.round(((tts.palavrasAntes[tts.idx] || 0) / Math.max(1, tts.total)) * 1000));
 }
 
@@ -2572,11 +2572,30 @@ function pararLeituraNaTela() { /* a leitura continua ao voltar para o início *
 
 /* ---------- controles ---------- */
 
+/* À direita da barra: o tempo que falta (padrão, já na velocidade escolhida) ou a duração total. Toque alterna. */
+let ultimoFim = null;
+function mostrarFim(t, d, taxa, prefixo = '') {
+  ultimoFim = [t, d, taxa, prefixo];
+  const restante = guardado.get('mostrarRestante', true);
+  const el = $('#p-total');
+  el.textContent = restante ? `−${prefixo}${fmt(Math.max(0, d - t) / taxa)}` : `${prefixo}${fmt(d)}`;
+  el.setAttribute('aria-label', restante ? `Faltam ${el.textContent.slice(1)}. Toque para ver a duração total`
+    : `Duração total ${el.textContent}. Toque para ver o tempo que falta`);
+}
+$('#p-total').addEventListener('click', () => {
+  guardado.set('mostrarRestante', !guardado.get('mostrarRestante', true));
+  if (ultimoFim) mostrarFim(...ultimoFim);
+});
+
 let arrastando = false;
 const progresso = $('#p-progresso');
 progresso.addEventListener('input', () => {
   arrastando = true;
-  if (player.modo === 'audio') $('#p-tempo').textContent = fmt((progresso.value / 1000) * (audio.duration || 0));
+  if (player.modo === 'audio') {
+    const t = (progresso.value / 1000) * (audio.duration || 0);
+    $('#p-tempo').textContent = fmt(t);
+    mostrarFim(t, audio.duration || 0, audio.playbackRate || 1);
+  }
 });
 progresso.addEventListener('change', () => {
   arrastando = false;
