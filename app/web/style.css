@@ -427,3 +427,15 @@ body.tocando .q-botoes { bottom: calc(var(--player-h) + env(safe-area-inset-bott
 .convite-home .icone-btn { color: var(--suave); flex: none; }
 .player-barra .p-total { background: none; border: 0; padding: 4px 2px; margin: -4px -2px; font: inherit; color: inherit;
   min-width: 3.6em; text-align: right; cursor: pointer; }
+
+/* Banco de questões: filtros */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 12px; }
+.chip { font: inherit; font-size: 14px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--linha);
+  background: var(--superficie); color: var(--texto); cursor: pointer; }
+.chip.ativo { background: var(--marca); border-color: var(--marca); color: var(--marca-texto); }
+.filtros { display: grid; gap: 10px; margin-bottom: 14px; }
+.filtros label { display: grid; gap: 4px; font-size: 13px; color: var(--suave); }
+.filtros label.check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--texto); }
+.filtros select { font: inherit; font-size: 15px; color: var(--texto); background: var(--superficie); border: 1px solid var(--linha);
+  border-radius: 8px; padding: 8px; width: 100%; max-width: 100%; }
+#f-limpar { display: block; margin: 0 auto 12px; }

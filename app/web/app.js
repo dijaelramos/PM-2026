@@ -69,6 +69,7 @@ async function sincronizar() {
     if (catalogo.questoes) arquivos.push(catalogo.questoes.arquivo);
     if (catalogo.busca) arquivos.push(catalogo.busca.arquivo);
     if (catalogo.cartoes) arquivos.push(catalogo.cartoes.arquivo);
+    if (catalogo.banco) arquivos.push(catalogo.banco.arquivo);
     const atuais = new Set(arquivos.map(abs));
     const faltam = [];
     for (const a of arquivos) if (!(await dados.match(abs(a)))) faltam.push(a);
@@ -77,7 +78,7 @@ async function sincronizar() {
       await dados.addAll(faltam.slice(i, i + 8));
     }
     for (const k of await dados.keys()) {
-      if (/\/data\/(docs\/|questoes\.|busca\.|cartoes\.)/.test(k.url) && !atuais.has(k.url)) await dados.delete(k);
+      if (/\/data\/(docs\/|questoes\.|busca\.|cartoes\.|banco\.)/.test(k.url) && !atuais.has(k.url)) await dados.delete(k);
     }
     const audiosAtuais = new Set(catalogo.docs.filter((d) => d.audio).map((d) => abs(d.audio.url)));
     const cacheAudio = await caches.open(CACHE_AUDIO);
@@ -171,6 +172,7 @@ function rota() {
   if (h === '#/progresso') { telaProgresso(); return; }
   if (h === '#/destaques') { telaDestaques(); return; }
   if (h === '#/questoes/resolver') { telaResolver(); return; }
+  if (h === '#/questoes/banco') { telaBanco(); return; }
   if (h === '#/cartoes') { telaCartoes(); return; }
   if (h === '#/cartoes/estudar') { telaEstudarCartoes(); return; }
   const c = h.match(/^#\/cronometro(?:\/(.+))?$/);
@@ -761,7 +763,10 @@ async function obterQuestoes() {
     if (!r.ok) throw new Error('questões indisponíveis');
     try { (await caches.open(CACHE_DADOS)).put(abs(info.arquivo), r.clone()); } catch { /* ok */ }
   }
-  questoes = await r.json();
+  const lista = await r.json();
+  let doBanco = [];
+  try { doBanco = (await obterBanco()).q; } catch { /* sem o banco (offline na 1ª vez): só as dos materiais */ }
+  questoes = lista.concat(doBanco);
   return questoes;
 }
 
@@ -785,7 +790,7 @@ function estatisticas(lista) {
 }
 
 function resumoQuestoesHome() {
-  const total = catalogo.questoes ? catalogo.questoes.total : 0;
+  const total = (catalogo.questoes ? catalogo.questoes.total : 0) + (catalogo.banco ? catalogo.banco.total : 0);
   if (!total) return '';
   const vals = Object.values(respostas());
   const erros = vals.filter((r) => !r.ok).length;
@@ -858,6 +863,10 @@ async function telaQuestoes() {
       <button class="btn" id="q-erros" ${erradas.length ? '' : 'disabled'}>Caderno de erros (${erradas.length})</button>
       <button class="btn" id="q-aleatorias">10 aleatórias</button>
     </div>
+    ${catalogo.banco ? `<a class="cartao cartao-q" href="#/questoes/banco"><div class="icone-q" aria-hidden="true">🔎</div>
+      <div class="corpo"><strong>Banco de questões oficiais</strong>
+      <span class="meta">${catalogo.banco.total} questões de provas de PM e da AOCP · filtre por disciplina, tópico do edital, banca e prova</span></div>
+      <span aria-hidden="true">›</span></a>` : ''}
     <h2 class="secao">Por disciplina</h2>
     ${disciplinas.map(([d, l], i) => linha(d, l, `data-disc="${i}"`)).join('')}
     <h2 class="secao">Por material do dia</h2>
@@ -886,6 +895,192 @@ async function telaQuestoes() {
     guardado.set('sessaoQ', null);
     telaQuestoes();
   });
+}
+
+/* ---------- banco de questões oficiais (Banco_de_Provas) ---------- */
+/* As questões do banco viram objetos no mesmo formato das questões dos materiais: a resolução, o caderno de erros
+   e as estatísticas valem para as duas. O arquivo vem em data/banco.<hash>.json: provas, apoios, tópicos e questões. */
+
+const DISC_SIGLA = { LP: 'Língua Portuguesa', HP: 'História de Pernambuco', HPE: 'História de Pernambuco', RL: 'Raciocínio Lógico',
+  INF: 'Informática', DC: 'Direito Constitucional', DH: 'Direitos Humanos e Legislação Extravagante' };
+const ORDEM_DISC = ['LP', 'HPE', 'RL', 'INF', 'DC', 'DH'];
+let banco = null; // { provas, topicos, q: [questões já no formato do app] }
+
+async function lerJsonDados(arquivo) {
+  let r = await caches.match(abs(arquivo));
+  if (!r) {
+    r = await fetch(arquivo);
+    if (!r.ok) throw new Error('indisponível');
+    try { (await caches.open(CACHE_DADOS)).put(abs(arquivo), r.clone()); } catch { /* ok */ }
+  }
+  return r.json();
+}
+
+const siglaTopico = (c) => c.split(' ')[0];
+const ordemTopico = (c) => {
+  const [s, n] = c.split(' ');
+  return ORDEM_DISC.indexOf(s) * 1000 + Number(n);
+};
+
+async function obterBanco() {
+  if (banco) return banco;
+  const info = catalogo && catalogo.banco;
+  if (!info) return { provas: {}, topicos: {}, q: [] };
+  const b = await lerJsonDados(info.arquivo);
+  const q = b.q.map((x) => {
+    const p = b.provas[x.p] || {};
+    const ce = x.a.length === 2 && x.a[0][0] === 'CERTO';
+    const avisos = [];
+    if (p.status === 'não confirmado') avisos.push('gabarito não confirmado: trate como preliminar');
+    else if (p.status && p.status !== 'oficial') avisos.push(`gabarito ${p.status}, não o oficial da banca`);
+    if (p.banca && p.banca !== 'Instituto AOCP') avisos.push('outra banca');
+    if (p.nivel === 'Superior') avisos.push('prova de nível superior');
+    if (ce) avisos.push('item de certo ou errado (na PMPE são 5 alternativas)');
+    else if (x.a.length === 4) avisos.push('4 alternativas');
+    if (siglaTopico(x.top[0]) === 'INF' && p.ano && p.ano < 2023) avisos.push(`prova de ${p.ano}: confira a versão do programa`);
+    return {
+      id: x.id, doc: null, numero: String(x.n), banco: true, p: x.p, top: x.top, ce,
+      origem: `${p.nome || ''}${p.cargo ? ` · ${p.cargo}` : ''}`,
+      tipo: 'oficial',
+      disciplina: DISC_SIGLA[siglaTopico(x.top[0])] || 'Outros',
+      tema: x.top.map((c) => `${c} – ${b.topicos[c] || ''}`).join('; '),
+      fonte: `${p.banca || ''} · ${ce ? 'item' : 'questão'} ${x.n}`,
+      meta: avisos.length ? `Atenção: ${avisos.join('; ')}` : '',
+      enunciado: x.e, alternativas: x.a, resposta: x.r, comentario: x.c || '',
+      apoio: x.ap ? b.apoios[x.ap] || '' : '',
+    };
+  });
+  banco = { provas: b.provas, topicos: b.topicos, q };
+  return banco;
+}
+
+const filtrosPadrao = { disc: '', top: '', prova: '', banca: '', situacao: 'novas', ce: false, qtd: 10 };
+const filtrosBanco = () => Object.assign({}, filtrosPadrao, guardado.get('filtrosBanco', {}));
+
+/* Aplica os filtros, menos os indicados em "ignorar" (para contar as opções de cada filtro). */
+function filtrarBanco(lista, f, ignorar = [], resp = respostas()) {
+  return lista.filter((q) => {
+    if (!f.ce && q.ce) return false;
+    if (!ignorar.includes('disc') && f.disc && siglaTopico(q.top[0]) !== f.disc && !(f.disc === 'HPE' && siglaTopico(q.top[0]) === 'HP')) return false;
+    if (!ignorar.includes('top') && f.top && !q.top.includes(f.top)) return false;
+    if (!ignorar.includes('prova') && f.prova && q.p !== f.prova) return false;
+    const p = (banco && banco.provas[q.p]) || {};
+    if (!ignorar.includes('banca') && f.banca === 'aocp' && p.banca !== 'Instituto AOCP') return false;
+    if (!ignorar.includes('banca') && f.banca === 'pm' && p.grupo !== 'PM') return false;
+    if (!ignorar.includes('situacao')) {
+      const r = resp[q.id];
+      if (f.situacao === 'novas' && r) return false;
+      if (f.situacao === 'erradas' && !(r && !r.ok)) return false;
+      if (f.situacao === 'certas' && !(r && r.ok)) return false;
+    }
+    return true;
+  });
+}
+
+async function telaBanco() {
+  pararRelogio();
+  setTopo('Banco de questões', true);
+  tela.innerHTML = '<p class="aviso">Carregando o banco de questões…</p>';
+  let b;
+  try { b = await obterBanco(); } catch {
+    tela.innerHTML = '<p class="aviso">O banco de questões ainda não foi guardado no celular. Abra o app com internet uma vez.</p>';
+    return;
+  }
+  if (location.hash !== '#/questoes/banco') return;
+  const f = filtrosBanco();
+  const todas = b.q;
+  const salvar = (mudanca) => {
+    const novo = Object.assign(filtrosBanco(), mudanca);
+    if ('disc' in mudanca) { novo.top = ''; }
+    guardado.set('filtrosBanco', novo);
+    telaBanco();
+  };
+
+  // opções, cada uma com a contagem que daria se fosse escolhida
+  const resp = respostas(); // lido uma vez: as contagens abaixo filtram o banco várias vezes
+  const conta = (campo, valor) => filtrarBanco(todas, Object.assign({}, f, { [campo]: valor }, campo === 'disc' ? { top: '' } : {}), [], resp).length;
+  const discs = ORDEM_DISC.filter((s) => todas.some((q) => siglaTopico(q.top[0]) === s));
+  const topicos = [...new Set(filtrarBanco(todas, f, ['top', 'situacao']).flatMap((q) => q.top))]
+    .filter((c) => !f.disc || siglaTopico(c) === f.disc).sort((x, y) => ordemTopico(x) - ordemTopico(y));
+  const provas = Object.values(b.provas).filter((p) => todas.some((q) => q.p === p.id))
+    .sort((x, y) => (x.grupo === y.grupo ? y.ano - x.ano || x.nome.localeCompare(y.nome) : x.grupo === 'PM' ? -1 : 1));
+  const resultado = filtrarBanco(todas, f);
+  const st = estatisticas(filtrarBanco(todas, f, ['situacao']));
+  const qtd = f.qtd === 0 ? resultado.length : Math.min(f.qtd, resultado.length);
+  const nomeTop = (c) => `${c} – ${b.topicos[c] || ''}`;
+  const chip = (campo, valor, rotulo) => `<button class="chip${f[campo] === valor ? ' ativo' : ''}" data-campo="${campo}" data-valor="${esc(String(valor))}" aria-pressed="${f[campo] === valor}">${esc(rotulo)}</button>`;
+
+  tela.innerHTML = `
+    <p class="aviso">${todas.length} questões oficiais de ${provas.length} provas (${provas.filter((p) => p.grupo === 'PM').length} de Polícia Militar), ligadas aos tópicos do edital da PMPE 2026. As da prova de Soldado PMPE 2023 ficam de fora: são o Simulado 1.</p>
+    <h2 class="secao">Disciplina</h2>
+    <div class="chips">${chip('disc', '', `Todas (${conta('disc', '')})`)}${discs.map((s) => chip('disc', s, `${DISC_SIGLA[s].replace(' e Legislação Extravagante', '')} (${conta('disc', s)})`)).join('')}</div>
+    <div class="filtros">
+      <label>Tópico do edital
+        <select id="f-top"><option value="">Todos os tópicos</option>
+          ${topicos.map((c) => `<option value="${esc(c)}" ${f.top === c ? 'selected' : ''}>${esc(nomeTop(c))} (${conta('top', c)})</option>`).join('')}
+        </select></label>
+      <label>Situação
+        <select id="f-situacao">
+          ${[['novas', 'Não resolvidas'], ['', 'Todas'], ['erradas', 'Que eu errei'], ['certas', 'Que eu acertei']]
+            .map(([v, r]) => `<option value="${v}" ${f.situacao === v ? 'selected' : ''}>${r} (${conta('situacao', v)})</option>`).join('')}
+        </select></label>
+      <label>Banca e concurso
+        <select id="f-banca">
+          ${[['', 'Todas as bancas e áreas'], ['aocp', 'Só Instituto AOCP'], ['pm', 'Só provas de Polícia Militar']]
+            .map(([v, r]) => `<option value="${v}" ${f.banca === v ? 'selected' : ''}>${r} (${conta('banca', v)})</option>`).join('')}
+        </select></label>
+      <label>Prova
+        <select id="f-prova"><option value="">Todas as provas</option>
+          ${provas.map((p) => `<option value="${esc(p.id)}" ${f.prova === p.id ? 'selected' : ''}>${esc(`${p.nome} · ${p.cargo}`)} (${conta('prova', p.id)})</option>`).join('')}
+        </select></label>
+      <label>Quantas por vez
+        <select id="f-qtd">${[10, 20, 30, 50, 0].map((n) => `<option value="${n}" ${f.qtd === n ? 'selected' : ''}>${n || 'Todas'}</option>`).join('')}</select></label>
+      <label class="check"><input type="checkbox" id="f-ce" ${f.ce ? 'checked' : ''}> Incluir itens de certo ou errado (Polícia Penal do DF)</label>
+    </div>
+    <div class="placar">
+      <div><b>${st.total}</b><span>com esses filtros</span></div>
+      <div><b>${st.resolvidas}</b><span>já resolvidas</span></div>
+      <div><b>${st.pct != null ? `${st.pct}%` : '–'}</b><span>de acerto</span></div>
+    </div>
+    <button class="btn primario largo" id="f-ir" ${qtd ? '' : 'disabled'}>${qtd ? `▶ Resolver ${qtd} ${qtd === 1 ? 'questão' : 'questões'}` : 'Nenhuma questão com esses filtros'}</button>
+    ${f.disc || f.top || f.prova || f.banca || f.situacao !== 'novas' || f.ce ? '<button class="btn-link" id="f-limpar">Limpar os filtros</button>' : ''}
+    ${f.disc ? desempenhoTopicos(todas, f, b) : ''}`;
+
+  tela.querySelectorAll('.chip').forEach((c) => c.addEventListener('click', () => salvar({ [c.dataset.campo]: c.dataset.valor })));
+  $('#f-top').addEventListener('change', (e) => salvar({ top: e.target.value }));
+  $('#f-situacao').addEventListener('change', (e) => salvar({ situacao: e.target.value }));
+  $('#f-banca').addEventListener('change', (e) => salvar({ banca: e.target.value }));
+  $('#f-prova').addEventListener('change', (e) => salvar({ prova: e.target.value }));
+  $('#f-qtd').addEventListener('change', (e) => salvar({ qtd: Number(e.target.value) }));
+  $('#f-ce').addEventListener('change', (e) => salvar({ ce: e.target.checked }));
+  const lim = $('#f-limpar');
+  if (lim) lim.addEventListener('click', () => { guardado.set('filtrosBanco', { qtd: f.qtd }); telaBanco(); });
+  tela.querySelectorAll('[data-top]').forEach((x) => x.addEventListener('click', () => salvar({ top: x.dataset.top })));
+  $('#f-ir').addEventListener('click', () => {
+    const ids = embaralhar(resultado).slice(0, qtd).map((q) => q.id);
+    const partes = [f.top ? nomeTop(f.top) : f.disc ? DISC_SIGLA[f.disc] : 'Banco de questões'];
+    if (f.prova && b.provas[f.prova]) partes.push(b.provas[f.prova].nome);
+    iniciarSessao(ids, partes.join(' · '));
+  });
+}
+
+/* Acerto por tópico da disciplina escolhida: mostra onde está o ponto fraco. */
+function desempenhoTopicos(todas, f, b) {
+  const lista = filtrarBanco(todas, Object.assign({}, f, { top: '', situacao: '' }));
+  const porTop = new Map();
+  for (const q of lista) for (const c of q.top) {
+    if (siglaTopico(c) !== f.disc) continue;
+    if (!porTop.has(c)) porTop.set(c, []);
+    porTop.get(c).push(q);
+  }
+  const linhas = [...porTop].sort((x, y) => ordemTopico(x[0]) - ordemTopico(y[0])).map(([c, l]) => {
+    const s = estatisticas(l);
+    const pr = s.total ? Math.round((s.resolvidas / s.total) * 100) : 0;
+    return `<button class="cartao linha-q" data-top="${esc(c)}"><div class="corpo"><strong>${esc(`${c} – ${b.topicos[c] || ''}`)}</strong>
+      <span class="meta">${s.resolvidas} de ${s.total} resolvidas${s.pct != null ? ` · ${s.pct}% de acerto` : ''}${s.erros ? ` · ${s.erros} para revisar` : ''}</span>
+      <span class="barra" aria-hidden="true"><span style="width:${pr}%"></span></span></div><span aria-hidden="true">›</span></button>`;
+  }).join('');
+  return linhas ? `<h2 class="secao">Seu desempenho por tópico</h2>${linhas}` : '';
 }
 
 async function telaResolver() {

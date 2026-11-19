@@ -28,6 +28,8 @@ from questoes import extrair as extrair_questoes  # noqa: E402
 from revisao import montar as montar_revisao  # noqa: E402
 from roteiro import roteiro as ler_roteiro  # noqa: E402
 from cartoes import extrair as extrair_cartoes  # noqa: E402
+from banco import coletar as coletar_banco  # noqa: E402
+from questoes import sem_links_locais  # noqa: E402
 from plano import ler_datas, ler_plano  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -310,6 +312,24 @@ def main():
     corpo_q = json.dumps(questoes, ensure_ascii=False, separators=(",", ":")).encode()
     arquivo_q = f"data/questoes.{hash_curto(corpo_q)}.json"
 
+    # Banco de questões oficiais (Banco_de_Provas/): fica de fora o que já está num material, com comentário.
+    avisos_b = []
+    banco = coletar_banco(RAIZ, md, sem_links_locais, avisos_b)
+    for a in avisos_b:
+        print(f"  AVISO (banco): {a}")
+    def chave_texto(t):
+        t = re.sub(r"<[^>]+>|[*_`]", " ", t)
+        t = unicodedata.normalize("NFKD", t).encode("ascii", "ignore").decode().lower()
+        return re.sub(r"[^a-z0-9]+", "", t)[:160]
+    ja_em_material = {chave_texto(q["enunciado"]) for q in questoes if q["tipo"] == "oficial"}
+    banco["q"] = [{k: v for k, v in q.items() if not k.startswith("_")} for q in banco["q"]
+                  if chave_texto(q["_txt"]) not in ja_em_material]
+    usados = {q.get("ap") for q in banco["q"]}
+    banco["apoios"] = {k: v for k, v in banco["apoios"].items() if k in usados}
+    corpo_banco = json.dumps(banco, ensure_ascii=False, separators=(",", ":")).encode()
+    arquivo_banco = f"data/banco.{hash_curto(corpo_banco)}.json"
+    (saida / arquivo_banco).write_bytes(corpo_banco)
+
     # Índice da busca dentro dos textos: [índice do documento, bloco, texto].
     ids_busca = [d["id"] for d in docs if d["busca"]]
     pos = {i: n for n, i in enumerate(ids_busca)}
@@ -374,7 +394,8 @@ def main():
     (saida / "data" / "catalogo.json").write_text(
         json.dumps({"versao": versao, "gerado_em": agora, "docs": catalogo,
                     "questoes": {"arquivo": arquivo_q, "total": len(questoes)}, "plano": plano,
-                    "busca": {"arquivo": arquivo_b}, "cartoes": {"arquivo": arquivo_c, "total": len(cartoes)}},
+                    "busca": {"arquivo": arquivo_b},
+                    "banco": {"arquivo": arquivo_banco, "total": len(banco["q"])}, "cartoes": {"arquivo": arquivo_c, "total": len(cartoes)}},
                    ensure_ascii=False), encoding="utf-8")
 
     # Arquivos do app; a versão do service worker muda quando o código muda.
@@ -387,7 +408,7 @@ def main():
     (saida / ".nojekyll").write_text("")
 
     total_audio = sum(a["bytes"] for a in (i.get("audio") for i in catalogo) if a)
-    print(f"Pronto: {len(catalogo)} documentos, {len(questoes)} questões, {len(cartoes)} flashcards, {len(audios)} áudios ({total_audio / 1e6:.0f} MB) em {saida}")
+    print(f"Pronto: {len(catalogo)} documentos, {len(questoes)} questões, {len(banco['q'])} no banco, {len(cartoes)} flashcards, {len(audios)} áudios ({total_audio / 1e6:.0f} MB) em {saida}")
 
 
 if __name__ == "__main__":

@@ -58,7 +58,7 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  if (caminho.includes('/data/docs/') || caminho.includes('/data/questoes.') || caminho.includes('/data/busca.') || caminho.includes('/data/cartoes.')) { // nomes com hash: nunca mudam
+  if (caminho.includes('/data/docs/') || caminho.includes('/data/questoes.') || caminho.includes('/data/busca.') || caminho.includes('/data/cartoes.') || caminho.includes('/data/banco.')) { // nomes com hash: nunca mudam
     e.respondWith((async () => {
       const c = await caches.match(url.href);
       if (c) return c;
