@@ -190,6 +190,8 @@ function grupos(itens, aberto) {
 
 function telaInicio() {
   pararLeituraNaTela();
+  seguir = true;
+  $('#seguir').hidden = true;
   setTopo('PMPE Ouvir', false);
   if (!catalogo) {
     tela.innerHTML = '<p class="aviso">Não foi possível carregar o conteúdo. Abra o app uma vez com internet.</p>';
@@ -312,6 +314,7 @@ function mostrarPlayer() {
   $('#p-vel').textContent = `${String(velocidade).replace('.', ',')}×`;
   $('#p-voltar').textContent = player.modo === 'tts' ? '⟲' : '−15';
   $('#p-avancar').textContent = player.modo === 'tts' ? '⟳' : '+30';
+  aoMudarCapitulo();
 }
 
 function pararTudo() {
@@ -334,6 +337,7 @@ function iniciarAudio(item, doc, cap) {
     if (f != null && f >= 0) player.marcas.push([t, f]);
   }));
   const inicio = cap != null ? (doc.capitulos[cap].inicio || 0) : guardado.get(`pos:${item.id}`, 0);
+  player.cap = capituloNoTempo(inicio);
   audio.src = item.audio.url;
   audio.playbackRate = velocidade;
   audio.addEventListener('loadedmetadata', () => {
@@ -563,6 +567,7 @@ function iniciarTts(item, doc, cap) {
   tts.idx = cap != null ? tts.pedacos.findIndex((p) => p.cap === cap) : Math.min(guardado.get(`tts:${item.id}`, 0), tts.pedacos.length - 1);
   if (tts.idx < 0) tts.idx = 0;
   tts.voz = tts.voz || escolherVoz();
+  player.cap = tts.pedacos[tts.idx] ? tts.pedacos[tts.idx].cap : 0;
   mostrarPlayer();
   configurarMediaSession();
   ttsTocar();
@@ -696,6 +701,35 @@ function atualizarRede() {
 }
 window.addEventListener('online', () => { atualizarRede(); sincronizar(); });
 window.addEventListener('offline', atualizarRede);
+
+/* ---------- tema claro / escuro ---------- */
+
+const ICONE_SOL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>';
+const ICONE_LUA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>';
+const sistemaEscuro = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : { matches: false };
+
+/* Sem escolha salva, o app segue o tema do celular. */
+const temaAtual = () => document.documentElement.dataset.theme || (sistemaEscuro.matches ? 'dark' : 'light');
+
+function desenharBotaoTema() {
+  const escuro = temaAtual() === 'dark';
+  const b = $('#tema');
+  b.innerHTML = escuro ? ICONE_SOL : ICONE_LUA;
+  const rotulo = escuro ? 'Usar tema claro' : 'Usar tema escuro';
+  b.setAttribute('aria-label', rotulo);
+  b.title = rotulo;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = escuro ? '#0f2742' : '#14365c';
+}
+
+$('#tema').addEventListener('click', () => {
+  const novo = temaAtual() === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = novo;
+  guardado.set('tema', novo);
+  desenharBotaoTema();
+});
+if (sistemaEscuro.addEventListener) sistemaEscuro.addEventListener('change', desenharBotaoTema);
+desenharBotaoTema();
 
 /* ---------- início ---------- */
 
