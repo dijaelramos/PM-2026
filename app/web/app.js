@@ -83,7 +83,9 @@ async function sincronizar() {
       if (!audiosAtuais.has(k.url)) { await cacheAudio.delete(k); baixados.delete(k.url); }
     }
     if (guardado.get('autoBaixar', true)) {
-      const recentes = catalogo.docs.filter((d) => d.categoria === 'material' && d.audio && d.data).slice(0, 3);
+      const recentes = [ // revisões primeiro: são pequenas e as mais úteis fora de casa
+        ...catalogo.docs.filter((d) => d.categoria === 'revisao' && d.audio).slice(0, 5),
+        ...catalogo.docs.filter((d) => d.categoria === 'material' && d.audio && d.data).slice(0, 3)];
       for (const it of recentes) {
         if (!baixados.has(abs(it.audio.url))) {
           setStatus(`Baixando áudio: ${it.titulo}…`);
@@ -172,14 +174,47 @@ function seloOffline(it) {
   return baixados.has(abs(it.audio.url)) ? '<span class="selo ok">offline</span>' : '';
 }
 
+const tituloCurto = (it) => (it.categoria === 'revisao' ? it.titulo.replace(/^Revisão rápida: /, '') : it.titulo);
+
 function cartaoMaterial(it) {
   const [dia, data] = (it.subtitulo || '').split(' ');
   const ouvido = guardado.get(`ouvido:${it.id}`, false) ? ' · ✓ ouvido' : '';
   const dur = it.audio ? `${minutos(it.audio.duracao)} de áudio` : `~${minutos(duracaoItem(it))} de leitura`;
   return `<a class="cartao" href="#/doc/${encodeURIComponent(it.id)}">
     <div class="data"><b>${esc(data || dia)}</b>${esc(data ? dia : '')}</div>
-    <div class="corpo"><strong>${esc(it.titulo)}</strong><span class="meta">${dur}${ouvido}</span></div>
+    <div class="corpo"><strong>${esc(tituloCurto(it))}</strong><span class="meta">${dur}${ouvido}</span></div>
     ${seloOffline(it)}</a>`;
+}
+
+/* Revisões com áudio dos últimos 7 dias (ou as 5 mais recentes), da mais antiga para a mais nova. */
+function revisoesDaSemana() {
+  const revs = catalogo.docs.filter((d) => d.categoria === 'revisao' && d.audio);
+  const limite = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 10);
+  let sel = revs.filter((d) => d.data >= limite);
+  if (!sel.length) sel = revs.slice(0, 5);
+  return sel.slice().reverse();
+}
+
+function secaoRevisoes(lista, filtrando) {
+  const semana = filtrando ? [] : revisoesDaSemana();
+  const dur = semana.reduce((s, d) => s + d.audio.duracao, 0);
+  const visiveis = filtrando ? lista : lista.slice(0, 3);
+  const resto = filtrando ? [] : lista.slice(3);
+  return `<h2 class="secao">Revisão rápida</h2>
+    ${semana.length > 1 ? `<button class="btn primario largo" id="b-semana">▶ Ouvir em sequência as revisões dos últimos 7 dias (${semana.length} · ${minutos(dur)})</button>` : ''}
+    ${visiveis.map(cartaoMaterial).join('')}
+    ${resto.length ? `<details class="grupo"><summary>Revisões anteriores <small>(${resto.length})</small></summary>
+      ${resto.map((it) => `<a href="#/doc/${encodeURIComponent(it.id)}">${esc((it.subtitulo || '').split(' ').pop())} · ${esc(tituloCurto(it))}</a>`).join('')}</details>` : ''}`;
+}
+
+/* Toca vários áudios em sequência (fila). */
+function tocarSequencia(itens) {
+  const ok = itens.filter((it) => it.audio && (navigator.onLine || baixados.has(abs(it.audio.url))));
+  if (!ok.length) { setStatus('Sem internet, e estas revisões não foram baixadas.'); return; }
+  const [primeiro, ...resto] = ok;
+  const comecar = (doc) => iniciarAudio(primeiro, doc, 0, resto.map((d) => d.id));
+  if (docs.has(primeiro.id)) comecar(docs.get(primeiro.id)); // sem espera: o iPhone exige o toque
+  else obterDoc(primeiro).then(comecar).catch(() => {});
 }
 
 function grupos(itens, aberto) {
@@ -208,7 +243,7 @@ function telaInicio() {
     <div id="lista"></div>
     <div class="rodape">
       <div id="status-sync">${esc(textoStatus())}</div>
-      <label><input id="auto" type="checkbox" ${guardado.get('autoBaixar', true) ? 'checked' : ''}> Baixar sozinho o áudio dos 3 materiais mais recentes</label>
+      <label><input id="auto" type="checkbox" ${guardado.get('autoBaixar', true) ? 'checked' : ''}> Baixar sozinho o áudio das 5 revisões e dos 3 materiais mais recentes</label>
     </div>`;
   const busca = $('#busca');
   busca.value = guardado.get('busca', '');
@@ -222,6 +257,7 @@ function desenharLista(filtro) {
   const f = norm(filtro).trim();
   const itens = catalogo.docs.filter((d) => !f || norm(`${d.titulo} ${d.grupo || ''} ${d.subtitulo || ''}`).includes(f));
   const materiais = itens.filter((d) => d.categoria === 'material' && d.data);
+  const revisoes = itens.filter((d) => d.categoria === 'revisao');
   const extras = itens.filter((d) => d.categoria === 'material' && !d.data);
   const plano = itens.filter((d) => d.categoria === 'plano');
   const base = itens.filter((d) => d.categoria === 'base');
@@ -235,11 +271,18 @@ function desenharLista(filtro) {
       <div class="corpo"><strong>${esc(itUlt.titulo)}</strong><span class="meta">${esc(ultimo.onde || '')}</span></div><span>▶</span></a>`;
   }
   if (!f) html += resumoQuestoesHome();
+  if (revisoes.length) html += secaoRevisoes(revisoes, !!f);
   if (materiais.length) html += `<h2 class="secao">Material do Dia</h2>${materiais.map(cartaoMaterial).join('')}`;
   if (extras.length || plano.length) html += `<h2 class="secao">Plano, edital e extras</h2>${grupos([...plano, ...extras], !!f)}`;
   if (base.length) html += `<h2 class="secao">Base de Conhecimento</h2>${grupos(base, !!f)}`;
   if (!itens.length) html = '<p class="aviso">Nada encontrado.</p>';
   $('#lista').innerHTML = html;
+  const bs = $('#b-semana');
+  if (bs) {
+    const semana = revisoesDaSemana();
+    semana.forEach((it) => obterDoc(it).catch(() => {})); // deixa pronto para tocar no toque
+    bs.addEventListener('click', () => tocarSequencia(semana));
+  }
 }
 
 async function telaDoc(id) {
@@ -257,12 +300,16 @@ async function telaDoc(id) {
   const pos = guardado.get(`pos:${id}`, 0);
   const posTts = guardado.get(`tts:${id}`, 0);
   const caps = doc.capitulos;
+  const rev = item.revisao && catalogo.docs.find((d) => d.id === item.revisao);
+  const mat = item.material && catalogo.docs.find((d) => d.id === item.material);
   tela.innerHTML = `
     <div class="acoes">
       ${item.audio ? `<button class="btn primario" id="b-ouvir">▶ ${pos > 5 ? `Continuar de ${fmt(pos)}` : `Ouvir · voz natural · ${minutos(item.audio.duracao)}`}</button>` : ''}
       <button class="btn ${item.audio ? '' : 'primario'}" id="b-tts">🔊 ${posTts > 0 ? 'Continuar com a voz do celular' : 'Ouvir com a voz do celular'}</button>
       ${item.audio ? '<button class="btn" id="b-baixar"></button>' : ''}
       ${item.questoes ? `<button class="btn" id="b-questoes">✍ Resolver as ${item.questoes} questões</button>` : ''}
+      ${rev ? `<a class="btn" href="#/doc/${encodeURIComponent(rev.id)}">⚡ Revisão rápida · ${minutos(duracaoItem(rev))}</a>` : ''}
+      ${mat ? `<a class="btn" href="#/doc/${encodeURIComponent(mat.id)}">📄 Material completo</a>` : ''}
     </div>
     <p class="aviso" id="aviso-doc">${item.audio ? '' : 'Este texto é lido pela voz do celular. A tela fica acesa durante a leitura.'}</p>
     <details class="capitulos"><summary>Capítulos (${caps.length})</summary><ol>
@@ -590,7 +637,7 @@ function pararRelogio() {
 
 /* ---------- reprodutor ---------- */
 
-const player = { modo: null, item: null, doc: null, cap: 0, f: -1, marcas: [] };
+const player = { modo: null, item: null, doc: null, cap: 0, f: -1, marcas: [], fila: [] };
 let velocidade = guardado.get('velocidade', 1);
 let ultimoSalvo = 0;
 
@@ -598,7 +645,8 @@ function mostrarPlayer() {
   $('#player').hidden = false;
   $('#player').classList.toggle('tts', player.modo === 'tts');
   document.body.classList.add('tocando');
-  $('#p-titulo').textContent = player.item.titulo;
+  const naFila = player.fila && player.fila.length;
+  $('#p-titulo').textContent = player.item.titulo + (naFila ? ` (+${naFila} na sequência)` : '');
   $('#p-vel').textContent = `${String(velocidade).replace('.', ',')}×`;
   $('#p-voltar').textContent = player.modo === 'tts' ? '⟲' : '−15';
   $('#p-avancar').textContent = player.modo === 'tts' ? '⟳' : '+30';
@@ -611,7 +659,7 @@ function pararTudo() {
   player.modo = null;
 }
 
-function iniciarAudio(item, doc, cap) {
+function iniciarAudio(item, doc, cap, fila = []) {
   const url = abs(item.audio.url);
   if (!navigator.onLine && !baixados.has(url)) {
     const av = $('#aviso-doc');
@@ -619,7 +667,7 @@ function iniciarAudio(item, doc, cap) {
     return;
   }
   pararTudo();
-  Object.assign(player, { modo: 'audio', item, doc, cap: 0, f: -1, marcas: [] });
+  Object.assign(player, { modo: 'audio', item, doc, cap: 0, f: -1, marcas: [], fila: fila.slice() });
   doc.capitulos.forEach((c) => (c.t || []).forEach((t, i) => {
     const f = (c.f || [])[i];
     if (f != null && f >= 0) player.marcas.push([t, f]);
@@ -698,6 +746,7 @@ function voltarASeguir() {
 
 function salvarPosicao(forcar) {
   if (!player.item) return;
+  if (player.modo === 'audio' && audio.ended) return; // terminou: a posição já foi zerada
   const agora = Date.now();
   if (!forcar && agora - ultimoSalvo < 4000) return;
   ultimoSalvo = agora;
@@ -732,7 +781,20 @@ audio.addEventListener('ended', () => {
   guardado.set(`pos:${player.item.id}`, 0);
   guardado.set(`ouvido:${player.item.id}`, true);
   atualizarPlay(false);
+  avancarFila();
 });
+
+function avancarFila() {
+  while (player.fila && player.fila.length) {
+    const it = catalogo.docs.find((d) => d.id === player.fila.shift());
+    if (!it || !it.audio || (!navigator.onLine && !baixados.has(abs(it.audio.url)))) continue;
+    const resto = player.fila.slice();
+    const comecar = (doc) => iniciarAudio(it, doc, 0, resto);
+    if (docs.has(it.id)) comecar(docs.get(it.id));
+    else obterDoc(it).then(comecar).catch(() => {});
+    return;
+  }
+}
 
 function atualizarPlay(tocando) {
   $('#p-play').textContent = tocando ? '⏸' : '▶';
@@ -842,7 +904,7 @@ function iniciarTts(item, doc, cap) {
     return;
   }
   pararTudo();
-  Object.assign(player, { modo: 'tts', item, doc, cap: 0, f: -1, marcas: [] });
+  Object.assign(player, { modo: 'tts', item, doc, cap: 0, f: -1, marcas: [], fila: [] });
   tts.pedacos = [];
   doc.capitulos.forEach((c, ci) => c.paragrafos.forEach((p, pi) => {
     const f = c.f ? c.f[pi] : -1;

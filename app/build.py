@@ -25,10 +25,12 @@ from fala import capitulos  # noqa: E402
 from icone import gerar_icones  # noqa: E402
 from questoes import DISCIPLINAS_AUTORAIS, simulado1_pendente  # noqa: E402
 from questoes import extrair as extrair_questoes  # noqa: E402
+from revisao import montar as montar_revisao  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
 APP = RAIZ / "app"
 DIAS = ["seg.", "ter.", "qua.", "qui.", "sex.", "sáb.", "dom."]
+DIAS_LONGOS = ["segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado", "domingo"]
 
 GRUPOS_BASE = {
     "CONTEUDOS_PROGRAMATICOS": "Conteúdo programático",
@@ -187,6 +189,9 @@ def main():
     ap.add_argument("--saida", type=Path, default=APP / "dist")
     ap.add_argument("--audios", type=int, default=15,
                     help="MP3 para os N materiais mais recentes (0 = nenhum). O GitHub Pages aceita até 1 GB.")
+    ap.add_argument("--revisoes", type=int, default=30, help="MP3 para as N revisões rápidas mais recentes")
+    ap.add_argument("--limite-mb", type=int, default=900,
+                    help="teto do total de áudio; acima dele, os MP3 completos mais antigos saem (Pages: 1 GB)")
     ap.add_argument("--voz", default="pt-BR-AntonioNeural",
                     help="voz do MP3 (escolhida pelo usuário em 18/11/2026); outras: pt-BR-FranciscaNeural, pt-BR-ThalitaMultilingualNeural")
     ap.add_argument("--taxa", default="-10%", help="velocidade da voz no MP3, ex.: -10%% (mais lenta) ou +10%%")
@@ -206,6 +211,22 @@ def main():
         while d["id"] in ids:
             d["id"] = f"{base_id}-{n}"; n += 1
         ids[d["id"]] = d
+
+    # Revisão rápida de cada material (documento derivado, com áudio próprio).
+    revisoes = []
+    for d in docs:
+        if d["categoria"] != "material" or not d.get("data") or d["h1"].startswith("Resumão"):
+            continue
+        dia = dt.date.fromisoformat(d["data"])
+        texto_rev = montar_revisao(d["texto"], d["titulo"], f"{DIAS_LONGOS[dia.weekday()]}, {dia:%d/%m}")
+        if texto_rev:
+            rid = f"{d['id']}-revisao"
+            revisoes.append({"caminho": d["caminho"], "categoria": "revisao", "id": rid, "md": md,
+                             "titulo": f"Revisão rápida: {d['titulo']}", "subtitulo": d["subtitulo"],
+                             "data": d["data"], "texto": texto_rev, "rel": f"{d['rel']}#revisao",
+                             "h1": texto_rev.splitlines()[0][2:], "material": d["id"]})
+            d["revisao"] = rid
+    docs += revisoes
     por_caminho = {d["rel"]: d["id"] for d in docs}
 
     for d in docs:
@@ -220,9 +241,22 @@ def main():
     (saida / "data" / "docs").mkdir(parents=True)
     (saida / "audio").mkdir()
 
-    materiais = sorted((d for d in docs if d.get("data")), key=lambda d: (d["data"], d["rel"]), reverse=True)
-    alvos = materiais[: max(args.audios, 0)]
+    def recentes(cat):
+        return sorted((d for d in docs if d["categoria"] == cat and d.get("data")),
+                      key=lambda d: (d["data"], d["rel"]), reverse=True)
+
+    alvos_mat = recentes("material")[: max(args.audios, 0)]
+    alvos = alvos_mat + recentes("revisao")[: max(args.revisoes, 0)]
     audios = asyncio.run(gerar_audios(alvos, args, args.cache)) if alvos else {}
+
+    # O GitHub Pages aceita até 1 GB: se passar do teto, tira o MP3 completo dos materiais mais antigos.
+    total = sum(len(a[0]) for a in audios.values())
+    for d in reversed(alvos_mat):
+        if total <= args.limite_mb * 1e6:
+            break
+        if d["id"] in audios:
+            total -= len(audios.pop(d["id"])[0])
+            print(f"  AVISO: sem MP3 para {d['rel']} (limite de {args.limite_mb} MB); fica com a voz do celular.")
 
     questoes = coletar_questoes(docs, md)
     por_doc = {}
@@ -238,7 +272,7 @@ def main():
         item = {k: d[k] for k in ("id", "titulo", "categoria") if k in d}
         if por_doc.get(d["id"]):
             item["questoes"] = por_doc[d["id"]]
-        for k in ("subtitulo", "grupo", "data"):
+        for k in ("subtitulo", "grupo", "data", "revisao", "material"):
             if d.get(k):
                 item[k] = d[k]
         if d["id"] in audios:
@@ -256,7 +290,7 @@ def main():
         (saida / item["arquivo"]).write_bytes(corpo)
         catalogo.append(item)
 
-    ordem = {"material": 0, "plano": 1, "base": 2}
+    ordem = {"material": 0, "revisao": 1, "plano": 2, "base": 3}
     catalogo.sort(key=lambda i: (i.get("grupo", ""), i["titulo"]))
     catalogo.sort(key=lambda i: i.get("data", ""), reverse=True)  # material mais recente primeiro
     catalogo.sort(key=lambda i: ordem[i["categoria"]])

@@ -90,7 +90,9 @@ details.grupo a { display: block; padding: 10px 14px; border-top: 1px solid var(
   border: 1px solid var(--linha); background: var(--superficie); border-radius: 12px; padding: 10px 14px;
   font-weight: 600; text-decoration: none;
 }
+a.btn { color: var(--texto); display: inline-block; }
 .btn.primario { background: var(--marca); color: var(--marca-texto); border-color: var(--marca); }
+.btn.largo { width: 100%; margin-bottom: 8px; text-align: center; }
 .btn:disabled { opacity: .5; }
 .aviso { font-size: 14px; color: var(--suave); margin: 0 0 12px; }
 
