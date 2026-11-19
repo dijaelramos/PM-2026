@@ -68,6 +68,7 @@ async function sincronizar() {
     const arquivos = catalogo.docs.map((d) => d.arquivo);
     if (catalogo.questoes) arquivos.push(catalogo.questoes.arquivo);
     if (catalogo.busca) arquivos.push(catalogo.busca.arquivo);
+    if (catalogo.cartoes) arquivos.push(catalogo.cartoes.arquivo);
     const atuais = new Set(arquivos.map(abs));
     const faltam = [];
     for (const a of arquivos) if (!(await dados.match(abs(a)))) faltam.push(a);
@@ -76,7 +77,7 @@ async function sincronizar() {
       await dados.addAll(faltam.slice(i, i + 8));
     }
     for (const k of await dados.keys()) {
-      if (/\/data\/(docs\/|questoes\.|busca\.)/.test(k.url) && !atuais.has(k.url)) await dados.delete(k);
+      if (/\/data\/(docs\/|questoes\.|busca\.|cartoes\.)/.test(k.url) && !atuais.has(k.url)) await dados.delete(k);
     }
     const audiosAtuais = new Set(catalogo.docs.filter((d) => d.audio).map((d) => abs(d.audio.url)));
     const cacheAudio = await caches.open(CACHE_AUDIO);
@@ -170,6 +171,8 @@ function rota() {
   if (h === '#/progresso') { telaProgresso(); return; }
   if (h === '#/destaques') { telaDestaques(); return; }
   if (h === '#/questoes/resolver') { telaResolver(); return; }
+  if (h === '#/cartoes') { telaCartoes(); return; }
+  if (h === '#/cartoes/estudar') { telaEstudarCartoes(); return; }
   const c = h.match(/^#\/cronometro(?:\/(.+))?$/);
   if (c) { telaCrono(c[1]); return; }
   const m = h.match(/^#\/doc\/(.+)$/);
@@ -296,7 +299,7 @@ function desenharLista(filtro) {
   }
   if (!f) {
     const nDest = contarDestaques();
-    const blocos = resumoCronoHome() + resumoProgressoHome() + resumoQuestoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
+    const blocos = resumoCronoHome() + resumoProgressoHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
       <div class="icone-q" aria-hidden="true">🖍</div><div class="corpo"><strong>Meus destaques</strong>
       <span class="meta">${nDest} ${nDest === 1 ? 'trecho destacado' : 'trechos destacados'}, por disciplina</span></div><span aria-hidden="true">›</span></a>` : '');
     if (blocos) html += `<h2 class="secao">Seu estudo</h2>${blocos}`;
@@ -341,6 +344,7 @@ async function telaDoc(id) {
       ${item.audio ? '<button class="btn" id="b-baixar"></button>' : ''}
       ${blocosDoItem(item) ? `<a class="btn" href="#/cronometro/${encodeURIComponent(item.id)}">⏱ ${crono && crono.id === item.id && !crono.fim ? 'Cronômetro em andamento' : 'Cronômetro do roteiro'}</a>` : ''}
       ${item.questoes ? `<button class="btn" id="b-questoes">✍ Resolver as ${item.questoes} questões</button>` : ''}
+      ${item.cartoes ? `<button class="btn" id="b-cartoes">🃏 ${item.cartoes} flashcards</button>` : ''}
       ${rev ? `<a class="btn" href="#/doc/${encodeURIComponent(rev.id)}">⚡ Revisão rápida · ${minutos(duracaoItem(rev))}</a>` : ''}
       ${mat ? `<a class="btn" href="#/doc/${encodeURIComponent(mat.id)}">📄 Material completo</a>` : ''}
       ${item.audio ? '<button class="btn" id="b-depois">➕ Ouvir depois</button>' : ''}
@@ -396,6 +400,10 @@ async function telaDoc(id) {
     be.textContent = novo ? '✓ Estudado' : '☐ Marcar como estudado';
     be.setAttribute('aria-pressed', String(novo));
   });
+  const bc = $('#b-cartoes');
+  if (bc) bc.addEventListener('click', () => cartoesDoMaterial(item).catch(() => {
+    $('#aviso-doc').textContent = 'Os flashcards ainda não foram guardados no celular. Abra o app com internet.';
+  }));
   const bq = $('#b-questoes');
   if (bq) bq.addEventListener('click', async () => {
     try {
@@ -580,7 +588,7 @@ function registrarAudioPendente() {
   segPendentes = 0;
 }
 
-const estudouNoDia = (dia) => !!dia && ((dia.s || 0) >= 60 || (dia.c || 0) >= 60 || (dia.q || 0) > 0 || (dia.m || 0) > 0);
+const estudouNoDia = (dia) => !!dia && ((dia.s || 0) >= 60 || (dia.c || 0) >= 60 || (dia.k || 0) > 0 || (dia.q || 0) > 0 || (dia.m || 0) > 0);
 const concluido = (it) => guardado.get(`estudado:${it.id}`, false) || guardado.get(`ouvido:${it.id}`, false);
 const sessoesDeEstudo = () => ((catalogo.plano && catalogo.plano.sessoes) || []).filter((s) => s.h + s.r > 0);
 
@@ -635,7 +643,8 @@ function telaProgresso() {
     const a = at[d] || {};
     const q = a.q ? ` · ${a.q} ${a.q === 1 ? 'questão' : 'questões'} (${a.a || 0} certas)` : '';
     const c = a.c >= 60 ? ` · ${Math.round(a.c / 60)} min no cronômetro` : '';
-    return `${dataCurta(d)}: ${v} min ouvindo${c}${q}`;
+    const k = a.k ? ` · ${a.k} ${a.k === 1 ? 'flashcard' : 'flashcards'}` : '';
+    return `${dataCurta(d)}: ${v} min ouvindo${c}${q}${k}`;
   };
   const totalPeriodo = valores.reduce((s, v) => s + v, 0);
 
@@ -975,6 +984,323 @@ function iniciarRelogio() {
 function pararRelogio() {
   if (relogioQ && relogioQ.id) clearInterval(relogioQ.id);
   if (relogioQ) relogioQ.id = null;
+}
+
+/* ---------- flashcards com revisão espaçada ---------- */
+/* Cada linha das "Pegadinhas" e dos "Quadros para não confundir" vira um cartão.
+   Estado em guardado 'cartoes': { id: { c, p, n, e, u, k } }: c = degrau (INTERVALOS[c] dias), p = próxima revisão,
+   n = revisões, e = erros, u = último dia, k = acertou a última.
+   Acertou: sobe um degrau (1, 3, 7, 15, 30, 60 dias). Errou: volta para amanhã e repete no fim da sessão. */
+
+const INTERVALOS = [1, 3, 7, 15, 30, 60];
+const DOMINADO = 4; // a partir de 30 dias
+const OPCOES_NOVOS = [10, 20, 30, 50, 0]; // 0 = sem limite
+let cartoes = null;
+
+async function obterCartoes() {
+  if (cartoes) return cartoes;
+  const info = catalogo && catalogo.cartoes;
+  if (!info) return [];
+  let r = await caches.match(abs(info.arquivo));
+  if (!r) {
+    r = await fetch(info.arquivo);
+    if (!r.ok) throw new Error('cartões indisponíveis');
+    try { (await caches.open(CACHE_DADOS)).put(abs(info.arquivo), r.clone()); } catch { /* ok */ }
+  }
+  cartoes = await r.json();
+  return cartoes;
+}
+
+const estadoCartoes = () => guardado.get('cartoes', {});
+const novosPorDia = () => guardado.get('novosPorDia', 20);
+const somaDias = (iso, n) => { const d = deISO(iso); d.setDate(d.getDate() + n); return dataISO(d); };
+const novosHoje = () => { const x = guardado.get('novosHoje', null); return x && x.d === dataISO() ? x.n : 0; };
+const quandoVolta = (dias) => (dias === 1 ? 'amanhã' : `em ${dias} dias`);
+
+/* Revisões vencidas (as mais atrasadas primeiro) e cartões novos (dos materiais mais antigos primeiro). */
+function filaCartoes(lista, comLimite) {
+  const est = estadoCartoes();
+  const hoje = dataISO();
+  const vencidos = lista.filter((c) => est[c.id] && est[c.id].p <= hoje)
+    .sort((a, b) => est[a.id].p.localeCompare(est[b.id].p));
+  const lim = novosPorDia();
+  const vagas = comLimite && lim ? Math.max(0, lim - novosHoje()) : Infinity;
+  const novos = lista.filter((c) => !est[c.id]).slice(0, vagas);
+  return { vencidos, novos };
+}
+
+function estatCartoes(lista) {
+  const est = estadoCartoes();
+  const hoje = dataISO();
+  let vistos = 0, dominados = 0, hojeN = 0, errados = 0;
+  for (const c of lista) {
+    const s = est[c.id];
+    if (!s) continue;
+    vistos++;
+    if (s.c >= DOMINADO) dominados++;
+    if (s.p <= hoje) hojeN++;
+    if (s.k === false) errados++;
+  }
+  return { total: lista.length, vistos, dominados, vencidos: hojeN, errados };
+}
+
+function iniciarCartoes(ids, titulo) {
+  if (!ids.length) return;
+  guardado.set('sessaoC', { titulo, ids, i: 0, virado: false, certos: 0, errados: [], rep: {}, primeira: 0 });
+  if (location.hash === '#/cartoes/estudar') telaEstudarCartoes();
+  else location.hash = '#/cartoes/estudar';
+}
+
+/* Sessão de um material (do botão na tela do texto): o que está para hoje; se nada, todos os cartões dele. */
+async function cartoesDoMaterial(item) {
+  const todos = (await obterCartoes()).filter((c) => c.doc === item.id);
+  const { vencidos, novos } = filaCartoes(todos, false);
+  const ids = vencidos.length + novos.length ? [...vencidos, ...novos] : todos;
+  iniciarCartoes(ids.map((c) => c.id), `Flashcards de ${(item.subtitulo || '').split(' ').pop() || item.titulo}`);
+}
+
+function resumoCartoesHome() {
+  const info = catalogo.cartoes;
+  if (!info || !info.total) return '';
+  obterCartoes().then((lista) => {
+    const el = $('#home-cartoes');
+    if (!el) return;
+    const { vencidos, novos } = filaCartoes(lista, true);
+    const st = estatCartoes(lista);
+    el.textContent = vencidos.length + novos.length
+      ? `${vencidos.length} para revisar hoje · ${novos.length} novos${st.dominados ? ` · ${st.dominados} dominados` : ''}`
+      : `Tudo revisado hoje ✓${st.dominados ? ` · ${st.dominados} dominados` : ''}`;
+  }).catch(() => {});
+  return `<a class="cartao cartao-q" href="#/cartoes">
+      <div class="icone-q" aria-hidden="true">🃏</div>
+      <div class="corpo"><strong>Flashcards</strong>
+        <span class="meta" id="home-cartoes">${info.total} cartões de pegadinhas e quadros</span></div>
+      <span aria-hidden="true">›</span></a>`;
+}
+
+async function telaCartoes() {
+  pararRelogio();
+  setTopo('Flashcards', true);
+  tela.innerHTML = '<p class="aviso">Carregando cartões…</p>';
+  let lista;
+  try { lista = await obterCartoes(); } catch {
+    tela.innerHTML = '<p class="aviso">Os cartões ainda não foram guardados no celular. Abra o app com internet uma vez.</p>';
+    return;
+  }
+  if (location.hash !== '#/cartoes') return;
+  const est = estadoCartoes();
+  const st = estatCartoes(lista);
+  const { vencidos, novos } = filaCartoes(lista, true);
+  const paraHoje = [...vencidos, ...novos];
+  const errados = lista.filter((c) => est[c.id] && est[c.id].k === false);
+  const amanha = somaDias(dataISO(), 1);
+  const nAmanha = lista.filter((c) => est[c.id] && est[c.id].p === amanha).length;
+  const sessao = guardado.get('sessaoC', null);
+  const emAndamento = sessao && sessao.i < sessao.ids.length;
+
+  const agrupar = (chave) => {
+    const m = new Map();
+    for (const c of lista) { const k = chave(c); if (!m.has(k)) m.set(k, []); m.get(k).push(c); }
+    return [...m];
+  };
+  const disciplinas = agrupar((c) => c.disciplina).sort((a, b) => a[0].localeCompare(b[0], 'pt-BR'));
+  const materiais = agrupar((c) => c.doc).sort((a, b) => b[1][0].data.localeCompare(a[1][0].data));
+  const linha = (nome, l, attr) => {
+    const s = estatCartoes(l);
+    const f = filaCartoes(l, false);
+    const pend = f.vencidos.length + f.novos.length;
+    return `<button class="cartao linha-q" ${attr}><div class="corpo"><strong>${esc(nome)}</strong>
+      <span class="meta">${s.total} cartões · ${s.vistos} vistos${pend ? ` · ${pend} para estudar` : ''}${s.dominados ? ` · ${s.dominados} dominados` : ''}</span>
+      <span class="barra" aria-hidden="true"><span style="width:${s.total ? Math.round((s.dominados / s.total) * 100) : 0}%"></span></span></div><span aria-hidden="true">›</span></button>`;
+  };
+  const lim = novosPorDia();
+
+  tela.innerHTML = `
+    <div class="placar">
+      <div><b>${paraHoje.length}</b><span>para hoje</span></div>
+      <div><b>${st.vistos}</b><span>de ${st.total} vistos</span></div>
+      <div><b>${st.dominados}</b><span>dominados</span></div>
+    </div>
+    ${emAndamento ? `<a class="cartao continuar" href="#/cartoes/estudar"><div class="corpo"><strong>Continuar: ${esc(sessao.titulo)}</strong>
+      <span class="meta">cartão ${sessao.i + 1} de ${sessao.ids.length}</span></div><span aria-hidden="true">▶</span></a>` : ''}
+    <div class="acoes">
+      <button class="btn primario" id="c-hoje" ${paraHoje.length ? '' : 'disabled'}>▶ Estudar os de hoje (${paraHoje.length})</button>
+      <button class="btn" id="c-errados" ${errados.length ? '' : 'disabled'}>Os que errei (${errados.length})</button>
+    </div>
+    <p class="aviso">${paraHoje.length
+      ? `${vencidos.length} ${vencidos.length === 1 ? 'revisão vencida' : 'revisões vencidas'} e ${novos.length} ${novos.length === 1 ? 'cartão novo' : 'cartões novos'}.`
+      : `Tudo em dia. ${nAmanha ? `Amanhã: ${nAmanha} ${nAmanha === 1 ? 'cartão' : 'cartões'}.` : ''}`}
+      Acertou: o cartão volta em 1, 3, 7, 15, 30 e 60 dias. Errou: volta amanhã.</p>
+    <h2 class="secao">Por disciplina</h2>
+    ${disciplinas.map(([d, l], i) => linha(d, l, `data-disc="${i}"`)).join('')}
+    <h2 class="secao">Por material</h2>
+    ${materiais.map(([id, l], i) => linha(`${l[0].origem.replace(/^(Material|Resumão) de /, '')} · ${tituloCurto(catalogo.docs.find((d) => d.id === id) || { titulo: l[0].disciplina })}`, l, `data-mat="${i}"`)).join('')}
+    <div class="rodape">
+      <label>Cartões novos por dia:
+        <select id="c-novos">${OPCOES_NOVOS.map((n) => `<option value="${n}"${n === lim ? ' selected' : ''}>${n || 'sem limite'}</option>`).join('')}</select></label>
+      <div><button class="btn-link" id="c-zerar">Apagar meu histórico de flashcards</button></div>
+    </div>`;
+
+  // por disciplina ou material: o que está para estudar; se nada, todos (treino)
+  const sessaoDe = (l, titulo) => {
+    const f = filaCartoes(l, false);
+    const ids = f.vencidos.length + f.novos.length ? [...f.vencidos, ...f.novos] : embaralhar(l);
+    iniciarCartoes(ids.map((c) => c.id), titulo);
+  };
+  $('#c-hoje').addEventListener('click', () => iniciarCartoes(paraHoje.map((c) => c.id), 'Cartões de hoje'));
+  $('#c-errados').addEventListener('click', () => iniciarCartoes(embaralhar(errados).map((c) => c.id), 'Os que errei'));
+  tela.querySelectorAll('[data-disc]').forEach((b) => b.addEventListener('click', () => {
+    const [nome, l] = disciplinas[Number(b.dataset.disc)];
+    sessaoDe(l, nome);
+  }));
+  tela.querySelectorAll('[data-mat]').forEach((b) => b.addEventListener('click', () => {
+    const l = materiais[Number(b.dataset.mat)][1];
+    sessaoDe(l, `Flashcards de ${l[0].origem.replace(/^(Material|Resumão) de /, '')}`);
+  }));
+  $('#c-novos').addEventListener('change', (e) => { guardado.set('novosPorDia', Number(e.target.value)); telaCartoes(); });
+  $('#c-zerar').addEventListener('click', () => {
+    if (!window.confirm('Apagar todo o histórico dos flashcards? Os cartões voltam a ser novos. Não dá para desfazer.')) return;
+    guardado.set('cartoes', {});
+    guardado.set('sessaoC', null);
+    guardado.set('novosHoje', null);
+    telaCartoes();
+  });
+}
+
+/* Lê o cartão com a voz do celular (a frente; depois de virar, também o verso). */
+function falarCartao(c, comVerso) {
+  if (!('speechSynthesis' in window)) return;
+  if (player.modo === 'tts' && tts.tocando) ttsPausar();
+  if (player.modo === 'audio' && !audio.paused) audio.pause();
+  speechSynthesis.cancel();
+  const partes = [`${c.rf ? `${c.rf.replace('…', '')}: ` : ''}${c.ff}`];
+  if (comVerso) partes.push(`${c.rv ? `${c.rv.replace('…', '')}: ` : ''}${c.fv}`);
+  for (const t of partes) {
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = 'pt-BR';
+    const voz = tts.voz || escolherVoz();
+    if (voz) u.voice = voz;
+    speechSynthesis.speak(u);
+  }
+}
+
+async function telaEstudarCartoes() {
+  pararRelogio();
+  setTopo('Flashcards', true);
+  const s = guardado.get('sessaoC', null);
+  if (!s) { location.hash = '#/cartoes'; return; }
+  let lista;
+  try { lista = await obterCartoes(); } catch {
+    tela.innerHTML = '<p class="aviso">Os cartões ainda não foram guardados no celular. Abra o app com internet uma vez.</p>';
+    return;
+  }
+  if (location.hash !== '#/cartoes/estudar') return;
+  const mapa = new Map(lista.map((c) => [c.id, c]));
+  s.ids = s.ids.filter((id) => mapa.has(id));
+  if (s.i >= s.ids.length) { telaFimCartoes(s); return; }
+  const c = mapa.get(s.ids[s.i]);
+  const est = estadoCartoes()[c.id];
+  const repeticao = !!s.rep[c.id];
+  const treino = !repeticao && !!est && est.u === dataISO(); // já respondido hoje: não muda a agenda
+  const proximo = est ? Math.min(est.c + 1, INTERVALOS.length - 1) : 0;
+  const diasAcerto = INTERVALOS[proximo];
+
+  tela.innerHTML = `
+    <div class="q-topo"><span>${esc(s.titulo)} · <b>${s.i + 1}</b> de ${s.ids.length}</span>
+      <button class="btn-link" id="f-ouvir" aria-label="Ouvir o cartão">🔊 Ouvir</button></div>
+    <div class="q-progresso" aria-hidden="true"><span style="width:${(s.i / s.ids.length) * 100}%"></span></div>
+    <div class="q-fonte"><span class="selo ${c.tipo === 'pegadinha' ? 'autoral' : 'oficial'}">${c.tipo === 'pegadinha' ? 'Pegadinha' : 'Quadro'}</span>
+      ${esc(c.disciplina)} · ${esc(c.origem)}${est ? '' : ' · <b>novo</b>'}${repeticao ? ' · de novo' : treino ? ' · treino (já visto hoje)' : ''}</div>
+    ${c.tipo === 'quadro' ? `<p class="q-meta">${esc(c.ctx)}</p>` : ''}
+    <button class="flash" id="flash" aria-expanded="${s.virado}" aria-label="${s.virado ? 'Cartão virado' : 'Toque para ver a resposta'}">
+      <span class="flash-rotulo">${esc(c.rf)}</span>
+      <span class="flash-texto">${c.f}</span>
+      ${c.tipo === 'pegadinha' && !s.virado ? '<span class="flash-dica">Onde está o erro? Pense na resposta e toque para conferir.</span>' : ''}
+      ${!s.virado && c.tipo !== 'pegadinha' ? `<span class="flash-dica">${c.rv ? `${esc(c.rv)}? ` : ''}Pense na resposta e toque para conferir.</span>` : ''}
+      <span class="flash-verso"${s.virado ? '' : ' hidden'}>
+        ${c.rv ? `<span class="flash-rotulo">${esc(c.rv)}</span>` : ''}
+        <span class="flash-texto">${c.v}</span>
+        ${c.onde ? `<span class="flash-onde">${esc(c.onde)}</span>` : ''}
+      </span>
+    </button>
+    ${c.b != null ? '<p class="flash-links"><button class="btn-link" id="f-ver">Ver no material</button></p>' : ''}
+    <div class="q-botoes flash-botoes">
+      ${s.virado
+        ? `<button class="btn errei" id="f-errei">✗ Errei<small>${repeticao || treino ? 'vai de novo' : 'volta amanhã'}</small></button>
+           <button class="btn primario" id="f-acertei">✓ Acertei<small>${repeticao || treino ? 'próximo' : `volta ${quandoVolta(diasAcerto)}`}</small></button>`
+        : '<button class="btn primario" id="f-virar">Mostrar resposta</button>'}
+    </div>`;
+  window.scrollTo(0, 0);
+
+  const virar = () => {
+    if (s.virado) return;
+    s.virado = true;
+    guardado.set('sessaoC', s);
+    telaEstudarCartoes();
+  };
+  $('#flash').addEventListener('click', virar);
+  const bv = $('#f-virar');
+  if (bv) bv.addEventListener('click', virar);
+  $('#f-ouvir').addEventListener('click', () => falarCartao(c, s.virado));
+  const ver = $('#f-ver');
+  if (ver) ver.addEventListener('click', () => {
+    irParaDestaque = { id: c.doc, h: { f: c.b }, confiarF: true };
+    location.hash = `#/doc/${encodeURIComponent(c.doc)}`;
+  });
+  const be = $('#f-errei');
+  if (be) be.addEventListener('click', () => responderCartao(s, c, false));
+  const ba = $('#f-acertei');
+  if (ba) ba.addEventListener('click', () => responderCartao(s, c, true));
+}
+
+function responderCartao(s, c, acertou) {
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  if (!s.rep[c.id]) { // primeira vez na sessão: conta e reagenda
+    const tudo = estadoCartoes();
+    const hoje = dataISO();
+    const ant = tudo[c.id];
+    if (!ant) guardado.set('novosHoje', { d: hoje, n: novosHoje() + 1 });
+    if (ant && ant.u === hoje) { // treino no mesmo dia: só atualiza o último resultado
+      ant.k = acertou;
+    } else {
+      const degrau = acertou ? (ant ? Math.min(ant.c + 1, INTERVALOS.length - 1) : 0) : 0;
+      tudo[c.id] = { c: degrau, p: somaDias(hoje, INTERVALOS[degrau]), n: ((ant && ant.n) || 0) + 1,
+        e: ((ant && ant.e) || 0) + (acertou ? 0 : 1), u: hoje, k: acertou };
+    }
+    guardado.set('cartoes', tudo);
+    registrarAtividade({ k: 1 });
+    s.primeira++;
+    if (acertou) s.certos++; else s.errados.push(c.id);
+  }
+  if (!acertou && (s.rep[c.id] || 0) < 2) { // errou: aparece de novo no fim (até 2 vezes)
+    s.rep[c.id] = (s.rep[c.id] || 0) + 1;
+    s.ids.push(c.id);
+  } else if (!s.rep[c.id]) {
+    s.rep[c.id] = 0;
+  }
+  s.i++;
+  s.virado = false;
+  guardado.set('sessaoC', s);
+  telaEstudarCartoes();
+}
+
+function telaFimCartoes(s) {
+  const pct = s.primeira ? Math.round((s.certos / s.primeira) * 100) : 0;
+  const est = estadoCartoes();
+  const amanha = somaDias(dataISO(), 1);
+  const nAmanha = Object.values(est).filter((x) => x.p === amanha).length;
+  tela.innerHTML = `<div class="q-fim">
+      <p class="q-fim-pct">${pct}%</p>
+      <p><b>${s.certos} de ${s.primeira}</b> certos de primeira</p>
+      <p class="meta">${nAmanha ? `Amanhã: ${nAmanha} ${nAmanha === 1 ? 'cartão' : 'cartões'} para revisar.` : 'Nada marcado para amanhã.'}</p>
+    </div>
+    <div class="acoes">
+      ${s.errados.length ? `<button class="btn primario" id="f-refazer">Revisar os ${s.errados.length} que errei</button>` : ''}
+      <button class="btn" id="f-painel">Voltar aos flashcards</button>
+    </div>`;
+  const r = $('#f-refazer');
+  if (r) r.addEventListener('click', () => iniciarCartoes(s.errados.slice(), 'Os que errei agora'));
+  $('#f-painel').addEventListener('click', () => { guardado.set('sessaoC', null); location.hash = '#/cartoes'; });
 }
 
 /* ---------- reprodutor ---------- */

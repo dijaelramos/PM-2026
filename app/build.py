@@ -27,6 +27,7 @@ from questoes import DISCIPLINAS_AUTORAIS, simulado1_pendente  # noqa: E402
 from questoes import extrair as extrair_questoes  # noqa: E402
 from revisao import montar as montar_revisao  # noqa: E402
 from roteiro import roteiro as ler_roteiro  # noqa: E402
+from cartoes import extrair as extrair_cartoes  # noqa: E402
 from plano import ler_datas, ler_plano  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -250,6 +251,13 @@ def main():
         d["capitulos"] = capitulos(tokens, d["titulo"])
         d["busca"] = blocos_busca(tokens) if d["categoria"] != "revisao" else []  # a revisão repete o material
         d["roteiro"] = ler_roteiro(tokens) if d["categoria"] == "material" else []  # blocos do cronômetro
+        d["cartoes"] = []
+        if d["categoria"] == "material" and d.get("data"):  # flashcards: pegadinhas e quadros
+            resumao = d["h1"].startswith("Resumão")
+            d["cartoes"] = extrair_cartoes(
+                tokens, d["md"], d["id"], d["data"],
+                "Resumão da semana" if resumao else re.sub(r"\s*(?:e|\+)\s*Redação$", "", d["titulo"]).strip(),
+                f"{'Resumão' if resumao else 'Material'} de {d['subtitulo'].split(' ')[-1]}")
         reescrever_links(tokens, d, por_caminho)
         d["html"] = d["md"].renderer.render(tokens, d["md"].options, {})
 
@@ -290,6 +298,21 @@ def main():
                          ensure_ascii=False, separators=(",", ":")).encode()
     arquivo_b = f"data/busca.{hash_curto(corpo_b)}.json"
     (saida / arquivo_b).write_bytes(corpo_b)
+
+    # Flashcards: materiais antes dos resumões (que repetem pegadinhas); um cartão por id.
+    cartoes, vistos = [], set()
+    fontes = sorted((d for d in docs if d["cartoes"]), key=lambda d: (d["h1"].startswith("Resumão"), d["data"], d["rel"]))
+    for d in fontes:
+        for c in d["cartoes"]:
+            if c["id"] not in vistos:
+                vistos.add(c["id"])
+                cartoes.append(c)
+    cartoes_por_doc = {}
+    for c in cartoes:
+        cartoes_por_doc[c["doc"]] = cartoes_por_doc.get(c["doc"], 0) + 1
+    corpo_c = json.dumps(cartoes, ensure_ascii=False, separators=(",", ":")).encode()
+    arquivo_c = f"data/cartoes.{hash_curto(corpo_c)}.json"
+    (saida / arquivo_c).write_bytes(corpo_c)
     (saida / arquivo_q).write_bytes(corpo_q)
 
     catalogo = []
@@ -298,6 +321,8 @@ def main():
         item = {k: d[k] for k in ("id", "titulo", "categoria") if k in d}
         if por_doc.get(d["id"]):
             item["questoes"] = por_doc[d["id"]]
+        if cartoes_por_doc.get(d["id"]):
+            item["cartoes"] = cartoes_por_doc[d["id"]]
         for k in ("subtitulo", "grupo", "data", "revisao", "material", "roteiro"):
             if d.get(k):
                 item[k] = d[k]
@@ -329,7 +354,7 @@ def main():
     (saida / "data" / "catalogo.json").write_text(
         json.dumps({"versao": versao, "gerado_em": agora, "docs": catalogo,
                     "questoes": {"arquivo": arquivo_q, "total": len(questoes)}, "plano": plano,
-                    "busca": {"arquivo": arquivo_b}},
+                    "busca": {"arquivo": arquivo_b}, "cartoes": {"arquivo": arquivo_c, "total": len(cartoes)}},
                    ensure_ascii=False), encoding="utf-8")
 
     # Arquivos do app; a versão do service worker muda quando o código muda.
@@ -342,7 +367,7 @@ def main():
     (saida / ".nojekyll").write_text("")
 
     total_audio = sum(a["bytes"] for a in (i.get("audio") for i in catalogo) if a)
-    print(f"Pronto: {len(catalogo)} documentos, {len(questoes)} questões, {len(audios)} áudios ({total_audio / 1e6:.0f} MB) em {saida}")
+    print(f"Pronto: {len(catalogo)} documentos, {len(questoes)} questões, {len(cartoes)} flashcards, {len(audios)} áudios ({total_audio / 1e6:.0f} MB) em {saida}")
 
 
 if __name__ == "__main__":

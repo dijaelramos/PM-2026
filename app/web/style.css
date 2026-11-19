@@ -390,3 +390,23 @@ body.tocando .q-botoes { bottom: calc(var(--player-h) + env(safe-area-inset-bott
 .crono-opcoes { display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--suave); margin: 4px 0 14px; }
 .crono-opcoes label { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .crono-opcoes select { font: inherit; color: var(--texto); background: var(--superficie); border: 1px solid var(--linha); border-radius: 8px; padding: 4px 6px; }
+
+/* ---------- flashcards ---------- */
+.flash {
+  display: flex; flex-direction: column; gap: 8px; width: 100%; min-height: 220px; margin: 10px 0 6px; text-align: left;
+  background: var(--superficie); border: 1px solid var(--linha); border-radius: 18px; padding: 20px 18px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.06); font-size: calc(17px * var(--escala-texto, 1)); line-height: 1.5;
+}
+.flash:focus-visible { outline: 2px solid var(--destaque); outline-offset: 2px; }
+.flash-rotulo { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--suave); }
+.flash-texto { font-size: 1.12em; font-weight: 500; overflow-wrap: anywhere; }
+.flash-dica { margin-top: auto; font-size: 14px; color: var(--suave); }
+.flash-verso { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; padding-top: 14px; border-top: 2px dashed var(--linha); }
+.flash-verso[hidden] { display: none; }
+.flash-verso .flash-texto strong { color: var(--certo); }
+.flash-onde { align-self: flex-start; font-size: 13px; padding: 2px 10px; border-radius: 999px; background: var(--citacao); color: var(--texto); }
+.flash-links { margin: 0 0 4px; }
+.flash-botoes { display: flex; gap: 8px; }
+.flash-botoes .btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.flash-botoes .btn small { font-size: 12px; font-weight: 500; opacity: .85; }
+.flash-botoes .errei { color: var(--errado); border-color: var(--errado); background: var(--errado-fundo); }
