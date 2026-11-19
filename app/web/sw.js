@@ -86,3 +86,13 @@ self.addEventListener('fetch', (e) => {
     try { return await fetch(req); } catch { return (await shell.match('index.html')) || Response.error(); }
   })());
 });
+
+/* Toque no aviso do cronômetro: volta para o app. */
+self.addEventListener('notificationclick', (e) => {
+  e.notification.close();
+  e.waitUntil((async () => {
+    const janelas = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    if (janelas.length) return janelas[0].focus();
+    return self.clients.openWindow('./#/cronometro');
+  })());
+});

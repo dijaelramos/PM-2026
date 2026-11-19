@@ -26,6 +26,7 @@ from icone import gerar_icones  # noqa: E402
 from questoes import DISCIPLINAS_AUTORAIS, simulado1_pendente  # noqa: E402
 from questoes import extrair as extrair_questoes  # noqa: E402
 from revisao import montar as montar_revisao  # noqa: E402
+from roteiro import roteiro as ler_roteiro  # noqa: E402
 from plano import ler_datas, ler_plano  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -248,6 +249,7 @@ def main():
         tokens = d["md"].parse(d["texto"])
         d["capitulos"] = capitulos(tokens, d["titulo"])
         d["busca"] = blocos_busca(tokens) if d["categoria"] != "revisao" else []  # a revisão repete o material
+        d["roteiro"] = ler_roteiro(tokens) if d["categoria"] == "material" else []  # blocos do cronômetro
         reescrever_links(tokens, d, por_caminho)
         d["html"] = d["md"].renderer.render(tokens, d["md"].options, {})
 
@@ -296,7 +298,7 @@ def main():
         item = {k: d[k] for k in ("id", "titulo", "categoria") if k in d}
         if por_doc.get(d["id"]):
             item["questoes"] = por_doc[d["id"]]
-        for k in ("subtitulo", "grupo", "data", "revisao", "material"):
+        for k in ("subtitulo", "grupo", "data", "revisao", "material", "roteiro"):
             if d.get(k):
                 item[k] = d[k]
         if d["id"] in audios:

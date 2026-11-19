@@ -164,10 +164,14 @@ function rota() {
   seguir = true;
   $('#seguir').hidden = true;
   const h = location.hash;
+  if (!h.startsWith('#/cronometro')) cronoDesenhado = '';
+  desenharCrono(); // a barra do cronômetro some na tela dele e aparece nas outras
   if (h === '#/questoes') { telaQuestoes(); return; }
   if (h === '#/progresso') { telaProgresso(); return; }
   if (h === '#/destaques') { telaDestaques(); return; }
   if (h === '#/questoes/resolver') { telaResolver(); return; }
+  const c = h.match(/^#\/cronometro(?:\/(.+))?$/);
+  if (c) { telaCrono(c[1]); return; }
   const m = h.match(/^#\/doc\/(.+)$/);
   if (m) telaDoc(decodeURIComponent(m[1]));
   else telaInicio();
@@ -292,7 +296,7 @@ function desenharLista(filtro) {
   }
   if (!f) {
     const nDest = contarDestaques();
-    const blocos = resumoProgressoHome() + resumoQuestoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
+    const blocos = resumoCronoHome() + resumoProgressoHome() + resumoQuestoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
       <div class="icone-q" aria-hidden="true">🖍</div><div class="corpo"><strong>Meus destaques</strong>
       <span class="meta">${nDest} ${nDest === 1 ? 'trecho destacado' : 'trechos destacados'}, por disciplina</span></div><span aria-hidden="true">›</span></a>` : '');
     if (blocos) html += `<h2 class="secao">Seu estudo</h2>${blocos}`;
@@ -335,6 +339,7 @@ async function telaDoc(id) {
       ${item.audio ? `<button class="btn primario" id="b-ouvir">▶ ${pos > 5 ? `Continuar de ${fmt(pos)}` : `Ouvir · voz natural · ${minutos(item.audio.duracao)}`}</button>` : ''}
       <button class="btn ${item.audio ? '' : 'primario'}" id="b-tts">🔊 ${posTts > 0 ? 'Continuar com a voz do celular' : 'Ouvir com a voz do celular'}</button>
       ${item.audio ? '<button class="btn" id="b-baixar"></button>' : ''}
+      ${blocosDoItem(item) ? `<a class="btn" href="#/cronometro/${encodeURIComponent(item.id)}">⏱ ${crono && crono.id === item.id && !crono.fim ? 'Cronômetro em andamento' : 'Cronômetro do roteiro'}</a>` : ''}
       ${item.questoes ? `<button class="btn" id="b-questoes">✍ Resolver as ${item.questoes} questões</button>` : ''}
       ${rev ? `<a class="btn" href="#/doc/${encodeURIComponent(rev.id)}">⚡ Revisão rápida · ${minutos(duracaoItem(rev))}</a>` : ''}
       ${mat ? `<a class="btn" href="#/doc/${encodeURIComponent(mat.id)}">📄 Material completo</a>` : ''}
@@ -575,7 +580,7 @@ function registrarAudioPendente() {
   segPendentes = 0;
 }
 
-const estudouNoDia = (dia) => !!dia && ((dia.s || 0) >= 60 || (dia.q || 0) > 0 || (dia.m || 0) > 0);
+const estudouNoDia = (dia) => !!dia && ((dia.s || 0) >= 60 || (dia.c || 0) >= 60 || (dia.q || 0) > 0 || (dia.m || 0) > 0);
 const concluido = (it) => guardado.get(`estudado:${it.id}`, false) || guardado.get(`ouvido:${it.id}`, false);
 const sessoesDeEstudo = () => ((catalogo.plano && catalogo.plano.sessoes) || []).filter((s) => s.h + s.r > 0);
 
@@ -629,7 +634,8 @@ function telaProgresso() {
   const descricaoDia = (d, v) => {
     const a = at[d] || {};
     const q = a.q ? ` · ${a.q} ${a.q === 1 ? 'questão' : 'questões'} (${a.a || 0} certas)` : '';
-    return `${dataCurta(d)}: ${v} min ouvindo${q}`;
+    const c = a.c >= 60 ? ` · ${Math.round(a.c / 60)} min no cronômetro` : '';
+    return `${dataCurta(d)}: ${v} min ouvindo${c}${q}`;
   };
   const totalPeriodo = valores.reduce((s, v) => s + v, 0);
 
@@ -1268,6 +1274,438 @@ function telaDestaques() {
     }
   });
 }
+
+/* ---------- cronômetro da sessão (roteiro do material) ---------- */
+/* Estado em guardado 'cronometro':
+   { id, titulo, blocos: [{ titulo, min, texto, f?, pausa? }], idx, acum, desde, contadoBloco, pendente, fim, doPlano }.
+   acum = ms já corridos no bloco atual até a última pausa; desde = quando voltou a correr (null = pausado).
+   O tempo sai do relógio (Date.now), então fica certo mesmo com a tela apagada ou o app fechado;
+   o aviso de troca de bloco (som, vibração) toca quando o app está aberto. */
+
+const PAUSAS_CRONO = [0, 5, 10];
+let crono = guardado.get('cronometro', null);
+let cronoTick = null;
+let cronoTrava = null;
+let somCtx = null;
+let cronoDesenhado = '';
+let cronoAvisoAte = 0;
+
+const msBloco = (b) => b.min * 60000;
+const cronoAtivo = () => !!crono && !crono.fim;
+const decorrido = (agora = Date.now()) => crono.acum + (crono.desde ? agora - crono.desde : 0);
+const restanteBloco = (agora = Date.now()) => Math.max(0, msBloco(crono.blocos[crono.idx]) - decorrido(agora));
+const fmtMin = (min) => (min >= 60 ? `${Math.floor(min / 60)} h${min % 60 ? ` ${min % 60} min` : ''}` : `${min} min`);
+const horaRelogio = (ms) => new Date(ms).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+/* Blocos do material: a tabela "Roteiro"; sem ela, blocos de até 1 h pelas horas do plano naquele dia. */
+function blocosDoItem(it) {
+  if (!it || it.categoria !== 'material') return null;
+  if (it.roteiro && it.roteiro.length) return { blocos: it.roteiro.map((b) => ({ ...b })), doPlano: false };
+  if (!it.data || !catalogo.plano || /^Resumão/.test(it.titulo)) return null;
+  const blocos = [];
+  for (const s of sessoesDeEstudo().filter((x) => x.data === it.data)) {
+    let resto = Math.round(s.h * 60);
+    let n = 1;
+    while (resto > 0) {
+      const min = Math.min(60, resto);
+      blocos.push({ titulo: `${min === 60 ? `${n}ª hora` : `${min} min`} — ${s.disciplina}`, min, texto: 'Siga o material na ordem das seções.' });
+      resto -= min; n++;
+    }
+    if (s.r > 0) blocos.push({ titulo: `${fmtMin(Math.round(s.r * 60))} — Redação`, min: Math.round(s.r * 60), texto: 'Parte de redação do dia.' });
+  }
+  return blocos.length >= 2 ? { blocos, doPlano: true } : null;
+}
+
+function comPausas(blocos, pausa) {
+  if (!pausa) return blocos;
+  const out = [];
+  blocos.forEach((b, i) => {
+    out.push(b);
+    if (i < blocos.length - 1) out.push({ titulo: 'Pausa', min: pausa, texto: 'Levante, beba água e descanse a vista.', pausa: true });
+  });
+  return out;
+}
+
+const salvarCrono = () => guardado.set('cronometro', crono);
+
+/* Soma o tempo estudado (fora das pausas) do bloco atual e manda para o progresso de tempos em tempos. */
+function contarCrono(forcar) {
+  if (!crono) return;
+  const b = crono.blocos[crono.idx];
+  const feito = Math.min(decorrido(), msBloco(b));
+  if (!b.pausa && feito > crono.contadoBloco) crono.pendente += feito - crono.contadoBloco;
+  crono.contadoBloco = Math.max(crono.contadoBloco, feito);
+  if (crono.pendente >= (forcar ? 1000 : 30000)) {
+    const seg = Math.floor(crono.pendente / 1000);
+    registrarAtividade({ c: seg });
+    crono.pendente -= seg * 1000;
+  }
+}
+
+/* Passa para o próximo bloco quando o tempo acaba (inclusive vários, se o app ficou fechado). */
+function cronoAtualizar() {
+  avancarCrono();
+  desenharCrono();
+}
+
+function avancarCrono() {
+  if (!cronoAtivo()) return;
+  const agora = Date.now();
+  let trocouEm = 0;
+  while (!crono.fim && crono.desde && decorrido(agora) >= msBloco(crono.blocos[crono.idx])) {
+    const fimBloco = agora - (decorrido(agora) - msBloco(crono.blocos[crono.idx]));
+    contarCrono(false);
+    trocouEm = fimBloco;
+    if (crono.idx >= crono.blocos.length - 1) {
+      crono.acum = msBloco(crono.blocos[crono.idx]);
+      crono.desde = null;
+      crono.fim = true;
+    } else {
+      crono.idx++;
+      crono.acum = 0;
+      crono.contadoBloco = 0;
+      crono.desde = fimBloco;
+    }
+  }
+  contarCrono(crono.fim);
+  salvarCrono();
+  if (trocouEm) {
+    if (agora - trocouEm < 5 * 60000) avisarTroca(); // aviso antigo (app ficou fechado) não toca
+    if (crono.fim) { cronoSoltarTela(); pararTickCrono(); }
+  }
+}
+
+function ligarTickCrono() { if (!cronoTick) cronoTick = setInterval(cronoAtualizar, 1000); }
+function pararTickCrono() { if (cronoTick) clearInterval(cronoTick); cronoTick = null; }
+
+async function cronoSegurarTela() {
+  if (!guardado.get('cronoTela', true) || !crono || !crono.desde) return;
+  try {
+    if ('wakeLock' in navigator && !cronoTrava) {
+      cronoTrava = await navigator.wakeLock.request('screen');
+      cronoTrava.addEventListener('release', () => { cronoTrava = null; });
+    }
+  } catch { /* ok */ }
+}
+function cronoSoltarTela() { if (cronoTrava) { cronoTrava.release().catch(() => {}); cronoTrava = null; } }
+
+/* O som precisa ser liberado por um toque (regra do iPhone); por isso é preparado nos botões. */
+function prepararSom() {
+  try {
+    const C = window.AudioContext || window.webkitAudioContext;
+    if (!somCtx && C) somCtx = new C();
+    if (somCtx && somCtx.state === 'suspended') somCtx.resume();
+  } catch { /* sem som */ }
+}
+function bipar(n) {
+  if (!somCtx) return;
+  try {
+    somCtx.resume();
+    const t0 = somCtx.currentTime + 0.05;
+    for (let i = 0; i < n; i++) {
+      const o = somCtx.createOscillator();
+      const g = somCtx.createGain();
+      const t = t0 + i * 0.38;
+      o.type = 'sine';
+      o.frequency.value = i === n - 1 ? 1175 : 880;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.5, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.28);
+      o.connect(g);
+      g.connect(somCtx.destination);
+      o.start(t);
+      o.stop(t + 0.3);
+    }
+  } catch { /* sem som */ }
+}
+
+async function notificar(titulo, corpo) {
+  if (!('Notification' in window) || Notification.permission !== 'granted' || document.visibilityState === 'visible') return;
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    await reg.showNotification(titulo, { body: corpo, tag: 'cronometro', renotify: true, icon: 'icons/icon-192.png' });
+  } catch { /* ok */ }
+}
+
+function avisarTroca() {
+  const b = crono.blocos[crono.idx];
+  const titulo = crono.fim ? 'Sessão concluída!' : b.pausa ? `Pausa de ${b.min} min` : `Agora: ${b.titulo}`;
+  bipar(crono.fim ? 4 : 3);
+  try { if (navigator.vibrate) navigator.vibrate([300, 150, 300, 150, 300]); } catch { /* ok */ }
+  notificar(titulo, crono.fim ? 'Bom trabalho! Marque o material como estudado.' : b.texto);
+  cronoAvisoAte = Date.now() + 8000;
+  const barra = $('#crono-barra');
+  if (barra) barra.dataset.aviso = titulo;
+}
+
+/* ações */
+function comecarCrono(item) {
+  const base = blocosDoItem(item);
+  if (!base) return;
+  if (cronoAtivo() && crono.id !== item.id && !confirm(`Encerrar o cronômetro de "${crono.titulo}" e começar este?`)) return;
+  if (cronoAtivo()) contarCrono(true);
+  prepararSom();
+  if ('Notification' in window && Notification.permission === 'default') {
+    try { Notification.requestPermission().catch(() => {}); } catch { /* ok */ }
+  }
+  const pausa = guardado.get('cronoPausa', 0);
+  crono = {
+    id: item.id, titulo: tituloCurto(item), blocos: comPausas(base.blocos, pausa), doPlano: base.doPlano,
+    idx: 0, acum: 0, desde: Date.now(), contadoBloco: 0, pendente: 0, fim: false,
+  };
+  salvarCrono();
+  ligarTickCrono();
+  cronoSegurarTela();
+  if (location.hash !== '#/cronometro') location.hash = '#/cronometro';
+  else telaCrono();
+}
+
+function pausarCrono() {
+  if (!cronoAtivo() || !crono.desde) return;
+  cronoAtualizar();
+  if (!cronoAtivo()) return;
+  crono.acum = decorrido();
+  crono.desde = null;
+  contarCrono(true);
+  salvarCrono();
+  pararTickCrono();
+  cronoSoltarTela();
+  desenharCrono();
+}
+
+function continuarCrono() {
+  if (!cronoAtivo() || crono.desde) return;
+  prepararSom();
+  crono.desde = Date.now();
+  salvarCrono();
+  ligarTickCrono();
+  cronoSegurarTela();
+  desenharCrono();
+}
+
+/* Vai para outro bloco (o tempo já feito no atual continua contado no progresso). */
+function irParaBlocoCrono(i) {
+  if (!crono) return;
+  if (cronoAtivo()) cronoAtualizar();
+  contarCrono(true);
+  const rodando = cronoAtivo() && !!crono.desde;
+  if (i >= crono.blocos.length) {
+    crono.acum = decorrido();
+    crono.desde = null;
+    crono.fim = true;
+    pararTickCrono();
+    cronoSoltarTela();
+  } else {
+    crono.idx = Math.max(0, i);
+    crono.acum = 0;
+    crono.contadoBloco = 0;
+    crono.fim = false;
+    crono.desde = rodando ? Date.now() : null;
+  }
+  salvarCrono();
+  desenharCrono(true);
+}
+
+function encerrarCrono() {
+  if (crono && !crono.fim && !confirm('Encerrar o cronômetro desta sessão?')) return;
+  if (crono) contarCrono(true);
+  const id = crono && crono.id;
+  crono = null;
+  guardado.set('cronometro', null);
+  pararTickCrono();
+  cronoSoltarTela();
+  desenharCrono();
+  if (location.hash.startsWith('#/cronometro')) location.hash = id ? `#/cronometro/${encodeURIComponent(id)}` : '#/';
+}
+
+/* desenho: barra no topo (em todas as telas) e a tela do cronômetro */
+function desenharCrono(refazer) {
+  const barra = $('#crono-barra');
+  const naTela = location.hash.startsWith('#/cronometro');
+  if (barra) {
+    barra.hidden = !cronoAtivo() || naTela;
+    if (!barra.hidden) {
+      const b = crono.blocos[crono.idx];
+      const aviso = Date.now() < cronoAvisoAte && barra.dataset.aviso;
+      $('#cb-tempo').textContent = fmt(restanteBloco() / 1000);
+      $('#cb-bloco').textContent = aviso || (crono.desde ? b.titulo : `${b.titulo} · pausado`);
+      barra.classList.toggle('alerta', !!aviso);
+      barra.classList.toggle('pausado', !crono.desde);
+      const bp = $('#cb-play');
+      bp.textContent = crono.desde ? '⏸' : '▶';
+      bp.setAttribute('aria-label', crono.desde ? 'Pausar o cronômetro' : 'Continuar o cronômetro');
+    }
+  }
+  if (!naTela || !crono || !$('#c-tempo')) return;
+  const chave = `${crono.id}|${crono.idx}|${crono.fim}|${!!crono.desde}`;
+  if (refazer || chave !== cronoDesenhado) { telaCrono(); return; }
+  if (crono.fim) return;
+  const b = crono.blocos[crono.idx];
+  const resta = restanteBloco();
+  $('#c-tempo').textContent = fmt(resta / 1000);
+  $('#c-prog').style.width = `${Math.min(100, (decorrido() / msBloco(b)) * 100)}%`;
+  const fimSessao = Date.now() + resta + crono.blocos.slice(crono.idx + 1).reduce((t, x) => t + msBloco(x), 0);
+  $('#c-quando').textContent = crono.desde
+    ? `Este bloco termina às ${horaRelogio(Date.now() + resta)} · a sessão, às ${horaRelogio(fimSessao)}`
+    : 'Pausado. Toque em Continuar quando voltar.';
+}
+
+function listaBlocosCrono(blocos, atual, fim) {
+  return `<ol class="crono-blocos">${blocos.map((b, i) => {
+    const estado = fim || i < atual ? 'feito' : i === atual ? 'atual' : '';
+    return `<li class="${estado}${b.pausa ? ' pausa' : ''}">
+      <button data-i="${i}" ${atual < 0 ? 'disabled' : ''} aria-label="${esc(`${b.titulo}, ${fmtMin(b.min)}${atual >= 0 && !fim ? '. Toque para ir para este bloco' : ''}`)}">
+        <span class="marca" aria-hidden="true">${estado === 'feito' ? '✓' : estado === 'atual' ? '▶' : b.pausa ? '☕' : i + 1}</span>
+        <span class="corpo"><strong>${esc(b.titulo)}</strong>${b.pausa ? '' : `<span class="meta">${esc(b.texto)}</span>`}</span>
+        <span class="dur">${fmtMin(b.min)}</span>
+      </button></li>`;
+  }).join('')}</ol>`;
+}
+
+function opcoesCrono(podePausa) {
+  const pausa = guardado.get('cronoPausa', 0);
+  return `<div class="crono-opcoes">
+    ${podePausa ? `<label>Pausa entre os blocos:
+      <select id="c-pausa">${PAUSAS_CRONO.map((p) => `<option value="${p}"${p === pausa ? ' selected' : ''}>${p ? `${p} min` : 'sem pausa'}</option>`).join('')}</select></label>` : ''}
+    <label><input id="c-tela" type="checkbox" ${guardado.get('cronoTela', true) ? 'checked' : ''}> Manter a tela acesa enquanto o cronômetro corre</label>
+  </div>`;
+}
+
+function ligarOpcoesCrono(id) {
+  const sp = $('#c-pausa');
+  if (sp) sp.addEventListener('change', () => { guardado.set('cronoPausa', Number(sp.value)); telaCrono(id); });
+  $('#c-tela').addEventListener('change', (e) => {
+    guardado.set('cronoTela', e.target.checked);
+    if (e.target.checked) cronoSegurarTela(); else cronoSoltarTela();
+  });
+}
+
+function telaCrono(idPedido) {
+  if (!catalogo) { telaInicio(); return; }
+  pararRelogio();
+  setTopo('Cronômetro da sessão', true);
+  if (idPedido) idPedido = decodeURIComponent(idPedido);
+  const id = idPedido || (crono && crono.id);
+  const item = id && catalogo.docs.find((d) => d.id === id);
+  cronoDesenhado = '';
+
+  if (!item) { // sem sessão: sugere os materiais mais recentes com roteiro
+    const comRoteiro = catalogo.docs.filter((d) => d.categoria === 'material' && d.data && blocosDoItem(d)).slice(0, 5);
+    tela.innerHTML = `<p class="aviso">Escolha o material da sessão. O cronômetro segue o roteiro dele, bloco por bloco, e avisa com som e vibração quando é hora de mudar de atividade.</p>
+      ${comRoteiro.map((it) => `<a class="cartao" href="#/cronometro/${encodeURIComponent(it.id)}"><div class="data"><b>${esc((it.subtitulo || '').split(' ')[1] || '')}</b>${esc((it.subtitulo || '').split(' ')[0])}</div>
+        <div class="corpo"><strong>${esc(tituloCurto(it))}</strong><span class="meta">${blocosDoItem(it).blocos.length} blocos · ${fmtMin(blocosDoItem(it).blocos.reduce((t, b) => t + b.min, 0))}</span></div><span aria-hidden="true">›</span></a>`).join('')}`;
+    return;
+  }
+
+  const desta = crono && crono.id === item.id;
+  if (!desta) { // prévia antes de começar
+    const base = blocosDoItem(item);
+    if (!base) { location.hash = `#/doc/${encodeURIComponent(item.id)}`; return; }
+    const blocos = comPausas(base.blocos, guardado.get('cronoPausa', 0));
+    const total = blocos.reduce((t, b) => t + b.min, 0);
+    tela.innerHTML = `<h2 class="crono-titulo">${esc(tituloCurto(item))} <small>${esc(item.subtitulo || '')}</small></h2>
+      <p class="aviso">${base.doPlano ? 'Este material não tem tabela de roteiro; os blocos seguem as horas do plano para o dia.' : 'Blocos do roteiro do material.'}
+        Termina por volta das ${horaRelogio(Date.now() + total * 60000)} se começar agora.</p>
+      ${listaBlocosCrono(blocos, -1, false)}
+      ${opcoesCrono(true)}
+      ${cronoAtivo() ? `<p class="aviso">Há um cronômetro em andamento para "${esc(crono.titulo)}". Começar este encerra aquele. <a href="#/cronometro">Ver o que está em andamento</a></p>` : ''}
+      <button class="btn primario largo" id="c-comecar">▶ Começar a sessão · ${fmtMin(total)}</button>
+      <a class="btn largo" href="#/doc/${encodeURIComponent(item.id)}">📄 Abrir o material</a>
+      <p class="aviso">O aviso de troca de bloco (som e vibração) toca com o app aberto. Com a tela apagada, o celular pode atrasar o aviso, mas o tempo continua certo.</p>`;
+    $('#c-comecar').addEventListener('click', () => comecarCrono(item));
+    ligarOpcoesCrono(item.id);
+    return;
+  }
+
+  // sessão em andamento ou concluída
+  avancarCrono();
+  const b = crono.blocos[crono.idx];
+  const estudo = crono.blocos.filter((x) => !x.pausa);
+  const nEstudo = estudo.indexOf(b) + 1;
+  const etapa = crono.fim ? 'Sessão concluída' : b.pausa ? 'Pausa' : `Bloco ${nEstudo} de ${estudo.length}`;
+  const at = guardado.get('atividade', {});
+  const minHoje = Math.round(((at[dataISO()] && at[dataISO()].c) || 0) / 60);
+  const estudado = concluido(item);
+  cronoDesenhado = `${crono.id}|${crono.idx}|${crono.fim}|${!!crono.desde}`;
+  tela.innerHTML = `<h2 class="crono-titulo">${esc(crono.titulo)} <small>${esc(item.subtitulo || '')}</small></h2>
+    <div class="crono-painel${b.pausa ? ' pausa' : ''}${crono.fim ? ' fim' : ''}${crono.desde ? '' : ' parado'}" aria-live="polite">
+      <span class="crono-etapa">${esc(etapa)}</span>
+      <strong class="crono-bloco">${crono.fim ? '🎉 Bom trabalho!' : esc(b.titulo)}</strong>
+      <b class="crono-tempo" id="c-tempo" role="timer">${crono.fim ? '0:00' : fmt(restanteBloco() / 1000)}</b>
+      <span class="crono-prog" aria-hidden="true"><span id="c-prog"></span></span>
+      <small id="c-quando">${crono.fim ? `${minHoje} min cronometrados hoje` : ''}</small>
+    </div>
+    ${!crono.fim && !b.pausa ? `<p class="crono-tarefa">${esc(b.texto)}${b.f != null ? ' <button class="btn-link" id="c-ver">Ver no material</button>' : ''}</p>` : ''}
+    <div class="acoes crono-acoes">
+      ${crono.fim
+        ? `${estudado ? '' : '<button class="btn primario" id="c-estudado">✓ Marcar material como estudado</button>'}
+           <button class="btn" id="c-recomecar">↺ Recomeçar</button>`
+        : `<button class="btn primario" id="c-play">${crono.desde ? '⏸ Pausar' : '▶ Continuar'}</button>
+           <button class="btn" id="c-prox">${crono.idx >= crono.blocos.length - 1 ? '⏹ Concluir' : '⏭ Próximo bloco'}</button>
+           <button class="btn" id="c-encerrar">Encerrar</button>`}
+      <a class="btn" href="#/doc/${encodeURIComponent(item.id)}">📄 Abrir o material</a>
+    </div>
+    ${listaBlocosCrono(crono.blocos, crono.fim ? crono.blocos.length : crono.idx, crono.fim)}
+    ${opcoesCrono(false)}
+    ${crono.fim ? '' : '<p class="aviso">Toque num bloco da lista para ir para ele. O aviso de troca (som e vibração) toca com o app aberto.</p>'}`;
+
+  if (!crono.fim) desenharCrono();
+  const on = (sel, fn) => { const el = $(sel); if (el) el.addEventListener('click', fn); };
+  on('#c-play', () => (crono.desde ? pausarCrono() : continuarCrono()));
+  on('#c-prox', () => { prepararSom(); irParaBlocoCrono(crono.idx + 1); });
+  on('#c-encerrar', encerrarCrono);
+  on('#c-recomecar', () => { crono = null; guardado.set('cronometro', null); telaCrono(item.id); });
+  on('#c-estudado', () => {
+    guardado.set(`estudado:${item.id}`, true);
+    registrarAtividade({ m: 1 });
+    $('#c-estudado').remove();
+  });
+  on('#c-ver', () => {
+    irParaDestaque = { id: item.id, h: { f: b.f }, confiarF: true };
+    location.hash = `#/doc/${encodeURIComponent(item.id)}`;
+  });
+  if (!crono.fim) {
+    tela.querySelectorAll('.crono-blocos button').forEach((bt) => bt.addEventListener('click', () => {
+      const i = Number(bt.dataset.i);
+      if (i !== crono.idx) { prepararSom(); irParaBlocoCrono(i); }
+    }));
+  }
+  ligarOpcoesCrono(item.id);
+}
+
+/* Cartão na tela inicial: sessão em andamento ou a sessão de hoje. */
+function resumoCronoHome() {
+  if (cronoAtivo()) {
+    const b = crono.blocos[crono.idx];
+    return `<a class="cartao cartao-q" href="#/cronometro">
+      <div class="icone-q" aria-hidden="true">⏱</div>
+      <div class="corpo"><strong>Cronômetro: ${esc(b.titulo)}</strong>
+        <span class="meta">${esc(crono.titulo)} · ${crono.desde ? `faltam ${Math.ceil(restanteBloco() / 60000)} min` : 'pausado'}</span></div>
+      <span aria-hidden="true">›</span></a>`;
+  }
+  const hoje = catalogo.docs.find((d) => d.categoria === 'material' && d.data === dataISO() && blocosDoItem(d));
+  if (!hoje || concluido(hoje)) return '';
+  const base = blocosDoItem(hoje);
+  return `<a class="cartao cartao-q" href="#/cronometro/${encodeURIComponent(hoje.id)}">
+    <div class="icone-q" aria-hidden="true">⏱</div>
+    <div class="corpo"><strong>Começar a sessão de hoje</strong>
+      <span class="meta">${esc(tituloCurto(hoje))} · ${base.blocos.length} blocos · ${fmtMin(base.blocos.reduce((t, x) => t + x.min, 0))}</span></div>
+    <span aria-hidden="true">›</span></a>`;
+}
+
+$('#cb-play').addEventListener('click', () => { if (!cronoAtivo()) return; if (crono.desde) pausarCrono(); else continuarCrono(); });
+document.addEventListener('visibilitychange', () => {
+  if (!crono) return;
+  if (document.visibilityState === 'visible') {
+    cronoTrava = null;
+    cronoAtualizar();
+    if (cronoAtivo() && crono.desde) { ligarTickCrono(); cronoSegurarTela(); }
+  } else if (cronoAtivo()) {
+    contarCrono(true);
+    salvarCrono();
+  }
+});
+if (cronoAtivo() && crono.desde) ligarTickCrono();
 
 /* ---------- timer de sono ---------- */
 

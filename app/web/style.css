@@ -333,3 +333,60 @@ body.tocando .q-botoes { bottom: calc(var(--player-h) + env(safe-area-inset-bott
 .player-controles button { background: none; border: 0; font-size: 18px; min-width: 44px; min-height: 44px; border-radius: 12px; }
 .player-controles .play { background: var(--marca); color: var(--marca-texto); font-size: 22px; min-width: 58px; min-height: 52px; border-radius: 999px; }
 .player-controles .vel { font-size: 15px; font-weight: 700; border: 1px solid var(--linha); }
+
+/* ---------- cronômetro da sessão ---------- */
+.topo { flex-wrap: wrap; }
+.crono-barra {
+  flex-basis: 100%; display: flex; align-items: center; gap: 8px; margin: 2px -4px 0;
+  padding: 4px 4px 4px 12px; border-radius: 999px; background: rgba(255,255,255,.14); font-size: 14px;
+}
+.crono-barra[hidden] { display: none; }
+.crono-barra .cb-link { flex: 1; min-width: 0; color: inherit; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.crono-barra b { font-variant-numeric: tabular-nums; margin-right: 4px; }
+.crono-barra button { flex: none; width: 36px; height: 36px; border-radius: 999px; border: 0; background: rgba(255,255,255,.18); color: inherit; }
+.crono-barra.pausado { opacity: .8; }
+.crono-barra.alerta { background: var(--destaque); color: #1c2430; animation: crono-pisca 1s ease-in-out 3; }
+@keyframes crono-pisca { 50% { filter: brightness(1.25); } }
+@media (prefers-reduced-motion: reduce) { .crono-barra.alerta { animation: none; } }
+
+.crono-titulo { font-size: 18px; margin: 8px 0 6px; }
+.crono-titulo small { font-weight: 400; font-size: 14px; color: var(--suave); }
+.crono-painel {
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px;
+  background: var(--marca); color: var(--marca-texto); border-radius: 18px; padding: 18px 16px 16px; margin: 8px 0 12px;
+}
+.crono-painel.pausa, .crono-painel.fim { background: #1f6b40; } /* verde escuro: texto branco legível nos dois temas */
+.crono-painel.parado .crono-tempo { opacity: .65; }
+.crono-etapa { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; opacity: .85; }
+.crono-bloco { font-size: 18px; font-weight: 600; }
+.crono-tempo { font-size: clamp(52px, 16vw, 84px); line-height: 1.05; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.crono-prog { width: 100%; max-width: 420px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; margin: 6px 0 2px; }
+.crono-prog span { display: block; height: 100%; width: 0; background: var(--destaque); border-radius: inherit; transition: width 1s linear; }
+.crono-painel.fim .crono-prog span { width: 100%; }
+.crono-painel small { font-size: 13px; opacity: .9; }
+.crono-tarefa { background: var(--superficie); border: 1px solid var(--linha); border-radius: 14px; padding: 12px 14px; margin: 0 0 4px; }
+.crono-tarefa .btn-link { padding: 0 0 0 4px; }
+.crono-acoes .btn { flex: 1 1 auto; text-align: center; }
+.crono-blocos { list-style: none; padding: 0; margin: 4px 0 12px; }
+.crono-blocos li { margin-bottom: 8px; }
+.crono-blocos button {
+  display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: left;
+  background: var(--superficie); border: 1px solid var(--linha); border-radius: 14px; padding: 12px 14px;
+}
+.crono-blocos button:disabled { cursor: default; opacity: 1; }
+.crono-blocos .marca {
+  flex: none; width: 28px; height: 28px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--linha); font-size: 13px; font-weight: 700; color: var(--suave);
+}
+.crono-blocos .corpo { flex: 1; min-width: 0; }
+.crono-blocos .corpo strong { display: block; font-weight: 600; }
+.crono-blocos .meta { display: block; font-size: 13px; color: var(--suave); }
+.crono-blocos .dur { flex: none; font-size: 13px; color: var(--suave); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.crono-blocos li.atual button { border: 2px solid var(--destaque); }
+.crono-blocos li.atual .marca { background: var(--destaque); border-color: var(--destaque); color: #1c2430; }
+.crono-blocos li.feito .marca { background: var(--ok); border-color: var(--ok); color: var(--superficie); }
+.crono-blocos li.feito strong { color: var(--suave); }
+.crono-blocos li.pausa button { padding-top: 8px; padding-bottom: 8px; border-style: dashed; }
+.crono-opcoes { display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--suave); margin: 4px 0 14px; }
+.crono-opcoes label { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.crono-opcoes select { font: inherit; color: var(--texto); background: var(--superficie); border: 1px solid var(--linha); border-radius: 8px; padding: 4px 6px; }

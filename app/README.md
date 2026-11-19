@@ -6,6 +6,7 @@ App instalável no celular (Android e iPhone) com o **Material do Dia**, o **pla
 - **Progresso:** contagem regressiva para a prova e os simulados (datas do [perfil](../Perfil_do_Estudante.md)), sequência de dias estudados, minutos ouvindo por dia (gráfico de 14 dias), horas do [plano](../Plano_de_Estudos_PMPE_2026.md) por disciplina, materiais concluídos e próximas sessões. A atividade fica registrada só no celular.
 - **Revisão rápida:** cada material (a partir de 10/11) ganha uma versão de 5 a 15 minutos, só com os blocos "Para levar para a prova", os "Quadros para não confundir" e as "Pegadinhas da banca", com áudio próprio. Na tela inicial, um botão toca em sequência as revisões dos últimos 7 dias.
 - **Questões:** as questões oficiais dos materiais e as questões autorais (marcadas como não oficiais) viram exercícios interativos: escolher a alternativa, riscar as erradas, ver a correção com o comentário do gabarito e o tempo gasto. As erradas vão para o **caderno de erros**, e o painel mostra a taxa de acerto por disciplina e por material. As questões reservadas para o Simulado 1 ficam de fora enquanto ele estiver `pendente` no [perfil](../Perfil_do_Estudante.md).
+- **Cronômetro da sessão:** segue a tabela "Roteiro" do material, bloco por bloco (ex.: 1 h retomada → 1 h aprofundamento → 1 h questões), com pausa opcional de 5 ou 10 minutos entre os blocos. Na troca de bloco, toca um som, o celular vibra e a barra no topo avisa. Materiais sem roteiro usam as horas do plano para o dia. O tempo cronometrado entra no progresso.
 - **Voz do celular:** qualquer texto (leis, apostilas, materiais antigos) pode ser lido pela voz do próprio aparelho. A tela fica acesa enquanto lê.
 
 ## Como o conteúdo chega ao celular
@@ -41,6 +42,7 @@ Opções do `build.py`: `--audios N` (quantos materiais recebem MP3; cada um tem
 | `fala.py` | Converte Markdown em texto para ouvir (art. → artigo, § → parágrafo, incisos romanos → números, tabelas linha a linha, datas por extenso) |
 | `plano.py` | Lê o cronograma do plano e as datas da prova e dos simulados |
 | `revisao.py` | Monta a revisão rápida de cada material |
+| `roteiro.py` | Lê a tabela "Roteiro" do material para o cronômetro da sessão |
 | `questoes.py` | Extrai questões, gabarito, comentário e texto de apoio dos materiais e de `Banco_de_Provas/Questoes_Autorais/` |
 | `audio.py` | Gera o MP3 com edge-tts, com cache por capítulo em `app/.cache/` |
 | `icone.py` | Desenha os ícones do app |
