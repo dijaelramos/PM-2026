@@ -162,33 +162,56 @@ def nivel_capitulo(tokens):
 
 
 def capitulos(tokens, titulo_doc):
-    """Divide o documento em capítulos de fala e marca os títulos com id="cap-N".
+    """Divide o documento em capítulos de fala e marca o HTML para a leitura acompanhada.
 
-    Retorna [{"titulo": str, "paragrafos": [str]}]. Altera os tokens (atributo id)
-    para que o HTML tenha âncoras que batem com os capítulos.
+    Retorna [{"titulo": str, "paragrafos": [str], "f": [int]}]. Altera os tokens:
+    - títulos de capítulo recebem id="cap-N";
+    - cada bloco lido (parágrafo, título, linha de tabela) recebe data-f="K", e
+      "f" guarda, para cada parágrafo falado, o K do bloco correspondente (-1 = sem bloco).
     """
     tag_cap = nivel_capitulo(tokens)
-    caps = [{"titulo": titulo_doc, "paragrafos": []}]
+    caps = [{"titulo": titulo_doc, "paragrafos": [], "f": []}]
+    contador = [0]
     buf = []
     em_titulo = None
+    bloco = None  # token de abertura do bloco que está sendo lido
     tabela = None  # {"cab": [...], "linha": [...], "em_cab": bool}
     numero_item = []
 
-    def emite(texto):
-        texto = _fecha(normalizar(texto))
-        if len(texto) > 1:
-            caps[-1]["paragrafos"].append(texto)
+    # Em listas "compactas" o markdown-it esconde o <p>; mostrando-o, cada item vira um bloco marcável.
+    for tok in tokens:
+        if tok.type in ("paragraph_open", "paragraph_close") and tok.hidden:
+            tok.hidden = False
+            if tok.type == "paragraph_open":
+                tok.attrSet("class", "lp")
+
+    def adiciona(texto, tok_bloco):
+        if len(texto) <= 1:
+            return
+        caps[-1]["paragrafos"].append(texto)
+        if tok_bloco is not None:
+            tok_bloco.attrSet("data-f", str(contador[0]))
+            caps[-1]["f"].append(contador[0])
+            contador[0] += 1
+        else:
+            caps[-1]["f"].append(-1)
+
+    def emite(texto, tok_bloco):
+        adiciona(_fecha(normalizar(texto)), tok_bloco)
 
     for tok in tokens:
         tipo = tok.type
         if tipo == "heading_open":
             em_titulo = tok.tag
+            bloco = tok
             if tok.tag == tag_cap:
                 if caps[-1]["paragrafos"]:
-                    caps.append({"titulo": "", "paragrafos": []})
+                    caps.append({"titulo": "", "paragrafos": [], "f": []})
                 tok.attrSet("id", f"cap-{len(caps) - 1}")
         elif tipo == "heading_close":
             em_titulo = None
+        elif tipo == "paragraph_open":
+            bloco = tok
         elif tipo == "inline":
             texto = _texto_inline(tok)
             if tabela is not None:
@@ -196,18 +219,16 @@ def capitulos(tokens, titulo_doc):
             elif em_titulo:
                 if em_titulo == tag_cap or (em_titulo == "h1" and len(caps) == 1 and not caps[0]["paragrafos"]):
                     caps[-1]["titulo"] = normalizar(texto) or caps[-1]["titulo"]
-                emite(texto)
+                emite(texto, bloco)
             else:
                 buf.append(texto)
         elif tipo == "paragraph_close" and tabela is None:
             if buf:
                 prefixo = f"{numero_item[-1]}. " if numero_item and numero_item[-1] else ""
-                emite(prefixo + " ".join(buf))
+                emite(prefixo + " ".join(buf), bloco)
                 if numero_item:
                     numero_item[-1] = ""  # só o 1º parágrafo do item leva o número
             buf = []
-        elif tipo == "ordered_list_open":
-            pass
         elif tipo == "list_item_open":
             numero_item.append(tok.info if tok.markup in (".", ")") else "")
         elif tipo == "list_item_close":
@@ -220,6 +241,7 @@ def capitulos(tokens, titulo_doc):
             tabela["em_cab"] = False
         elif tipo == "tr_open" and tabela is not None:
             tabela["linha"] = []
+            bloco = tok
         elif tipo == "tr_close" and tabela is not None:
             if tabela["em_cab"]:
                 tabela["cab"] = tabela["linha"]
@@ -232,7 +254,7 @@ def capitulos(tokens, titulo_doc):
                     cab = tabela["cab"][i].strip() if i < len(tabela["cab"]) else ""
                     partes.append(f"{cab}: {cel}" if cab and i > 0 else cel)
                 if partes:
-                    caps[-1]["paragrafos"].append(_fecha("; ".join(_fecha(p)[:-1] for p in partes)))
+                    adiciona(_fecha("; ".join(_fecha(p)[:-1] for p in partes)), bloco)
         elif tipo == "table_close":
             tabela = None
 
@@ -243,4 +265,5 @@ def capitulos(tokens, titulo_doc):
     for c in caps:
         if not c["paragrafos"]:
             c["paragrafos"].append(_fecha(c["titulo"]))
+            c["f"].append(-1)
     return caps

@@ -274,13 +274,18 @@ async function telaDoc(id) {
   }
   tela.querySelectorAll('.capitulos li').forEach((li) => li.addEventListener('click', () => {
     const i = Number(li.dataset.i);
+    seguir = true;
+    $('#seguir').hidden = true;
     if (player.item && player.item.id === id) irParaCapitulo(i);
     else if (item.audio && (navigator.onLine || baixados.has(abs(item.audio.url)))) iniciarAudio(item, doc, i);
     else iniciarTts(item, doc, i);
     const alvo = document.getElementById(`cap-${i}`);
-    if (alvo) alvo.scrollIntoView({ behavior: 'smooth' });
+    if (alvo) levarAte(alvo, true);
   }));
   marcarCapituloNaTela();
+  seguir = true;
+  $('#seguir').hidden = true;
+  if (docNaTela()) marcarLeitura(player.f, estaTocando());
 }
 
 function atualizarBotaoBaixar(item) {
@@ -295,7 +300,7 @@ function atualizarBotaoBaixar(item) {
 
 /* ---------- reprodutor ---------- */
 
-const player = { modo: null, item: null, doc: null, cap: 0 };
+const player = { modo: null, item: null, doc: null, cap: 0, f: -1, marcas: [] };
 let velocidade = guardado.get('velocidade', 1);
 let ultimoSalvo = 0;
 
@@ -323,7 +328,11 @@ function iniciarAudio(item, doc, cap) {
     return;
   }
   pararTudo();
-  Object.assign(player, { modo: 'audio', item, doc, cap: 0 });
+  Object.assign(player, { modo: 'audio', item, doc, cap: 0, f: -1, marcas: [] });
+  doc.capitulos.forEach((c) => (c.t || []).forEach((t, i) => {
+    const f = (c.f || [])[i];
+    if (f != null && f >= 0) player.marcas.push([t, f]);
+  }));
   const inicio = cap != null ? (doc.capitulos[cap].inicio || 0) : guardado.get(`pos:${item.id}`, 0);
   audio.src = item.audio.url;
   audio.playbackRate = velocidade;
@@ -341,6 +350,58 @@ function capituloNoTempo(t) {
   let i = 0;
   while (i + 1 < caps.length && caps[i + 1].inicio != null && caps[i + 1].inicio <= t + 0.3) i++;
   return i;
+}
+
+/* ---------- marcação do trecho que está sendo lido ---------- */
+
+let seguir = true; // a tela acompanha a leitura até o usuário rolar com o dedo
+
+function blocoNoTempo(t) {
+  const m = player.marcas;
+  let lo = 0, hi = m.length - 1, achou = -1;
+  while (lo <= hi) {
+    const meio = (lo + hi) >> 1;
+    if (m[meio][0] <= t + 0.15) { achou = meio; lo = meio + 1; } else hi = meio - 1;
+  }
+  return achou >= 0 ? m[achou][1] : -1;
+}
+
+const docNaTela = () => !!player.item && location.hash.endsWith(encodeURIComponent(player.item.id));
+
+function marcarLeitura(f, forcar) {
+  if (f === player.f && !forcar) return;
+  player.f = f;
+  const anterior = tela.querySelector('.lendo');
+  if (anterior) anterior.classList.remove('lendo');
+  if (f == null || f < 0 || !docNaTela()) return;
+  const el = tela.querySelector(`[data-f="${f}"]`);
+  if (!el) return;
+  el.classList.add('lendo');
+  if (seguir) levarAte(el, forcar);
+}
+
+/* Mantém o trecho lido na metade de cima da área visível. */
+function levarAte(el, sempre) {
+  const r = el.getBoundingClientRect();
+  const topo = $('.topo').offsetHeight + 8;
+  const baixo = window.innerHeight - ($('#player').hidden ? 0 : $('#player').offsetHeight) - 8;
+  const limite = topo + (baixo - topo) * 0.55;
+  if (!sempre && r.top >= topo && r.top <= limite && r.bottom <= baixo) return;
+  window.scrollTo({ top: window.scrollY + r.top - topo - (baixo - topo) * 0.2, behavior: 'smooth' });
+}
+
+function pararDeSeguir(e) {
+  if (!docNaTela() || !estaTocando() || (e.target && e.target.closest && e.target.closest('#player, #seguir'))) return;
+  if (!seguir) return;
+  seguir = false;
+  const b = $('#seguir');
+  b.style.bottom = `${$('#player').offsetHeight + 12}px`;
+  b.hidden = false;
+}
+function voltarASeguir() {
+  seguir = true;
+  $('#seguir').hidden = true;
+  marcarLeitura(player.f, true);
 }
 
 function salvarPosicao(forcar) {
@@ -366,6 +427,7 @@ audio.addEventListener('timeupdate', () => {
   if (!arrastando) $('#p-progresso').value = String(Math.round((t / d) * 1000) || 0);
   const cap = capituloNoTempo(t);
   if (cap !== player.cap) { player.cap = cap; aoMudarCapitulo(); }
+  if (player.marcas.length) marcarLeitura(blocoNoTempo(t));
   salvarPosicao(false);
   if ('mediaSession' in navigator && navigator.mediaSession.setPositionState && isFinite(d)) {
     try { navigator.mediaSession.setPositionState({ duration: d, position: Math.min(t, d), playbackRate: audio.playbackRate }); } catch { /* ok */ }
@@ -488,9 +550,12 @@ function iniciarTts(item, doc, cap) {
     return;
   }
   pararTudo();
-  Object.assign(player, { modo: 'tts', item, doc, cap: 0 });
+  Object.assign(player, { modo: 'tts', item, doc, cap: 0, f: -1, marcas: [] });
   tts.pedacos = [];
-  doc.capitulos.forEach((c, ci) => c.paragrafos.forEach((p) => quebrar(p).forEach((t) => tts.pedacos.push({ cap: ci, texto: t }))));
+  doc.capitulos.forEach((c, ci) => c.paragrafos.forEach((p, pi) => {
+    const f = c.f ? c.f[pi] : -1;
+    quebrar(p).forEach((t) => tts.pedacos.push({ cap: ci, f, texto: t }));
+  }));
   tts.palavrasAntes = [];
   let soma = 0;
   for (const p of tts.pedacos) { tts.palavrasAntes.push(soma); soma += p.texto.split(/\s+/).length; }
@@ -516,9 +581,8 @@ function ttsFalar() {
   if (p.cap !== player.cap) {
     player.cap = p.cap;
     aoMudarCapitulo();
-    const alvo = document.getElementById(`cap-${p.cap}`);
-    if (alvo && location.hash.endsWith(encodeURIComponent(player.item.id))) alvo.scrollIntoView({ behavior: 'smooth' });
   }
+  marcarLeitura(p.f);
   const u = new SpeechSynthesisUtterance(p.texto);
   u.lang = 'pt-BR';
   if (tts.voz) u.voice = tts.voz;
@@ -606,7 +670,9 @@ $('#p-vel').addEventListener('click', () => {
 });
 $('#p-fechar').addEventListener('click', () => {
   pararTudo();
+  marcarLeitura(-1);
   player.item = null;
+  $('#seguir').hidden = true;
   $('#player').hidden = true;
   document.body.classList.remove('tocando');
   marcarCapituloNaTela();
@@ -619,6 +685,9 @@ window.addEventListener('hashchange', () => {
   try { sessionStorage.setItem('navegou', '1'); } catch { /* ok */ }
   rota();
 });
+window.addEventListener('touchmove', pararDeSeguir, { passive: true });
+window.addEventListener('wheel', pararDeSeguir, { passive: true });
+$('#seguir').addEventListener('click', voltarASeguir);
 window.addEventListener('scroll', () => { if (!location.hash.startsWith('#/doc/')) rolagemInicio = window.scrollY; }, { passive: true });
 
 function atualizarRede() {

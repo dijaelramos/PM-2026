@@ -207,11 +207,12 @@ def main():
             if d.get(k):
                 item[k] = d[k]
         if d["id"] in audios:
-            mp3, inicios = audios[d["id"]]
+            mp3, inicios, tempos = audios[d["id"]]
             nome = f"audio/{d['id']}.{hash_curto(mp3)}.mp3"
             (saida / nome).write_bytes(mp3)
-            for c, ini in zip(caps, inicios):
+            for c, ini, t in zip(caps, inicios, tempos):
                 c["inicio"] = ini
+                c["t"] = t  # início de cada parágrafo no MP3 (marcação do texto)
             item["audio"] = {"url": nome, "bytes": len(mp3), "duracao": round(len(mp3) / 6000)}
         corpo = json.dumps({"id": d["id"], "titulo": d["titulo"], "origem": d["rel"], "html": d["html"],
                             "capitulos": caps}, ensure_ascii=False, separators=(",", ":")).encode()
