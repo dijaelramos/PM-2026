@@ -16,7 +16,8 @@ App instalável no celular (Android e iPhone) com o **Material do Dia**, o **pla
 
 1. O material novo entra no repositório normalmente (`git push`).
 2. O GitHub Actions ([workflow](../.github/workflows/app.yml)) roda `app/build.py`: converte o Markdown em texto para fala, gera o MP3 só do que é novo e publica no GitHub Pages.
-3. Ao abrir o app com internet, ele baixa os textos novos e o áudio dos 3 materiais mais recentes. Depois disso, tudo funciona offline.
+3. **Materiais montados com antecedência** só entram no app **na data do nome do arquivo** (horário de Pernambuco). O workflow roda sozinho todo dia às 03:05 para liberar o material do dia, sem precisar de push. Para testar outra data no computador: `python app/build.py --audios 0 --ate AAAA-MM-DD`.
+4. Ao abrir o app com internet, ele baixa os textos novos e o áudio dos 3 materiais mais recentes. Depois disso, tudo funciona offline.
 
 ## Configuração (uma vez)
 

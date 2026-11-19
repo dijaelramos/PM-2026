@@ -62,12 +62,26 @@ def rel(p: Path):
     return unicodedata.normalize("NFC", p.relative_to(RAIZ).as_posix())
 
 
-def coletar():
-    """Lista os documentos que entram no app."""
+def hoje_recife():
+    """Data de hoje no horário de Pernambuco (UTC−3), que é o fuso do plano de estudos."""
+    return dt.datetime.now(dt.timezone(dt.timedelta(hours=-3))).date()
+
+
+def coletar(ate=None):
+    """Lista os documentos que entram no app.
+
+    Os materiais do dia são liberados só a partir da data do nome do arquivo (AAAA-MM-DD_...).
+    Assim os materiais montados com antecedência não aparecem nem ganham áudio antes do dia.
+    O workflow roda todo dia de madrugada para liberar o material novo.
+    """
+    ate = ate or hoje_recife()
     docs = []
     for p in sorted((RAIZ / "Material_do_Dia").glob("*.md")):
         if p.name.lower() == "readme.md":
             continue
+        data = re.match(r"(\d{4})-(\d{2})-(\d{2})", p.stem)
+        if data and dt.date(*map(int, data.groups())) > ate:
+            continue  # material de dia futuro: entra no app só na data dele
         # "<material>_Questoes.md": estudo dirigido, questões e gabarito, separados do material de estudo
         docs.append({"caminho": p, "categoria": "questoes" if p.stem.endswith("_Questoes") else "material"})
     plano = RAIZ / "Plano_de_Estudos_PMPE_2026.md"
@@ -227,12 +241,14 @@ def main():
     ap.add_argument("--taxa", default="-10%", help="velocidade da voz no MP3, ex.: -10%% (mais lenta) ou +10%%")
     ap.add_argument("--cache", type=Path, default=APP / ".cache" / "audio")
     ap.add_argument("--limpar-cache", action="store_true", help="apaga do cache os trechos de áudio que não foram usados")
+    ap.add_argument("--ate", type=dt.date.fromisoformat, default=None,
+                    help="libera os materiais do dia até esta data, AAAA-MM-DD (padrão: hoje, horário de Pernambuco)")
     args = ap.parse_args()
 
     md = MarkdownIt("commonmark", {"html": False}).enable(["table", "strikethrough"])
     md_txt = MarkdownIt("commonmark", {"html": False, "breaks": True}).enable(["table"])
 
-    docs = coletar()
+    docs = coletar(args.ate)
     for d in docs:
         preparar(d, md, md_txt)
     ids = {}
