@@ -1475,6 +1475,39 @@ $('#tema').addEventListener('click', () => {
 if (sistemaEscuro.addEventListener) sistemaEscuro.addEventListener('change', desenharBotaoTema);
 desenharBotaoTema();
 
+/* ---------- tamanho do texto ---------- */
+
+const ESCALAS = [0.85, 1, 1.15, 1.3, 1.5, 1.75];
+let escala = guardado.get('escalaTexto', 1);
+if (!ESCALAS.includes(escala)) escala = 1;
+
+function aplicarEscala(nova) {
+  escala = nova;
+  document.documentElement.style.setProperty('--escala-texto', String(escala));
+  guardado.set('escalaTexto', escala);
+  $('#t-valor').textContent = `${Math.round(escala * 100)}%`;
+  const i = ESCALAS.indexOf(escala);
+  $('#t-menos').disabled = i <= 0;
+  $('#t-mais').disabled = i >= ESCALAS.length - 1;
+}
+
+function abrirPainelTexto(abrir) {
+  $('#painel-texto').hidden = !abrir;
+  $('#tamanho').setAttribute('aria-expanded', String(abrir));
+}
+
+$('#tamanho').addEventListener('click', (e) => {
+  e.stopPropagation();
+  abrirPainelTexto($('#painel-texto').hidden);
+});
+$('#t-menos').addEventListener('click', () => aplicarEscala(ESCALAS[Math.max(0, ESCALAS.indexOf(escala) - 1)]));
+$('#t-mais').addEventListener('click', () => aplicarEscala(ESCALAS[Math.min(ESCALAS.length - 1, ESCALAS.indexOf(escala) + 1)]));
+document.addEventListener('click', (e) => {
+  if (!$('#painel-texto').hidden && !e.target.closest('#painel-texto, #tamanho')) abrirPainelTexto(false);
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') abrirPainelTexto(false); });
+aplicarEscala(escala);
+
 /* ---------- início ---------- */
 
 (async function iniciar() {
