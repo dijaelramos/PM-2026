@@ -16,6 +16,7 @@
 <script>
   /* Aplica o tema salvo antes de desenhar a página, para não piscar. */
   try { var t = JSON.parse(localStorage.getItem('tema')); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+  try { var l = JSON.parse(localStorage.getItem('larguraTexto')); if (l === 'estreita' || l === 'media' || l === 'toda') document.documentElement.dataset.largura = l; } catch (e) {}
   try { var x = JSON.parse(localStorage.getItem('escalaTexto')); if (x >= 0.8 && x <= 2) document.documentElement.style.setProperty('--escala-texto', x); } catch (e) {}
 </script>
 <link rel="stylesheet" href="style.css">
@@ -29,10 +30,17 @@
   <button id="tema" class="icone-btn tema" aria-label="Usar tema escuro" title="Usar tema escuro"></button>
 </header>
 
-<div id="painel-texto" class="painel-texto" role="group" aria-label="Tamanho do texto" hidden>
-  <button id="t-menos" aria-label="Diminuir o texto">A−</button>
-  <span id="t-valor" aria-live="polite">100%</span>
-  <button id="t-mais" aria-label="Aumentar o texto">A+</button>
+<div id="painel-texto" class="painel-texto" role="group" aria-label="Texto" hidden>
+  <div class="linha-painel" role="group" aria-label="Tamanho do texto">
+    <button id="t-menos" aria-label="Diminuir o texto">A−</button>
+    <span id="t-valor" aria-live="polite">100%</span>
+    <button id="t-mais" aria-label="Aumentar o texto">A+</button>
+  </div>
+  <div class="linha-painel larguras" role="radiogroup" aria-label="Largura do texto">
+    <button data-largura="estreita" role="radio">Estreita</button>
+    <button data-largura="media" role="radio">Média</button>
+    <button data-largura="toda" role="radio">Tela toda</button>
+  </div>
 </div>
 
 <main id="tela" tabindex="-1"></main>

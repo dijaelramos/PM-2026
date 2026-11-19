@@ -1508,6 +1508,18 @@ document.addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') abrirPainelTexto(false); });
 aplicarEscala(escala);
 
+/* Largura da coluna de texto (em telas grandes). */
+function aplicarLargura(l) {
+  if (!['estreita', 'media', 'toda'].includes(l)) l = 'media';
+  document.documentElement.dataset.largura = l;
+  guardado.set('larguraTexto', l);
+  document.querySelectorAll('[data-largura]').forEach((b) => {
+    if (b.tagName === 'BUTTON') b.setAttribute('aria-checked', String(b.dataset.largura === l));
+  });
+}
+document.querySelectorAll('button[data-largura]').forEach((b) => b.addEventListener('click', () => aplicarLargura(b.dataset.largura)));
+aplicarLargura(guardado.get('larguraTexto', 'media'));
+
 /* ---------- início ---------- */
 
 (async function iniciar() {
