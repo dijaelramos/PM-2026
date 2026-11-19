@@ -67,6 +67,7 @@ async function sincronizar() {
     const dados = await caches.open(CACHE_DADOS);
     const arquivos = catalogo.docs.map((d) => d.arquivo);
     if (catalogo.questoes) arquivos.push(catalogo.questoes.arquivo);
+    if (catalogo.busca) arquivos.push(catalogo.busca.arquivo);
     const atuais = new Set(arquivos.map(abs));
     const faltam = [];
     for (const a of arquivos) if (!(await dados.match(abs(a)))) faltam.push(a);
@@ -75,7 +76,7 @@ async function sincronizar() {
       await dados.addAll(faltam.slice(i, i + 8));
     }
     for (const k of await dados.keys()) {
-      if ((k.url.includes('/data/docs/') || k.url.includes('/data/questoes.')) && !atuais.has(k.url)) await dados.delete(k);
+      if (/\/data\/(docs\/|questoes\.|busca\.)/.test(k.url) && !atuais.has(k.url)) await dados.delete(k);
     }
     const audiosAtuais = new Set(catalogo.docs.filter((d) => d.audio).map((d) => abs(d.audio.url)));
     const cacheAudio = await caches.open(CACHE_AUDIO);
@@ -242,7 +243,8 @@ function telaInicio() {
     tela.innerHTML = '<p class="aviso">Não foi possível carregar o conteúdo. Abra o app uma vez com internet.</p>';
     return;
   }
-  tela.innerHTML = `<input id="busca" class="busca" type="search" placeholder="Buscar material, lei, assunto…" autocomplete="off">
+  tela.innerHTML = `<input id="busca" class="busca" type="search" placeholder="Buscar material, lei, assunto ou trecho…" autocomplete="off"
+      aria-label="Buscar nos títulos e dentro dos textos">
     <div id="lista"></div>
     <div class="rodape">
       <div id="status-sync">${esc(textoStatus())}</div>
@@ -293,8 +295,10 @@ function desenharLista(filtro) {
   if (materiais.length) html += `<h2 class="secao">Material do Dia</h2>${materiais.map(cartaoMaterial).join('')}`;
   if (extras.length || plano.length) html += `<h2 class="secao">Plano, edital e extras</h2>${grupos([...plano, ...extras], !!f)}`;
   if (base.length) html += `<h2 class="secao">Base de Conhecimento</h2>${grupos(base, !!f)}`;
-  if (!itens.length) html = '<p class="aviso">Nada encontrado.</p>';
+  if (!itens.length) html = f.length >= 3 ? '<p class="aviso">Nenhum título com esse nome.</p>' : '<p class="aviso">Nada encontrado.</p>';
+  if (f.length >= 3) html += '<div id="busca-textos" aria-live="polite"><p class="aviso">Buscando dentro dos textos…</p></div>';
   $('#lista').innerHTML = html;
+  if (f.length >= 3) agendarBuscaTextos(filtro);
   const bs = $('#b-semana');
   if (bs) {
     const semana = revisoesDaSemana();
@@ -355,7 +359,8 @@ async function telaDoc(id) {
   });
   aplicarDestaques(item);
   if (irParaDestaque && irParaDestaque.id === id) {
-    const el = acharBloco(art, irParaDestaque.h);
+    const el = irParaDestaque.confiarF // vindo da busca: o número do bloco é do mesmo build
+      ? art.querySelector(`[data-f="${irParaDestaque.h.f}"]`) : acharBloco(art, irParaDestaque.h);
     irParaDestaque = null;
     if (el) {
       seguir = false;
@@ -422,6 +427,120 @@ function atualizarBotaoBaixar(item) {
   if (baixando.has(url)) b.textContent = `Baixando… ${Math.round(baixando.get(url) * 100)}%`;
   else if (baixados.has(url)) b.textContent = '✓ Áudio no celular (remover)';
   else b.textContent = `⬇ Baixar áudio (${mb} MB)`;
+}
+
+/* ---------- busca dentro dos textos ---------- */
+/* Índice: { ids: [doc], b: [[i doc, bloco, texto]] }. A versão normalizada (sem acento, minúscula) tem o
+   mesmo tamanho do texto original, para marcar o termo no lugar certo. */
+
+let indiceBusca = null;
+let buscaTimer = null;
+let buscaSeq = 0;
+
+function normPos(s) {
+  let o = '';
+  for (let i = 0; i < s.length; i++) {
+    const n = s[i].normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    o += n.length === 1 ? n : (n[0] || ' ');
+  }
+  return o;
+}
+
+async function obterIndiceBusca() {
+  if (indiceBusca) return indiceBusca;
+  const info = catalogo && catalogo.busca;
+  if (!info) return null;
+  let r = await caches.match(abs(info.arquivo));
+  if (!r) {
+    r = await fetch(info.arquivo);
+    if (!r.ok) throw new Error('índice indisponível');
+    try { (await caches.open(CACHE_DADOS)).put(abs(info.arquivo), r.clone()); } catch { /* ok */ }
+  }
+  const dados = await r.json();
+  dados.norm = dados.b.map((x) => normPos(x[2]));
+  indiceBusca = dados;
+  return dados;
+}
+
+/* Palavras soltas (todas precisam aparecer) e "frases entre aspas". */
+function termosBusca(q) {
+  const out = [];
+  for (const m of q.matchAll(/"([^"]+)"|(\S+)/g)) {
+    const t = normPos((m[1] || m[2]).trim());
+    if (t.length >= 2) out.push(t);
+  }
+  return out;
+}
+
+function trechoMarcado(texto, norm, termos) {
+  let pos = Math.min(...termos.map((t) => { const p = norm.indexOf(t); return p < 0 ? Infinity : p; }));
+  if (!isFinite(pos)) pos = 0;
+  const ini = Math.max(0, pos - 70);
+  const fim = Math.min(texto.length, pos + 150);
+  const marcas = [];
+  for (const t of termos) {
+    let p = norm.indexOf(t, ini);
+    while (p >= 0 && p < fim) { marcas.push([p, Math.min(p + t.length, fim)]); p = norm.indexOf(t, p + t.length); }
+  }
+  marcas.sort((a, b) => a[0] - b[0]);
+  let html = ini > 0 ? '…' : '';
+  let cur = ini;
+  for (const [a, b] of marcas) {
+    if (a < cur) continue;
+    html += `${esc(texto.slice(cur, a))}<mark>${esc(texto.slice(a, b))}</mark>`;
+    cur = b;
+  }
+  return html + esc(texto.slice(cur, fim)) + (fim < texto.length ? '…' : '');
+}
+
+function agendarBuscaTextos(q) {
+  clearTimeout(buscaTimer);
+  const seq = ++buscaSeq;
+  buscaTimer = setTimeout(() => buscarTextos(q, seq), 250);
+}
+
+async function buscarTextos(q, seq) {
+  let idx;
+  try { idx = await obterIndiceBusca(); } catch { idx = null; }
+  const alvo = $('#busca-textos');
+  if (seq !== buscaSeq || !alvo) return;
+  if (!idx) { alvo.innerHTML = '<p class="aviso">A busca nos textos precisa ser baixada: abra o app com internet uma vez.</p>'; return; }
+  const termos = termosBusca(q);
+  if (!termos.length) { alvo.innerHTML = ''; return; }
+  const porDoc = new Map();
+  idx.b.forEach((x, i) => {
+    const n = idx.norm[i];
+    if (!termos.every((t) => n.includes(t))) return;
+    const id = idx.ids[x[0]];
+    if (!porDoc.has(id)) porDoc.set(id, []);
+    porDoc.get(id).push({ f: x[1], texto: x[2], norm: n });
+  });
+  const grupos = [...porDoc]
+    .map(([id, l]) => ({ it: catalogo.docs.find((d) => d.id === id), l }))
+    .filter((g) => g.it)
+    .sort((a, b) => b.l.length - a.l.length);
+  const total = grupos.reduce((s, g) => s + g.l.length, 0);
+  if (!total) { alvo.innerHTML = '<h2 class="secao">Dentro dos textos</h2><p class="aviso">Nenhum trecho encontrado.</p>'; return; }
+  const refs = [];
+  const botao = (g, t) => {
+    refs.push({ id: g.it.id, f: t.f, texto: t.texto });
+    return `<button class="trecho" data-r="${refs.length - 1}">${trechoMarcado(t.texto, t.norm, termos)}</button>`;
+  };
+  const mostrar = grupos.slice(0, 30);
+  alvo.innerHTML = `<h2 class="secao">Dentro dos textos · ${total} ${total === 1 ? 'trecho' : 'trechos'} em ${grupos.length} ${grupos.length === 1 ? 'documento' : 'documentos'}</h2>
+    ${mostrar.map((g) => `<div class="cartao resultado"><div class="corpo">
+      <strong>${esc(g.it.subtitulo ? `${g.it.subtitulo.split(' ').pop()} · ` : '')}${esc(g.it.titulo)}</strong>
+      <span class="meta">${esc(g.it.grupo || (g.it.categoria === 'material' ? 'Material do Dia' : ''))} · ${g.l.length} ${g.l.length === 1 ? 'trecho' : 'trechos'}</span>
+      ${g.l.slice(0, 3).map((t) => botao(g, t)).join('')}
+      ${g.l.length > 3 ? `<details class="mais-trechos"><summary>Mais ${g.l.length - 3} ${g.l.length - 3 === 1 ? 'trecho' : 'trechos'}</summary>
+        ${g.l.slice(3, 40).map((t) => botao(g, t)).join('')}</details>` : ''}
+    </div></div>`).join('')}
+    ${grupos.length > mostrar.length ? `<p class="aviso">Mais ${grupos.length - mostrar.length} documentos. Refine a busca com mais palavras ou "frase entre aspas".</p>` : ''}`;
+  alvo.querySelectorAll('.trecho').forEach((b) => b.addEventListener('click', () => {
+    const r = refs[Number(b.dataset.r)];
+    irParaDestaque = { id: r.id, h: { f: r.f, texto: r.texto }, confiarF: true };
+    location.hash = `#/doc/${encodeURIComponent(r.id)}`;
+  }));
 }
 
 /* ---------- progresso ---------- */

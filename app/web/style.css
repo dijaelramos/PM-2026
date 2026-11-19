@@ -200,6 +200,16 @@ article .lendo.destacado { background: var(--marcado); }
   padding: 10px 18px; font-weight: 600; box-shadow: 0 4px 14px rgba(0,0,0,.25);
 }
 
+/* ---------- busca dentro dos textos ---------- */
+.resultado { align-items: flex-start; }
+.resultado .trecho {
+  display: block; width: 100%; text-align: left; margin-top: 8px; padding: 8px 10px; font-size: 15px; line-height: 1.45;
+  background: var(--fundo); border: 1px solid var(--linha); border-radius: 10px; overflow-wrap: anywhere;
+}
+.resultado .trecho:hover, .resultado .trecho:focus-visible { border-color: var(--destaque); }
+.resultado mark, article mark { background: var(--marcado); color: inherit; border-radius: 3px; padding: 0 1px; }
+.mais-trechos summary { margin-top: 8px; font-size: 14px; color: var(--destaque); cursor: pointer; }
+
 /* ---------- progresso ---------- */
 .contagem {
   display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px;

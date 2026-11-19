@@ -21,7 +21,7 @@ from urllib.parse import unquote
 from markdown_it import MarkdownIt
 
 sys.path.insert(0, str(Path(__file__).parent))
-from fala import capitulos  # noqa: E402
+from fala import _texto_inline, capitulos  # noqa: E402
 from icone import gerar_icones  # noqa: E402
 from questoes import DISCIPLINAS_AUTORAIS, simulado1_pendente  # noqa: E402
 from questoes import extrair as extrair_questoes  # noqa: E402
@@ -147,6 +147,20 @@ def reescrever_links(tokens, doc, por_caminho):
                 filho.attrSet("class", "semlink")
 
 
+def blocos_busca(tokens):
+    """Texto original de cada bloco marcado com data-f (parágrafo, título, linha de tabela), para a busca."""
+    out, atual = [], None
+    for tok in tokens:
+        if tok.type in ("paragraph_open", "heading_open", "tr_open") and tok.attrGet("data-f") is not None:
+            atual = [int(tok.attrGet("data-f")), []]
+            out.append(atual)
+        elif tok.type == "inline" and atual is not None:
+            atual[1].append(_texto_inline(tok).strip())
+        elif tok.type in ("paragraph_close", "heading_close", "tr_close"):
+            atual = None
+    return [[f, " · ".join(p for p in partes if p)] for f, partes in out if any(partes)]
+
+
 def coletar_questoes(docs, md):
     """Questões dos materiais (oficiais) e dos arquivos de questões autorais."""
     perfil = RAIZ / "Perfil_do_Estudante.md"
@@ -233,6 +247,7 @@ def main():
     for d in docs:
         tokens = d["md"].parse(d["texto"])
         d["capitulos"] = capitulos(tokens, d["titulo"])
+        d["busca"] = blocos_busca(tokens) if d["categoria"] != "revisao" else []  # a revisão repete o material
         reescrever_links(tokens, d, por_caminho)
         d["html"] = d["md"].renderer.render(tokens, d["md"].options, {})
 
@@ -265,6 +280,14 @@ def main():
         por_doc[q["doc"]] = por_doc.get(q["doc"], 0) + 1
     corpo_q = json.dumps(questoes, ensure_ascii=False, separators=(",", ":")).encode()
     arquivo_q = f"data/questoes.{hash_curto(corpo_q)}.json"
+
+    # Índice da busca dentro dos textos: [índice do documento, bloco, texto].
+    ids_busca = [d["id"] for d in docs if d["busca"]]
+    pos = {i: n for n, i in enumerate(ids_busca)}
+    corpo_b = json.dumps({"ids": ids_busca, "b": [[pos[d["id"]], f, t] for d in docs if d["busca"] for f, t in d["busca"]]},
+                         ensure_ascii=False, separators=(",", ":")).encode()
+    arquivo_b = f"data/busca.{hash_curto(corpo_b)}.json"
+    (saida / arquivo_b).write_bytes(corpo_b)
     (saida / arquivo_q).write_bytes(corpo_q)
 
     catalogo = []
@@ -303,7 +326,8 @@ def main():
     agora = dt.datetime.now(dt.timezone(dt.timedelta(hours=-3))).strftime("%d/%m/%Y %H:%M")
     (saida / "data" / "catalogo.json").write_text(
         json.dumps({"versao": versao, "gerado_em": agora, "docs": catalogo,
-                    "questoes": {"arquivo": arquivo_q, "total": len(questoes)}, "plano": plano},
+                    "questoes": {"arquivo": arquivo_q, "total": len(questoes)}, "plano": plano,
+                    "busca": {"arquivo": arquivo_b}},
                    ensure_ascii=False), encoding="utf-8")
 
     # Arquivos do app; a versão do service worker muda quando o código muda.
