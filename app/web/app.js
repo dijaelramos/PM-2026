@@ -185,7 +185,12 @@ function seloOffline(it) {
   return baixados.has(abs(it.audio.url)) ? '<span class="selo ok">offline</span>' : '';
 }
 
-const tituloCurto = (it) => (it.categoria === 'revisao' ? it.titulo.replace(/^Revisão rápida: /, '') : it.titulo);
+const tituloCurto = (it) => ({ revisao: it.titulo.replace(/^Revisão rápida: /, ''), questoes: it.titulo.replace(/^Questões: /, '') })[it.categoria] || it.titulo;
+/* Botão para o arquivo de questões do dia (estudo dirigido, questões e gabarito), separado do material. */
+const linkCaderno = (item, classe = 'btn') => {
+  const cad = item.caderno && catalogo.docs.find((d) => d.id === item.caderno);
+  return cad ? `<a class="${classe}" href="#/doc/${encodeURIComponent(cad.id)}">📝 Questões do dia${cad.questoes ? ` · ${cad.questoes}` : ''}</a>` : '';
+};
 
 function cartaoMaterial(it) {
   const [dia, data] = (it.subtitulo || '').split(' ');
@@ -343,10 +348,11 @@ async function telaDoc(id) {
       <button class="btn ${item.audio ? '' : 'primario'}" id="b-tts">🔊 ${posTts > 0 ? 'Continuar com a voz do celular' : 'Ouvir com a voz do celular'}</button>
       ${item.audio ? '<button class="btn" id="b-baixar"></button>' : ''}
       ${blocosDoItem(item) ? `<a class="btn" href="#/cronometro/${encodeURIComponent(item.id)}">⏱ ${crono && crono.id === item.id && !crono.fim ? 'Cronômetro em andamento' : 'Cronômetro do roteiro'}</a>` : ''}
-      ${item.questoes ? `<button class="btn" id="b-questoes">✍ Resolver as ${item.questoes} questões</button>` : ''}
+      ${linkCaderno(item)}
+      ${item.questoes && !item.caderno ? `<button class="btn${item.categoria === 'questoes' ? ' primario' : ''}" id="b-questoes">✍ Resolver as ${item.questoes} questões no app</button>` : ''}
       ${item.cartoes ? `<button class="btn" id="b-cartoes">🃏 ${item.cartoes} flashcards</button>` : ''}
       ${rev ? `<a class="btn" href="#/doc/${encodeURIComponent(rev.id)}">⚡ Revisão rápida · ${minutos(duracaoItem(rev))}</a>` : ''}
-      ${mat ? `<a class="btn" href="#/doc/${encodeURIComponent(mat.id)}">📄 Material completo</a>` : ''}
+      ${mat ? `<a class="btn" href="#/doc/${encodeURIComponent(mat.id)}">📄 ${item.categoria === 'questoes' ? 'Material de estudo' : 'Material completo'}</a>` : ''}
       ${item.audio ? '<button class="btn" id="b-depois">➕ Ouvir depois</button>' : ''}
       ${item.categoria === 'material' ? `<button class="btn" id="b-estudado" aria-pressed="${concluido(item)}">${concluido(item) ? '✓ Estudado' : '☐ Marcar como estudado'}</button>` : ''}
     </div>
@@ -409,7 +415,8 @@ async function telaDoc(id) {
     try {
       const todas = await obterQuestoes();
       const titulo = item.subtitulo ? `Material de ${item.subtitulo.split(' ').pop()}` : item.titulo;
-      iniciarSessao(todas.filter((q) => q.doc === item.id).map((q) => q.id), titulo);
+      const dono = item.categoria === 'questoes' ? item.material : item.id; // as questões guardam o id do material
+      iniciarSessao(todas.filter((q) => q.doc === dono).map((q) => q.id), titulo);
     } catch { $('#aviso-doc').textContent = 'As questões ainda não foram guardadas no celular. Abra o app com internet.'; }
   });
   $('#b-tts').addEventListener('click', () => iniciarTts(item, doc, null));
@@ -549,7 +556,7 @@ async function buscarTextos(q, seq) {
   alvo.innerHTML = `<h2 class="secao">Dentro dos textos · ${total} ${total === 1 ? 'trecho' : 'trechos'} em ${grupos.length} ${grupos.length === 1 ? 'documento' : 'documentos'}</h2>
     ${mostrar.map((g) => `<div class="cartao resultado"><div class="corpo">
       <strong>${esc(g.it.subtitulo ? `${g.it.subtitulo.split(' ').pop()} · ` : '')}${esc(g.it.titulo)}</strong>
-      <span class="meta">${esc(g.it.grupo || (g.it.categoria === 'material' ? 'Material do Dia' : ''))} · ${g.l.length} ${g.l.length === 1 ? 'trecho' : 'trechos'}</span>
+      <span class="meta">${esc(g.it.grupo || ({ material: 'Material do Dia', questoes: 'Questões do dia' })[g.it.categoria] || '')} · ${g.l.length} ${g.l.length === 1 ? 'trecho' : 'trechos'}</span>
       ${g.l.slice(0, 3).map((t) => botao(g, t)).join('')}
       ${g.l.length > 3 ? `<details class="mais-trechos"><summary>Mais ${g.l.length - 3} ${g.l.length - 3 === 1 ? 'trecho' : 'trechos'}</summary>
         ${g.l.slice(3, 40).map((t) => botao(g, t)).join('')}</details>` : ''}
@@ -1535,7 +1542,7 @@ $('#en-cancelar').addEventListener('click', fecharEditorNota);
 $('#editor-nota').addEventListener('click', (e) => { if (e.target.id === 'editor-nota') fecharEditorNota(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && editorAberto) fecharEditorNota(); });
 
-const disciplinaDoc = (it) => ((it.categoria === 'material' || it.categoria === 'revisao')
+const disciplinaDoc = (it) => (['material', 'revisao', 'questoes'].includes(it.categoria)
   ? tituloCurto(it).replace(/\s*(?:e|\+)\s*Redação$/, '') : (it.grupo || 'Outros'));
 
 function contarDestaques() {
@@ -1937,6 +1944,7 @@ function telaCrono(idPedido) {
       ${cronoAtivo() ? `<p class="aviso">Há um cronômetro em andamento para "${esc(crono.titulo)}". Começar este encerra aquele. <a href="#/cronometro">Ver o que está em andamento</a></p>` : ''}
       <button class="btn primario largo" id="c-comecar">▶ Começar a sessão · ${fmtMin(total)}</button>
       <a class="btn largo" href="#/doc/${encodeURIComponent(item.id)}">📄 Abrir o material</a>
+      ${linkCaderno(item, 'btn largo')}
       <p class="aviso">O aviso de troca de bloco (som e vibração) toca com o app aberto. Com a tela apagada, o celular pode atrasar o aviso, mas o tempo continua certo.</p>`;
     $('#c-comecar').addEventListener('click', () => comecarCrono(item));
     ligarOpcoesCrono(item.id);
@@ -1970,6 +1978,7 @@ function telaCrono(idPedido) {
            <button class="btn" id="c-prox">${crono.idx >= crono.blocos.length - 1 ? '⏹ Concluir' : '⏭ Próximo bloco'}</button>
            <button class="btn" id="c-encerrar">Encerrar</button>`}
       <a class="btn" href="#/doc/${encodeURIComponent(item.id)}">📄 Abrir o material</a>
+      ${linkCaderno(item)}
     </div>
     ${listaBlocosCrono(crono.blocos, crono.fim ? crono.blocos.length : crono.idx, crono.fim)}
     ${opcoesCrono(false)}

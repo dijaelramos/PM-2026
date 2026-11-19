@@ -66,7 +66,8 @@ def coletar():
     for p in sorted((RAIZ / "Material_do_Dia").glob("*.md")):
         if p.name.lower() == "readme.md":
             continue
-        docs.append({"caminho": p, "categoria": "material"})
+        # "<material>_Questoes.md": estudo dirigido, questões e gabarito, separados do material de estudo
+        docs.append({"caminho": p, "categoria": "questoes" if p.stem.endswith("_Questoes") else "material"})
     plano = RAIZ / "Plano_de_Estudos_PMPE_2026.md"
     if plano.exists():
         docs.append({"caminho": plano, "categoria": "plano", "grupo": "Plano de estudos"})
@@ -109,7 +110,14 @@ def preparar(doc, md, md_txt):
     doc["rel"] = rel(p)
     nome = p.stem
     data = re.match(r"(\d{4})-(\d{2})-(\d{2})", nome)
-    if doc["categoria"] == "material":
+    if doc["categoria"] == "questoes":
+        assunto = h1.split(" — ")[-1].strip()
+        doc["titulo"] = f"Questões: {assunto}"
+        if data:
+            d = dt.date(*map(int, data.groups()))
+            doc["data"] = d.isoformat()
+            doc["subtitulo"] = f"{DIAS[d.weekday()]} {d:%d/%m}"
+    elif doc["categoria"] == "material":
         doc["titulo"] = titulo_material(h1, nome)
         if data:
             d = dt.date(*map(int, data.groups()))
@@ -168,10 +176,13 @@ def coletar_questoes(docs, md):
     perfil = RAIZ / "Perfil_do_Estudante.md"
     pendente = simulado1_pendente(perfil.read_text(encoding="utf-8")) if perfil.exists() else True
     avisos, questoes = [], []
+    cadernos = {d["id"]: d for d in docs if d["categoria"] == "questoes"}
     for d in docs:
         if d["categoria"] == "material" and d.get("data"):
             disciplina = re.sub(r"\s*(?:e|\+)\s*Redação$", "", d["titulo"]).strip()
-            questoes += extrair_questoes(d["texto"], doc_id=d["id"], disciplina=disciplina,
+            # as questões ficam no arquivo de questões, mas continuam com o id do material (histórico do app)
+            texto = cadernos[d["caderno"]]["texto"] if d.get("caderno") else d["texto"]
+            questoes += extrair_questoes(texto, doc_id=d["id"], disciplina=disciplina,
                                          origem=f"Material de {d['subtitulo'].split(' ')[-1]}", autoral=False,
                                          md=md, pendente_simulado=pendente, avisos=avisos)
     for p in sorted((RAIZ / "Banco_de_Provas" / "Questoes_Autorais").glob("*.md")):
@@ -228,6 +239,12 @@ def main():
         while d["id"] in ids:
             d["id"] = f"{base_id}-{n}"; n += 1
         ids[d["id"]] = d
+    por_arquivo = {d["caminho"]: d for d in docs}
+    for d in docs:  # liga o arquivo de questões ao material de estudo
+        if d["categoria"] == "questoes":
+            mat = por_arquivo.get(d["caminho"].with_name(d["caminho"].stem[: -len("_Questoes")] + ".md"))
+            if mat:
+                d["material"], mat["caderno"] = mat["id"], d["id"]
 
     # Revisão rápida de cada material (documento derivado, com áudio próprio).
     revisoes = []
@@ -319,11 +336,12 @@ def main():
     for d in docs:
         caps = d["capitulos"]
         item = {k: d[k] for k in ("id", "titulo", "categoria") if k in d}
-        if por_doc.get(d["id"]):
-            item["questoes"] = por_doc[d["id"]]
+        dono = d.get("material") if d["categoria"] == "questoes" else d["id"]  # questões guardam o id do material
+        if por_doc.get(dono):
+            item["questoes"] = por_doc[dono]
         if cartoes_por_doc.get(d["id"]):
             item["cartoes"] = cartoes_por_doc[d["id"]]
-        for k in ("subtitulo", "grupo", "data", "revisao", "material", "roteiro"):
+        for k in ("subtitulo", "grupo", "data", "revisao", "material", "caderno", "roteiro"):
             if d.get(k):
                 item[k] = d[k]
         if d["id"] in audios:
@@ -341,7 +359,7 @@ def main():
         (saida / item["arquivo"]).write_bytes(corpo)
         catalogo.append(item)
 
-    ordem = {"material": 0, "revisao": 1, "plano": 2, "base": 3}
+    ordem = {"material": 0, "questoes": 1, "revisao": 2, "plano": 3, "base": 4}
     catalogo.sort(key=lambda i: (i.get("grupo", ""), i["titulo"]))
     catalogo.sort(key=lambda i: i.get("data", ""), reverse=True)  # material mais recente primeiro
     catalogo.sort(key=lambda i: ordem[i["categoria"]])

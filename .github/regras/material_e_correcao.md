@@ -38,19 +38,30 @@ Para **cada subtópico**, apresente os três níveis nesta ordem, com estes rót
 4. Se o conteúdo depender de norma que não está na base local, abra a fonte oficial (regras de `busca_web.md`), confira o texto e, quando for norma reutilizável, salve o trecho em `Base_de_Conhecimento/` com fonte e data e registre-o em `INDICE_DA_LEGISLACAO.md`.
 5. Publique o mapa no material, antes das questões, no formato "Questão → seção onde o conteúdo foi ensinado", sem dizer a resposta.
 
-### 1.5 Estrutura do material
+### 1.5 Estrutura: dois arquivos, um para estudar e outro para responder
 
-1. Cabeçalho (data, sessão do plano, itens do Anexo II, distribuição das horas).
-2. Roteiro por bloco de tempo.
+Desde 19/11/2026, o material do dia é entregue em **dois arquivos separados**. O primeiro traz os assuntos, para ler e ouvir. O segundo traz **só o que é para responder**. Nenhuma questão, enunciado ou gabarito fica no arquivo de estudo.
+
+**Arquivo 1 — material de estudo:** `AAAA-MM-DD_<Disciplina>.md`
+
+1. Cabeçalho (data, sessão do plano, itens do Anexo II, distribuição das horas), com uma linha **"Questões do dia"** que dá o link do arquivo 2 e diz o que ele traz.
+2. Roteiro por bloco de tempo. Quando um bloco mandar resolver as questões ou fazer o estudo dirigido, diga que eles estão no arquivo de questões.
 3. Quadro "Cobertura do edital" (1.1, item 3).
 4. Para cada subtópico: os três níveis com exemplos (1.2 e 1.3) e um **resumo de 3 a 5 linhas** ("para levar para a prova").
-5. **Pegadinhas da banca** do dia, reunidas num quadro: "a banca escreve… / o certo é…".
-6. **Estudo dirigido:** perguntas abertas para responder sem consultar, cobrindo todos os subtópicos explicados.
-7. **Mapa das questões** (1.4) e **questões oficiais** (regras de `questoes_oficiais.md`, reserva do Simulado 1 e status do gabarito). Se houver poucas, diga quantas existem e ofereça as autorais prontas, com rótulo.
-8. **Revisão espaçada** dos erros registrados em `Perfil_do_Estudante.md` ("Dificuldades conhecidas") que tenham relação com a semana.
-9. Gabarito e comentários **só no fim**, identificados como **análise do tutor**, já no formato da Parte 2.
+5. **Pegadinhas da banca** do dia, reunidas num quadro com as colunas "A banca escreve… | O certo é… | Onde". Os quadros comparativos ficam numa seção cujo título contenha "Quadros para não confundir". O app transforma cada linha desses quadros num flashcard, por isso mantenha esses formatos.
+6. **Revisão espaçada** dos erros registrados em `Perfil_do_Estudante.md` ("Dificuldades conhecidas") que tenham relação com a semana.
+7. Redação do dia, se houver.
 
-O material fica longo, e isso é esperado: priorize clareza e cobertura em vez de brevidade. No chat, mostre o texto de estudo, o estudo dirigido e as questões; o gabarito fica só no arquivo.
+**Arquivo 2 — questões do dia:** `AAAA-MM-DD_<Disciplina>_Questoes.md`
+
+1. Título `# Questões do dia — <dia da semana>, DD/MM/AAAA — <Disciplina>`, com o link do arquivo 1, a instrução de como responder (estudo dirigido por escrito e sem consultar, depois as questões, e mandar as respostas ao Orquestrador para a correção) e a nota da reserva do Simulado 1.
+2. **Estudo dirigido:** perguntas abertas para responder sem consultar, cobrindo todos os subtópicos explicados.
+3. **Mapa das questões** (1.4), apontando as seções do arquivo 1.
+4. Texto de apoio, se alguma questão depender de um (título "Texto de apoio das questões N e M").
+5. **Questões oficiais** (regras de `questoes_oficiais.md`, reserva do Simulado 1 e status do gabarito), no formato `### Questão N — banca, órgão, ano, cargo, número` com as alternativas `- **(A)** texto`. Se houver poucas, diga quantas existem e ofereça as autorais prontas, com rótulo.
+6. Gabarito e comentários **só no fim**, numa seção cujo título comece com "Gabarito", identificados como **análise do tutor**, já no formato da Parte 2. O app lê esse formato para montar os exercícios interativos.
+
+O material fica longo, e isso é esperado: priorize clareza e cobertura em vez de brevidade. No chat, entregue as duas partes separadas: primeiro o material de estudo, com o link do arquivo 1; depois, num bloco à parte, o estudo dirigido e as questões, com o link do arquivo 2. O gabarito fica só no arquivo 2.
 
 ### 1.6 Resumão antes de fim de semana e feriado
 
