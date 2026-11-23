@@ -174,6 +174,35 @@ Os dois papéis correspondem aos deveres de **realizar/promover** e de **respeit
 
 **Dica:** questões de prazo exigem memorização. Se cair algo assim e você não souber, elimine o que for incompatível com a natureza da medida (semestral) e evite a alternativa que lembra outro instituto (quadrienal = PPA).
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. (1) **Titular universal**: toda pessoa humana, sem distinção; (2) **núcleo**: **dignidade, liberdade e igualdade**; (3) "**em cada momento histórico**": o rol muda e cresce (historicidade); (4) **reconhecimento positivo**: precisam estar em normas nacionais e internacionais para serem exigíveis.
+2. **Sim**. A CF fala em "estrangeiros **residentes**", mas o STF estende a proteção ao **estrangeiro não residente** (o turista), porque a **dignidade** não depende de residência.
+3. Porque os direitos humanos são **universais**: protegem **todas as pessoas** — a vítima, o cidadão comum, o preso e o **próprio policial**.
+4. **Direitos humanos** estão no plano **internacional** (tratados, declarações); **direitos fundamentais** estão no plano **interno**, positivados na **Constituição**. Ex.: o direito à vida é direito humano no art. 3º da DUDH e direito fundamental no caput do art. 5º da CF.
+5. Porque o art. 4º trata das **relações internacionais**, e no plano **externo** o nome usado é "direitos humanos" ("prevalência dos direitos humanos").
+6. Vem da visão **jusnaturalista**: direitos **inerentes à natureza humana**, anteriores ao Estado e não positivados (como na Declaração francesa de 1789). Prefere-se "direitos humanos", o termo do plano internacional, dos tratados que os positivam (e que abrange todas as pessoas).
+7. **Respeitar**: o Estado não viola (o policial não usa força além da necessária). **Proteger**: impedir que **terceiros** violem (a PM intervém para cessar uma agressão doméstica). **Realizar/promover**: criar condições concretas (formação em direitos humanos, delegacias especializadas).
+8. **Eficácia horizontal**: a violação acontece **entre particulares** (a loja e o cliente), e os direitos fundamentais também valem nessas relações.
+9. O **Procurador-Geral da República** pede ao **STJ**, em caso de **grave violação** de direitos humanos, para assegurar o cumprimento de tratados; o caso passa para a **Justiça Federal** (CF, art. 109, V-A e § 5º).
+10. **Não**. A vítima peticiona à **Comissão** Interamericana, que pode levar o caso à **Corte**. A Corte só é acionada pela **Comissão** ou por **Estados**. (E, em regra, é preciso esgotar antes os recursos internos.)
+10-A. Em **26/06/1945**, em **São Francisco** (EUA). Foi promulgada no Brasil pelo **Decreto 19.841/1945**.
+10-B. (1) **Manter a paz e a segurança internacionais**, tomando **coletivamente** medidas efetivas e resolvendo controvérsias por **meios pacíficos**; (2) desenvolver **relações amistosas** entre as nações, com base na **igualdade de direitos** e na **autodeterminação dos povos**; (3) conseguir **cooperação internacional** para problemas econômicos, sociais, culturais ou humanitários e promover os **direitos humanos** para todos, **sem distinção de raça, sexo, língua ou religião**; (4) ser um **centro** para **harmonizar** a ação das nações (PARCE).
+10-C. **Propósitos** (art. 1º) dizem **para que** a ONU existe; **princípios** (art. 2º) dizem **como** ela e os Membros agem. Três princípios (quaisquer): **igualdade** dos Membros; cumprir de **boa-fé** as obrigações; solução de controvérsias por **meios pacíficos**; **não usar nem ameaçar usar a força**; **não intervenção** em assuntos internos.
+10-D. **Indutor** (promotor): estimula políticas e educação em direitos humanos (ex.: disciplina de direitos humanos no curso de formação policial). **Garantidor** (defensor): assegura, fiscaliza, investiga, pune e repara (ex.: a corregedoria apura um abuso; a PM intervém para cessar uma violação). No PNDH-3: "**promoção e defesa**".
+10-E. O **Decreto 7.037/2009**. Tem **6 eixos orientadores** (e 25 diretrizes). O **Eixo IV**: **Segurança Pública, Acesso à Justiça e Combate à Violência**.
+10-F. A cada **2 anos** (Planos de Ação **bianuais**, art. 3º). **Não** são obrigados: Estados, DF, Municípios e os outros Poderes são **convidados a aderir** (art. 5º).
+11. Se os direitos valem só porque estão na lei, **deixariam de existir se a lei os retirasse**. Exemplo: o **Holocausto**, em que o Estado nazista matou milhões **seguindo as próprias leis**.
+12. A pessoa é **fim em si mesma** e **nunca pode ser tratada apenas como meio**. Ex.: o policial não pode torturar um preso para obter uma confissão: isso usaria a pessoa só como **meio** para um resultado.
+13. Que valem **mesmo contra a vontade da maioria**. Por isso os direitos e garantias individuais são **cláusula pétrea** (art. 60, § 4º, IV): nem emenda constitucional pode aboli-los.
+14. **Direitos** são disposições **declaratórias** (reconhecem um bem); **garantias** são disposições **assecuratórias** (protegem esse bem). Ex.: a **liberdade de locomoção** (direito) e o **habeas corpus** (garantia).
+15. **Votar**: status **ativo**. **Pagar tributo**: status **passivo**. **Pedir vaga em escola**: status **positivo**. **Liberdade de crença**: status **negativo**.
+16. É o direito cujos titulares são **pessoas indeterminadas**, ligadas por uma **situação de fato**. Ex.: o **meio ambiente** ecologicamente equilibrado.
+17. **Universais, indivisíveis, interdependentes e inter-relacionados** (§ 5º).
+18. **Irrenunciável**: a pessoa **não pode abrir mão** do direito. Mas pode **deixar de exercê-lo** num momento: quem confessa no interrogatório **não exerceu** o direito ao silêncio naquele momento, mas não o **perdeu** e pode voltar a ficar calado.
+19. **Adequação** (o meio serve ao fim?), **necessidade** (há meio menos gravoso?) e **proporcionalidade em sentido estrito** (o benefício compensa o sacrifício?). Algemas: servem para evitar fuga ou agressão (adequação)? Não há meio menos gravoso, porque o preso resiste ou ameaça fugir (necessidade)? A segurança obtida compensa a restrição à dignidade (sentido estrito)? Preso calmo e colaborativo → algemar não passa no teste (e a SV 11 exige justificativa por escrito).
+20. **Não**. Universal quer dizer que vale **para todas as pessoas**; mas os direitos são **relativos**: cedem diante de outros direitos e podem ser limitados (a liberdade cede à prisão legal). O STF diz que não há direito absoluto; parte da doutrina excetua a proibição da **tortura** e da **escravidão**.
+
 ### Revisão espaçada de RL — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Contrapositiva:** "Se **não** houve resistência, o preso **não** foi algemado." Invertemos as partes, negamos as duas e **mantivemos o "se"**.

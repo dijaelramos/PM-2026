@@ -162,6 +162,35 @@ Comentários: **análise do tutor**.
 
 **Atalho:** o item mais fácil é o meio ambiente (3ª): só (B) e (D) começam com 3. O voto decide: direitos políticos = 1ª → (D).
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Porque ela limitava o poder do rei em favor dos **"homens livres"** (barões, clero), **não de todas as pessoas**. É **antecedente** (semente do devido processo legal), sem a vocação universal das declarações modernas.
+2. A **Declaração de Direitos do Bom Povo da Virgínia**, em **1776**, nos **EUA**.
+3. A **Constituição do México** (**1917**) foi a primeira com direitos sociais de forma sistemática. A **Constituição de Weimar** (**1919**, Alemanha) virou o **modelo europeu** do Estado social.
+4. O **Estado liberal** (séculos XVII a XIX) protegia o indivíduo **contra** o Estado, que devia **se abster** (direitos de liberdade). Depois da Revolução Industrial e das lutas operárias, o **Estado social** (início do século XX) passou a **prestar**: jornada limitada, salário, escola, previdência. Ex.: do simples "não prender sem lei" para "garantir escola pública e limite de jornada".
+5. O **direito humanitário** (Convenção de Genebra, 1864, e a Cruz Vermelha), a **Liga das Nações** (1919/1920) e a **OIT** (1919).
+6. A **DUDH** é uma **resolução** da Assembleia Geral (recomendação, não tratado). Os **Pactos de 1966** são **tratados**: transformaram os direitos da DUDH em normas **obrigatórias** para quem os ratifica.
+7. Afirmou que "todos os direitos humanos são **universais, indivisíveis, interdependentes e inter-relacionados**". Consolidou a **indivisibilidade**: não há hierarquia entre direitos civis e sociais.
+8. A de **1934** (inspirada em Weimar). Na CF/1988, os direitos fundamentais estão no **Título II**, **antes** da organização do Estado, o que mostra sua **centralidade** ("Constituição Cidadã").
+9. **Karel Vasak**, em **1979**, com base no lema da Revolução Francesa: **liberdade, igualdade, fraternidade**.
+10. **1ª**: **liberdade**; direitos **civis e políticos**; Estado se **abstém**; titular, o **indivíduo**. **2ª**: **igualdade material**; direitos **econômicos, sociais e culturais**; Estado **presta**; titular, o indivíduo como membro de grupo social. **3ª**: **fraternidade/solidariedade**; direitos **difusos e coletivos** (meio ambiente, paz, desenvolvimento); proteção e cooperação; titular, a **coletividade**.
+11. Passos: (1) quem é o **titular** (pessoa ou coletividade?); (2) o que se pede ao Estado (**abster-se** ou **prestar**?); (3) qual o **valor**. (a) Liberdade de reunião: **1ª** (indivíduo, abstenção, liberdade). (b) Moradia: **2ª** (prestação, igualdade material). (c) Paz: **3ª** para **Vasak** (coletividade, solidariedade); **5ª** para **Bonavides**. (d) Greve: **2ª** (direito social), embora funcione como **liberdade** ("liberdade social").
+12. Porque "gerações" sugere que uma **substitui** a anterior. "Dimensões" mostra que os direitos se **somam** e convivem, de forma cumulativa e interdependente.
+13. **Bonavides**: 4ª = direito à **democracia** (direta), à **informação** e ao **pluralismo** (globalização política). **Bobbio**: 4ª = direitos ligados à **engenharia genética** (patrimônio genético).
+14. A ideia é historicamente **imprecisa** no plano internacional: a **OIT** (1919) protegeu direitos **sociais** antes de os direitos civis virarem tratado (DUDH de 1948, Pacto de 1966). E a metáfora favorece a **fragmentação** dos direitos, contra a **indivisibilidade**.
+15. (1) **Negociação e assinatura**: o **Presidente** (art. 84, VIII); (2) **referendo do Congresso**, por **decreto legislativo** (art. 49, I); (3) **ratificação**: o **Presidente**, no plano **internacional** (ou **adesão**, se o Brasil não assinou o texto); (4) **promulgação e publicação**: o **Presidente**, por **decreto presidencial**, e o tratado passa a valer internamente.
+16. O **decreto legislativo** é do **Congresso** e **aprova** o tratado (etapa 2). O **decreto presidencial** é do **Presidente** e **promulga** o tratado, dando-lhe vigência interna (etapa 4).
+17. Porque o Brasil não assinou a Convenção em 1969: **aderiu** em 1992, e o **Decreto 678/1992** é o **decreto presidencial de promulgação**, que a fez valer no Brasil.
+18. "Os tratados e convenções internacionais sobre **direitos humanos** que forem aprovados, **em cada Casa** do Congresso Nacional, em **dois turnos**, por **três quintos** dos votos dos respectivos **membros**, serão **equivalentes às emendas constitucionais**." Requisitos: matéria de **direitos humanos**; votação em **cada Casa**; **dois turnos**; **3/5 dos membros**.
+19. **§ 3º** (igual à emenda): **3/5 dos membros**, em **2 turnos**, em cada Casa. **Lei complementar**: **maioria absoluta**, em 1 turno (art. 69). **Lei ordinária**: **maioria simples** dos presentes, com maioria absoluta presente (art. 47).
+20. Quaisquer dois: a **Convenção sobre os Direitos das Pessoas com Deficiência** e seu Protocolo (Decreto 6.949/2009); o **Tratado de Marraqueche** (Decreto 9.522/2018); a **Convenção Interamericana contra o Racismo** (Decreto 10.932/2022).
+21. **Supraconstitucional**, **constitucional**, **supralegal** e **legal** (lei ordinária). O STF adotou a **supralegal** (voto de Gilmar Mendes), no **RE 466.343** (com o HC 87.585 e o RE 349.703), em **03/12/2008**.
+22. **Direitos humanos + rito do § 3º** → **equivalente a emenda constitucional**. **Direitos humanos + rito comum** → **supralegal**. **Outros temas + rito comum** → **lei ordinária**.
+23. (1) A CF, art. 5º, LXVII, permite a prisão civil do devedor de alimentos **e** do depositário infiel; (2) o Pacto de San José (art. 7.7) só admite prisão por dívida **alimentar**; (3) o Pacto é **supralegal**: está acima das leis que regulavam a prisão do depositário; (4) essas leis ficaram **paralisadas**, e sem lei a prisão não pode ser aplicada; (5) resultado: **SV 25** — é ilícita a prisão do depositário infiel, qualquer que seja a modalidade de depósito. O texto da CF **não mudou**.
+24. É verificar se uma **lei** é **compatível com um tratado de direitos humanos**; a incompatível perde a eficácia (se o tratado é supralegal). Ex.: a prisão do depositário infiel (SV 25); ou a audiência de custódia, exigida pelo art. 7.5 do Pacto.
+25. (a) **Habeas data** (LXXII); (b) **mandado de injunção** (LXXI); (c) **ação popular** (LXXIII).
+26. **Qualquer cidadão** (eleitor, no gozo dos direitos políticos; pessoa jurídica não pode, Súmula 365). O autor é isento de custas e do ônus da sucumbência, **salvo comprovada má-fé**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 **a) Leitura do comando:** Q1 pede o status do tratado "**segundo o entendimento do STF**" (não da doutrina). Q2 pede a alternativa **correta** "de acordo com o que disciplina a **Constituição Federal**" (texto da CF).
