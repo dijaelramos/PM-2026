@@ -2,7 +2,7 @@
 
 Este repositório reúne materiais de estudo e agentes personalizados para apoiar a preparação para o concurso da Polícia Militar de Pernambuco (PMPE), com foco principal no cargo de Soldado/QPMG, código 201, conforme o Edital de Abertura nº 001/2026.
 
-Não é uma aplicação de software: não há instalação de dependências, compilação ou execução de código. O conteúdo está organizado para consulta e uso no VS Code com o Copilot Chat.
+O conteúdo está organizado para consulta e uso no VS Code com o Copilot Chat. A pasta [`app/`](app/README.md) gera o **PMPE Ouvir**, app de celular (PWA, funciona sem internet) para ler e ouvir o material, resolver as questões, fazer simulados e redações e acompanhar o edital. Ele é publicado sozinho pelo GitHub Actions a cada push em https://dijaelramos.github.io/PM-2026/. Para estudar com os agentes não é preciso instalar nada.
 
 ## Por onde começar
 
@@ -29,6 +29,7 @@ O edital e seus anexos são a referência definitiva em caso de divergência. A 
 | [`Editais/2023/`](Editais/2023/) | Caderno de prova oficial de Soldado PMPE 2023 (Instituto AOCP), em PDF e em texto convertido, com índice de questões por tópico. |
 | [`Banco_de_Provas/`](Banco_de_Provas/README.md) | Outras provas oficiais de PM (AOCP: PMPE 2023 – 2º Tenente, PMGO 2022, PMES 2022, PMES 2018 e PMDF 2023; FGV: PMSP 2022; CEV/UECE: PMCE 2025) e 17 provas da AOCP de outras áreas (sistema prisional, polícia penal, polícia civil, perícia, judiciário, universidade, legislativo, saúde e banco público), com critérios e níveis de cada avaliação, frequência de temas e índice de questões por tópico do edital da PMPE 2026. |
 | [`Material_do_Dia/`](Material_do_Dia/README.md) | Material de cada sessão do plano em dois arquivos: o de estudo (texto, quadros, pegadinhas e redação) e o de questões (estudo dirigido, questões oficiais e gabarito comentado no fim), feito só com provas oficiais, e o resumão do último dia de estudo antes de cada fim de semana ou feriado. Peça ao Orquestrador "o estudo de hoje". |
+| [`app/`](app/README.md) | App de celular PMPE Ouvir: áudio dos materiais, questões e banco de provas com caderno de erros, flashcards, simulado de prova, redação, edital verticalizado, lei seca com incidência e cópia de segurança dos dados. Gerado por `app/build.py` a partir deste repositório. |
 | [`Banco_de_Provas/Questoes_Autorais/`](Banco_de_Provas/Questoes_Autorais/README.md) | 82 questões autorais no estilo AOCP (não oficiais), com gabarito comentado, para os tópicos com pouca ou nenhuma questão oficial e para completar o Simulado 2. |
 
 ### Materiais por disciplina
