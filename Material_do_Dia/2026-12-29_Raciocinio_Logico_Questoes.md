@@ -245,6 +245,19 @@ Duas conclusões verdadeiras (III e IV).
 
 **Por que as outras estão erradas:** (B) é o oposto da finalidade; (C), (D) e (E) mudam a relação (parte do uniforme, quem usa, contra o que protege).
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. É aquele em que é **impossível** as premissas serem verdadeiras e a conclusão falsa (validade é questão de **forma**). **Sim**: se alguma premissa for falsa, um argumento válido pode ter conclusão falsa.
+2. Suponha a **conclusão falsa** e tente deixar **todas as premissas verdadeiras**. Se conseguir, achou um contraexemplo: o argumento é **inválido**. Se der **contradição**, é **válido**.
+3. **Modus ponens**: p → q; p; logo q. **Modus tollens**: p → q; ~q; logo ~p. **Silogismo hipotético**: p → q; q → r; logo p → r. **Silogismo disjuntivo**: p ∨ q; ~p; logo q.
+4. Que todas as proposições têm **o mesmo valor**: ou **todas V**, ou **todas F**. Basta uma ser V para todas serem; basta uma ser F para todas serem F. Vale qualquer condicional entre elas, em qualquer ordem.
+5. **Equivalência**: as duas dizem a mesma coisa, "ida e volta" (p → q ≡ ~q → ~p). **Implicação**: da primeira decorre a segunda, "só ida" (p ∧ q ⇒ p; mas p não implica p ∧ q).
+6. **~p ∨ ~q**; **p → ~q**; **q → ~p**.
+7. (1) Ache o **fato** (sem "se" nem "ou"); (2) use-o para destravar condicionais (**ponens** ou **tollens**) e os "ou" (**disjuntivo**); (3) anote cada conclusão nova e volte às afirmações não usadas; (4) marque o que vale **com certeza**.
+8. Comece pelas afirmações **incompatíveis** (que não podem ser verdadeiras juntas): uma delas é a falsa. Depois teste as combinações possíveis e veja quais respeitam o número k.
+9. **Não**: "algum A é B" quer dizer "**pelo menos um**"; pode ser que **todos** sejam.
+10. **Algum C é B** (o C que é A está dentro de B).
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Tautologia** (p ∨ ~p).

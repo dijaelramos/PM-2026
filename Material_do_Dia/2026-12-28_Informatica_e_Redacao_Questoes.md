@@ -268,6 +268,19 @@ Um usuário salva, no formato **CSV**, uma pasta de trabalho do Excel 2019 que t
 
 **Por que as outras estão erradas:** (A) CSV não guarda várias planilhas nem fórmulas e gráficos; (C) CSV é texto e abre em qualquer editor ou planilha; (D) é o contrário: ficam os valores, perde-se a formatação; (E) o padrão do Calc é **.ods**.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Célula**: o encontro de uma coluna com uma linha, identificada pelo endereço (B3). **Intervalo**: um conjunto de células, como **A1:A10** (de A1 até A10). **Pasta de trabalho**: o arquivo inteiro do Excel (no Calc, "documento de planilha"). Extensões: Excel **.xlsx**; Calc **.ods**.
+2. 1º **parênteses**; 2º **potência** (^); 3º **multiplicação e divisão**, da esquerda para a direita; 4º **soma e subtração**; por último, **&** e as comparações.
+3. **Relativa** (A1): ao copiar, coluna e linha mudam. **Absoluta** ($A$1): nada muda. **Mista** ($A1 ou A$1): trava só a coluna ou só a linha. A tecla que alterna é **F4**, no Excel e no Calc 7.
+4. Excel: **=Plan2!B4**. Calc: **=$Plan2.B4**.
+5. **CONT.NÚM**: conta células com **números**. **CONT.VALORES**: conta células **não vazias**. **CONT.SE**: conta com **um critério**. **CONT.SES**: conta com **vários critérios ao mesmo tempo**.
+6. Procura um valor na **primeira coluna** do intervalo e devolve o valor da **mesma linha**, na coluna indicada pelo **número** (ex.: =PROCV(F2;A2:C20;3;0) devolve a 3ª coluna). O **0** (ou FALSO) pede **correspondência exata**.
+7. **DEF.NÚM.DEC** **formata** o número com casas decimais fixas e separador de milhar e devolve **texto** (=DEF.NÚM.DEC(1234,5;2) → "1.234,50"). **TRUNCAR** **corta** as casas decimais sem arredondar (=TRUNCAR(2,567;2) → 2,56).
+8. **#DIV/0!**: divisão por **zero** (ou por célula vazia). **#NOME?**: nome de função **escrito errado** ou inexistente. **#REF!**: **referência inválida** (a célula foi excluída). **#N/D**: **valor não encontrado** (comum no PROCV). **####**: **coluna estreita** demais para mostrar o número (não é erro de fórmula).
+9. **Comparar**: colunas ou barras. **Evolução**: linhas. **Partes de um total**: pizza (uma série só). **Série de dados** é **cada conjunto de valores** que o gráfico desenha, em geral uma coluna (ou linha) da tabela.
+10. O CSV é **texto** com valores separados: guarda **só a planilha ativa** e perde as **fórmulas** (ficam só os valores), a **formatação** e os **gráficos**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. Word (pt-BR): **Ctrl + B** salva e **Ctrl + S** sublinha. Writer: **Ctrl + B** põe negrito e **Ctrl + S** salva.

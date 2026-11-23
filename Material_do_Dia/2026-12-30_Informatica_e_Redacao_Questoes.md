@@ -225,6 +225,17 @@ No LibreOffice Impress 7 (instalação padrão em português), para gerar um arq
 
 **Por que as outras estão erradas:** os caminhos (A), (B), (C) e (E) não geram PDF.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Transição** é o efeito **entre um slide e outro**; fica na guia **Transições**. **Animação** é o efeito **em um objeto dentro do slide** (entrada, ênfase, saída, trajetória); fica na guia **Animações**.
+2. **Slide mestre** é o slide-modelo que controla a **aparência de todos** os slides **da apresentação aberta** (fontes, títulos, logotipo, fundo). **Modelo** é um **arquivo** com tema, layouts e mestres prontos para **começar novas apresentações** com o mesmo padrão. Extensões de modelo: PowerPoint **.potx**; Impress **.otp**.
+3. **Normal**: **editar** (painel de slides, slide e anotações). **Classificação de Slides**: ver **miniaturas** e **reordenar** os slides arrastando. **Anotações**: escrever o que o **apresentador** vai falar.
+4. **F5** inicia do **começo**; **Shift + F5**, do **slide atual** (nos dois programas).
+5. **Continua no arquivo**, mas **não aparece** durante a apresentação. Ocultar não exclui.
+6. **.pptx**: padrão do PowerPoint. **.ppsx**: apresentação que **abre direto no modo de exibição** (tela cheia). **.potx**: **modelo** do PowerPoint. **.odp**: padrão do **Impress**.
+7. **PowerPoint 2019**: **Arquivo → Exportar → Criar PDF/XPS**. **Impress 7**: **Arquivo → Exportar como → Exportar como PDF**.
+8. **Esc**: **encerra** a apresentação. **B**: **tela preta**. **W**: **tela branca**. **Número + Enter**: **vai para o slide** daquele número.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. 3² = 9; 9 × 2 = 18; 2 + 18 = **20**.
