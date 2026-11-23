@@ -2272,7 +2272,7 @@ function telaRedacao() {
   setTopo('Redação', true);
   const atual = guardado.get('redacaoAtual', null);
   const lista = redacoes();
-  const prop = catalogo.redacao || { oficiais: [], plano: [] };
+  const prop = Object.assign({ oficiais: [], plano: [], provaveis: [] }, catalogo.redacao || {});
   const hoje = dataISO();
   const doPlano = prop.plano.filter((p) => p.data <= hoje);
   const corrigidas = lista.filter((r) => r.notas);
@@ -2292,6 +2292,7 @@ function telaRedacao() {
         <select id="r-tema">
           ${doPlano.length ? `<optgroup label="Do plano (o texto de apoio está no material do dia)">${doPlano.map((p, i) => `<option value="p${i}">${esc(fmtD(p.data))} · ${esc(p.tema || 'proposta do material do dia')}</option>`).join('')}</optgroup>` : ''}
           ${prop.oficiais.length ? `<optgroup label="Provas oficiais da AOCP">${prop.oficiais.map((p, i) => `<option value="o${i}">${esc(p.prova)} · ${esc(p.tema)}</option>`).join('')}</optgroup>` : ''}
+          ${prop.provaveis.length ? `<optgroup label="Temas prováveis para 2026 (prognóstico, não oficial)">${prop.provaveis.map((p, i) => `<option value="v${i}">${esc(p.chance)} · ${esc(p.tema)}</option>`).join('')}</optgroup>` : ''}
           <option value="livre">Outro tema (escrevo abaixo)</option>
         </select></label>
       <label id="r-livre-rot" hidden>Tema<input id="r-livre" type="text" placeholder="Escreva o tema"></label>
@@ -2301,6 +2302,14 @@ function telaRedacao() {
     </div>
     <p class="aviso" id="r-prop-aviso"></p>
     <button class="btn primario largo" id="r-nova">✒ Começar a redação</button>
+    ${prop.provaveis.length ? `<details class="q-apoio"><summary>🎯 Temas que podem cair em 2026 (${prop.provaveis.length})</summary>
+      <p class="aviso">Aposta a partir do padrão das propostas da AOCP (PMPE 2023, PMES 2022, PMGO 2022, PMDF 2023): temas sociais e atuais, quase sempre
+        "Desafios para…" com recorte no Brasil. Não é informação oficial. Escreva pelo menos um texto de cada tema de chance alta.</p>
+      ${prop.provaveis.map((p) => {
+        const feita = lista.some((r) => r.tema === p.tema);
+        return `<div class="tema-provavel"><strong>${esc(p.tema)}</strong> <span class="selo">${esc(p.chance)}</span>${feita ? ' <span class="selo ok">escrita ✓</span>' : ''}
+          <p class="meta">${esc(p.porque)}. Repertório: ${esc(p.repertorio)}.</p></div>`;
+      }).join('')}</details>` : ''}
     ${corrigidas.length ? `<h2 class="secao">Sua evolução</h2>
       ${ultimas.length ? `<p class="aviso">Média das últimas ${ultimas.length}: ${medias.map((m, i) => `${ASPECTOS[i]} ${fmtNota(m)}`).join(' · ')}.
         ${fraco >= 0 ? `Ponto mais fraco: <b>${esc(ASPECTOS[fraco])}</b>.` : ''}</p>` : ''}
@@ -2326,6 +2335,9 @@ function telaRedacao() {
       html = `A proposta e os textos de apoio estão no <a href="#/doc/${encodeURIComponent(p.doc)}">material de ${fmtD(p.data)}</a>. Leia antes de começar.`;
     } else if (v[0] === 'o') {
       html = `Formato original: ${esc(prop.oficiais[Number(v.slice(1))].formato)}. Na PMPE 2026 são 15 a 20 linhas.`;
+    } else if (v[0] === 'v') {
+      const p = prop.provaveis[Number(v.slice(1))];
+      html = `<b>Chance ${esc(p.chance.toLowerCase())}</b> (aposta, não é tema oficial): ${esc(p.porque)}.<br><b>Repertório</b> (confira antes de citar): ${esc(p.repertorio)}.`;
     }
     $('#r-prop-aviso').innerHTML = html;
   };
@@ -2336,7 +2348,7 @@ function telaRedacao() {
     if (atual && !window.confirm('Há uma redação em andamento. Descartar o rascunho e começar outra?')) return;
     const v = sel.value;
     const tema = v[0] === 'p' ? (doPlano[Number(v.slice(1))].tema || `Proposta do material de ${fmtD(doPlano[Number(v.slice(1))].data)}`)
-      : v[0] === 'o' ? prop.oficiais[Number(v.slice(1))].tema : $('#r-livre').value.trim();
+      : v[0] === 'o' ? prop.oficiais[Number(v.slice(1))].tema : v[0] === 'v' ? prop.provaveis[Number(v.slice(1))].tema : $('#r-livre').value.trim();
     guardado.set('redacaoAtual', { id: Date.now(), tema, texto: '', inicio: Date.now(), dur: Number($('#r-dur').value), check: [] });
     location.hash = '#/redacao/escrever';
   });

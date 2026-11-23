@@ -15,7 +15,7 @@ Os agentes leem este arquivo antes de montar ou ajustar planos, para não pergun
 - **Data de início do plano atual:** 03/11/2026.
 - **Último dia de estudo:** 19/02/2027 (20/02 é descanso).
 - **Datas sem estudo:** 20/11/2026, 08/12/2026, 24/12/2026, 25/12/2026, 31/12/2026 e 01/01/2027.
-- **Sábados disponíveis para simulado completo (5 h):** não informado.
+- **Sábados para simulado completo (5 h, objetiva + redação, como na prova):** **09/01/2027** e **13/02/2027**, um depois de cada simulado do plano (escolhidos pelo Orquestrador em 23/11/2026, a pedido do estudante; troque as datas aqui se não puder). Materiais: [2027-01-09_Simulado_Completo.md](Material_do_Dia/2027-01-09_Simulado_Completo.md) e [2027-02-13_Simulado_Completo.md](Material_do_Dia/2027-02-13_Simulado_Completo.md). Não contam como dia de estudo do plano: se não der, nada atrasa.
 
 ## Plano vigente
 
@@ -24,7 +24,7 @@ Os agentes leem este arquivo antes de montar ou ajustar planos, para não pergun
 ## Nível e desempenho
 
 - **Nível atual por disciplina:** não informado.
-- **Simulado 1 (prova PMPE 2023, objetiva):** pendente — previsto para 07/01/2027. Enquanto estiver `pendente`, os agentes não usam as questões objetivas de 2023 em treino (regras comuns, seção 3). Depois de fazer o simulado, troque para `realizado em DD/MM/AAAA`.
+- **Simulado 1 (prova PMPE 2023, objetiva):** pendente — previsto para 07/01/2027. **Passa a valer como `realizado em 07/01/2027` a partir de 08/01/2027** (pedido do estudante em 23/11/2026): desse dia em diante, os agentes e o app tratam o simulado como feito e liberam as questões de 2023, sem precisar editar este campo. Até lá, os agentes não usam as questões objetivas de 2023 em treino (regras comuns, seção 3). Se o simulado for adiado, troque a data desta frase.
 - **Simulado 2 (questões oficiais mistas):** pendente — previsto para 12/02/2027.
 - **Resultados de simulados:** nenhum registrado ainda.
 - **Treinos diários (questões oficiais):**
@@ -52,5 +52,6 @@ Os agentes leem este arquivo antes de montar ou ajustar planos, para não pergun
   - **RL item 1 — contagem de proposições:** contou uma frase composta com "ou" como uma só proposição (C2: marcou 2 linhas, o certo era 4). Sublinhar os conectivos antes de calcular 2ⁿ.
   - **RL item 1 — nomes das formas de argumento:** acertou a validade, mas não nomeou *modus tollens* (B17) nem *afirmar o consequente* (B18). Revisar também *modus ponens* e *negar o antecedente*.
   - **Leitura do comando:** em questão que pede a alternativa **inadequada/incorreta**, marcou uma alternativa correta (FGV/PMSP 2022 Q18). Antes de marcar, relê o comando e sublinha "inadequada", "incorreta" ou "exceto".
+- **Treinos de 10/11 a 19/11/2026:** nenhuma resposta foi enviada para correção. Em 23/11/2026 o Orquestrador procurou no repositório, no histórico do Copilot do VS Code e nas conversas anteriores, e não achou resultados depois de 09/11. Se o estudante resolveu as questões no app, os acertos estão no celular: a partir de agora eles chegam pelo **relatório do app** (`Relatorios_do_App/`, botão "Enviar relatório" em Meus dados), que o Orquestrador lê para atualizar este perfil.
 - **Pendências de estudo:**
   - **Redação de 06/11/2026** (proposta PMES 2022, saúde mental no trabalho): adiada pelo estudante e juntada à redação de **13/11/2026** (mesma proposta); correção em 16/11. Em 09/11, os 30 min de Redação ficam para ler o exemplo de correção e planejar o texto.

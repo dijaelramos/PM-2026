@@ -190,10 +190,10 @@ def blocos_busca(tokens):
     return [[f, " · ".join(p for p in partes if p)] for f, partes in out if any(partes)]
 
 
-def coletar_questoes(docs, md):
+def coletar_questoes(docs, md, hoje=None):
     """Questões dos materiais (oficiais) e dos arquivos de questões autorais."""
     perfil = RAIZ / "Perfil_do_Estudante.md"
-    pendente = simulado1_pendente(perfil.read_text(encoding="utf-8")) if perfil.exists() else True
+    pendente = simulado1_pendente(perfil.read_text(encoding="utf-8"), hoje) if perfil.exists() else True
     avisos, questoes = [], []
     cadernos = {d["id"]: d for d in docs if d["categoria"] == "questoes"}
     for d in docs:
@@ -324,7 +324,8 @@ def main():
             total -= len(audios.pop(d["id"])[0])
             print(f"  AVISO: sem MP3 para {d['rel']} (limite de {args.limite_mb} MB); fica com a voz do celular.")
 
-    questoes = coletar_questoes(docs, md)
+    hoje = args.ate or hoje_recife()
+    questoes = coletar_questoes(docs, md, hoje)
     arq_plano, arq_perfil = RAIZ / "Plano_de_Estudos_PMPE_2026.md", RAIZ / "Perfil_do_Estudante.md"
     texto_perfil = arq_perfil.read_text(encoding="utf-8") if arq_perfil.exists() else ""
     plano = {"sessoes": ler_plano(arq_plano.read_text(encoding="utf-8")) if arq_plano.exists() else [],
@@ -395,7 +396,7 @@ def main():
 
     # Lei seca com incidência: artigos da CF e das leis citados nas questões oficiais dos materiais (de todas as
     # datas: o comentário cita o artigo que decide a questão) e do banco. Uma questão conta uma vez por artigo.
-    pendente_s1 = simulado1_pendente(texto_perfil)
+    pendente_s1 = simulado1_pendente(texto_perfil, hoje)
     oficiais = {}
     for p in sorted((RAIZ / "Material_do_Dia").glob("*_Questoes.md")):
         stem_mat = p.stem[: -len("_Questoes")]
@@ -481,7 +482,7 @@ def main():
     conteudo = json.dumps(catalogo, ensure_ascii=False, sort_keys=True).encode()
     versao = hash_curto(conteudo, 12)
     agora = dt.datetime.now(dt.timezone(dt.timedelta(hours=-3))).strftime("%d/%m/%Y %H:%M")
-    simulados = montar_simulados(RAIZ, plano.get("simulados", []), docs, questoes, simulado1_pendente(texto_perfil))
+    simulados = montar_simulados(RAIZ, plano.get("simulados", []), docs, questoes, simulado1_pendente(texto_perfil, hoje))
     # Edital verticalizado: itens do Anexo II, dias do plano que estudam cada um e quantas questões das provas o cobram.
     arq_conteudos = RAIZ / "Base_de_Conhecimento" / "CONTEUDOS_PROGRAMATICOS" / "Conteudos.txt"
     edital = []
@@ -505,6 +506,15 @@ def main():
             tema = re.sub(r"^autoral do tutor,\s*", "", m.group(1)).split(";")[0].strip(" '‘’\"") if m else ""
             redacao["plano"].append({"data": d["data"], "doc": d["id"], "tema": tema[:1].upper() + tema[1:]})
     redacao["plano"].sort(key=lambda x: x["data"], reverse=True)
+    # temas prováveis para 2026 (prognóstico): tabela da seção 2 de Temas_provaveis_2026.md
+    redacao["provaveis"] = []
+    arq_temas = RAIZ / "Base_de_Conhecimento" / "REDAÇÃO" / "Temas_provaveis_2026.md"
+    if arq_temas.exists():
+        secao = arq_temas.read_text(encoding="utf-8-sig").split("## 2. Temas prováveis", 1)
+        for ln in (secao[1].split("\n## ", 1)[0].splitlines() if len(secao) > 1 else []):
+            cel = [re.sub(r"[*`]", "", c).strip() for c in ln.strip().strip("|").split("|")]
+            if len(cel) == 4 and cel[1] in ("Alta", "Média", "Baixa"):
+                redacao["provaveis"].append({"tema": cel[0], "chance": cel[1], "porque": cel[2], "repertorio": cel[3]})
     (saida / "data" / "catalogo.json").write_text(
         json.dumps({"versao": versao, "gerado_em": agora, "docs": catalogo, "simulados": simulados, "edital": edital, "redacao": redacao,
                     "questoes": {"arquivo": arquivo_q, "total": len(questoes)}, "plano": plano,

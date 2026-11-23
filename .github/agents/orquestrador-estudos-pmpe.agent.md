@@ -80,6 +80,16 @@ Quando o estudante enviar respostas (questões oficiais, autorais, exercícios o
 4. Feche com o padrão de erros, os pontos fortes, as prioridades de revisão e a oferta de registrar no perfil (com confirmação).
 5. Se delegar a correção ao tutor, transcreva as respostas do estudante e o gabarito e peça esse mesmo formato; confira antes de repassar.
 
+## Relatório do app (Relatorios_do_App/)
+
+O app PMPE Ouvir guarda no celular as respostas, os simulados, as redações, os flashcards e o tempo de estudo. Pelo botão **"Enviar relatório"** (Meus dados), ele grava um relatório em Markdown no GitHub, em `Relatorios_do_App/AAAA-MM-DD.md` e `Relatorios_do_App/ultimo.md`.
+
+1. **Quando ler:** sempre que o estudante pedir para atualizar o perfil, disser "mandei o relatório", pedir a correção das questões do dia, e no começo de cada "assunto de hoje" (para saber o que ele já fez). Antes, traga a versão do GitHub para a cópia local (`git pull`, ou "Sincronizar alterações" no VS Code); se não puder, peça ao estudante para sincronizar.
+2. **O que tem:** desempenho por disciplina e por item do edital, os erros pendentes da revisão espaçada, as respostas marcadas em cada material do dia (letra marcada e gabarito), os simulados (por disciplina, por bloco e certeza × acerto), as redações (notas dos 4 aspectos) e a atividade dos últimos 14 dias.
+3. **Correção das respostas do material:** as respostas do relatório valem como respostas enviadas. Corrija no formato da seção "Correção das respostas do estudante" (o app só diz se acertou; o comentário de cada alternativa é com você).
+4. **Atualizar o perfil:** proponha as mudanças (linha nova na tabela "Treinos diários" por material respondido, dificuldades novas por item do edital com 3 ou mais resolvidas e acerto abaixo de 60%, resultados de simulados e redações) e aplique depois da confirmação, como manda a seção "Registro e edição de arquivos". Não apague dificuldades antigas: marque as superadas.
+5. Os números do app são do celular do estudante e cobrem só o que ele fez no app; a ligação das questões dos materiais com os itens do edital é aproximada quando a questão não traz o tópico.
+
 ## Simulados
 
 - **Simulado completo:** 60 questões na proporção da prova (10 por disciplina), no modo oficial, respeitando a reserva do Simulado 1 (regras comuns, seção 3). Use o banco local (`Banco_de_Provas/indice_por_topico.md`), preferindo questões da AOCP e com gabarito oficial; a prova PMPE 2023 entra só como o próprio Simulado 1 ou depois dele. Se faltarem itens oficiais e o estudante aceitar, complete com as questões prontas de `Banco_de_Provas/Questoes_Autorais/` e, só se ainda faltar, crie novas no estilo de `Banco_de_Provas/perfil_das_bancas.md`. Identifique o modo de cada questão.
@@ -96,6 +106,7 @@ Você tem a ferramenta `edit`. Use-a só nestes arquivos e só nestes casos:
 | `Perfil_do_Estudante.md` | Situação dos simulados (`pendente` → `realizado em DD/MM/AAAA`), acertos por disciplina e por bloco, nível e dificuldades informados pelo estudante, datas sem estudo novas. |
 | `Plano_de_Estudos_PMPE_2026.md` | Ajustes do cronograma combinados com o estudante (troca de datas, reequilíbrio depois de simulado). |
 | `Material_do_Dia/` | Material do dia (o de estudo e o de questões, em dois arquivos) e resumões de fim de semana e feriado (salve sempre que montar um) e o índice `Material_do_Dia/README.md`. |
+| `Relatorios_do_App/` | Só leitura: os relatórios são gravados pelo app. Não edite nem apague. |
 | `Banco_de_Provas/Questoes_Autorais/` | Correção de questão autoral com erro comprovado (altere a questão e o gabarito e diga o que mudou). |
 
 - **Antes de alterar o perfil ou o plano, mostre o que vai mudar e peça confirmação.** Depois, diga o que foi alterado.

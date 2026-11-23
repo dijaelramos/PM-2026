@@ -514,3 +514,5 @@ article strong[data-inc]::after { content: " 🔥" attr(data-inc); font-size: .7
 .filtros input[type="text"] { font: inherit; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--linha); background: var(--superficie); color: var(--texto); }
 .acoes-bloco { overflow-x: auto; scrollbar-width: none; }
 @media (max-width: 440px) { .acoes-bloco button { padding: 8px 8px; font-size: 13px; } }
+.tema-provavel { padding: 8px 0; border-top: 1px solid var(--linha); }
+.tema-provavel .meta { font-size: 13px; color: var(--suave); margin: 4px 0 0; }

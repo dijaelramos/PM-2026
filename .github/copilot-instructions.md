@@ -54,7 +54,7 @@ As 60 questões objetivas da prova de Soldado PMPE 2023 são o **Simulado 1** (d
 - se o estudante pedir uma questão da prova de 2023, explique que ela está reservada para o Simulado 1 e ofereça uma questão oficial do banco sobre o mesmo tópico; só mostre a questão de 2023 se ele confirmar que quer abrir mão do simulado diagnóstico, e então registre isso no perfil;
 - continua permitido usar a **proposta de redação** de 2023 (o Simulado 1 é só a objetiva) e informar dados estatísticos gerais da prova (quantas questões por disciplina e por tópico), sem revelar enunciados.
 
-Quando o perfil registrar o Simulado 1 como `realizado`, a prova de 2023 volta a ser a primeira fonte.
+Quando o perfil registrar o Simulado 1 como `realizado`, a prova de 2023 volta a ser a primeira fonte. O perfil pode também marcar uma data a partir da qual o simulado passa a valer como realizado ("Passa a valer como `realizado em 07/01/2027` a partir de 08/01/2027"): a partir dessa data, trate-o como `realizado`, mesmo que o campo ainda diga `pendente`.
 
 ### Modo oficial (padrão)
 

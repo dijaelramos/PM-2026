@@ -34,9 +34,15 @@ DISCIPLINAS_AUTORAIS = {
 }
 
 
-def simulado1_pendente(texto_perfil):
-    m = re.search(r"Simulado 1[^\n]*?:\*\*\s*([^\s—.,]+)", texto_perfil)
-    return not (m and m.group(1).lower().startswith("realizado"))
+def simulado1_pendente(texto_perfil, hoje=None):
+    """Pendente até o perfil dizer "realizado" ou até a data de "Passa a valer como realizado ... a partir de DD/MM/AAAA"."""
+    m = re.search(r"Simulado 1[^\n]*?:\*\*\s*([^\s—.,]+)([^\n]*)", texto_perfil)
+    if m and m.group(1).lower().startswith("realizado"):
+        return False
+    d = re.search(r"realizado[^\n]*?a partir de (\d{2})/(\d{2})/(\d{4})", m.group(2)) if m else None
+    if d and hoje is not None:
+        return hoje.isoformat() < f"{d.group(3)}-{d.group(2)}-{d.group(1)}"
+    return True
 
 
 def sem_links_locais(md):

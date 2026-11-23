@@ -52,6 +52,8 @@
 | **PMGO 2022, Soldado** | "O tempo utilizado na internet é prejudicial para as pessoas ou é uma necessidade do mundo contemporâneo?" | "Dissertação", 20 a 30 linhas, outros critérios | [edital e caderno da PMGO](../../Banco_de_Provas/AOCP/PMGO_2022_Soldado/prova.md) |
 | **PMDF 2023, Soldado** | "Desafios para promover a segurança no trânsito brasileiro" | Dissertativo-argumentativo, 3 textos de apoio (ONU/Abramet, Pnatrans e imagem da PMDF), rascunho de 30 linhas | [prova da PMDF](../../Banco_de_Provas/AOCP/PMDF_2023_Soldado/prova.md) (fim do arquivo) |
 
+**Temas que podem cair em 2026 (prognóstico):** [Temas_provaveis_2026.md](Temas_provaveis_2026.md), a partir do padrão das propostas acima.
+
 Os temas e formatos acima vêm de [perfil_das_bancas.md](../../Banco_de_Provas/perfil_das_bancas.md), seção 2. A PMES 2018 também teve redação, mas a proposta não está no arquivo coletado. A proposta da PMDF 2023 foi acrescentada em 16/11/2026, com a prova baixada pelo estudante.
 
 ## 4. Como os agentes devem corrigir
