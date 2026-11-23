@@ -10,6 +10,7 @@ on:
       - 'Base_de_Conhecimento/**'
       - 'Plano_de_Estudos_PMPE_2026.md'
       - 'Editais/2026/**'
+      - 'Editais/2023/indice_questoes_2023.md'
       - 'Banco_de_Provas/**/*.md'
       - 'Perfil_do_Estudante.md'
       - 'app/**'

@@ -173,6 +173,11 @@ function rota() {
   if (h === '#/destaques') { telaDestaques(); return; }
   if (h === '#/questoes/resolver') { telaResolver(); return; }
   if (h === '#/questoes/banco') { telaBanco(); return; }
+  if (h === '#/simulado') { telaSimulado(); return; }
+  if (h === '#/simulado/fazer') { telaSimuladoFazer(); return; }
+  if (h === '#/simulado/folha') { telaSimuladoFolha(); return; }
+  const rs = h.match(/^#\/simulado\/resultado\/(\d+)$/);
+  if (rs) { telaResultadoSim(Number(rs[1])); return; }
   if (h === '#/cartoes') { telaCartoes(); return; }
   if (h === '#/cartoes/estudar') { telaEstudarCartoes(); return; }
   const c = h.match(/^#\/cronometro(?:\/(.+))?$/);
@@ -324,7 +329,7 @@ function desenharLista(filtro) {
   }
   if (!f) {
     const nDest = contarDestaques();
-    const blocos = resumoConviteHome() + resumoCronoHome() + resumoProgressoHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
+    const blocos = resumoConviteHome() + resumoSimuladoHome() + resumoCronoHome() + resumoProgressoHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
       <div class="icone-q" aria-hidden="true">🖍</div><div class="corpo"><strong>Meus destaques</strong>
       <span class="meta">${nDest} ${nDest === 1 ? 'trecho destacado' : 'trechos destacados'}, por disciplina</span></div><span aria-hidden="true">›</span></a>` : '');
     if (blocos) html += `<h2 class="secao">Seu estudo</h2>${blocos}`;
@@ -773,7 +778,63 @@ async function obterQuestoes() {
 const respostas = () => guardado.get('respostas', {});
 const incluirAutorais = () => guardado.get('incluirAutorais', true);
 const filtrarAutorais = (lista) => (incluirAutorais() ? lista : lista.filter((q) => q.tipo === 'oficial'));
-const rotuloResp = (k) => (k === 'CERTO' ? 'Certo' : k === 'ERRADO' ? 'Errado' : k);
+const rotuloResp = (k) => (k === 'CERTO' ? 'Certo' : k === 'ERRADO' ? 'Errado' : k || 'em branco');
+
+/* ---------- caderno de erros com revisão espaçada ---------- */
+/* guardado 'revErros': { id: { c: degrau, p: próxima revisão AAAA-MM-DD } }.
+   Errou: a questão volta amanhã. Acertou na revisão: volta em 7 dias e depois em 30; acertou de novo: sai da revisão.
+   Errou de novo em qualquer momento: recomeça amanhã. */
+const INTERV_ERROS = [1, 7, 30];
+
+function revErros() {
+  const rev = guardado.get('revErros', null);
+  if (rev) return rev;
+  const novo = {}; // primeira vez: os erros que já estavam no caderno entram para revisar hoje
+  const hoje = dataISO();
+  for (const [id, r] of Object.entries(respostas())) if (!r.ok) novo[id] = { c: 0, p: hoje };
+  guardado.set('revErros', novo);
+  return novo;
+}
+
+/* Atualiza a agenda depois de uma resposta e devolve o aviso que a correção mostra. */
+function agendarErro(id, ok) {
+  const rev = revErros();
+  const hoje = dataISO();
+  const e = rev[id];
+  let aviso = '';
+  if (!ok) {
+    rev[id] = { c: 0, p: somaDias(hoje, INTERV_ERROS[0]) };
+    aviso = '🔁 Entrou na revisão de erros: volta amanhã.';
+  } else if (e && e.p <= hoje) {
+    const c = e.c + 1;
+    if (c >= INTERV_ERROS.length) {
+      delete rev[id];
+      aviso = '🏆 Recuperada: acertou nas três revisões e saiu da revisão de erros.';
+    } else {
+      rev[id] = { c, p: somaDias(hoje, INTERV_ERROS[c]) };
+      aviso = `🔁 Acertou na revisão: volta em ${INTERV_ERROS[c]} dias.`;
+    }
+  } else if (e) {
+    aviso = `🔁 Revisão marcada para ${dataCurta(e.p)}.`;
+  }
+  guardado.set('revErros', rev);
+  return aviso;
+}
+
+const errosParaHoje = (lista) => {
+  const rev = revErros();
+  const hoje = dataISO();
+  return lista.filter((q) => rev[q.id] && rev[q.id].p <= hoje).sort((a, b) => rev[a.id].p.localeCompare(rev[b.id].p));
+};
+
+/* Grava uma resposta no histórico (caderno de erros, estatísticas e revisão espaçada). */
+function gravarResposta(id, k, ok) {
+  const resp = respostas();
+  const r = resp[id] || { n: 0, a: 0 };
+  resp[id] = { u: k, ok, n: r.n + 1, a: r.a + (ok ? 1 : 0), t: Date.now() };
+  guardado.set('respostas', resp);
+  return agendarErro(id, ok);
+}
 
 function estatisticas(lista) {
   const resp = respostas();
@@ -794,9 +855,11 @@ function resumoQuestoesHome() {
   if (!total) return '';
   const vals = Object.values(respostas());
   const erros = vals.filter((r) => !r.ok).length;
+  const hoje = dataISO();
+  const revisar = Object.values(revErros()).filter((e) => e.p <= hoje).length;
   return `<a class="cartao cartao-q" href="#/questoes">
       <div class="icone-q" aria-hidden="true">✍</div>
-      <div class="corpo"><strong>Questões</strong>
+      <div class="corpo"><strong>Questões${revisar ? ` · 🔁 ${revisar} ${revisar === 1 ? 'erro' : 'erros'} para revisar hoje` : ''}</strong>
         <span class="meta">${total} questões · ${vals.length} resolvidas${erros ? ` · ${erros} no caderno de erros` : ''}</span></div>
       <span aria-hidden="true">›</span></a>`;
 }
@@ -832,6 +895,11 @@ async function telaQuestoes() {
   const st = estatisticas(lista);
   const novas = lista.filter((q) => !resp[q.id]);
   const erradas = lista.filter((q) => resp[q.id] && !resp[q.id].ok);
+  const revisarHoje = errosParaHoje(todas);
+  const rev = revErros();
+  const naRevisao = Object.keys(rev).length;
+  const amanha = somaDias(dataISO(), 1);
+  const nAmanha = Object.values(rev).filter((e) => e.p === amanha).length;
   const porDisc = new Map();
   for (const q of lista) {
     if (!porDisc.has(q.disciplina)) porDisc.set(q.disciplina, []);
@@ -859,10 +927,17 @@ async function telaQuestoes() {
     ${emAndamento ? `<a class="cartao continuar" href="#/questoes/resolver"><div class="corpo"><strong>Continuar: ${esc(sessao.titulo)}</strong>
       <span class="meta">questão ${sessao.idx + 1} de ${sessao.ids.length}</span></div><span aria-hidden="true">▶</span></a>` : ''}
     <div class="acoes">
-      <button class="btn primario" id="q-novas" ${novas.length ? '' : 'disabled'}>▶ Não resolvidas (${novas.length})</button>
+      ${revisarHoje.length ? `<button class="btn primario" id="q-revisar">🔁 Revisar os erros de hoje (${revisarHoje.length})</button>` : ''}
+      <button class="btn${revisarHoje.length ? '' : ' primario'}" id="q-novas" ${novas.length ? '' : 'disabled'}>▶ Não resolvidas (${novas.length})</button>
       <button class="btn" id="q-erros" ${erradas.length ? '' : 'disabled'}>Caderno de erros (${erradas.length})</button>
       <button class="btn" id="q-aleatorias">10 aleatórias</button>
     </div>
+    ${naRevisao ? `<p class="aviso">Revisão espaçada dos erros: a questão que você errou volta amanhã; acertando, volta em 7 dias e depois em 30, e então sai da revisão.
+      ${revisarHoje.length ? '' : `Nada para hoje.${nAmanha ? ` Amanhã: ${nAmanha}.` : ''}`} ${naRevisao} ${naRevisao === 1 ? 'questão está' : 'questões estão'} na revisão.</p>` : ''}
+    <a class="cartao cartao-q" href="#/simulado"><div class="icone-q" aria-hidden="true">⏱</div>
+      <div class="corpo"><strong>Simulado de prova</strong>
+      <span class="meta">60 questões, 10 por disciplina, com cronômetro e o resultado por bloco · folha de respostas dos Simulados 1 e 2</span></div>
+      <span aria-hidden="true">›</span></a>
     ${catalogo.banco ? `<a class="cartao cartao-q" href="#/questoes/banco"><div class="icone-q" aria-hidden="true">🔎</div>
       <div class="corpo"><strong>Banco de questões oficiais</strong>
       <span class="meta">${catalogo.banco.total} questões de provas de PM e da AOCP · filtre por disciplina, tópico do edital, banca e prova</span></div>
@@ -877,6 +952,8 @@ async function telaQuestoes() {
     </div>`;
 
   const ordemTreino = (l) => [...l.filter((q) => !resp[q.id]), ...l.filter((q) => resp[q.id] && !resp[q.id].ok), ...l.filter((q) => resp[q.id] && resp[q.id].ok)];
+  const br = $('#q-revisar');
+  if (br) br.addEventListener('click', () => iniciarSessao(revisarHoje.map((q) => q.id), 'Revisão dos erros'));
   $('#q-novas').addEventListener('click', () => iniciarSessao(novas.map((q) => q.id), 'Não resolvidas'));
   $('#q-erros').addEventListener('click', () => iniciarSessao(embaralhar(erradas).map((q) => q.id), 'Caderno de erros'));
   $('#q-aleatorias').addEventListener('click', () => iniciarSessao(embaralhar(lista).slice(0, 10).map((q) => q.id), '10 aleatórias'));
@@ -892,6 +969,7 @@ async function telaQuestoes() {
   $('#q-zerar').addEventListener('click', () => {
     if (!window.confirm('Apagar todas as suas respostas e o caderno de erros? Não dá para desfazer.')) return;
     guardado.set('respostas', {});
+    guardado.set('revErros', {});
     guardado.set('sessaoQ', null);
     telaQuestoes();
   });
@@ -1097,6 +1175,7 @@ async function telaResolver() {
   s.ids = s.ids.filter((id) => mapa.has(id));
   if (s.idx >= s.ids.length) { telaFimSessao(s); return; }
   const q = mapa.get(s.ids[s.idx]);
+  if (s.revisao && s.resp == null) s.resp = s.revisao[q.id] || ''; // correção de simulado: já vem respondida
   const fonte = [q.fonte, q.meta].filter(Boolean).join(' · ');
 
   tela.innerHTML = `
@@ -1119,7 +1198,7 @@ async function telaResolver() {
 
   let escolhida = null;
   tela.querySelectorAll('.alt').forEach((b) => b.addEventListener('click', () => {
-    if (s.resp) return;
+    if (s.resp != null) return;
     escolhida = b.dataset.k;
     tela.querySelectorAll('.alt').forEach((x) => {
       x.classList.toggle('escolhida', x === b);
@@ -1129,18 +1208,19 @@ async function telaResolver() {
   }));
   tela.querySelectorAll('.riscar').forEach((b) => b.addEventListener('click', () => b.parentElement.classList.toggle('riscada')));
   $('#q-acao').addEventListener('click', () => {
-    if (!s.resp) { responder(s, q, escolhida); return; }
+    if (s.resp == null) { responder(s, q, escolhida); return; }
     s.idx++;
     s.resp = null;
+    s.avisoRev = '';
     guardado.set('sessaoQ', s);
     telaResolver();
   });
-  if (s.resp) mostrarCorrecao(s, q);
+  if (s.resp != null) mostrarCorrecao(s, q);
   else iniciarRelogio();
 }
 
 function responder(s, q, k) {
-  if (!k || s.resp) return;
+  if (!k || s.resp != null) return;
   const ok = k === q.resposta;
   const seg = relogioQ ? Math.round((Date.now() - relogioQ.inicio) / 1000) : 0;
   pararRelogio();
@@ -1148,11 +1228,8 @@ function responder(s, q, k) {
   s.feitas++;
   s.tempo += seg;
   if (ok) s.certas++; else s.erradas.push(q.id);
+  s.avisoRev = gravarResposta(q.id, k, ok);
   guardado.set('sessaoQ', s);
-  const resp = respostas();
-  const r = resp[q.id] || { n: 0, a: 0 };
-  resp[q.id] = { u: k, ok, n: r.n + 1, a: r.a + (ok ? 1 : 0), t: Date.now() };
-  guardado.set('respostas', resp);
   registrarAtividade({ q: 1, a: ok ? 1 : 0 });
   mostrarCorrecao(s, q);
 }
@@ -1169,6 +1246,7 @@ function mostrarCorrecao(s, q) {
   const naCatalogo = q.doc && catalogo.docs.some((d) => d.id === q.doc);
   $('#q-resultado').innerHTML = `
     <div class="q-veredito ${ok ? 'ok' : 'erro'}">${ok ? '✓ Você acertou!' : `✗ Você marcou ${rotuloResp(s.resp)}. Resposta: ${rotuloResp(q.resposta)}`}</div>
+    ${s.avisoRev ? `<p class="q-meta">${esc(s.avisoRev)}</p>` : ''}
     ${q.comentario ? `<div class="q-comentario"><h3>Comentário</h3><div class="q-html">${q.comentario}</div></div>` : ''}
     ${naCatalogo ? `<p><a class="btn-link" href="#/doc/${encodeURIComponent(q.doc)}">Abrir o material desta questão</a></p>` : ''}`;
   const b = $('#q-acao');
@@ -1208,6 +1286,565 @@ function iniciarRelogio() {
 function pararRelogio() {
   if (relogioQ && relogioQ.id) clearInterval(relogioQ.id);
   if (relogioQ) relogioQ.id = null;
+}
+
+/* ---------- simulado de prova ---------- */
+/* Dois jeitos de fazer:
+   - simulado do app: 60 questões do app (10 por disciplina, na ordem da prova), com cronômetro e a correção só no fim;
+   - folha de respostas dos simulados do plano (Simulado 1 no papel, Simulado 2 no caderno do app): marca a letra e a
+     certeza; a correção sai sozinha quando o gabarito chega ao app, no dia da correção do plano.
+   guardado 'simAtual': o simulado em andamento; 'simulados': os entregues (a nota é calculada na hora de mostrar). */
+
+const DISC_PROVA = [['LP', 'Língua Portuguesa'], ['HPE', 'História de Pernambuco'], ['RL', 'Raciocínio Lógico'],
+  ['INF', 'Informática'], ['DC', 'Direito Constitucional'], ['DH', 'Direitos Humanos e Legislação Extravagante']];
+const BLOCOS = [['I', ['LP', 'HPE']], ['II', ['RL', 'INF']], ['III', ['DC', 'DH']]];
+const CERTEZAS = { C: 'certeza', D: 'dúvida', X: 'chute' };
+const nomeDisc = (s) => (DISC_PROVA.find((d) => d[0] === s) || ['', s])[1];
+const siglaPorNumero = (n) => DISC_PROVA[Math.min(5, Math.floor((n - 1) / 10))][0];
+function siglaQuestao(q) {
+  if (q.top && q.top.length) { const s = siglaTopico(q.top[0]); return s === 'HP' ? 'HPE' : s; }
+  const d = norm(q.disciplina);
+  if (d.startsWith('lingua')) return 'LP';
+  if (d.startsWith('historia')) return 'HPE';
+  if (d.startsWith('raciocinio')) return 'RL';
+  if (d.startsWith('informatica')) return 'INF';
+  if (d.startsWith('direito constitucional')) return 'DC';
+  if (d.startsWith('direitos humanos')) return 'DH';
+  return '';
+}
+const simAtual = () => guardado.get('simAtual', null);
+const historicoSim = () => guardado.get('simulados', []);
+const fmtDur = (min) => fmtMin(Math.round(min));
+let relogioSim = null;
+
+/* 60 questões: as não resolvidas primeiro (oficiais, da AOCP e com 5 alternativas na frente), depois as erradas. */
+async function montarSimuladoApp() {
+  const todas = filtrarAutorais(await obterQuestoes());
+  const resp = respostas();
+  const provas = (banco && banco.provas) || {};
+  const ids = [];
+  const faltas = [];
+  for (const [s, nome] of DISC_PROVA) {
+    const peso = (q) => {
+      const r = resp[q.id];
+      let p = r ? (r.ok ? 300 : 200) : 0;
+      if (q.tipo !== 'oficial') p += 20;
+      if (q.alternativas.length !== 5) p += 10;
+      if (q.banco && provas[q.p] && provas[q.p].banca !== 'Instituto AOCP') p += 15;
+      return p + Math.random() * 5;
+    };
+    const escolhidas = todas.filter((q) => siglaQuestao(q) === s && !q.ce && q.alternativas.length >= 4)
+      .map((q) => [peso(q), q]).sort((a, b) => a[0] - b[0]).slice(0, 10).map((x) => x[1])
+      .sort((a, b) => (a.apoio || '').localeCompare(b.apoio || '')); // as do mesmo texto de apoio ficam juntas
+    if (escolhidas.length < 10) faltas.push(`${nome}: ${escolhidas.length}`);
+    ids.push(...escolhidas.map((q) => q.id));
+  }
+  return { ids, faltas };
+}
+
+function comecarSimulado(dados) {
+  const atual = simAtual();
+  if (atual && !window.confirm(`Há um simulado em andamento (${atual.nome}). Descartar e começar outro?`)) return false;
+  guardado.set('simAtual', Object.assign({ inicio: Date.now(), resp: {}, cert: {}, marc: {}, risc: {}, idx: 0 }, dados));
+  return true;
+}
+
+function restanteSim(sim, agora = Date.now()) { return sim.inicio + sim.dur * 60000 - agora; }
+function textoRelogioSim(sim) {
+  const r = restanteSim(sim);
+  return r > 0 ? `⏱ ${fmt(r / 1000)}` : `⏰ Tempo esgotado (+${fmt(-r / 1000)})`;
+}
+function ligarRelogioSim() {
+  if (relogioSim) clearInterval(relogioSim);
+  relogioSim = setInterval(() => {
+    const el = $('#sim-relogio');
+    const sim = simAtual();
+    if (!el || !sim) { clearInterval(relogioSim); relogioSim = null; return; }
+    el.textContent = textoRelogioSim(sim);
+    el.classList.toggle('esgotado', restanteSim(sim) <= 0);
+  }, 1000);
+}
+
+function resumoSimuladoHome() {
+  const sim = simAtual();
+  if (sim) {
+    return `<a class="cartao cartao-q continuar" href="#/simulado/${sim.tipo === 'folha' ? 'folha' : 'fazer'}">
+      <div class="icone-q" aria-hidden="true">⏱</div><div class="corpo"><strong>Continuar: ${esc(sim.nome)}</strong>
+      <span class="meta">${Object.keys(sim.resp).length} de ${sim.total} marcadas · ${esc(textoRelogioSim(sim))}</span></div><span aria-hidden="true">▶</span></a>`;
+  }
+  const hoje = dataISO();
+  const feitos = new Set(historicoSim().filter((r) => r.n).map((r) => r.n));
+  const prox = (catalogo.simulados || []).find((s) => s.data >= hoje && diasEntre(hoje, s.data) <= 3 && !feitos.has(s.n));
+  if (!prox) return '';
+  const dias = diasEntre(hoje, prox.data);
+  return `<a class="cartao cartao-q" href="#/simulado"><div class="icone-q" aria-hidden="true">⏱</div>
+    <div class="corpo"><strong>${esc(prox.nome)} ${dias ? `em ${dias} ${dias === 1 ? 'dia' : 'dias'}` : 'é hoje'}</strong>
+    <span class="meta">Abra a folha de respostas no app na hora de começar: ela marca o tempo e corrige quando o gabarito sair</span></div>
+    <span aria-hidden="true">›</span></a>`;
+}
+
+async function telaSimulado() {
+  pararRelogio();
+  setTopo('Simulado de prova', true);
+  const sim = simAtual();
+  const hist = historicoSim();
+  const hoje = dataISO();
+  const dur = guardado.get('simDur', 180);
+  const plano = catalogo.simulados || [];
+  const cartaoPlano = (s) => {
+    const feitos = hist.map((r, i) => [r, i]).filter(([r]) => r.n === s.n);
+    const corrige = s.gabarito ? 'gabarito já no app: corrige na hora' : s.correcao ? `o gabarito chega ao app em ${s.correcao.slice(8, 10)}/${s.correcao.slice(5, 7)}` : 'correção com o Orquestrador';
+    const cad = s.caderno && catalogo.docs.find((d) => d.id === s.caderno);
+    const mat = s.material && catalogo.docs.find((d) => d.id === s.material);
+    return `<div class="cartao sim-plano"><div class="corpo"><strong>${esc(s.nome)} · ${esc(dataCurta(s.data))}</strong>
+      <span class="meta">${esc(s.fonte || '')} · ${esc(corrige)}</span>
+      <div class="acoes">
+        <button class="btn${s.data === hoje ? ' primario' : ''}" data-folha="${s.n}">📝 Folha de respostas</button>
+        ${mat ? `<a class="btn" href="#/doc/${encodeURIComponent(mat.id)}">Instruções</a>` : ''}
+        ${cad ? `<a class="btn" href="#/doc/${encodeURIComponent(cad.id)}">Caderno</a>` : ''}
+        ${feitos.map(([r, i]) => `<a class="btn" href="#/simulado/resultado/${i}">Resultado de ${esc(dataCurta(r.data))}</a>`).join('')}
+      </div></div></div>`;
+  };
+
+  tela.innerHTML = `
+    <p class="aviso">Na prova: 60 questões, 10 por disciplina, e 5 h para a objetiva e a redação juntas. Para passar na objetiva:
+      pelo menos 30% dos pontos em cada bloco (6 de 20), nenhuma disciplina zerada e 30% do total (18 de 60). As anuladas contam como acerto.</p>
+    ${sim ? `<a class="cartao continuar" href="#/simulado/${sim.tipo === 'folha' ? 'folha' : 'fazer'}"><div class="corpo"><strong>Continuar: ${esc(sim.nome)}</strong>
+      <span class="meta">${Object.keys(sim.resp).length} de ${sim.total} marcadas · ${esc(textoRelogioSim(sim))}</span></div><span aria-hidden="true">▶</span></a>` : ''}
+    <h2 class="secao">Simulado montado pelo app</h2>
+    <p class="aviso">60 questões do app, 10 de cada disciplina, na ordem da prova: primeiro as que você ainda não resolveu.
+      Sem correção durante a prova; no fim, a nota por disciplina e por bloco. As respostas entram no caderno de erros.</p>
+    <div class="filtros">
+      <label>Tempo
+        <select id="sim-dur">${[[180, '3 h (como no plano)'], [240, '4 h (sobra 1 h para a redação)'], [300, '5 h (tempo da prova inteira)']]
+          .map(([v, r]) => `<option value="${v}" ${dur === v ? 'selected' : ''}>${r}</option>`).join('')}</select></label>
+    </div>
+    <button class="btn primario largo" id="sim-app">▶ Começar o simulado do app</button>
+    <p class="aviso" id="sim-aviso"></p>
+    ${plano.length ? `<h2 class="secao">Simulados do plano</h2>
+      <p class="aviso">Faça no papel (ou no caderno do app) e marque as respostas na folha do app: ela marca o tempo, guarda a certeza de cada
+        resposta e corrige sozinha quando o gabarito chegar.</p>${plano.map(cartaoPlano).join('')}` : ''}
+    ${hist.length ? `<h2 class="secao">Seus resultados</h2>
+      ${hist.map((r, i) => [r, i]).reverse().map(([r, i]) => {
+        const c = notaRapida(r);
+        return `<a class="cartao" href="#/simulado/resultado/${i}"><div class="data"><b>${r.data.slice(8, 10)}/${r.data.slice(5, 7)}</b>${esc(DIAS_CURTOS[deISO(r.data).getDay()])}</div>
+          <div class="corpo"><strong>${esc(r.nome)}</strong><span class="meta">${c != null ? `${c} de ${r.total} acertos` : 'aguardando o gabarito'} · ${esc(fmtDur(r.usado / 60))}</span></div><span aria-hidden="true">›</span></a>`;
+      }).join('')}` : ''}`;
+
+  $('#sim-dur').addEventListener('change', (e) => guardado.set('simDur', Number(e.target.value)));
+  $('#sim-app').addEventListener('click', async () => {
+    const aviso = $('#sim-aviso');
+    aviso.textContent = 'Montando o simulado…';
+    let m;
+    try { m = await montarSimuladoApp(); } catch {
+      aviso.textContent = 'As questões ainda não foram guardadas no celular. Abra o app com internet uma vez.';
+      return;
+    }
+    if (m.ids.length < 30) { aviso.textContent = `Ainda não há questões suficientes (${m.ids.length}).`; return; }
+    if (m.faltas.length && !window.confirm(`Ainda não há 10 questões de cada disciplina no app (${m.faltas.join('; ')}). O simulado terá ${m.ids.length} questões. Começar assim?`)) {
+      aviso.textContent = '';
+      return;
+    }
+    const d = Number($('#sim-dur').value);
+    if (comecarSimulado({ tipo: 'app', nome: 'Simulado do app', ids: m.ids, total: m.ids.length, dur: d })) location.hash = '#/simulado/fazer';
+    else aviso.textContent = '';
+  });
+  tela.querySelectorAll('[data-folha]').forEach((b) => b.addEventListener('click', () => {
+    const s = plano.find((x) => String(x.n) === b.dataset.folha);
+    if (!s) return;
+    const atual = simAtual();
+    if (atual && atual.tipo === 'folha' && atual.n === s.n) { location.hash = '#/simulado/folha'; return; }
+    if (comecarSimulado({ tipo: 'folha', n: s.n, nome: s.nome, total: s.total || 60, dur: 180 })) location.hash = '#/simulado/folha';
+  }));
+}
+
+/* Acertos de um simulado entregue (ou null se o gabarito ainda não chegou), sem carregar as questões. */
+function notaRapida(r) {
+  if (r.tipo === 'app') return r.acertos != null ? r.acertos : null;
+  const s = (catalogo.simulados || []).find((x) => x.n === r.n);
+  if (!s || !s.gabarito) return null;
+  let a = 0;
+  for (let i = 1; i <= r.total; i++) {
+    const g = s.gabarito[String(i)];
+    if (g === 'ANULADA' || (g && r.resp[i - 1] === g)) a++;
+  }
+  return a;
+}
+
+async function telaSimuladoFazer() {
+  pararRelogio();
+  setTopo('Simulado', true);
+  const sim = simAtual();
+  if (!sim || sim.tipo !== 'app') { location.hash = '#/simulado'; return; }
+  let todas;
+  try { todas = await obterQuestoes(); } catch {
+    tela.innerHTML = '<p class="aviso">As questões ainda não foram guardadas no celular. Abra o app com internet uma vez.</p>';
+    return;
+  }
+  if (location.hash !== '#/simulado/fazer') return;
+  const mapa = new Map(todas.map((q) => [q.id, q]));
+  const i = Math.min(sim.idx, sim.ids.length - 1);
+  const q = mapa.get(sim.ids[i]);
+  const marcadas = Object.keys(sim.resp).length;
+  const sig = q ? siglaQuestao(q) : '';
+  const riscadas = sim.risc[i] || [];
+  tela.innerHTML = `
+    <div class="q-topo sim-topo"><span>Questão <b>${i + 1}</b> de ${sim.ids.length} · ${esc(sig)}</span>
+      <span id="sim-relogio" class="sim-relogio${restanteSim(sim) <= 0 ? ' esgotado' : ''}">${esc(textoRelogioSim(sim))}</span></div>
+    <div class="q-progresso" aria-hidden="true"><span style="width:${(marcadas / sim.ids.length) * 100}%"></span></div>
+    ${q ? `
+    <div class="q-fonte"><span class="selo ${q.tipo === 'oficial' ? 'oficial' : 'autoral'}">${q.tipo === 'oficial' ? 'Oficial' : 'Autoral · não oficial'}</span>${esc(q.disciplina)}</div>
+    <p class="q-meta">${esc([q.fonte, q.origem].filter(Boolean).join(' · '))}</p>
+    ${q.apoio ? `<details class="q-apoio"${guardado.get('simApoioAberto', false) ? ' open' : ''}><summary>Texto de apoio</summary><div class="q-html">${q.apoio}</div></details>` : ''}
+    <div class="q-html q-enunciado">${q.enunciado}</div>
+    <div class="q-alts" role="radiogroup" aria-label="Alternativas">
+      ${q.alternativas.map(([k, html]) => `<div class="q-alt${riscadas.includes(k) ? ' riscada' : ''}">
+        <button class="alt${sim.resp[i] === k ? ' escolhida' : ''}" data-k="${k}" role="radio" aria-checked="${sim.resp[i] === k}"><span class="letra">${k}</span><span class="txt">${html}</span></button>
+        <button class="riscar" data-r="${k}" aria-label="Riscar a alternativa ${k}" title="Riscar alternativa">✂</button></div>`).join('')}
+    </div>
+    <div class="chips sim-cert" role="group" aria-label="Seu grau de certeza">
+      ${Object.entries(CERTEZAS).map(([k, r]) => `<button class="chip${sim.cert[i] === k ? ' ativo' : ''}" data-c="${k}" aria-pressed="${sim.cert[i] === k}">${k} · ${r}</button>`).join('')}
+    </div>` : '<p class="aviso">Esta questão não está mais no app. Pule para a próxima.</p>'}
+    <div class="q-botoes sim-botoes">
+      <button class="btn" id="sim-ant" ${i ? '' : 'disabled'}>‹</button>
+      <button class="btn${sim.marc[i] ? ' marcada' : ''}" id="sim-marcar" aria-pressed="${!!sim.marc[i]}">${sim.marc[i] ? '★ Marcada' : '☆ Revisar depois'}</button>
+      <button class="btn" id="sim-grade">Folha</button>
+      <button class="btn primario" id="sim-prox">${i + 1 < sim.ids.length ? 'Próxima ›' : 'Entregar'}</button>
+    </div>
+    <div id="sim-grade-caixa" hidden>${gradeSimulado(sim, i)}
+      <button class="btn primario largo" id="sim-entregar">Entregar o simulado</button></div>`;
+  window.scrollTo(0, 0);
+  ligarRelogioSim();
+
+  const salvar = () => guardado.set('simAtual', sim);
+  const ir = (n) => { sim.idx = Math.max(0, Math.min(sim.ids.length - 1, n)); salvar(); telaSimuladoFazer(); };
+  tela.querySelectorAll('.alt').forEach((b) => b.addEventListener('click', () => {
+    if (sim.resp[i] === b.dataset.k) delete sim.resp[i]; else sim.resp[i] = b.dataset.k;
+    salvar();
+    tela.querySelectorAll('.alt').forEach((x) => {
+      x.classList.toggle('escolhida', x.dataset.k === sim.resp[i]);
+      x.setAttribute('aria-checked', String(x.dataset.k === sim.resp[i]));
+    });
+    const n = Object.keys(sim.resp).length;
+    tela.querySelector('.q-progresso span').style.width = `${(n / sim.ids.length) * 100}%`;
+  }));
+  tela.querySelectorAll('.riscar').forEach((b) => b.addEventListener('click', () => {
+    const l = sim.risc[i] || [];
+    sim.risc[i] = l.includes(b.dataset.r) ? l.filter((x) => x !== b.dataset.r) : l.concat(b.dataset.r);
+    salvar();
+    b.parentElement.classList.toggle('riscada');
+  }));
+  tela.querySelectorAll('[data-c]').forEach((b) => b.addEventListener('click', () => {
+    if (sim.cert[i] === b.dataset.c) delete sim.cert[i]; else sim.cert[i] = b.dataset.c;
+    salvar();
+    tela.querySelectorAll('[data-c]').forEach((x) => {
+      x.classList.toggle('ativo', x.dataset.c === sim.cert[i]);
+      x.setAttribute('aria-pressed', String(x.dataset.c === sim.cert[i]));
+    });
+  }));
+  const ap = tela.querySelector('.q-apoio');
+  if (ap) ap.addEventListener('toggle', () => guardado.set('simApoioAberto', ap.open));
+  $('#sim-ant').addEventListener('click', () => ir(i - 1));
+  $('#sim-prox').addEventListener('click', () => (i + 1 < sim.ids.length ? ir(i + 1) : entregarSimulado()));
+  $('#sim-marcar').addEventListener('click', () => { if (sim.marc[i]) delete sim.marc[i]; else sim.marc[i] = 1; salvar(); telaSimuladoFazer(); });
+  $('#sim-grade').addEventListener('click', () => { const g = $('#sim-grade-caixa'); g.hidden = !g.hidden; if (!g.hidden) g.scrollIntoView({ block: 'start' }); });
+  tela.querySelectorAll('[data-ir]').forEach((b) => b.addEventListener('click', () => ir(Number(b.dataset.ir))));
+  $('#sim-entregar').addEventListener('click', entregarSimulado);
+}
+
+function gradeSimulado(sim, atual) {
+  let html = '';
+  for (let d = 0; d * 10 < sim.ids.length; d++) {
+    const nums = [];
+    for (let i = d * 10; i < Math.min(sim.ids.length, d * 10 + 10); i++) {
+      const cls = [sim.resp[i] ? 'feita' : '', sim.marc[i] ? 'marcada' : '', i === atual ? 'atual' : ''].filter(Boolean).join(' ');
+      nums.push(`<button class="num ${cls}" data-ir="${i}" aria-label="Questão ${i + 1}${sim.resp[i] ? `, marcou ${sim.resp[i]}` : ', em branco'}${sim.marc[i] ? ', para revisar' : ''}">${i + 1}<small>${sim.resp[i] || ''}</small></button>`);
+    }
+    html += `<div class="grade-nums">${nums.join('')}</div>`;
+  }
+  const brancas = sim.ids.length - Object.keys(sim.resp).length;
+  return `<p class="aviso">${brancas ? `${brancas} em branco. ` : 'Todas marcadas. '}★ = marcada para revisar. Toque num número para ir à questão.</p>${html}`;
+}
+
+function telaSimuladoFolha() {
+  pararRelogio();
+  const sim = simAtual();
+  if (!sim || sim.tipo !== 'folha') { location.hash = '#/simulado'; return; }
+  setTopo(`Folha · ${sim.nome}`, true);
+  const info = (catalogo.simulados || []).find((s) => s.n === sim.n) || {};
+  const linha = (i) => `<div class="folha-linha" data-i="${i}"><b>${i + 1}</b>
+    <span class="folha-letras">${['A', 'B', 'C', 'D', 'E'].map((k) => `<button class="letra-btn${sim.resp[i] === k ? ' ativo' : ''}" data-k="${k}" aria-pressed="${sim.resp[i] === k}" aria-label="Questão ${i + 1}, letra ${k}">${k}</button>`).join('')}</span>
+    <button class="cert-btn" data-cert aria-label="Certeza da questão ${i + 1}: ${sim.cert[i] ? CERTEZAS[sim.cert[i]] : 'não marcada'}">${sim.cert[i] || '·'}</button></div>`;
+  let corpo = '';
+  for (let d = 0; d * 10 < sim.total; d++) {
+    const ini = d * 10;
+    corpo += `<h2 class="secao">${esc(nomeDisc(siglaPorNumero(ini + 1)))} (${ini + 1} a ${Math.min(sim.total, ini + 10)})</h2>`;
+    for (let i = ini; i < Math.min(sim.total, ini + 10); i++) corpo += linha(i);
+  }
+  const cad = info.caderno && catalogo.docs.find((x) => x.id === info.caderno);
+  tela.innerHTML = `
+    <div class="q-topo sim-topo"><span id="folha-cont">${Object.keys(sim.resp).length} de ${sim.total} marcadas</span>
+      <span id="sim-relogio" class="sim-relogio${restanteSim(sim) <= 0 ? ' esgotado' : ''}">${esc(textoRelogioSim(sim))}</span></div>
+    <p class="aviso">${esc(info.fonte || '')}. Toque na letra para marcar (de novo, para apagar) e no ponto à direita para a certeza:
+      C = certeza, D = dúvida, X = chute. ${cad ? `<a href="#/doc/${encodeURIComponent(cad.id)}">Abrir o caderno</a>.` : ''}</p>
+    ${corpo}
+    <div class="acoes">
+      <button class="btn primario" id="folha-entregar">Entregar a folha</button>
+      <button class="btn" id="folha-copiar">Copiar a folha para o Orquestrador</button>
+    </div>
+    <p class="aviso" id="folha-aviso"></p>`;
+  ligarRelogioSim();
+  tela.querySelectorAll('.folha-linha').forEach((l) => l.addEventListener('click', (e) => {
+    const i = Number(l.dataset.i);
+    const b = e.target.closest('button');
+    if (!b) return;
+    if (b.dataset.k) {
+      if (sim.resp[i] === b.dataset.k) delete sim.resp[i]; else sim.resp[i] = b.dataset.k;
+      l.querySelectorAll('.letra-btn').forEach((x) => { x.classList.toggle('ativo', x.dataset.k === sim.resp[i]); x.setAttribute('aria-pressed', String(x.dataset.k === sim.resp[i])); });
+      $('#folha-cont').textContent = `${Object.keys(sim.resp).length} de ${sim.total} marcadas`;
+    } else if (b.hasAttribute('data-cert')) {
+      const ordem = ['', 'C', 'D', 'X'];
+      const prox = ordem[(ordem.indexOf(sim.cert[i] || '') + 1) % ordem.length];
+      if (prox) sim.cert[i] = prox; else delete sim.cert[i];
+      b.textContent = prox || '·';
+      b.setAttribute('aria-label', `Certeza da questão ${i + 1}: ${prox ? CERTEZAS[prox] : 'não marcada'}`);
+    }
+    guardado.set('simAtual', sim);
+  }));
+  $('#folha-entregar').addEventListener('click', entregarSimulado);
+  $('#folha-copiar').addEventListener('click', async () => {
+    $('#folha-aviso').textContent = (await copiarTexto(textoFolha(Object.assign({ usado: (Date.now() - sim.inicio) / 1000 }, sim), null)))
+      ? 'Copiado. Cole na conversa com o Orquestrador.' : 'Não deu para copiar neste celular.';
+  });
+}
+
+async function entregarSimulado() {
+  const sim = simAtual();
+  if (!sim) return;
+  const brancas = sim.total - Object.keys(sim.resp).length;
+  if (!window.confirm(`Entregar o simulado?${brancas ? ` ${brancas} ${brancas === 1 ? 'questão está' : 'questões estão'} em branco.` : ''}`)) return;
+  const usado = Math.round((Math.min(Date.now(), sim.inicio + sim.dur * 60000 * 3) - sim.inicio) / 1000);
+  const r = { tipo: sim.tipo, n: sim.n || 0, nome: sim.nome, data: dataISO(new Date(sim.inicio)), inicio: sim.inicio,
+    usado, dur: sim.dur, total: sim.total, resp: sim.resp, cert: sim.cert, ids: sim.ids || null };
+  if (sim.tipo === 'app') { // grava as respostas no histórico: caderno de erros e revisão espaçada
+    const mapa = new Map((await obterQuestoes()).map((q) => [q.id, q]));
+    let acertos = 0, feitas = 0;
+    sim.ids.forEach((id, i) => {
+      const q = mapa.get(id);
+      if (!q || !sim.resp[i]) return;
+      const ok = sim.resp[i] === q.resposta;
+      feitas++;
+      if (ok) acertos++;
+      gravarResposta(id, sim.resp[i], ok);
+    });
+    r.acertos = acertos;
+    r.registrado = true;
+    registrarAtividade({ q: feitas, a: acertos });
+  }
+  registrarAtividade({ c: usado });
+  const hist = historicoSim();
+  hist.push(r);
+  guardado.set('simulados', hist);
+  guardado.set('simAtual', null);
+  location.hash = `#/simulado/resultado/${hist.length - 1}`;
+}
+
+/* Correção item a item: [{i, sig, marcada, gabarito, ok, top, id}] ou null sem gabarito. */
+async function corrigirSimulado(r) {
+  const itens = [];
+  if (r.tipo === 'app') {
+    const mapa = new Map((await obterQuestoes()).map((q) => [q.id, q]));
+    r.ids.forEach((id, i) => {
+      const q = mapa.get(id);
+      if (!q) return;
+      itens.push({ i, sig: siglaQuestao(q), marcada: r.resp[i] || '', gabarito: q.resposta, ok: r.resp[i] === q.resposta, top: q.top || [], id });
+    });
+    return itens;
+  }
+  const s = (catalogo.simulados || []).find((x) => x.n === r.n);
+  if (!s || !s.gabarito) return null;
+  for (let i = 0; i < r.total; i++) {
+    const n = String(i + 1);
+    const g = s.gabarito[n];
+    itens.push({ i, sig: siglaPorNumero(i + 1), marcada: r.resp[i] || '', gabarito: g, ok: g === 'ANULADA' || (!!g && r.resp[i] === g),
+      top: (s.topicos && s.topicos[n]) || [], id: (s.ids && s.ids[n]) || null });
+  }
+  return itens;
+}
+
+function analisarSimulado(itens) {
+  const porDisc = {};
+  for (const [s] of DISC_PROVA) porDisc[s] = { a: 0, n: 0 };
+  for (const it of itens) {
+    if (!porDisc[it.sig]) porDisc[it.sig] = { a: 0, n: 0 };
+    porDisc[it.sig].n++;
+    if (it.ok) porDisc[it.sig].a++;
+  }
+  const acertos = itens.filter((x) => x.ok).length;
+  const blocos = BLOCOS.map(([b, ss]) => {
+    const a = ss.reduce((t, s) => t + porDisc[s].a, 0);
+    const n = ss.reduce((t, s) => t + porDisc[s].n, 0);
+    return { b, a, n, min: Math.ceil(n * 0.3), ok: a >= Math.ceil(n * 0.3) };
+  });
+  const zeradas = DISC_PROVA.filter(([s]) => porDisc[s].n && !porDisc[s].a).map(([s]) => s);
+  const minTotal = Math.ceil(itens.length * 0.3);
+  const problemas = [
+    ...blocos.filter((b) => b.n && !b.ok).map((b) => `Bloco ${b.b} com ${b.a} (mínimo ${b.min})`),
+    ...zeradas.map((s) => `${nomeDisc(s)} zerada`),
+    ...(acertos < minTotal ? [`total de ${acertos} (mínimo ${minTotal})`] : []),
+  ];
+  return { porDisc, acertos, blocos, problemas };
+}
+
+async function telaResultadoSim(idx) {
+  pararRelogio();
+  setTopo('Resultado do simulado', true);
+  const hist = historicoSim();
+  const r = hist[idx];
+  if (!r) { location.hash = '#/simulado'; return; }
+  tela.innerHTML = '<p class="aviso">Corrigindo…</p>';
+  let itens;
+  try { itens = await corrigirSimulado(r); } catch {
+    tela.innerHTML = '<p class="aviso">As questões ainda não foram guardadas no celular. Abra o app com internet uma vez.</p>';
+    return;
+  }
+  if (!location.hash.startsWith('#/simulado/resultado/')) return;
+  const info = (catalogo.simulados || []).find((x) => x.n === r.n) || {};
+  const tempo = `Usou ${fmtDur(r.usado / 60)} de ${fmtDur(r.dur)}${r.usado > r.dur * 60 ? ' (passou do tempo)' : ''}`;
+  if (!itens) {
+    tela.innerHTML = `<div class="q-fim"><p class="q-fim-pct">📝</p><p><b>${esc(r.nome)}</b> entregue em ${esc(dataCurta(r.data))}.</p>
+      <p class="meta">${Object.keys(r.resp).length} de ${r.total} marcadas · ${esc(tempo)}</p></div>
+      <p class="aviso">${info.correcao ? `O gabarito chega ao app em ${info.correcao.slice(8, 10)}/${info.correcao.slice(5, 7)}, o dia da correção no plano. Aí o resultado aparece aqui sozinho, por disciplina e por bloco.` : 'O gabarito ainda não está no app.'}
+        Até lá, se quiser, mande a folha ao Orquestrador.</p>
+      <div class="acoes"><button class="btn primario" id="res-copiar">Copiar a folha para o Orquestrador</button>
+        <button class="btn-link" id="res-apagar">Apagar esta folha</button></div><p class="aviso" id="res-aviso"></p>`;
+    ligarAcoesResultado(r, idx, null, null);
+    return;
+  }
+  if (!r.registrado && itens.every((x) => x.id)) { // Simulado 2: as questões estão no app, entram no histórico
+    let a = 0, f = 0;
+    for (const it of itens) {
+      if (!it.marcada || it.gabarito === 'ANULADA') continue;
+      f++;
+      if (it.ok) a++;
+      gravarResposta(it.id, it.marcada, it.ok);
+    }
+    registrarAtividade({ q: f, a });
+    r.registrado = true;
+    guardado.set('simulados', hist);
+  }
+  const an = analisarSimulado(itens);
+  const pct = itens.length ? Math.round((an.acertos / itens.length) * 100) : 0;
+  const nomesTop = new Map((catalogo.edital || []).map((it) => [it.c, it.curto]));
+  const errosTop = new Map();
+  for (const it of itens.filter((x) => !x.ok)) for (const c of it.top.slice(0, 2)) errosTop.set(c, (errosTop.get(c) || 0) + 1);
+  const cert = {};
+  for (const it of itens) {
+    const k = r.cert[it.i] || '';
+    if (!cert[k]) cert[k] = { a: 0, n: 0 };
+    cert[k].n++;
+    if (it.ok) cert[k].a++;
+  }
+  const anuladas = itens.filter((x) => x.gabarito === 'ANULADA').length;
+  tela.innerHTML = `
+    <div class="q-fim">
+      <p class="q-fim-pct">${an.acertos}<small>/${itens.length}</small></p>
+      <p><b>${esc(r.nome)}</b> · ${esc(dataCurta(r.data))} · ${pct}% de acerto</p>
+      <p class="meta">${esc(tempo)}${anuladas ? ` · ${anuladas} ${anuladas === 1 ? 'anulada contou' : 'anuladas contaram'} como acerto` : ''}</p>
+    </div>
+    <div class="q-veredito ${an.problemas.length ? 'erro' : 'ok'}">${an.problemas.length
+      ? `✗ Pelos critérios da objetiva, não passaria: ${esc(an.problemas.join('; '))}.`
+      : '✓ Passaria nos critérios mínimos da objetiva (30% em cada bloco, nenhuma zerada, 30% do total).'}</div>
+    <div class="placar">${an.blocos.map((b) => `<div><b>${b.a}/${b.n}</b><span>Bloco ${b.b} ${b.ok ? '✓' : `✗ mín. ${b.min}`}</span></div>`).join('')}</div>
+    <h2 class="secao">Por disciplina</h2>
+    ${DISC_PROVA.filter(([s]) => an.porDisc[s].n).map(([s, nome]) => {
+      const x = an.porDisc[s];
+      return `<div class="cartao linha-q"><div class="corpo"><strong>${esc(nome)}</strong>
+        <span class="meta">${x.a} de ${x.n} certas${x.a ? '' : ' · zerada'}</span>
+        <span class="barra" aria-hidden="true"><span style="width:${x.n ? Math.round((x.a / x.n) * 100) : 0}%"></span></span></div></div>`;
+    }).join('')}
+    ${Object.keys(r.cert).length ? `<h2 class="secao">Certeza × acerto</h2>
+      <p class="aviso">${['C', 'D', 'X', ''].filter((k) => cert[k]).map((k) => `${k ? CERTEZAS[k][0].toUpperCase() + CERTEZAS[k].slice(1) : 'Sem marcação'}: ${cert[k].a} de ${cert[k].n} certas`).join(' · ')}.
+        Errar com certeza mostra conteúdo aprendido errado; acertar no chute não é conhecimento firme.</p>` : ''}
+    ${errosTop.size ? `<h2 class="secao">Onde errou (tópicos do edital)</h2>
+      ${[...errosTop].sort((a, b) => b[1] - a[1]).map(([c, n]) => `<div class="cartao"><div class="corpo"><strong>${esc(c)} – ${esc(nomesTop.get(c) || '')}</strong>
+        <span class="meta">${n} ${n === 1 ? 'erro' : 'erros'}</span></div></div>`).join('')}` : ''}
+    <div class="acoes">
+      ${itens.some((x) => x.id) ? '<button class="btn primario" id="res-ver">Ver a correção questão por questão</button>' : ''}
+      ${itens.some((x) => x.id && !x.ok) ? '<button class="btn" id="res-refazer">Refazer as erradas</button>' : ''}
+      <button class="btn" id="res-copiar">Copiar o resultado para o Orquestrador</button>
+    </div>
+    ${info.correcaoDoc && catalogo.docs.some((d) => d.id === info.correcaoDoc) ? `<p><a class="btn-link" href="#/doc/${encodeURIComponent(info.correcaoDoc)}">Abrir o material da correção</a></p>` : ''}
+    <p class="aviso" id="res-aviso"></p>
+    <p class="rodape"><button class="btn-link" id="res-apagar">Apagar este resultado</button></p>`;
+  ligarAcoesResultado(r, idx, itens, an);
+}
+
+function ligarAcoesResultado(r, idx, itens, an) {
+  const ver = $('#res-ver');
+  if (ver) ver.addEventListener('click', () => {
+    const com = itens.filter((x) => x.id);
+    const revisao = {};
+    for (const it of com) revisao[it.id] = it.marcada;
+    guardado.set('sessaoQ', { titulo: `Correção: ${r.nome}`, ids: com.map((x) => x.id), idx: 0, certas: com.filter((x) => x.ok).length,
+      feitas: com.length, tempo: r.usado, erradas: com.filter((x) => !x.ok).map((x) => x.id), resp: null, revisao });
+    location.hash = '#/questoes/resolver';
+  });
+  const ref = $('#res-refazer');
+  if (ref) ref.addEventListener('click', () => iniciarSessao(itens.filter((x) => x.id && !x.ok).map((x) => x.id), `Erradas do ${r.nome}`));
+  $('#res-copiar').addEventListener('click', async () => {
+    $('#res-aviso').textContent = (await copiarTexto(textoFolha(r, itens, an))) ? 'Copiado. Cole na conversa com o Orquestrador.' : 'Não deu para copiar neste celular.';
+  });
+  $('#res-apagar').addEventListener('click', () => {
+    if (!window.confirm('Apagar este resultado? As respostas que já entraram no caderno de erros continuam lá.')) return;
+    const hist = historicoSim();
+    hist.splice(idx, 1);
+    guardado.set('simulados', hist);
+    location.hash = '#/simulado';
+  });
+}
+
+/* Texto para colar na conversa com o Orquestrador: a folha (e o resultado, se já corrigido). */
+function textoFolha(r, itens, an) {
+  const linhas = [`${r.nome} — ${dataCurta(r.data || dataISO())}, tempo usado: ${fmtDur((r.usado || 0) / 60)} de ${fmtDur(r.dur)}`];
+  linhas.push('Folha de respostas (letra e certeza: C = certeza, D = dúvida, X = chute):');
+  for (let d = 0; d * 10 < r.total; d++) {
+    const parte = [];
+    for (let i = d * 10; i < Math.min(r.total, d * 10 + 10); i++) parte.push(`${i + 1} ${r.resp[i] || '—'}${r.cert[i] ? ` (${r.cert[i]})` : ''}`);
+    linhas.push(`${nomeDisc(siglaPorNumero(d * 10 + 1))}: ${parte.join(' · ')}`);
+  }
+  const brancas = [];
+  for (let i = 0; i < r.total; i++) if (!r.resp[i]) brancas.push(i + 1);
+  if (brancas.length) linhas.push(`Em branco: ${brancas.join(', ')}.`);
+  if (itens && an) {
+    linhas.push('', `Resultado no app: ${an.acertos} de ${itens.length}. ${an.blocos.map((b) => `Bloco ${b.b}: ${b.a}/${b.n}`).join('; ')}.`);
+    linhas.push(DISC_PROVA.filter(([s]) => an.porDisc[s].n).map(([s]) => `${s} ${an.porDisc[s].a}/${an.porDisc[s].n}`).join(' · '));
+    const erradas = itens.filter((x) => !x.ok).map((x) => `${x.i + 1} (marquei ${x.marcada || 'nada'}, gabarito ${x.gabarito})`);
+    if (erradas.length) linhas.push(`Erradas: ${erradas.join('; ')}.`);
+    linhas.push('', 'Comente os meus erros por tópico do edital e me diga o que revisar primeiro.');
+  } else {
+    linhas.push('', 'Corrija pelo gabarito e registre os erros por disciplina e tópico do edital.');
+  }
+  return linhas.join('\n');
+}
+
+async function copiarTexto(texto) {
+  try {
+    await navigator.clipboard.writeText(texto);
+    return true;
+  } catch {
+    const t = document.createElement('textarea');
+    t.value = texto;
+    t.setAttribute('readonly', '');
+    t.style.position = 'fixed';
+    t.style.opacity = '0';
+    document.body.appendChild(t);
+    t.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch { ok = false; }
+    t.remove();
+    return ok;
+  }
 }
 
 /* ---------- flashcards com revisão espaçada ---------- */

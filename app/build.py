@@ -28,9 +28,11 @@ from questoes import extrair as extrair_questoes  # noqa: E402
 from revisao import montar as montar_revisao  # noqa: E402
 from roteiro import roteiro as ler_roteiro  # noqa: E402
 from cartoes import extrair as extrair_cartoes  # noqa: E402
-from banco import coletar as coletar_banco  # noqa: E402
+from banco import coletar as coletar_banco, usadas_nos_materiais  # noqa: E402
 from questoes import sem_links_locais  # noqa: E402
 from plano import ler_datas, ler_plano  # noqa: E402
+from edital import itens as itens_edital, itens_da_sessao, topicos_no_texto  # noqa: E402
+from simulados import montar as montar_simulados, gabarito_2023  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
 APP = RAIZ / "app"
@@ -322,29 +324,74 @@ def main():
             print(f"  AVISO: sem MP3 para {d['rel']} (limite de {args.limite_mb} MB); fica com a voz do celular.")
 
     questoes = coletar_questoes(docs, md)
-    por_doc = {}
-    for q in questoes:
-        por_doc[q["doc"]] = por_doc.get(q["doc"], 0) + 1
-    corpo_q = json.dumps(questoes, ensure_ascii=False, separators=(",", ":")).encode()
-    arquivo_q = f"data/questoes.{hash_curto(corpo_q)}.json"
+    arq_plano, arq_perfil = RAIZ / "Plano_de_Estudos_PMPE_2026.md", RAIZ / "Perfil_do_Estudante.md"
+    texto_perfil = arq_perfil.read_text(encoding="utf-8") if arq_perfil.exists() else ""
+    plano = {"sessoes": ler_plano(arq_plano.read_text(encoding="utf-8")) if arq_plano.exists() else [],
+             **(ler_datas(texto_perfil) if texto_perfil else {})}
 
-    # Banco de questões oficiais (Banco_de_Provas/): fica de fora o que já está num material, com comentário.
+    # Banco de questões oficiais (Banco_de_Provas/). Fica de fora toda questão que algum material usa, de
+    # qualquer data (inclusive o Simulado 2): ela entra no app no dia do material, com comentário, e não
+    # pode ser resolvida antes, senão chega "gasta" ao material e ao simulado.
     avisos_b = []
     banco = coletar_banco(RAIZ, md, sem_links_locais, avisos_b)
     for a in avisos_b:
         print(f"  AVISO (banco): {a}")
-    def chave_texto(t):
+    def chave_texto(t, n=160):
         t = re.sub(r"<[^>]+>|[*_`]", " ", t)
         t = unicodedata.normalize("NFKD", t).encode("ascii", "ignore").decode().lower()
-        return re.sub(r"[^a-z0-9]+", "", t)[:160]
-    ja_em_material = {chave_texto(q["enunciado"]) for q in questoes if q["tipo"] == "oficial"}
-    banco["q"] = [{k: v for k, v in q.items() if not k.startswith("_")} for q in banco["q"]
-                  if chave_texto(q["_txt"]) not in ja_em_material]
+        return re.sub(r"[^a-z0-9]+", "", t)[:n]
+    # 1) o cabeçalho do material diz a prova e o número ("— PC-ES 2019, Investigador (AOCP), Q46");
+    # 2) o enunciado é igual ao de uma questão de material já liberado (só se for longo: "Assinale a
+    #    alternativa correta" sozinho é igual em muitas provas).
+    usadas = usadas_nos_materiais({p.stem: p.read_text(encoding="utf-8-sig") for p in (RAIZ / "Material_do_Dia").glob("*.md")},
+                                  banco["provas"])
+    ids_usados = set(usadas.values())
+    ja_em_material = {k for k in (chave_texto(q["enunciado"]) for q in questoes if q["tipo"] == "oficial") if len(k) >= 60}
+    def reservada(q):
+        return q["id"] in ids_usados or chave_texto(q["_txt"]) in ja_em_material
+    top_banco = {q["id"]: ["HPE " + c[3:] if c.startswith("HP ") else c for c in q["top"]] for q in banco["q"]}
+    # incidência por tópico (edital verticalizado): todas as questões das provas, inclusive as reservadas
+    incidencia = {}
+    for tops in top_banco.values():
+        for c in tops:
+            incidencia[c] = incidencia.get(c, 0) + 1
+    indice_2023 = RAIZ / "Editais" / "2023" / "indice_questoes_2023.md"
+    if indice_2023.exists():
+        for tops in gabarito_2023(indice_2023.read_text(encoding="utf-8-sig"))[1].values():
+            for c in tops:
+                incidencia[c] = incidencia.get(c, 0) + 1
+    total_banco = len(banco["q"])
+    banco["q"] = [{k: v for k, v in q.items() if not k.startswith("_")} for q in banco["q"] if not reservada(q)]
+    print(f"  Banco: {total_banco - len(banco['q'])} questões reservadas para os materiais e os simulados.")
     usados = {q.get("ap") for q in banco["q"]}
     banco["apoios"] = {k: v for k, v in banco["apoios"].items() if k in usados}
     corpo_banco = json.dumps(banco, ensure_ascii=False, separators=(",", ":")).encode()
     arquivo_banco = f"data/banco.{hash_curto(corpo_banco)}.json"
     (saida / arquivo_banco).write_bytes(corpo_banco)
+
+    # Tópico do edital de cada questão, nesta ordem: o que ela mesma diz ("Tópico do edital: DC 2", "· HPE 5");
+    # o da prova de origem no banco (pelo cabeçalho "— PC-ES 2019, Investigador (AOCP), Q46"); os itens da
+    # sessão do plano no dia do material (aproximação). Serve ao edital verticalizado e aos simulados.
+    itens_por_data = {}
+    for s in plano["sessoes"]:
+        lista = itens_por_data.setdefault(s["data"], [])
+        lista += [c for c in itens_da_sessao(s) if c not in lista]
+    por_id = {d["id"]: d for d in docs}
+    for q in questoes:
+        d = por_id.get(q["doc"])
+        tops = topicos_no_texto(f"{q['meta']} {q['tema']} {q['fonte']}")
+        if not tops and d:
+            arquivo = por_id[d["caderno"]]["caminho"].stem if d.get("caderno") in por_id else d["caminho"].stem
+            tops = top_banco.get(usadas.get((arquivo, q["numero"])), [])
+        if not tops and d and d.get("data"):
+            tops = itens_por_data.get(d["data"], [])
+        if tops:
+            q["top"] = tops
+    por_doc = {}
+    for q in questoes:
+        por_doc[q["doc"]] = por_doc.get(q["doc"], 0) + 1
+    corpo_q = json.dumps(questoes, ensure_ascii=False, separators=(",", ":")).encode()
+    arquivo_q = f"data/questoes.{hash_curto(corpo_q)}.json"
 
     # Índice da busca dentro dos textos: [índice do documento, bloco, texto].
     ids_busca = [d["id"] for d in docs if d["busca"]]
@@ -403,12 +450,18 @@ def main():
     catalogo.sort(key=lambda i: ordem[i["categoria"]])
     conteudo = json.dumps(catalogo, ensure_ascii=False, sort_keys=True).encode()
     versao = hash_curto(conteudo, 12)
-    arq_plano, arq_perfil = RAIZ / "Plano_de_Estudos_PMPE_2026.md", RAIZ / "Perfil_do_Estudante.md"
-    plano = {"sessoes": ler_plano(arq_plano.read_text(encoding="utf-8")) if arq_plano.exists() else [],
-             **(ler_datas(arq_perfil.read_text(encoding="utf-8")) if arq_perfil.exists() else {})}
     agora = dt.datetime.now(dt.timezone(dt.timedelta(hours=-3))).strftime("%d/%m/%Y %H:%M")
+    simulados = montar_simulados(RAIZ, plano.get("simulados", []), docs, questoes, simulado1_pendente(texto_perfil))
+    # Edital verticalizado: itens do Anexo II, dias do plano que estudam cada um e quantas questões das provas o cobram.
+    arq_conteudos = RAIZ / "Base_de_Conhecimento" / "CONTEUDOS_PROGRAMATICOS" / "Conteudos.txt"
+    edital = []
+    if arq_conteudos.exists():
+        for it in itens_edital(arq_conteudos.read_text(encoding="utf-8-sig")):
+            it["datas"] = sorted(dt_ for dt_, cs in itens_por_data.items() if it["c"] in cs)
+            it["inc"] = incidencia.get(it["c"], 0)
+            edital.append(it)
     (saida / "data" / "catalogo.json").write_text(
-        json.dumps({"versao": versao, "gerado_em": agora, "docs": catalogo,
+        json.dumps({"versao": versao, "gerado_em": agora, "docs": catalogo, "simulados": simulados, "edital": edital,
                     "questoes": {"arquivo": arquivo_q, "total": len(questoes)}, "plano": plano,
                     "busca": {"arquivo": arquivo_b},
                     "banco": {"arquivo": arquivo_banco, "total": len(banco["q"])}, "cartoes": {"arquivo": arquivo_c, "total": len(cartoes)}},

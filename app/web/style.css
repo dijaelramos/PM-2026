@@ -439,3 +439,30 @@ body.tocando .q-botoes { bottom: calc(var(--player-h) + env(safe-area-inset-bott
 .filtros select { font: inherit; font-size: 15px; color: var(--texto); background: var(--superficie); border: 1px solid var(--linha);
   border-radius: 8px; padding: 8px; width: 100%; max-width: 100%; }
 #f-limpar { display: block; margin: 0 auto 12px; }
+
+/* Simulado de prova */
+.sim-topo { position: sticky; top: calc(56px + env(safe-area-inset-top)); z-index: 3; background: var(--fundo); padding: 6px 0; }
+.sim-relogio { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--texto); }
+.sim-relogio.esgotado { color: var(--errado); }
+.sim-cert { margin: 4px 0 12px; }
+.sim-botoes { display: flex; gap: 8px; }
+.sim-botoes .btn { flex: 1; text-align: center; padding-left: 8px; padding-right: 8px; }
+.sim-botoes #sim-ant { flex: 0 0 52px; }
+.btn.marcada { border-color: var(--destaque); color: var(--destaque); }
+.grade-nums { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin: 0 0 6px; }
+.grade-nums .num { min-height: 44px; padding: 2px 0; border: 1px solid var(--linha); border-radius: 8px; background: var(--superficie);
+  font-size: 13px; line-height: 1.1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.grade-nums .num small { font-size: 11px; font-weight: 700; min-height: 1em; }
+.grade-nums .num.feita { background: var(--citacao); border-color: var(--marca); }
+.grade-nums .num.marcada { border-color: var(--destaque); border-width: 2px; }
+.grade-nums .num.marcada::after { content: "★"; font-size: 9px; color: var(--destaque); }
+.grade-nums .num.atual { outline: 2px solid var(--texto); outline-offset: 1px; }
+.folha-linha { display: flex; align-items: center; gap: 6px; padding: 4px 0; border-bottom: 1px solid var(--linha); }
+.folha-linha > b { width: 28px; text-align: right; font-variant-numeric: tabular-nums; }
+.folha-letras { display: flex; gap: 4px; flex: 1; }
+.letra-btn, .cert-btn { min-width: 40px; min-height: 40px; border-radius: 999px; border: 1px solid var(--linha); background: var(--superficie); font-weight: 700; }
+.letra-btn { flex: 1; max-width: 52px; }
+.letra-btn.ativo { background: var(--marca); color: var(--marca-texto); border-color: var(--marca); }
+.cert-btn { color: var(--destaque); }
+.q-fim-pct small { font-size: .45em; color: var(--suave); }
+.sim-plano .acoes { margin: 8px 0 0; }

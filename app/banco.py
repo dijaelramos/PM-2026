@@ -10,6 +10,7 @@ Ficam de fora as anuladas e as que dependem de figura do caderno (o texto conver
 A prova de Soldado PMPE 2023 não está em Banco_de_Provas/ (fica em Editais/2023, reservada para o Simulado 1).
 """
 import re
+import unicodedata
 from pathlib import Path
 
 DISCIPLINAS = {
@@ -211,6 +212,40 @@ def _avulsas(arquivo, md, sem_links):
                              "c": md.render(sem_links(coment[n])) if coment.get(n) else "",
                              "_nomes": [("DH 16", "Estatuto da Juventude")], "_txt": "\n".join(enun)})
     return metas, questoes
+
+
+def _sem_acento(t):
+    t = unicodedata.normalize("NFKD", t.replace("º", "").replace("ª", "")).encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]+", "", t)
+
+
+def usadas_nos_materiais(textos, provas):
+    """{(arquivo, número da questão no material): id no banco}, pelos cabeçalhos dos materiais:
+    "### Questão 3 — PC-ES 2019, Investigador (AOCP), Q46". textos = {nome do arquivo: texto}."""
+    pastas = []
+    for pid in provas:
+        partes = [p.lower() for p in re.split(r"[_-]", pid) if p]
+        anos = [i for i, p in enumerate(partes) if re.fullmatch(r"(19|20)\d\d", p)]
+        if not anos:
+            continue
+        i = anos[0]
+        pastas.append((pid, partes[i], [_sem_acento(p) for p in partes[:i] if len(p) >= 2],
+                       [_sem_acento(p) for p in partes[i + 1:]]))
+    usadas = {}
+    for arquivo, texto in textos.items():
+        for m in re.finditer(r"^###\s+Questão\s+(\d+)\s+—\s+(.+?),?\s+(?:Q|questão\s+|item\s+)(\d+)\b", texto, re.M | re.I):
+            num, cab, n = m.group(1), _sem_acento(m.group(2)), m.group(3)
+            cab = cab.replace("policiapenaldodf", "ppdfpolicialpenal").replace("policiapenaldesp", "ppsppolicialpenal")
+            melhor, nota = None, 0
+            for pid, ano, sigla, cargo in pastas:
+                if ano not in cab or not any(s in cab for s in sigla) or (cargo and cargo[0] not in cab):
+                    continue
+                pontos = sum(s in cab for s in sigla) + sum(c in cab for c in cargo)
+                if pontos > nota:
+                    melhor, nota = pid, pontos
+            if melhor:
+                usadas[(arquivo, num)] = f"banco:{melhor}:{n}"
+    return usadas
 
 
 def coletar(raiz: Path, md, sem_links, avisos):
