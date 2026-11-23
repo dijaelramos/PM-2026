@@ -279,6 +279,27 @@ A chamada Guerra dos Bárbaros
 - **(D)** Os tapuias **lutaram contra** os portugueses (Confederação dos Cariris).
 - **(E)** Ocorreu no fim do século XVII, **depois** da expulsão holandesa.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. É o período de **1500 a 1530**, entre a chegada de Cabral e o início da colonização efetiva. Portugal não ocupou a terra: só reconheceu a costa, tirou pau-brasil e expulsou navios estrangeiros. As três marcas são o **PEF**: **P**au-brasil, **E**scambo e **F**eitorias (seção 1).
+2. **Escambo** era a troca: o indígena cortava e carregava o pau-brasil e recebia objetos (machados, facas, tecidos, miçangas), sem salário nem moeda. **Estanco** era o **monopólio da Coroa**: só podia explorar o pau-brasil quem tinha licença (arrendamento) e pagava à Coroa. A exploração **não** era livre.
+3. (1) O comércio com as **Índias** passou a dar menos lucro (piratas, naufrágios, concorrência); (2) os **franceses** frequentavam o litoral e ameaçavam tomar a terra; (3) havia a esperança de achar **metais preciosos**, como os espanhóis. Em 1530 veio a expedição de **Martim Afonso de Sousa**.
+4. Os **tupis** viviam no **litoral**; os **tapuias** (rótulo genérico para quem não falava tupi, muitos do tronco jê), no **interior** (Agreste e Sertão). Povos tupis: **tabajaras** e **caetés** (também tupinambás e, mais ao norte, potiguaras). Os **tabajaras** se aliaram aos portugueses; os **caetés** resistiram.
+5. Quaisquer quatro: **seminômades** (mudavam de lugar, mas plantavam mandioca); **ágrafos** (sem escrita); **propriedade coletiva** da terra; **coivara** (queimada controlada para abrir roças); divisão do trabalho por **sexo e idade**, com laços de **parentesco**; pinturas com **jenipapo e urucum**.
+6. **Pinturas rupestres** (desenhos em rocha) e sepultamentos antigos, como no sítio de Alcobaça. Não é escrita porque os nativos eram **ágrafos**: a pintura rupestre é **arte e comunicação**, não um sistema de escrita.
+7. Pelo **casamento** de **Jerônimo de Albuquerque**, cunhado de Duarte Coelho, com a filha do chefe tabajara **Arcoverde** (batizada Maria do Espírito Santo Arcoverde).
+8. Foi o conflito entre os **tapuias** do **interior** e os colonizadores, de **1683 a 1713**, depois da expulsão dos holandeses. O motivo foi o avanço da **pecuária** sobre o Sertão. Os portugueses chamaram **bandeirantes paulistas**, como **Domingos Jorge Velho**. Os tapuias formaram a **Confederação dos Cariris** (ou dos Bárbaros).
+9. Criado em **1534–1536**, no reinado de **D. João III**: o litoral foi dividido em faixas **horizontais**, do litoral até a linha de Tordesilhas, entregues a nobres de confiança do rei, que ocupavam a terra à própria custa. **15-14-12** = **15 lotes**, **14 capitanias** e **12 donatários**.
+10. A **Carta de Doação** dava ao donatário a **posse** da capitania, **hereditária** e **inalienável**. A **Carta Foral** fixava os **direitos e deveres** do donatário: fundar vilas, doar sesmarias, cobrar tributos e pagar à Coroa a parte dela.
+11. Porque a **propriedade** continuava sendo da **Coroa**: o donatário recebia a **posse** e o governo da terra. Por isso a capitania era **inalienável**: **não podia ser vendida**, só passava aos herdeiros. O donatário podia doar **sesmarias** a colonos.
+12. **Pernambuco** e **São Vicente**. A maioria fracassou (falta de recursos, ataques indígenas, distância). Em **1548–1549** a Coroa criou o **Governo-Geral**, com sede em **Salvador** (Tomé de Sousa). As capitanias **continuaram existindo**, sob a coordenação do governador-geral.
+13. Um fidalgo português experiente, que serviu no Oriente, **donatário de Pernambuco**. Recebeu a capitania de D. João III em **1534** (10 de março) e tomou posse em **1535**. Deu a ela o nome de **Nova Lusitânia**.
+14. **Igarassu** e **Olinda**, elevados a **vila** em **1537**. A sede foi **Olinda**.
+15. Vem do **tupi** e significa "**buraco no mar**" (ou "buraco que o mar faz"), referência à abertura nos **arrecifes**.
+16. **Pero Lopes de Sousa** (irmão de Martim Afonso). O atual estado corresponde às capitanias de **Pernambuco** e **Itamaracá**.
+17. (1) **Alianças** com os tabajaras (e guerra aos caetés); (2) **açúcar**, com solo de massapê, clima e engenhos; (3) **vilas fortes** (Olinda e Igarassu) como base; (4) **porto natural** protegido pelos arrecifes (o futuro Recife). Também: o foral que serviu de modelo e o incentivo ao algodão.
+18. **1500** chegada de Cabral → **1500–1530** período pré-colonial (pau-brasil, escambo, feitorias) → **1530** expedição de Martim Afonso → **1532** São Vicente → **1534** doação de Pernambuco a Duarte Coelho (capitanias de 1534–1536) → **1535** posse (Nova Lusitânia) → **1537** Olinda e Igarassu viram vilas → **1549** Governo-Geral em Salvador → **1554** morte de Duarte Coelho, em Portugal.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. Equivalente: "Se o donatário **não** recebeu colonos, então **não** fundou vilas." Negação: "O donatário fundou vilas **e não** recebeu colonos."

@@ -302,6 +302,20 @@ Sobre a organização inicial da colônia e a capitania de Pernambuco, assinale 
 - **(C)** A doação foi feita pelo rei **D. João III**, em 1534.
 - **(E)** As capitanias **continuaram** existindo.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Porque o **alto das colinas**, de frente para o mar, era fácil de **defender** e dava para ver quem chegava. Ali havia a aldeia indígena **Marim**.
+2. **Vila** em **1537** (Foral de Olinda, 12 de março), já como **sede** da capitania; **cidade** em **1676**. Em **1630** (16 de fevereiro) foi **tomada pelos holandeses**; em **1631** (24 de novembro) foi **incendiada** por eles, depois de retirarem materiais nobres para o Recife.
+3. **Carmelitas, jesuítas, franciscanos e beneditinos** (cerca de 1580 a 1586). Ocuparam os pontos altos da vila e **catequizaram os indígenas**.
+4. Nasceu como **povoado de porto** (pescadores, marinheiros e comerciantes), o porto de **escoamento do açúcar de Olinda**. O porto se explica pelos **arrecifes de arenito**, que protegem do mar aberto a foz dos rios **Capibaribe** e **Beberibe** (e do Tejipió). O nome "Recife" vem dos arrecifes.
+5. Fizeram do Recife a **sede** do domínio holandês (1630–1654). **Nassau** (1637–1644) o transformou numa cidade **planejada**: palácios, horto, **canais e pontes**, o **primeiro observatório astronômico** das Américas e a **Cidade Maurícia**, na ilha de Antônio Vaz.
+6. Os **mascates** eram **comerciantes portugueses** enriquecidos com o porto do Recife. A elevação do Recife a **vila** tirou o porto do controle de Olinda e enfureceu a **aristocracia** olindense (senhores de engenho, endividados com os mascates). Foi por carta régia de **1709** (D. João V), com o pelourinho erguido em **1710**: o estopim da **Guerra dos Mascates** (1710–1711). A data "1790" da apostila está errada.
+7. **Cidade** em **1823**; **capital da província** em **1827**, no lugar de Olinda.
+8. (1) **1630–1631**: a invasão holandesa e o **incêndio de Olinda**, com o Recife virando a sede holandesa; (2) **depois de 1654**: Olinda se reconstrói devagar e o Recife **cresce com o comércio** (mascates); (3) **1709/1710**: o Recife vira **vila**, ganhando autonomia. Depois vieram cidade (1823) e capital (1827).
+9. **Lugar**: Olinda nas **colinas**; Recife no **porto**, nos arrecifes. **Quem mandava**: em Olinda, os **senhores de engenho**; no Recife, os **comerciantes** (mascates). **Período holandês**: Olinda **incendiada**; Recife **sede holandesa** planejada por Nassau. **Títulos**: Olinda vila em 1537 e cidade em 1676; Recife vila em 1709/1710, cidade em 1823 e capital em 1827.
+10. **1500** Cabral; pré-colonial → **1530** Martim Afonso → **1534** capitanias; Pernambuco para Duarte Coelho → **1535** posse; Nova Lusitânia → **1537** Olinda e Igarassu vilas; Olinda sede → **1549** Governo-Geral em Salvador → **1554** morte de Duarte Coelho → **1630** invasão holandesa → **1631** incêndio de Olinda → **1637–1644** Nassau → **1654** expulsão holandesa; começa a crise do açúcar → **1676** Olinda cidade → **1683–1713** Guerra dos Bárbaros → **1709/1710** Recife vila → **1823** Recife cidade → **1827** Recife capital.
+11. **Item 1**: o período pré-colonial (pau-brasil, escambo), os contatos com os nativos (tabajaras aliados, caetés inimigos), as capitanias (1534) e Duarte Coelho, que fez de Pernambuco a capitania mais próspera. **Item 2**: o açúcar, produzido em engenhos no sistema de plantation (LEME), com mão de obra escravizada e sociedade patriarcal, rural, escravista e estamental, fez de Pernambuco o centro econômico da colônia até a crise depois de 1654. **Item 3**: Olinda, sede dos senhores de engenho, foi incendiada pelos holandeses e perdeu espaço para o Recife, o porto dos comerciantes, que virou vila em 1709/1710 e capital em 1827.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **LEME** = latifúndio, escravidão, monocultura, exportação (plantation). **PREE** = patriarcal, rural, escravista, estamental (sociedade). **M-C-P** = moenda, caldeiras, purgar (fábrica do açúcar).

@@ -219,6 +219,23 @@ Assinale a alternativa em que a acentuação gráfica das duas palavras se justi
 
 **O detalhe que mais derruba:** tratar monossílabo e oxítona como a mesma coisa.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Quaisquer cinco: alfabeto de **26 letras** (entraram k, w, y); **fim do trema** (tranquilo); paroxítonas com ditongo aberto **ei/oi** sem acento (ideia, jiboia); **-eem** e **-oo** sem circunflexo (leem, voo); queda do acento **diferencial** de para, pelo, pera, polo; **i e u depois de ditongo** em paroxítonas sem acento (feiura); meses, dias e estações em **minúscula**.
+2. "Ideia" é **paroxítona** com ditongo aberto **ei**, e o Acordo tirou o acento desses ditongos nas paroxítonas. "Papéis" é **oxítona** com **éi**, e nas oxítonas (e monossílabos) o acento de **éi, éu, ói** continua.
+3. **têm** e **vêm** (plural de ter e vir: eles têm, eles vêm), os derivados no plural (**mantêm, detêm, provêm**), **pôde** (passado de poder) e **pôr** (verbo). "Fôrma" é facultativo.
+4. Antes de **h**: **com hífen** (anti-higiênico, pré-história). Antes da **mesma vogal**: **com hífen** (micro-ondas, anti-inflamatório). Antes de **vogal diferente**: **junta, sem hífen** (autoescola, antiaéreo). Antes de **r ou s**: **junta e dobra** a consoante (antirreligioso, antissocial). Exceção: o **co-** junta mesmo antes de o (cooperar).
+5. Com hífen quando "bem" forma com a outra palavra um **composto**, uma palavra nova com sentido próprio: "um policial **bem-humorado**". Sem hífen quando é só um **advérbio** que modifica o verbo, o particípio ou o adjetivo na frase: "o caso foi muito **bem investigado**".
+6. **Por que**: pergunta ou "pelo qual": "**Por que** a viatura parou?". **Por quê**: no **fim da frase**: "Parou **por quê**?". **Porque**: conjunção de causa ou explicação (= pois): "Parou **porque** o pneu furou". **Porquê**: **substantivo** (= o motivo), com artigo: "Ninguém entendeu **o porquê** da parada".
+7. **Mal** é advérbio, oposto de **bem** (dormiu mal); **mau** é adjetivo, oposto de **bom** (mau exemplo). **Há** indica tempo **passado** (= faz: chegou há dois dias); **a** indica **futuro** ou distância (volta daqui a dois dias). **Onde** = lugar em que se está (onde você está?); **aonde** = para onde, com verbo de movimento (aonde você vai?). **Senão** = caso contrário, a não ser (corra, senão perde o ônibus); **se não** = condição, se + não (se não chover, haverá jogo).
+8. **Sessão** = reunião, evento com duração (sessão do júri). **Seção** = divisão, setor (seção de pessoal). **Cessão** = ato de **ceder** (cessão de servidor a outro órgão).
+9. Pela **sílaba tônica**: **-am** tem a tônica **antes** e indica presente ou passado (eles **estudaram** ontem); **-ão** tem a tônica **no fim** e indica **futuro** (eles **estudarão** amanhã).
+10. **Oxítonas**: acentuadas quando terminam em **a(s), e(s), o(s), em, ens** (sofá, você, também). **Monossílabos tônicos**: em **a(s), e(s), o(s)** (pá, pé, nó). **Paroxítonas**: em **l, n, r, x, ps, ã(s), ão(s), i(s), us, um, uns, on(s)** e em **ditongo** (fácil, hífen, táxi, polícia); não em a, e, o, em, ens. **Proparoxítonas**: **todas** (público, lâmpada).
+11. As três são **paroxítonas**. "Imagem" e "itens" terminam em **-em/-ens**, terminação de paroxítona que **não** leva acento. "Hífen" termina em **-n**, terminação de paroxítona que **leva** acento.
+12. Levam acento quando são tônicos, formam **hiato** e ficam **sozinhos na sílaba ou com s**: sa-**í**-da, ba-**ú**, pa-**ís**, ju-**í**-za. Não levam quando vêm seguidos de **l, m, n, r, z** na mesma sílaba ou de **nh**: Ra-**ul**, ru-**im**, ra-**i**-nha, ju-**iz**. Também não levam depois de ditongo em paroxítonas (feiura).
+13. (1) **Separar as sílabas** e marcar a tônica; (2) **classificar**: monossílabo, oxítona, paroxítona, proparoxítona (ou hiato, ditongo aberto); (3) **ver a terminação** e dizer a regra exata. Mesma regra = mesma classe **e** mesma terminação (ou o mesmo caso especial).
+14. **Não**: "pá" é **monossílabo tônico** terminado em a; "sofá" é **oxítona** terminada em a. São regras diferentes. **Sim**: "saída" e "baú" têm **i/u tônico em hiato**, sozinho na sílaba; o acento vem da regra do **hiato** (embora uma seja paroxítona e a outra oxítona).
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Só marca o tempo** (futuro): "As equipes **patrulharão** o centro."

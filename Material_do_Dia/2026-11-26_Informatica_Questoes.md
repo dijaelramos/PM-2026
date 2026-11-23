@@ -268,6 +268,22 @@ No Windows, um usuário apagou por engano um documento da área de trabalho, usa
 - **(D)** Shift + Delete **pula** a Lixeira.
 - **(E)** "Esvaziar Lixeira" **apaga** de vez.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **8 bits** = 1 byte. Byte → **KB** → **MB** → **GB** → **TB** → **PB** ("Kilo, Mega, Giga, Tera, Peta"). Cada degrau vale **1.024** vezes o anterior (na prática, "por mil").
+2. **Volátil** perde os dados quando a energia acaba: a **RAM**. **Não volátil** guarda os dados desligada: **HD, SSD, pen drive** (e a ROM).
+3. **Tecnologia**: HD é **magnético**; SSD usa **memória flash**. **Partes móveis**: o HD **tem** (discos que giram e cabeça de leitura); o SSD **não tem**. **Velocidade**: o SSD é **mais rápido**. **Resistência**: o SSD resiste mais a impacto; o HD sofre com quedas. **Preço**: o HD é **mais barato por GB**.
+4. São **interfaces** (padrões de ligação do disco ao computador), **não tipos de disco**. Um HD costuma usar SATA; um SSD pode usar SATA ou NVMe.
+5. **Google Drive, OneDrive, Dropbox** (ou iCloud): **armazenamento em nuvem**. **FTP**: **transferência de arquivos**. **HTTP/HTTPS**: protocolo da web, que também transfere arquivos (downloads e uploads). **BitTorrent**: compartilhamento de arquivos **P2P**. **VoIP**: **voz** pela internet. **RFID**: **identificação por radiofrequência** (crachás, etiquetas, pedágio). VoIP e RFID não guardam nem transferem arquivos.
+6. Quaisquer cinco: **.zip, .rar, .7z, .tar, .gz** (ou .tar.gz), **.arj**. **.docx** é **documento de texto** (Word). **.exe** e **.bat** são **executáveis** (programa e arquivo de lote do Windows); como anexo, são risco de malware.
+7. Quaisquer cinco: manter os backups **atualizados** e, se possível, **automatizados**; **verificar** se o backup foi feito e **testar a recuperação**; guardar em **locais seguros** (sem poeira, calor e umidade), com **acesso restrito**; gravar **dados sensíveis criptografados**; manter **backups redundantes** em **locais diferentes**; fazer backup **antes de grandes alterações** e de mandar o computador para a manutenção.
+8. **3** cópias dos dados, em **2** tipos de mídia, sendo **1 fora do local**. Exemplo: os boletins da companhia ficam no computador da seção (cópia 1), num HD externo guardado no armário (cópia 2, outra mídia) e na nuvem institucional ou noutro prédio (cópia 3, fora do local). Um incêndio na sala não leva tudo.
+9. **Completo**: copia **tudo** o que foi selecionado; **marca**. **Incremental**: só o que mudou desde o **último backup de qualquer tipo**; **marca**. **Diferencial**: só o que mudou desde o **último completo**; **não marca**. **Cópia**: tudo o que foi selecionado, sem afetar a rotina; **não marca**. **Diário**: os arquivos modificados **naquele dia**; **não marca**. Marcam: **completo e incremental**.
+10. Com incrementais: o **completo de domingo** e **todos os incrementais**, de **segunda a sexta**, em ordem. Com diferenciais: o **completo de domingo** e **só o diferencial de sexta**.
+11. **Tamanho**: o incremental é **pequeno** (só o do dia); o diferencial **cresce** a cada dia. **Tempo de fazer**: o incremental é **rápido**; o diferencial fica **mais lento** ao longo da semana. **Tempo de restaurar**: o incremental é **mais lento** (completo + toda a cadeia); o diferencial é **mais rápido** (completo + o último).
+12. **Abrir a Lixeira**, **selecionar** o arquivo e clicar em **Restaurar**. **Esvaziar Lixeira** apaga de vez o que está nela. **Shift + Delete** exclui **sem passar pela Lixeira**.
+13. O **Histórico de Arquivos** faz backup automático de **versões dos arquivos pessoais** num disco externo ou de rede. A **Restauração do Sistema** volta **configurações e arquivos do sistema** a um ponto anterior. Quem recupera **documentos** é o **Histórico de Arquivos**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Vírus:** se anexa a arquivos e precisa ser executado para se espalhar. **Worm:** se propaga sozinho pela rede, explorando falhas. **Trojan (cavalo de Troia):** parece um programa útil, mas executa ações maliciosas. **Ransomware:** torna os dados inacessíveis (criptografa) e exige resgate.

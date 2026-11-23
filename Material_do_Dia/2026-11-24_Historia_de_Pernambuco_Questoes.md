@@ -286,6 +286,25 @@ Sobre a capitania de Pernambuco nos séculos XVI e XVII, assinale a alternativa 
 - **(D)** A sede foi **Olinda**; o Recife era o porto.
 - **(E)** O açúcar ia para a **exportação**.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. (1) **Preço alto** na Europa (era raro, um "ouro branco"); (2) a **experiência portuguesa** nas ilhas do Atlântico (Madeira, Açores) e na África; (3) o **solo de massapê**; (4) o **clima** quente e úmido. Também pesou o capital e o comércio holandeses.
+2. Eram **parceiros comerciais**: ajudavam a **financiar** engenhos, **transportavam**, **refinavam** e **distribuíam** o açúcar na Europa. Esse interesse ajuda a explicar a invasão de 1630.
+3. É um **solo** escuro, argiloso e fértil, ótimo para a cana. Fica na **Zona da Mata** (litoral). Massapê é solo, não planta nem técnica.
+4. **Casa-grande**: moradia do **senhor de engenho** e da família. **Senzala**: moradia dos **escravizados**. **Capela**: mostra a influência da **Igreja Católica**. **Canavial**: a grande plantação (**latifúndio**). **Engenho** ("fábrica"): casa da **moenda**, casa das **caldeiras** e casa de **purgar**.
+5. **M-C-P**: (1) **moenda**: a cana é esmagada para tirar o caldo; (2) **casa das caldeiras**: o caldo é fervido até virar melaço; (3) **casa de purgar**: o melaço vai para formas de barro, onde o açúcar seca e clareia (o branco em cima, o mascavo embaixo); (4) o açúcar é encaixotado e levado ao porto.
+6. O **engenho real** era movido a **água** (roda d'água) e era maior. O **trapiche** era movido por **tração animal** (bois ou cavalos).
+7. **LEME**: **L**atifúndio (grande propriedade); **E**scravidão (mão de obra escravizada); **M**onocultura (um só produto, a cana); **E**xportação (produção para o mercado externo).
+8. Porque as melhores terras ficavam com a **cana**, plantada para exportar. Sobrava pouca terra e pouco trabalho para lavouras de **alimentos**, que ficavam caros ou faltavam.
+9. (1) O **lucro do tráfico** negreiro, para comerciantes e para a Coroa; (2) a **resistência indígena** (fugas e guerras, conhecendo a mata); (3) as **doenças** trazidas pelos europeus, que mataram muitos indígenas; (4) a oposição dos **jesuítas** à escravização indígena. Também a **experiência** portuguesa com africanos escravizados nas ilhas do Atlântico. A troca foi **gradual**.
+10. Eram **contra a escravização dos indígenas**, que queriam catequizar, mas **aceitavam a escravidão africana**.
+11. **Topo**: os **senhores de engenho** (terra, engenho, escravizados e poder político). **Meio**: **lavradores de cana**, comerciantes, clero, funcionários e trabalhadores livres especializados (mestre de açúcar, feitor). **Base**: os **escravizados** africanos e indígenas. O **lavrador de cana** plantava em terra própria ou arrendada, mas **não tinha engenho**: dependia do senhor para moer e deixava parte da produção.
+12. **PREE**: **P**atriarcal (o senhor, o pai, manda em todos); **R**ural (a vida gira em torno do engenho); **E**scravista (base no trabalho escravizado); **E**stamental (quase **sem mobilidade social**).
+13. (1) A açucareira é **rural**; a mineradora é **urbana** (criou cidades). (2) A açucareira quase **não tinha mobilidade social**; a mineradora teve **um pouco mais**. (3) A açucareira foi o centro da economia nos **séculos XVI e XVII**, no **litoral do Nordeste**; a mineradora, no **século XVIII**, em **Minas Gerais**.
+14. Porque no litoral a **cana** ocupava as terras e o gado comia a cana. A pecuária, atividade **subsidiária** do açúcar, foi **interiorizada** (o São Francisco virou o "rio dos currais"; carta régia de 1701). Ela avançou sobre as terras dos **tapuias** e provocou a **Guerra dos Bárbaros** (1683–1713).
+15. Depois de 1654, os **holandeses** expulsos levaram técnica e capital para as **Antilhas** (Caribe). A **concorrência antilhana** derrubou o preço, e o açúcar pernambucano entrou em **decadência**. A guerra de expulsão também destruiu engenhos.
+16. Crise do açúcar → os **senhores de engenho** de **Olinda** se **endividam** com os comerciantes (**mascates**) do **Recife** → **Guerra dos Mascates** (**1710–1711**), Olinda × Recife.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. 1500 Cabral e período pré-colonial · 1530 Martim Afonso · 1534 capitanias e doação a Duarte Coelho · 1535 posse (Nova Lusitânia) · 1537 Olinda e Igarassu vilas · 1549 Governo-Geral em Salvador · 1554 morte de Duarte Coelho · 1683–1713 Guerra dos Bárbaros.
