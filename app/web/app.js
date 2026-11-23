@@ -158,6 +158,8 @@ let rolagemInicio = 0;
 function setTopo(titulo, comVoltar) {
   $('#titulo-topo').textContent = titulo;
   $('#voltar').hidden = !comVoltar;
+  $('#ir-inicio').hidden = !comVoltar;
+  abrirMenu(false);
   document.title = comVoltar ? `${titulo} · PMPE Ouvir` : 'PMPE Ouvir';
 }
 
@@ -195,6 +197,8 @@ function rota() {
   if (h === '#/cartoes/estudar') { telaEstudarCartoes(); return; }
   const c = h.match(/^#\/cronometro(?:\/(.+))?$/);
   if (c) { telaCrono(c[1]); return; }
+  const qd = h.match(/^#\/questoes-dia\/(.+)$/);
+  if (qd) { telaQuestoesDia(decodeURIComponent(qd[1])); return; }
   const m = h.match(/^#\/doc\/(.+)$/);
   if (m) telaDoc(decodeURIComponent(m[1]));
   else telaInicio();
@@ -215,7 +219,7 @@ function fimDoMaterial(item) {
   const titulo = teste ? 'Leu o resumão? Agora teste a memória' : 'Terminou o estudo? Agora é praticar';
   const botao = teste ? '⚡ Fazer o teste-relâmpago' : `📝 Responder as questões ${hoje ? 'de hoje' : 'deste dia'}`;
   const meta = teste ? 'Perguntas rápidas, sem consultar, com as respostas no fim'
-    : `Estudo dirigido${cad.questoes ? ` e ${cad.questoes} ${cad.questoes === 1 ? 'questão' : 'questões'} (primeiro as autorais, depois as oficiais): marque a letra e veja na hora se acertou` : ''}`;
+    : `Primeiro o estudo dirigido, com resposta para conferir${cad.questoes ? `; no fim dele, o botão para as ${cad.questoes} ${cad.questoes === 1 ? 'questão' : 'questões'} (primeiro as autorais, depois as oficiais)` : ''}`;
   return `<section class="fim-material" aria-label="Próximo passo">
     <p class="fim-titulo">${titulo}</p>
     <a class="btn primario largo" href="#/doc/${encodeURIComponent(cad.id)}">${botao} →</a>
@@ -579,7 +583,8 @@ async function telaDoc(id) {
       ${item.audio ? '<button class="btn" id="b-baixar"></button>' : ''}
       ${blocosDoItem(item) ? `<a class="btn" href="#/cronometro/${encodeURIComponent(item.id)}">⏱ ${crono && crono.id === item.id && !crono.fim ? 'Cronômetro em andamento' : 'Cronômetro do roteiro'}</a>` : ''}
       ${linkCaderno(item)}
-      ${item.questoes && !item.caderno ? `<button class="btn${item.categoria === 'questoes' ? ' primario' : ''}" id="b-questoes">✍ Resolver as ${item.questoes} questões no app</button>` : ''}
+      ${item.questoes && item.categoria === 'questoes' ? `<a class="btn" href="#/questoes-dia/${encodeURIComponent(item.id)}">✅ Questões do dia · ${item.questoes}</a>` : ''}
+      ${item.questoes && !item.caderno && item.categoria !== 'questoes' ? '<button class="btn" id="b-questoes">✍ Resolver as questões no app</button>' : ''}
       ${item.cartoes ? `<button class="btn" id="b-cartoes">🃏 ${item.cartoes} flashcards</button>` : ''}
       ${rev ? `<a class="btn" href="#/doc/${encodeURIComponent(rev.id)}">⚡ Revisão rápida · ${minutos(duracaoItem(rev))}</a>` : ''}
       ${mat ? `<a class="btn" href="#/doc/${encodeURIComponent(mat.id)}">📄 ${item.categoria !== 'questoes' ? 'Material completo' : item.titulo.startsWith('Teste-relâmpago') ? 'Voltar ao resumão' : 'Material de estudo'}</a>` : ''}
@@ -599,7 +604,8 @@ async function telaDoc(id) {
   if (ouvir) ouvir.addEventListener('click', () => iniciarAudio(item, doc, null));
   const art = tela.querySelector('article');
   estudoNoTexto(art, doc.estudo, item);
-  questoesNoTexto(art, qsDoTexto);
+  if (item.categoria === 'questoes' && qsDoTexto.length && art.querySelector('.ei-lista')) fimDoEstudo(art, item, qsDoTexto);
+  else questoesNoTexto(art, qsDoTexto);
   art.addEventListener('click', (e) => {
     if (e.target.closest('a, button, summary, input, textarea, .ei-lista, .qi-lista') || String(window.getSelection() || '').trim()) return;
     const nota = e.target.closest('.nota-bloco');
@@ -687,6 +693,71 @@ async function telaDoc(id) {
 const ordemDoCaderno = (l) => l.slice().sort((a, b) => (a.tipo === 'oficial') - (b.tipo === 'oficial')
   || String(a.numero).localeCompare(String(b.numero), 'pt-BR', { numeric: true }));
 
+/* Caderno do dia em duas telas: esta termina no estudo dirigido, com um botão para a tela das questões
+   (#/questoes-dia/<caderno>), onde ficam as autorais, depois as oficiais, e o gabarito fechado. */
+function fimDoEstudo(art, item, lista) {
+  const box = art.querySelector('.ei-lista');
+  while (box.nextElementSibling) box.nextElementSibling.remove();
+  const aut = lista.filter((q) => q.tipo !== 'oficial').length;
+  const ofi = lista.length - aut;
+  const partes = [aut ? `${aut} ${aut === 1 ? 'autoral' : 'autorais'} de treino` : '', ofi ? `${ofi} ${ofi === 1 ? 'oficial' : 'oficiais'}` : ''].filter(Boolean);
+  const fim = document.createElement('section');
+  fim.className = 'fim-material';
+  fim.setAttribute('aria-label', 'Próximo passo');
+  fim.innerHTML = `<p class="fim-titulo">Terminou o estudo dirigido? Agora as questões</p>
+    <a class="btn primario largo" href="#/questoes-dia/${encodeURIComponent(item.id)}">✅ Ir para as questões do dia →</a>
+    <p class="meta">${lista.length} ${lista.length === 1 ? 'questão' : 'questões'}: ${partes.join(' e ')}${aut && ofi ? ' (primeiro as autorais)' : ''}. Marque a letra e veja na hora se acertou.</p>`;
+  art.after(fim);
+}
+
+async function telaQuestoesDia(id) {
+  const item = catalogo && catalogo.docs.find((d) => d.id === id);
+  if (!item) { location.hash = '#/'; return; }
+  const hash = `#/questoes-dia/${encodeURIComponent(id)}`;
+  setTopo(`Questões do dia${item.subtitulo ? ` · ${item.subtitulo.split(' ').pop()}` : ''}`, true);
+  tela.innerHTML = '<p class="aviso">Abrindo…</p>';
+  let doc;
+  let qs = [];
+  try {
+    doc = await obterDoc(item);
+    qs = (await obterQuestoes()).filter((q) => q.doc === item.material);
+  } catch {
+    tela.innerHTML = '<p class="aviso">As questões ainda não foram guardadas no celular. Abra o app com internet uma vez.</p>';
+    return;
+  }
+  if (location.hash !== hash) return;
+  const mat = item.material && catalogo.docs.find((d) => d.id === item.material);
+  tela.innerHTML = `
+    <p class="meta">${esc(item.titulo.replace(/^Questões: /, ''))}${item.subtitulo ? ` · ${esc(item.subtitulo)}` : ''}</p>
+    <article></article>
+    <div class="acoes">
+      <a class="btn" href="#/doc/${encodeURIComponent(item.id)}">📝 Voltar ao estudo dirigido</a>
+      ${mat ? `<a class="btn" href="#/doc/${encodeURIComponent(mat.id)}">📄 Material de estudo</a>` : ''}
+      <a class="btn" href="#/">🏠 Tela inicial</a>
+    </div>`;
+  const art = tela.querySelector('article');
+  art.innerHTML = doc.html;
+  // fica só o que é das questões: sai o cabeçalho do arquivo e o estudo dirigido (que está na outra tela)
+  while (art.firstElementChild && art.firstElementChild.tagName !== 'H2') art.firstElementChild.remove();
+  const ed = [...art.querySelectorAll(':scope > h2')].find((h) => /estudo dirigido|teste-rel[aâ]mpago/i.test(h.textContent) && !/respostas/i.test(h.textContent));
+  if (ed) {
+    let el = ed.nextElementSibling;
+    while (el && el.tagName !== 'H2') { const prox = el.nextElementSibling; el.remove(); el = prox; }
+    ed.remove();
+  }
+  while (art.firstElementChild && art.firstElementChild.tagName === 'HR') art.firstElementChild.remove();
+  art.querySelectorAll('[data-f]').forEach((e) => e.removeAttribute('data-f'));
+  for (const h of [...art.querySelectorAll(':scope > h3')]) { // as respostas do estudo dirigido ficam na outra tela
+    if (!/respostas/i.test(h.textContent) || !/estudo dirigido/i.test(h.textContent)) continue;
+    let el = h.nextElementSibling;
+    while (el && !/^H[1-3]$/.test(el.tagName) && el.tagName !== 'HR') { const prox = el.nextElementSibling; el.remove(); el = prox; }
+    h.remove();
+  }
+  if (qs.length) questoesNoTexto(art, qs);
+  else art.insertAdjacentHTML('afterbegin', '<p class="aviso">As questões deste dia ainda não estão no celular. Abra o app com internet uma vez.</p>');
+  window.scrollTo(0, 0);
+}
+
 function questoesNoTexto(art, lista) {
   if (!lista.length) return;
   const porNum = new Map(lista.map((q) => [String(q.numero), q]));
@@ -699,6 +770,15 @@ function questoesNoTexto(art, lista) {
     let el = h.nextElementSibling;
     h.remove();
     while (!fim(el) && el.tagName !== 'H3' && el.tagName !== 'HR') { const prox = el.nextElementSibling; el.remove(); el = prox; }
+  }
+  // títulos das seções de questões que ficaram vazios (o cartão já traz "Questões autorais" / "Questões oficiais")
+  for (let mudou = true; mudou;) {
+    mudou = false;
+    for (const h of [...art.querySelectorAll(':scope > h2, :scope > h3')]) {
+      if (/gabarito|mapa|apoio|respostas|revis/i.test(h.textContent)) continue;
+      const prox = h.nextElementSibling;
+      if (!prox || /^H[23]$/.test(prox.tagName) || prox.tagName === 'HR' || prox === ancora) { h.remove(); mudou = true; }
+    }
   }
   const gab = [...art.querySelectorAll(':scope > h2')].find((h) => /gabarito/i.test(h.textContent));
   if (!ancora) { ancora = document.createElement('section'); if (gab) gab.before(ancora); else art.append(ancora); }
@@ -5664,6 +5744,45 @@ function abrirPainelTexto(abrir) {
   $('#tamanho').setAttribute('aria-expanded', String(abrir));
 }
 
+/* Menu do topo: ir direto para qualquer parte do app, sem voltar tela por tela. */
+function abrirMenu(abrir) {
+  const p = $('#painel-menu');
+  if (!p) return;
+  if (abrir) {
+    const hoje = dataISO();
+    const docs = (catalogo && catalogo.docs) || [];
+    const mat = docs.filter((d) => d.categoria === 'material' && d.data && d.data <= hoje).sort((a, b) => (a.data < b.data ? 1 : -1))[0];
+    const cad = mat && mat.caderno && docs.find((d) => d.id === mat.caderno);
+    const it = (href, ic, nome) => `<a href="${href}"${location.hash === href ? ' aria-current="page"' : ''}><span aria-hidden="true">${ic}</span> ${nome}</a>`;
+    p.innerHTML = [
+      it('#/', '🏠', 'Tela inicial'),
+      mat ? it(`#/doc/${encodeURIComponent(mat.id)}`, '📄', `Material ${mat.data === hoje ? 'de hoje' : `de ${dataCurta(mat.data)}`}`) : '',
+      cad ? it(`#/doc/${encodeURIComponent(cad.id)}`, '📝', 'Estudo dirigido do dia') : '',
+      cad && cad.questoes ? it(`#/questoes-dia/${encodeURIComponent(cad.id)}`, '✅', 'Questões do dia') : '',
+      it('#/questoes', '✍', 'Questões'),
+      it('#/cartoes', '🃏', 'Flashcards'),
+      it('#/simulado', '⏱', 'Simulado'),
+      it('#/redacao', '✒', 'Redação'),
+      it('#/edital', '🧭', 'Edital'),
+      it('#/professor', '🤖', 'Professor'),
+      it('#/destaques', '🖍', 'Destaques'),
+      it('#/progresso', '📊', 'Progresso'),
+      it('#/cronometro', '⏲', 'Cronômetro'),
+      it('#/dados', '💾', 'Meus dados'),
+      it('#/ajustes', '⚙', 'Ajustes'),
+    ].join('');
+    abrirPainelTexto(false);
+  }
+  p.hidden = !abrir;
+  $('#menu').setAttribute('aria-expanded', String(abrir));
+}
+$('#menu').addEventListener('click', (e) => { e.stopPropagation(); abrirMenu($('#painel-menu').hidden); });
+$('#painel-menu').addEventListener('click', (e) => { if (e.target.closest('a')) abrirMenu(false); });
+document.addEventListener('click', (e) => {
+  if (!$('#painel-menu').hidden && !e.target.closest('#painel-menu, #menu')) abrirMenu(false);
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') abrirMenu(false); });
+
 $('#tamanho').addEventListener('click', (e) => {
   e.stopPropagation();
   abrirPainelTexto($('#painel-texto').hidden);
@@ -5694,7 +5813,7 @@ aplicarLargura(guardado.get('larguraTexto', 'media'));
    espera: mostra um aviso no topo e recarrega no toque. */
 function aplicarVersaoNova() {
   // não recarrega no meio de algo em andamento: áudio, leitura no fone, simulado, questões, flashcards ou redação
-  const ocupado = /^#\/(simulado\/(fazer|folha)|questoes\/resolver|cartoes\/estudar|redacao\/(escrever|ver)|cronometro|professor)/.test(location.hash || '');
+  const ocupado = /^#\/(simulado\/(fazer|folha)|questoes\/resolver|questoes-dia\/|cartoes\/estudar|redacao\/(escrever|ver)|cronometro|professor)/.test(location.hash || '');
   if (!estaTocando() && !foneAtivo && !ocupado) { location.reload(); return; }
   if ($('#versao-nova')) return;
   const b = document.createElement('button');

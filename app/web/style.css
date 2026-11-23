@@ -674,3 +674,19 @@ body.player-compacto { --player-h: 66px; }
 .ei-aval { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 2px; }
 .ei-aval .escolhida { background: var(--marca); color: var(--marca-texto); border-color: var(--marca); }
 .ei-botoes { margin-top: 4px; }
+
+/* Menu do topo */
+.inicio-btn { text-decoration: none; font-size: 20px; }
+.inicio-btn[hidden] { display: none; }
+.menu-btn { font-size: 24px; }
+.painel-menu {
+  position: fixed; right: 12px; top: calc(56px + env(safe-area-inset-top)); z-index: 30;
+  display: flex; flex-direction: column; min-width: 230px; max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 80px - env(safe-area-inset-top)); overflow-y: auto; padding: 6px; border-radius: 14px;
+  background: var(--superficie); border: 1px solid var(--linha); box-shadow: 0 6px 20px rgba(0,0,0,.25);
+}
+.painel-menu[hidden] { display: none; }
+.painel-menu a { display: flex; gap: 10px; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 10px;
+  color: var(--texto); text-decoration: none; font-weight: 600; }
+.painel-menu a:hover, .painel-menu a:focus-visible { background: var(--fundo); }
+.painel-menu a[aria-current="page"] { background: var(--marca); color: var(--marca-texto); }

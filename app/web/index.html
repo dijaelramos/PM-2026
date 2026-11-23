@@ -25,6 +25,8 @@
 <header class="topo">
   <button id="voltar" class="icone-btn" aria-label="Voltar" hidden>‹</button>
   <h1 id="titulo-topo">PMPE Ouvir</h1>
+  <a id="ir-inicio" class="icone-btn tema inicio-btn" href="#/" aria-label="Voltar para a tela inicial" title="Tela inicial" hidden>🏠</a>
+  <button id="menu" class="icone-btn tema menu-btn" aria-label="Menu: ir para outra parte do app" title="Menu" aria-expanded="false" aria-controls="painel-menu">☰</button>
   <span id="rede" class="rede" title="Situação da conexão"></span>
   <button id="tamanho" class="icone-btn tema tamanho" aria-label="Tamanho do texto" title="Tamanho do texto" aria-expanded="false" aria-controls="painel-texto">Aa</button>
   <button id="tema" class="icone-btn tema" aria-label="Usar tema escuro" title="Usar tema escuro"></button>
@@ -33,6 +35,8 @@
     <button id="cb-play" aria-label="Pausar o cronômetro">⏸</button>
   </div>
 </header>
+
+<nav id="painel-menu" class="painel-menu" aria-label="Menu do app" hidden></nav>
 
 <div id="painel-texto" class="painel-texto" role="group" aria-label="Texto" hidden>
   <div class="linha-painel" role="group" aria-label="Tamanho do texto">
