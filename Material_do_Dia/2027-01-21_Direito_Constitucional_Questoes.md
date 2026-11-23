@@ -242,6 +242,18 @@ Comparando o servidor público civil e o militar estadual, assinale a alternativ
 
 **Por que as outras estão corretas:** (A) art. 37, VI; (B) art. 142, § 3º, IV; (C) art. 142, § 3º, V; (D) art. 42, § 3º.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Cada ente (União, Estados, DF e Municípios) institui um **regime jurídico único** e **planos de carreira** para os servidores da administração direta, autarquias e fundações (art. 39). Recebem obrigatoriamente **subsídio**: **membros de Poder**, **detentores de mandato eletivo**, **Ministros de Estado** e **Secretários estaduais e municipais**. Subsídio é a remuneração em **parcela única**, **vedado** o acréscimo de gratificação, adicional, abono ou outra verba.
+2. Quaisquer cinco (art. 39, § 3º): **salário mínimo**, **13º**, **adicional noturno**, **salário-família**, limite de **jornada**, **repouso semanal**, **horas extras**, **férias com 1/3**, **licença-gestante** e **licença-paternidade**, proibição de diferença salarial por sexo, idade, cor ou estado civil.
+3. Após **3 anos de efetivo exercício** no cargo efetivo obtido por **concurso**, com **avaliação especial de desempenho** por comissão. Perde o cargo só por: (I) **sentença judicial transitada em julgado**; (II) **processo administrativo** com ampla defesa; (III) **avaliação periódica de desempenho**, na forma de lei complementar, com ampla defesa.
+4. **Reintegração**: o servidor demitido volta ao cargo quando a demissão é **invalidada por sentença**. **Recondução**: quem ocupava a vaga, se estável, **volta ao cargo de origem**, sem indenização. **Disponibilidade**: com o cargo **extinto** ou declarado desnecessário, o estável fica inativo com remuneração **proporcional ao tempo de serviço**, até ser aproveitado.
+5. Os membros das **Polícias Militares** e dos **Corpos de Bombeiros Militares**, instituições organizadas com base na **hierarquia e disciplina** (art. 42). As patentes dos oficiais da PM são conferidas pelo **Governador**.
+6. Quaisquer cinco (art. 142, §§ 2º e 3º, via art. 42, § 1º): **não cabe habeas corpus** contra punição disciplinar militar (salvo exame da legalidade); **proibidas a sindicalização e a greve**; **proibida a filiação partidária** na ativa; posse em **cargo civil permanente** → **reserva**; cargo civil **temporário** → **agregado** e, após 2 anos, reserva; o oficial só perde o posto se julgado **indigno ou incompatível** por tribunal militar; direitos do art. 7º (13º, salário-família, férias com 1/3, gestante, paternidade, creche).
+7. O militar **alistável é elegível** (art. 14, § 8º). Com **menos de 10 anos** de serviço, deve **afastar-se da atividade**. Com **mais de 10 anos**, é **agregado** pela autoridade superior e, se eleito, passa automaticamente, **na diplomação**, para a **inatividade**.
+8. **Permanente**: é **transferido para a reserva** (ressalvada a acumulação permitida). **Temporário**: fica **agregado** e, depois de **2 anos** de afastamento, vai para a reserva.
+9. **Greve**: é **vedada** aos **policiais civis** e a **todos os servidores que atuam diretamente na segurança pública** (Tema 541). **Iniciativa**: as leis sobre o regime jurídico dos militares estaduais são de **iniciativa privativa do Governador** (simetria com o art. 61, § 1º, II, "f"); lei de iniciativa parlamentar é **inconstitucional**, e a **sanção não corrige** o vício.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Até dois anos**, prorrogável **uma vez**, por igual período.

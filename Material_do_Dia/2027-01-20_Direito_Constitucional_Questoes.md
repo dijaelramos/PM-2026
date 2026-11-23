@@ -234,6 +234,19 @@ O prefeito de um município nomeia o sobrinho de sua esposa para um cargo em com
 
 **Por que as outras estão erradas:** (A) a afinidade **é** alcançada; (B) a livre nomeação não afasta a moralidade e a impessoalidade; (D) a escolaridade não é critério da súmula (a exceção do STF é para **cargos políticos**, e assessor de secretaria não é); (E) o limite é o **3º grau**.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Legalidade**: o administrador só faz o que a **lei permite** (o comandante não cria multa sem lei). **Impessoalidade**: agir pelo **interesse público**, sem favorecer ou perseguir (escala sem privilégio para amigos). **Moralidade**: **ética e boa-fé**, não só legalidade (não usar a viatura para fins pessoais). **Publicidade**: **transparência** (resultado do concurso no diário oficial). **Eficiência**: **melhor resultado** com os recursos (reduzir o tempo de resposta).
+2. Proíbe que a publicidade dos órgãos públicos tenha **nomes, símbolos ou imagens que caracterizem promoção pessoal** de autoridades; ela deve ser **educativa, informativa ou de orientação social**. Liga-se à **impessoalidade**. **SV 13**: proíbe o **nepotismo** — nomear cônjuge, companheiro ou parente **até o 3º grau** da autoridade nomeante (ou de servidor em direção, chefia ou assessoramento da mesma pessoa jurídica) para **cargo em comissão, de confiança ou função gratificada**.
+3. **Brasileiros** que preencham os requisitos da lei e **estrangeiros, na forma da lei**. Regra: **concurso público** de provas ou de provas e títulos; exceção: **cargo em comissão** de livre nomeação e exoneração. Validade: **até 2 anos, prorrogável uma vez por igual período**.
+4. **Função de confiança**: exercida **exclusivamente** por servidor de **cargo efetivo**. **Cargo em comissão**: pode ser ocupado por pessoas de fora, respeitado o **percentual mínimo** de servidores de carreira fixado em lei. Os dois só servem para **direção, chefia e assessoramento**.
+5. O ato é **nulo** e a **autoridade responsável é punida** (art. 37, § 2º).
+6. O **servidor civil** pode: tem **livre associação sindical** (VI) e **greve** nos termos de **lei específica** (VII). O **militar** não: são **proibidas a sindicalização e a greve** (art. 142, § 3º, IV, c/c art. 42, § 1º).
+7. **Executivo estadual**: o subsídio do **Governador**. **Judiciário estadual**: o subsídio dos **Desembargadores do TJ**, limitado a **90,25%** do subsídio dos Ministros do STF. (O teto geral é o subsídio dos Ministros do STF.)
+8. Com **compatibilidade de horários** e respeitado o teto: (a) **dois cargos de professor**; (b) **um de professor com outro de qualquer natureza**; (c) **dois cargos ou empregos privativos de profissionais de saúde** com profissão regulamentada. A **EC 138/2025** trocou "professor + cargo **técnico ou científico**" por "professor + cargo **de qualquer natureza**".
+9. Improbidade: **suspensão dos direitos políticos**, **perda da função pública**, **indisponibilidade dos bens** e **ressarcimento ao erário**, sem prejuízo da ação penal. **§ 6º**: as pessoas jurídicas de direito público e as de direito privado **prestadoras de serviço público** respondem **objetivamente** (sem provar culpa) pelos danos que seus agentes causarem a terceiros, com **direito de regresso** contra o agente em caso de **dolo ou culpa**.
+10. **Deputado** (federal, estadual ou distrital), senador ou governador: **afastado** do cargo. **Prefeito**: afastado, podendo **optar** pela remuneração. **Vereador**: com **compatibilidade de horários**, exerce os dois e recebe as duas remunerações; sem compatibilidade, segue a regra do prefeito. O tempo conta para tudo, **exceto promoção por merecimento**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Privativa da União** (art. 22, I).
