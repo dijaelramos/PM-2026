@@ -162,6 +162,7 @@ function setTopo(titulo, comVoltar) {
 }
 
 function rota() {
+  if (foneAtivo) pararFone();
   esconderDaqui();
   seguir = true;
   $('#seguir').hidden = true;
@@ -182,6 +183,8 @@ function rota() {
   if (h === '#/simulado') { telaSimulado(); return; }
   if (h === '#/simulado/fazer') { telaSimuladoFazer(); return; }
   if (h === '#/simulado/folha') { telaSimuladoFolha(); return; }
+  if (h === '#/simulado/imprimir') { telaImprimir(); return; }
+  if (h === '#/retafinal') { telaRetaFinal(); return; }
   const rs = h.match(/^#\/simulado\/resultado\/(\d+)$/);
   if (rs) { telaResultadoSim(Number(rs[1])); return; }
   if (h === '#/cartoes') { telaCartoes(); return; }
@@ -336,7 +339,7 @@ function desenharLista(filtro) {
   }
   if (!f) {
     const nDest = contarDestaques();
-    const blocos = resumoMetaHome() + resumoConviteHome() + resumoSimuladoHome() + resumoRedacaoHome() + resumoCronoHome() + resumoProgressoHome() + resumoEditalHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
+    const blocos = resumoRetaHome() + resumoMetaHome() + resumoConviteHome() + resumoSimuladoHome() + resumoRedacaoHome() + resumoCronoHome() + resumoProgressoHome() + resumoEditalHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
       <div class="icone-q" aria-hidden="true">🖍</div><div class="corpo"><strong>Meus destaques</strong>
       <span class="meta">${nDest} ${nDest === 1 ? 'trecho destacado' : 'trechos destacados'}, por disciplina</span></div><span aria-hidden="true">›</span></a>` : '') + resumoRelatorioHome() + resumoBackupHome();
     html += `<h2 class="secao">Seu estudo</h2>${blocos}
@@ -891,9 +894,9 @@ function embaralhar(lista) {
   return a;
 }
 
-function iniciarSessao(ids, titulo) {
+function iniciarSessao(ids, titulo, extra = {}) {
   if (!ids.length) return;
-  guardado.set('sessaoQ', { titulo, ids, idx: 0, certas: 0, feitas: 0, tempo: 0, erradas: [], resp: null });
+  guardado.set('sessaoQ', Object.assign({ titulo, ids, idx: 0, certas: 0, feitas: 0, tempo: 0, erradas: [], resp: null }, extra));
   if (location.hash === '#/questoes/resolver') rota();
   else location.hash = '#/questoes/resolver';
 }
@@ -949,6 +952,7 @@ async function telaQuestoes() {
       <button class="btn${revisarHoje.length ? '' : ' primario'}" id="q-novas" ${novas.length ? '' : 'disabled'}>▶ Não resolvidas (${novas.length})</button>
       <button class="btn" id="q-erros" ${erradas.length ? '' : 'disabled'}>Caderno de erros (${erradas.length})</button>
       <button class="btn" id="q-aleatorias">10 aleatórias</button>
+      <button class="btn" id="q-fone">🎧 Questões no fone</button>
     </div>
     ${naRevisao ? `<p class="aviso">Revisão espaçada dos erros: a questão que você errou volta amanhã; acertando, volta em 7 dias e depois em 30, e então sai da revisão.
       ${revisarHoje.length ? '' : `Nada para hoje.${nAmanha ? ` Amanhã: ${nAmanha}.` : ''}`} ${naRevisao} ${naRevisao === 1 ? 'questão está' : 'questões estão'} na revisão.</p>` : ''}
@@ -973,6 +977,12 @@ async function telaQuestoes() {
   const br = $('#q-revisar');
   if (br) br.addEventListener('click', () => iniciarSessao(revisarHoje.map((q) => q.id), 'Revisão dos erros'));
   $('#q-novas').addEventListener('click', () => iniciarSessao(novas.map((q) => q.id), 'Não resolvidas'));
+  $('#q-fone').addEventListener('click', () => {
+    const ordem = [...revisarHoje, ...embaralhar(novas), ...embaralhar(erradas)].filter(boaDeOuvir);
+    const ids = [...new Set(ordem.map((q) => q.id))].slice(0, 20);
+    if (!ids.length) { window.alert('Não há questões boas de ouvir (sem texto de apoio) para resolver agora.'); return; }
+    iniciarSessao(ids, 'Questões no fone', { fone: true });
+  });
   $('#q-erros').addEventListener('click', () => iniciarSessao(embaralhar(erradas).map((q) => q.id), 'Caderno de erros'));
   $('#q-aleatorias').addEventListener('click', () => iniciarSessao(embaralhar(lista).slice(0, 10).map((q) => q.id), '10 aleatórias'));
   tela.querySelectorAll('[data-disc]').forEach((b) => b.addEventListener('click', () => {
@@ -1199,6 +1209,10 @@ async function telaResolver() {
   tela.innerHTML = `
     <div class="q-topo"><span>${esc(s.titulo)} · <b>${s.idx + 1}</b> de ${s.ids.length}</span><span id="q-relogio" aria-label="Tempo nesta questão"></span></div>
     <div class="q-progresso" aria-hidden="true"><span style="width:${(s.idx / s.ids.length) * 100}%"></span></div>
+    ${s.fone ? `<div class="fone-barra"><span>🎧 No fone: toque na alternativa para responder</span>
+      <button class="btn-link" id="fone-repetir">↺ Repetir</button>
+      <label><input type="checkbox" id="fone-auto" ${guardado.get('foneAuto', true) ? 'checked' : ''}> seguir sozinho</label>
+      <button class="btn-link" id="fone-sair">Sair do fone</button></div>` : ''}
     <div class="q-fonte"><span class="selo ${q.tipo === 'oficial' ? 'oficial' : 'autoral'}">${q.tipo === 'oficial' ? 'Oficial' : 'Autoral · não oficial'}</span>
       ${esc(q.disciplina)}${q.tema ? ` · ${esc(q.tema)}` : ''}</div>
     <p class="q-meta">${esc(fonte)}${fonte ? ' · ' : ''}${esc(q.origem)}</p>
@@ -1218,6 +1232,7 @@ async function telaResolver() {
   tela.querySelectorAll('.alt').forEach((b) => b.addEventListener('click', () => {
     if (s.resp != null) return;
     escolhida = b.dataset.k;
+    if (s.fone) { responder(s, q, escolhida); return; }
     tela.querySelectorAll('.alt').forEach((x) => {
       x.classList.toggle('escolhida', x === b);
       x.setAttribute('aria-checked', String(x === b));
@@ -1227,14 +1242,25 @@ async function telaResolver() {
   tela.querySelectorAll('.riscar').forEach((b) => b.addEventListener('click', () => b.parentElement.classList.toggle('riscada')));
   $('#q-acao').addEventListener('click', () => {
     if (s.resp == null) { responder(s, q, escolhida); return; }
-    s.idx++;
-    s.resp = null;
-    s.avisoRev = '';
-    guardado.set('sessaoQ', s);
-    telaResolver();
+    avancarQuestao(s);
   });
+  if (s.fone) {
+    $('#fone-repetir').addEventListener('click', () => (s.resp == null ? lerQuestaoFone(s, q) : lerCorrecaoFone(s, q, () => avancarQuestao(s))));
+    $('#fone-auto').addEventListener('change', (e) => guardado.set('foneAuto', e.target.checked));
+    $('#fone-sair').addEventListener('click', () => { pararFone(); s.fone = false; guardado.set('sessaoQ', s); telaResolver(); });
+  }
   if (s.resp != null) mostrarCorrecao(s, q);
   else iniciarRelogio();
+  if (s.fone && s.resp == null) lerQuestaoFone(s, q);
+}
+
+function avancarQuestao(s) {
+  if (foneAtivo) pararFone();
+  s.idx++;
+  s.resp = null;
+  s.avisoRev = '';
+  guardado.set('sessaoQ', s);
+  telaResolver();
 }
 
 function responder(s, q, k) {
@@ -1250,6 +1276,7 @@ function responder(s, q, k) {
   guardado.set('sessaoQ', s);
   registrarAtividade({ q: 1, a: ok ? 1 : 0 });
   mostrarCorrecao(s, q);
+  if (s.fone) lerCorrecaoFone(s, q, () => avancarQuestao(s));
 }
 
 function mostrarCorrecao(s, q) {
@@ -1266,7 +1293,10 @@ function mostrarCorrecao(s, q) {
     <div class="q-veredito ${ok ? 'ok' : 'erro'}">${ok ? '✓ Você acertou!' : `✗ Você marcou ${rotuloResp(s.resp)}. Resposta: ${rotuloResp(q.resposta)}`}</div>
     ${s.avisoRev ? `<p class="q-meta">${esc(s.avisoRev)}</p>` : ''}
     ${q.comentario ? `<div class="q-comentario"><h3>Comentário</h3><div class="q-html">${q.comentario}</div></div>` : ''}
-    ${naCatalogo ? `<p><a class="btn-link" href="#/doc/${encodeURIComponent(q.doc)}">Abrir o material desta questão</a></p>` : ''}`;
+    ${naCatalogo ? `<p><a class="btn-link" href="#/doc/${encodeURIComponent(q.doc)}">Abrir o material desta questão</a></p>` : ''}
+    ${s.fone && q.comentario ? '<p><button class="btn-link" id="fone-coment">🔊 Ouvir o comentário</button></p>' : ''}`;
+  const fc = $('#fone-coment');
+  if (fc) fc.addEventListener('click', () => falarFone([textoParaOuvir(q.comentario)]));
   const b = $('#q-acao');
   b.textContent = s.idx + 1 >= s.ids.length ? 'Ver resultado' : 'Próxima questão ›';
   b.disabled = false;
@@ -1274,6 +1304,7 @@ function mostrarCorrecao(s, q) {
 
 function telaFimSessao(s) {
   pararRelogio();
+  if (s.fone) falarFone([`Fim. Você acertou ${s.certas} de ${s.feitas}.`]);
   const pct = s.feitas ? Math.round((s.certas / s.feitas) * 100) : 0;
   tela.innerHTML = `
     <div class="q-fim">
@@ -1341,6 +1372,7 @@ async function montarSimuladoApp() {
   const resp = respostas();
   const provas = (banco && banco.provas) || {};
   const ids = [];
+  const sigs = [];
   const faltas = [];
   for (const [s, nome] of DISC_PROVA) {
     const peso = (q) => {
@@ -1356,8 +1388,9 @@ async function montarSimuladoApp() {
       .sort((a, b) => (a.apoio || '').localeCompare(b.apoio || '')); // as do mesmo texto de apoio ficam juntas
     if (escolhidas.length < 10) faltas.push(`${nome}: ${escolhidas.length}`);
     ids.push(...escolhidas.map((q) => q.id));
+    sigs.push(...escolhidas.map(() => s));
   }
-  return { ids, faltas };
+  return { ids, sigs, faltas };
 }
 
 function comecarSimulado(dados) {
@@ -1386,7 +1419,7 @@ function ligarRelogioSim() {
 function resumoSimuladoHome() {
   const sim = simAtual();
   if (sim) {
-    return `<a class="cartao cartao-q continuar" href="#/simulado/${sim.tipo === 'folha' ? 'folha' : 'fazer'}">
+    return `<a class="cartao cartao-q continuar" href="#/simulado/${sim.tipo === 'folha' || sim.papel ? 'folha' : 'fazer'}">
       <div class="icone-q" aria-hidden="true">⏱</div><div class="corpo"><strong>Continuar: ${esc(sim.nome)}</strong>
       <span class="meta">${Object.keys(sim.resp).length} de ${sim.total} marcadas · ${esc(textoRelogioSim(sim))}</span></div><span aria-hidden="true">▶</span></a>`;
   }
@@ -1427,7 +1460,7 @@ async function telaSimulado() {
   tela.innerHTML = `
     <p class="aviso">Na prova: 60 questões, 10 por disciplina, e 5 h para a objetiva e a redação juntas. Para passar na objetiva:
       pelo menos 30% dos pontos em cada bloco (6 de 20), nenhuma disciplina zerada e 30% do total (18 de 60). As anuladas contam como acerto.</p>
-    ${sim ? `<a class="cartao continuar" href="#/simulado/${sim.tipo === 'folha' ? 'folha' : 'fazer'}"><div class="corpo"><strong>Continuar: ${esc(sim.nome)}</strong>
+    ${sim ? `<a class="cartao continuar" href="#/simulado/${sim.tipo === 'folha' || sim.papel ? 'folha' : 'fazer'}"><div class="corpo"><strong>Continuar: ${esc(sim.nome)}</strong>
       <span class="meta">${Object.keys(sim.resp).length} de ${sim.total} marcadas · ${esc(textoRelogioSim(sim))}</span></div><span aria-hidden="true">▶</span></a>` : ''}
     <h2 class="secao">Simulado montado pelo app</h2>
     <p class="aviso">60 questões do app, 10 de cada disciplina, na ordem da prova: primeiro as que você ainda não resolveu.
@@ -1438,6 +1471,7 @@ async function telaSimulado() {
           .map(([v, r]) => `<option value="${v}" ${dur === v ? 'selected' : ''}>${r}</option>`).join('')}</select></label>
     </div>
     <button class="btn primario largo" id="sim-app">▶ Começar o simulado do app</button>
+    <button class="btn largo" id="sim-imprimir">🖨 Montar um simulado para imprimir (PDF)</button>
     <p class="aviso" id="sim-aviso"></p>
     ${plano.length ? `<h2 class="secao">Simulados do plano</h2>
       <p class="aviso">Faça no papel (ou no caderno do app) e marque as respostas na folha do app: ela marca o tempo, guarda a certeza de cada
@@ -1466,6 +1500,15 @@ async function telaSimulado() {
     const d = Number($('#sim-dur').value);
     if (comecarSimulado({ tipo: 'app', nome: 'Simulado do app', ids: m.ids, total: m.ids.length, dur: d })) location.hash = '#/simulado/fazer';
     else aviso.textContent = '';
+  });
+  $('#sim-imprimir').addEventListener('click', async () => {
+    const aviso = $('#sim-aviso');
+    aviso.textContent = 'Montando o simulado…';
+    let m;
+    try { m = await montarSimuladoApp(); } catch { aviso.textContent = 'As questões ainda não foram guardadas no celular.'; return; }
+    if (m.ids.length < 30) { aviso.textContent = `Ainda não há questões suficientes (${m.ids.length}).`; return; }
+    guardado.set('simImpresso', { ids: m.ids, sigs: m.sigs, data: dataISO(), dur: Number($('#sim-dur').value), gabarito: false });
+    location.hash = '#/simulado/imprimir';
   });
   tela.querySelectorAll('[data-folha]').forEach((b) => b.addEventListener('click', () => {
     const s = plano.find((x) => String(x.n) === b.dataset.folha);
@@ -1587,23 +1630,27 @@ function gradeSimulado(sim, atual) {
 function telaSimuladoFolha() {
   pararRelogio();
   const sim = simAtual();
-  if (!sim || sim.tipo !== 'folha') { location.hash = '#/simulado'; return; }
+  if (!sim || (sim.tipo !== 'folha' && !sim.papel)) { location.hash = '#/simulado'; return; }
   setTopo(`Folha · ${sim.nome}`, true);
   const info = (catalogo.simulados || []).find((s) => s.n === sim.n) || {};
   const linha = (i) => `<div class="folha-linha" data-i="${i}"><b>${i + 1}</b>
     <span class="folha-letras">${['A', 'B', 'C', 'D', 'E'].map((k) => `<button class="letra-btn${sim.resp[i] === k ? ' ativo' : ''}" data-k="${k}" aria-pressed="${sim.resp[i] === k}" aria-label="Questão ${i + 1}, letra ${k}">${k}</button>`).join('')}</span>
     <button class="cert-btn" data-cert aria-label="Certeza da questão ${i + 1}: ${sim.cert[i] ? CERTEZAS[sim.cert[i]] : 'não marcada'}">${sim.cert[i] || '·'}</button></div>`;
   let corpo = '';
-  for (let d = 0; d * 10 < sim.total; d++) {
-    const ini = d * 10;
-    corpo += `<h2 class="secao">${esc(nomeDisc(siglaPorNumero(ini + 1)))} (${ini + 1} a ${Math.min(sim.total, ini + 10)})</h2>`;
-    for (let i = ini; i < Math.min(sim.total, ini + 10); i++) corpo += linha(i);
+  const sigDe = (i) => (sim.sigs ? sim.sigs[i] : siglaPorNumero(i + 1));
+  for (let i = 0; i < sim.total; i++) {
+    if (!i || sigDe(i) !== sigDe(i - 1)) {
+      let fim = i;
+      while (fim + 1 < sim.total && sigDe(fim + 1) === sigDe(i)) fim++;
+      corpo += `<h2 class="secao">${esc(nomeDisc(sigDe(i)))} (${i + 1} a ${fim + 1})</h2>`;
+    }
+    corpo += linha(i);
   }
   const cad = info.caderno && catalogo.docs.find((x) => x.id === info.caderno);
   tela.innerHTML = `
     <div class="q-topo sim-topo"><span id="folha-cont">${Object.keys(sim.resp).length} de ${sim.total} marcadas</span>
       <span id="sim-relogio" class="sim-relogio${restanteSim(sim) <= 0 ? ' esgotado' : ''}">${esc(textoRelogioSim(sim))}</span></div>
-    <p class="aviso">${esc(info.fonte || '')}. Toque na letra para marcar (de novo, para apagar) e no ponto à direita para a certeza:
+    <p class="aviso">${esc(sim.papel ? 'Simulado impresso' : info.fonte || '')}. Toque na letra para marcar (de novo, para apagar) e no ponto à direita para a certeza:
       C = certeza, D = dúvida, X = chute. ${cad ? `<a href="#/doc/${encodeURIComponent(cad.id)}">Abrir o caderno</a>.` : ''}</p>
     ${corpo}
     <div class="acoes">
@@ -1972,6 +2019,7 @@ async function telaEdital() {
       <div><b>${geral.pct != null ? `${geral.pct}%` : '–'}</b><span>de acerto</span></div>
       <div><b>${fracos}</b><span>${fracos === 1 ? 'item fraco' : 'itens fracos'} (abaixo de 60%)</span></div>
     </div>
+    <p><a class="btn" href="#/retafinal">🏁 Modo reta final: erros, itens fracos e artigos mais cobrados</a></p>
     <p class="aviso">✅ estudado (material concluído ou marcado por você) · ⏳ já passou no plano, falta concluir · 📅 ainda vem no plano ·
       🔥 questões das provas que cobram o item. Barra de cima: seu acerto; de baixo: incidência nas provas.</p>
     <div class="chips">${chip('', `Todas (${estudados}/${ed.length})`)}${ORDEM_DISC.map((s) => chip(s, `${s} (${contaDisc(s)})`)).join('')}</div>
@@ -2787,6 +2835,228 @@ function secaoMeta() {
 function ligarMeta() {
   const salvar = () => guardado.set('meta', { min: Number($('#m-min').value), q: Number($('#m-q').value), k: Number($('#m-k').value) });
   ['#m-min', '#m-q', '#m-k'].forEach((s) => $(s).addEventListener('change', salvar));
+}
+
+/* ---------- questões no fone ---------- */
+/* A voz do celular lê o enunciado e as alternativas; um toque na alternativa já responde; a voz diz se acertou e,
+   com a leitura automática ligada, passa para a próxima. Só entram questões boas de ouvir: sem texto de apoio,
+   sem tabela e sem enunciado muito longo. A tela fica acesa (com a tela apagada, o celular costuma parar a voz). */
+
+let foneFala = 0;
+let foneAtivo = false;
+
+function textoParaOuvir(html) {
+  const d = document.createElement('div');
+  d.innerHTML = html;
+  return d.textContent.replace(/\s+/g, ' ').trim()
+    .replace(/\barts?\.\s*/gi, 'artigo ').replace(/§§?\s*/g, 'parágrafo ').replace(/\bn[º°]\s*/gi, 'número ')
+    .replace(/\bCF\/88\b|\bCF\b/g, 'Constituição Federal').replace(/\binc\.\s*/gi, 'inciso ').replace(/_{3,}/g, ' lacuna ');
+}
+
+function falarFone(partes, aoTerminar) {
+  if (!('speechSynthesis' in window)) return false;
+  if (player.modo === 'tts' && tts.tocando) ttsPausar();
+  if (player.modo === 'audio' && !audio.paused) audio.pause();
+  speechSynthesis.cancel();
+  const id = ++foneFala;
+  const pedacos = partes.filter(Boolean).flatMap((t) => quebrar(t));
+  const voz = tts.voz || escolherVoz();
+  foneAtivo = true;
+  segurarTela();
+  pedacos.forEach((t, i) => {
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = 'pt-BR';
+    if (voz) u.voice = voz;
+    u.rate = guardado.get('foneVel', 1);
+    if (i === pedacos.length - 1) u.onend = () => { if (id === foneFala) { foneAtivo = false; if (aoTerminar) aoTerminar(); } };
+    speechSynthesis.speak(u);
+  });
+  return true;
+}
+
+function pararFone() {
+  foneFala++;
+  foneAtivo = false;
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  if (!(player.modo === 'tts' && tts.tocando)) soltarTela();
+}
+
+const boaDeOuvir = (q) => !q.apoio && !/<table|<img/i.test(q.enunciado) && textoParaOuvir(q.enunciado).length <= 900
+  && q.alternativas.every(([, h]) => textoParaOuvir(h).length <= 300);
+
+function lerQuestaoFone(s, q) {
+  const alts = q.alternativas.map(([k, h]) => (k.length > 1 ? '' : `Letra ${k}. ${textoParaOuvir(h)}`)).filter(Boolean);
+  falarFone([`Questão ${s.idx + 1} de ${s.ids.length}. ${q.disciplina}.`, textoParaOuvir(q.enunciado),
+    ...(alts.length ? alts : ['Certo ou errado?']), 'Toque na alternativa.']);
+}
+
+function lerCorrecaoFone(s, q, avancar) {
+  const ok = s.resp === q.resposta;
+  const alt = q.alternativas.find(([k]) => k === q.resposta);
+  const certa = alt && q.resposta.length === 1 ? `Letra ${q.resposta}. ${textoParaOuvir(alt[1])}` : rotuloResp(q.resposta);
+  falarFone([ok ? 'Certo!' : `Errado. A resposta é ${certa}`, s.avisoRev ? s.avisoRev.replace(/^\S+\s/, '') : ''],
+    () => { if (guardado.get('foneAuto', true)) setTimeout(() => { if (location.hash === '#/questoes/resolver' && !foneAtivo) avancar(); }, 1200); });
+}
+
+/* ---------- simulado para imprimir ---------- */
+
+async function telaImprimir() {
+  pararRelogio();
+  setTopo('Simulado para imprimir', true);
+  const imp = guardado.get('simImpresso', null);
+  if (!imp) { location.hash = '#/simulado'; return; }
+  let todas;
+  try { todas = await obterQuestoes(); } catch {
+    tela.innerHTML = '<p class="aviso">As questões ainda não foram guardadas no celular. Abra o app com internet uma vez.</p>';
+    return;
+  }
+  if (location.hash !== '#/simulado/imprimir') return;
+  const mapa = new Map(todas.map((q) => [q.id, q]));
+  const qs = imp.ids.map((id) => mapa.get(id)).filter(Boolean);
+  let html = '';
+  let disc = '';
+  let apoioAnt = '';
+  qs.forEach((q, i) => {
+    const sig = siglaQuestao(q);
+    if (sig !== disc) { disc = sig; html += `<h2 class="imp-disc">${esc(nomeDisc(sig))}</h2>`; }
+    if (q.apoio && q.apoio !== apoioAnt) {
+      const ate = qs.slice(i).findIndex((x) => x.apoio !== q.apoio);
+      const fim = ate < 0 ? qs.length : i + ate;
+      html += `<div class="imp-apoio"><p><b>Texto para ${fim - i > 1 ? `as questões ${i + 1} a ${fim}` : `a questão ${i + 1}`}</b></p><div class="q-html">${q.apoio}</div></div>`;
+    }
+    apoioAnt = q.apoio || '';
+    html += `<div class="imp-q"><p class="imp-num"><b>Questão ${i + 1}</b> <small>${esc(q.tipo === 'oficial' ? q.fonte || q.origem : 'Autoral, não oficial')}</small></p>
+      <div class="q-html">${q.enunciado}</div>
+      <ol class="imp-alts">${q.alternativas.map(([k, h]) => `<li><b>(${esc(k.length > 1 ? k[0] : k)})</b> ${h}</li>`).join('')}</ol></div>`;
+  });
+  const folha = [];
+  for (let i = 0; i < qs.length; i++) folha.push(`<tr><td>${i + 1}</td><td>Ⓐ Ⓑ Ⓒ Ⓓ Ⓔ</td><td>C · D · X</td></tr>`);
+  tela.innerHTML = `
+    <div class="nao-imprimir">
+      <p class="aviso">Para salvar em PDF: toque em <b>Imprimir</b> e escolha "Salvar como PDF" (no Android) ou, no iPhone, abra a prévia e
+        use Compartilhar → Salvar em Arquivos. No computador, abra o app no navegador e use Ctrl+P. Depois de fazer no papel, marque as respostas
+        na folha do app: ela corrige e manda os erros para o caderno de erros.</p>
+      <div class="acoes">
+        <button class="btn primario" id="imp-imprimir">🖨 Imprimir ou salvar PDF</button>
+        <button class="btn" id="imp-folha">📝 Marcar as respostas na folha do app</button>
+      </div>
+      <label class="check-linha"><input type="checkbox" id="imp-gab" ${imp.gabarito ? 'checked' : ''}> Incluir o gabarito numa página separada no fim</label>
+    </div>
+    <div class="impressao">
+      <div class="imp-capa"><h1>Simulado PMPE · Soldado</h1>
+        <p>${qs.length} questões de múltipla escolha · montado em ${esc(dataCurta(imp.data))}/${imp.data.slice(0, 4)} pelo app PMPE Ouvir</p>
+        <p>Tempo sugerido: ${fmtDur(imp.dur || 300)}${(imp.dur || 300) >= 300 ? ', com a redação' : ''}. Caneta azul ou preta. Marque a certeza (C = certeza, D = dúvida, X = chute).</p>
+        <p>Para passar: 30% dos pontos em cada bloco, nenhuma disciplina zerada e 30% do total.</p></div>
+      ${html}
+      <h2 class="imp-disc">Folha de respostas</h2>
+      <table class="imp-folha"><thead><tr><th>Nº</th><th>Alternativa</th><th>Certeza</th></tr></thead><tbody>${folha.join('')}</tbody></table>
+      ${imp.gabarito ? `<h2 class="imp-disc">Gabarito</h2><p class="imp-gabarito">${qs.map((q, i) => `${i + 1}-${esc(rotuloResp(q.resposta))}`).join(' · ')}</p>` : ''}
+    </div>`;
+  $('#imp-imprimir').addEventListener('click', () => window.print());
+  $('#imp-gab').addEventListener('change', (e) => { imp.gabarito = e.target.checked; guardado.set('simImpresso', imp); telaImprimir(); });
+  $('#imp-folha').addEventListener('click', () => {
+    const atual = simAtual();
+    if (atual && atual.papel && atual.ids.join() === imp.ids.join()) { location.hash = '#/simulado/folha'; return; }
+    if (comecarSimulado({ tipo: 'app', papel: true, nome: 'Simulado impresso', ids: imp.ids, sigs: imp.sigs, total: imp.ids.length, dur: imp.dur || 300 })) {
+      location.hash = '#/simulado/folha';
+    }
+  });
+}
+
+/* ---------- modo reta final ---------- */
+/* De 14 a 19/02 (e quando quiser): erros pendentes, itens fracos do edital, artigos mais cobrados e flashcards errados,
+   com uma fila do dia que junta os erros e as questões dos itens fracos. */
+
+const RETA_INICIO = '2027-02-14';
+const RETA_FIM = '2027-02-20';
+
+function resumoRetaHome() {
+  const hoje = dataISO();
+  if (hoje < RETA_INICIO || hoje > RETA_FIM) return '';
+  const prova = catalogo.plano && catalogo.plano.prova;
+  const faltam = prova ? diasEntre(hoje, prova) : null;
+  return `<a class="cartao cartao-q continuar" href="#/retafinal"><div class="icone-q" aria-hidden="true">🏁</div>
+    <div class="corpo"><strong>Modo reta final${faltam != null ? ` · faltam ${faltam} ${faltam === 1 ? 'dia' : 'dias'}` : ''}</strong>
+    <span class="meta">Erros pendentes, itens fracos do edital e artigos mais cobrados numa fila só</span></div><span aria-hidden="true">›</span></a>`;
+}
+
+async function telaRetaFinal() {
+  pararRelogio();
+  setTopo('Reta final', true);
+  tela.innerHTML = '<p class="aviso">Juntando os seus pontos fracos…</p>';
+  let todas;
+  try { todas = filtrarAutorais(await obterQuestoes()); } catch {
+    tela.innerHTML = '<p class="aviso">As questões ainda não foram guardadas no celular. Abra o app com internet uma vez.</p>';
+    return;
+  }
+  const docsLei = catalogo.docs.filter((d) => d.incidencia);
+  const artigos = [];
+  for (const d of docsLei) {
+    try {
+      const doc = await obterDoc(d);
+      for (const [f, art, n, ids] of doc.incidencia || []) artigos.push({ d, f, art, n, ids });
+    } catch { /* lei ainda não guardada: fica de fora */ }
+  }
+  if (location.hash !== '#/retafinal') return;
+  artigos.sort((a, b) => b.n - a.n);
+  const topArt = artigos.slice(0, 15);
+  const hoje = dataISO();
+  const rev = revErros();
+  const resp = respostas();
+  const mapa = new Map(todas.map((q) => [q.id, q]));
+  const pendentes = Object.keys(rev).filter((id) => mapa.has(id)).sort((a, b) => rev[a].p.localeCompare(rev[b].p));
+  const ed = catalogo.edital || [];
+  const porItem = new Map(ed.map((it) => [it.c, []]));
+  for (const q of todas) for (const c0 of q.top || []) { const c = c0.startsWith('HP ') ? `HPE ${c0.slice(3)}` : c0; if (porItem.has(c)) porItem.get(c).push(q); }
+  const itens = ed.map((it) => ({ it, l: porItem.get(it.c), st: estatisticas(porItem.get(it.c)) }))
+    .filter((x) => x.l.length && ((x.st.pct != null && x.st.pct < 60 && x.st.resolvidas >= 3) || (x.st.resolvidas === 0 && (x.it.inc || 0) >= 5)))
+    .sort((a, b) => (b.it.inc || 0) * (1 - (b.st.pct == null ? 0.5 : b.st.pct / 100)) - (a.it.inc || 0) * (1 - (a.st.pct == null ? 0.5 : a.st.pct / 100)))
+    .slice(0, 10);
+  const cartoesErr = (await obterCartoes().catch(() => [])).filter((c) => { const e = estadoCartoes()[c.id]; return e && e.k === false; });
+  const naoFeitasOuErradas = (l) => [...l.filter((q) => !resp[q.id]), ...l.filter((q) => resp[q.id] && !resp[q.id].ok)];
+  const fila = [...new Set([...pendentes.slice(0, 15), ...itens.flatMap((x) => naoFeitasOuErradas(x.l).slice(0, 3).map((q) => q.id))])].slice(0, 30);
+  const prova = catalogo.plano && catalogo.plano.prova;
+  const faltam = prova ? diasEntre(hoje, prova) : null;
+  const nomeLei = (d) => (/^cf-/.test(d.id) ? 'CF' : d.titulo.split(' — ').pop().replace(/\s*\(.*\)$/, ''));
+
+  tela.innerHTML = `
+    ${faltam != null && faltam >= 0 ? `<div class="contagem"><b>${faltam}</b><span>${faltam === 1 ? 'dia' : 'dias'} para a prova</span>
+      <small>Nesta reta final, priorize o que você erra e o que mais cai. Conteúdo novo, só se sobrar tempo.</small></div>` : ''}
+    <button class="btn primario largo" id="rf-fila" ${fila.length ? '' : 'disabled'}>▶ Fila de hoje (${fila.length} questões)</button>
+    <p class="aviso">A fila junta os erros pendentes (os mais atrasados primeiro) e até 3 questões não feitas ou erradas de cada item fraco.</p>
+    <h2 class="secao">🔁 Erros pendentes (${pendentes.length})</h2>
+    ${pendentes.length ? `<button class="btn" id="rf-erros">Resolver todos os erros pendentes</button>` : '<p class="aviso">Nenhum erro pendente. 👏</p>'}
+    <h2 class="secao">⚠️ Itens fracos do edital</h2>
+    ${itens.length ? itens.map((x, i) => `<button class="cartao linha-q" data-item="${i}"><div class="corpo"><strong>${esc(x.it.c)} – ${esc(x.it.curto)}</strong>
+      <span class="meta">${x.st.resolvidas ? `${x.st.pct}% em ${x.st.resolvidas} resolvidas` : 'nenhuma resolvida'}${x.it.inc ? ` · 🔥 ${x.it.inc} nas provas` : ''}</span></div><span aria-hidden="true">›</span></button>`).join('')
+      : '<p class="aviso">Nenhum item abaixo de 60% (com 3 ou mais resolvidas). Veja o edital verticalizado para os detalhes.</p>'}
+    <h2 class="secao">🔥 Artigos mais cobrados</h2>
+    ${topArt.map((a, i) => `<div class="cartao linha-art"><div class="corpo"><strong>${esc(nomeLei(a.d))}, art. ${esc(rotuloArt(a.art))}</strong>
+      <span class="meta">${a.n} ${a.n === 1 ? 'questão' : 'questões'} das provas</span></div>
+      <button class="btn" data-ler="${i}">Ler</button><button class="btn" data-art="${i}">✍</button></div>`).join('') || '<p class="aviso">As leis ainda não foram guardadas no celular.</p>'}
+    <h2 class="secao">🃏 Flashcards errados (${cartoesErr.length})</h2>
+    ${cartoesErr.length ? '<button class="btn" id="rf-cartoes">Revisar os flashcards errados</button>' : '<p class="aviso">Nenhum flashcard errado na última revisão.</p>'}
+    <p class="aviso" id="rf-aviso"></p>`;
+
+  $('#rf-fila').addEventListener('click', () => iniciarSessao(fila, 'Reta final: fila de hoje'));
+  const be = $('#rf-erros');
+  if (be) be.addEventListener('click', () => iniciarSessao(pendentes, 'Reta final: erros pendentes'));
+  tela.querySelectorAll('[data-item]').forEach((b) => b.addEventListener('click', () => {
+    const x = itens[Number(b.dataset.item)];
+    const l = [...naoFeitasOuErradas(x.l), ...x.l.filter((q) => resp[q.id] && resp[q.id].ok)];
+    iniciarSessao(l.map((q) => q.id), `${x.it.c} – ${x.it.curto}`);
+  }));
+  tela.querySelectorAll('[data-ler]').forEach((b) => b.addEventListener('click', () => {
+    const a = topArt[Number(b.dataset.ler)];
+    irParaDestaque = { id: a.d.id, h: { f: a.f }, confiarF: true };
+    location.hash = `#/doc/${encodeURIComponent(a.d.id)}`;
+  }));
+  tela.querySelectorAll('[data-art]').forEach((b) => b.addEventListener('click', () => {
+    const a = topArt[Number(b.dataset.art)];
+    resolverIds(a.ids, `${nomeLei(a.d)}, art. ${rotuloArt(a.art)}`, $('#rf-aviso'));
+  }));
+  const bc = $('#rf-cartoes');
+  if (bc) bc.addEventListener('click', () => iniciarCartoes(embaralhar(cartoesErr).map((c) => c.id), 'Reta final: flashcards errados'));
 }
 
 /* ---------- flashcards com revisão espaçada ---------- */
