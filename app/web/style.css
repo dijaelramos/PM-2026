@@ -619,3 +619,10 @@ body.player-compacto { --player-h: 66px; }
 .player.compacto #p-tempo, .player.compacto #p-cap-ant, .player.compacto #p-cap-prox, .player.compacto #p-vel,
 .player.compacto #p-sono, .player.compacto #p-capitulo, .player.compacto #p-aseguir, .player.compacto #p-convite { display: none; }
 @media (max-width: 420px) { .player.compacto #p-voltar { display: none; } }
+
+/* Modo prova do simulado */
+.sim-relogio[role="button"] { cursor: pointer; }
+.sim-toast { position: fixed; left: 50%; transform: translateX(-50%); top: calc(64px + env(safe-area-inset-top)); z-index: 45;
+  max-width: min(520px, calc(100vw - 32px)); padding: 12px 16px; border-radius: 14px; background: var(--destaque); color: #1b1300;
+  box-shadow: 0 4px 14px rgba(0,0,0,.3); font-size: 15px; }
+.sim-toast[hidden] { display: none; }

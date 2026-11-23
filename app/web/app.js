@@ -1073,6 +1073,50 @@ function embaralhar(lista) {
   return a;
 }
 
+/* Pontos fracos: itens do edital com acerto abaixo de 60% (3 ou mais resolvidas) ou já estudados e ainda pouco
+   treinados, na ordem de incidência nas provas × erro. Até 6 itens e 20 questões, em rodízio entre os itens:
+   primeiro as que você errou, depois as que ainda não resolveu. */
+function pontosFracos(todas) {
+  const ed = catalogo.edital || [];
+  const hoje = dataISO();
+  const mats = materiaisPorData();
+  const marcas = marcasEdital();
+  const resp = respostas();
+  const porItem = new Map(ed.map((it) => [it.c, []]));
+  for (const q of todas) for (const c0 of q.top || []) { const c = c0.startsWith('HP ') ? `HPE ${c0.slice(3)}` : c0; if (porItem.has(c)) porItem.get(c).push(q); }
+  const itens = ed.map((it) => ({ it, l: porItem.get(it.c), st: estatisticas(porItem.get(it.c)), est: situacaoItem(it, hoje, mats, marcas).estudado }))
+    .filter((x) => x.l.some((q) => !resp[q.id] || !resp[q.id].ok))
+    .filter((x) => (x.st.pct != null && x.st.pct < 60 && x.st.resolvidas >= 3) || (x.est && x.st.resolvidas < 3))
+    .map((x) => Object.assign(x, { prio: (x.it.inc || 1) * (1 - (x.st.pct == null ? 0.5 : x.st.pct / 100)) }))
+    .sort((a, b) => b.prio - a.prio)
+    .slice(0, 6);
+  const filas = itens.map((x) => [...embaralhar(x.l.filter((q) => resp[q.id] && !resp[q.id].ok)), ...embaralhar(x.l.filter((q) => !resp[q.id]))]);
+  const ids = [];
+  while (ids.length < 20 && filas.some((f) => f.length)) {
+    for (const f of filas) {
+      const q = f.shift();
+      if (q && ids.length < 20 && !ids.includes(q.id)) ids.push(q.id);
+    }
+  }
+  return { ids, itens };
+}
+
+async function treinarPontosFracos() {
+  let todas;
+  try { todas = filtrarAutorais(await obterQuestoes()); } catch {
+    window.alert('As questões ainda não foram guardadas no celular. Abra o app com internet uma vez.');
+    return;
+  }
+  const { ids, itens } = pontosFracos(todas);
+  if (!ids.length) {
+    window.alert('Ainda não há pontos fracos para treinar. Eles aparecem quando você acerta menos de 60% de um item do edital '
+      + '(com 3 ou mais questões resolvidas) ou quando um item já estudado ainda tem pouco treino.');
+    return;
+  }
+  const cods = itens.map((x) => x.it.c);
+  iniciarSessao(ids, `Pontos fracos: ${cods.slice(0, 4).join(', ')}${cods.length > 4 ? '…' : ''}`, { fracos: cods });
+}
+
 function iniciarSessao(ids, titulo, extra = {}) {
   if (!ids.length) return;
   guardado.set('sessaoQ', Object.assign({ titulo, ids, idx: 0, certas: 0, feitas: 0, tempo: 0, erradas: [], resp: null }, extra));
@@ -1130,6 +1174,7 @@ async function telaQuestoes() {
       ${revisarHoje.length ? `<button class="btn primario" id="q-revisar">🔁 Revisar os erros de hoje (${revisarHoje.length})</button>` : ''}
       <button class="btn${revisarHoje.length ? '' : ' primario'}" id="q-novas" ${novas.length ? '' : 'disabled'}>▶ Não resolvidas (${novas.length})</button>
       <button class="btn" id="q-erros" ${erradas.length ? '' : 'disabled'}>Caderno de erros (${erradas.length})</button>
+      <button class="btn" id="q-fracos">🎯 Treinar meus pontos fracos</button>
       <button class="btn" id="q-aleatorias">10 aleatórias</button>
       <button class="btn" id="q-fone">🎧 Questões no fone</button>
     </div>
@@ -1163,6 +1208,7 @@ async function telaQuestoes() {
     iniciarSessao(ids, 'Questões no fone', { fone: true });
   });
   $('#q-erros').addEventListener('click', () => iniciarSessao(embaralhar(erradas).map((q) => q.id), 'Caderno de erros'));
+  $('#q-fracos').addEventListener('click', treinarPontosFracos);
   $('#q-aleatorias').addEventListener('click', () => iniciarSessao(embaralhar(lista).slice(0, 10).map((q) => q.id), '10 aleatórias'));
   tela.querySelectorAll('[data-disc]').forEach((b) => b.addEventListener('click', () => {
     const [nome, l] = disciplinas[Number(b.dataset.disc)];
@@ -1575,23 +1621,73 @@ async function montarSimuladoApp() {
 function comecarSimulado(dados) {
   const atual = simAtual();
   if (atual && !window.confirm(`Há um simulado em andamento (${atual.nome}). Descartar e começar outro?`)) return false;
-  guardado.set('simAtual', Object.assign({ inicio: Date.now(), resp: {}, cert: {}, marc: {}, risc: {}, idx: 0 }, dados));
+  guardado.set('simAtual', Object.assign({ inicio: Date.now(), resp: {}, cert: {}, marc: {}, risc: {}, idx: 0, prova: guardado.get('simProva', false), av: [] }, dados));
   return true;
 }
 
 function restanteSim(sim, agora = Date.now()) { return sim.inicio + sim.dur * 60000 - agora; }
+/* Modo prova: o relógio fica escondido (toque nele para espiar por 5 s) e o app só avisa, com som e vibração,
+   a cada hora que passa, quando faltam 30 e 15 minutos e quando o tempo acaba. */
+let espiarSimAte = 0;
 function textoRelogioSim(sim) {
   const r = restanteSim(sim);
+  if (sim.prova && r > 0 && Date.now() > espiarSimAte) return '🕐 Modo prova · toque para ver';
   return r > 0 ? `⏱ ${fmt(r / 1000)}` : `⏰ Tempo esgotado (+${fmt(-r / 1000)})`;
 }
+
+function marcosProva(sim, agora = Date.now()) {
+  const passou = (agora - sim.inicio) / 60000;
+  const resta = sim.dur - passou;
+  const m = [];
+  for (let h = 1; h * 60 < sim.dur; h++) if (passou >= h * 60) m.push([`h${h}`, `Passou ${h} h`, `Faltam ${fmtDur(Math.ceil(resta))}.`]);
+  if (sim.dur > 30 && resta <= 30) m.push(['r30', 'Faltam 30 minutos', 'Comece a conferir as marcadas para revisar.']);
+  if (sim.dur > 15 && resta <= 15) m.push(['r15', 'Faltam 15 minutos', 'Na prova, é hora de passar tudo para o cartão-resposta.']);
+  if (resta <= 0) m.push(['fim', 'Tempo esgotado', 'Na prova, o fiscal recolheria o cartão agora. Entregue o simulado.']);
+  return m;
+}
+
+function avisoProva(sim) {
+  const novos = marcosProva(sim).filter(([k]) => !(sim.av || []).includes(k));
+  if (!novos.length) return;
+  sim.av = (sim.av || []).concat(novos.map(([k]) => k));
+  guardado.set('simAtual', sim);
+  const [, titulo, corpo] = novos[novos.length - 1];
+  bipar(novos[novos.length - 1][0] === 'fim' ? 4 : 2);
+  try { if (navigator.vibrate) navigator.vibrate([250, 120, 250]); } catch { /* ok */ }
+  notificar(`Simulado: ${titulo}`, corpo, { tag: 'simulado', url: `#/simulado/${sim.tipo === 'folha' || sim.papel ? 'folha' : 'fazer'}` });
+  let t = $('#sim-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'sim-toast';
+    t.className = 'sim-toast';
+    t.setAttribute('role', 'status');
+    document.body.appendChild(t);
+  }
+  t.innerHTML = `<b>${esc(titulo)}</b> ${esc(corpo)}`;
+  t.hidden = false;
+  clearTimeout(t.fecha);
+  t.fecha = setTimeout(() => { t.hidden = true; }, 9000);
+}
+
 function ligarRelogioSim() {
   if (relogioSim) clearInterval(relogioSim);
+  const el0 = $('#sim-relogio');
+  const s0 = simAtual();
+  if (el0 && s0 && s0.prova) {
+    el0.setAttribute('role', 'button');
+    el0.tabIndex = 0;
+    const espiar = () => { espiarSimAte = Date.now() + 5000; el0.textContent = textoRelogioSim(simAtual() || s0); };
+    el0.addEventListener('click', espiar);
+    el0.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); espiar(); } });
+    if (!s0.av) { s0.av = marcosProva(s0).map(([k]) => k); guardado.set('simAtual', s0); } // começou antes desta versão: não avisa o que já passou
+  }
   relogioSim = setInterval(() => {
     const el = $('#sim-relogio');
     const sim = simAtual();
     if (!el || !sim) { clearInterval(relogioSim); relogioSim = null; return; }
     el.textContent = textoRelogioSim(sim);
     el.classList.toggle('esgotado', restanteSim(sim) <= 0);
+    if (sim.prova) avisoProva(sim);
   }, 1000);
 }
 
@@ -1649,6 +1745,8 @@ async function telaSimulado() {
         <select id="sim-dur">${[[180, '3 h (como no plano)'], [240, '4 h (sobra 1 h para a redação)'], [300, '5 h (tempo da prova inteira)']]
           .map(([v, r]) => `<option value="${v}" ${dur === v ? 'selected' : ''}>${r}</option>`).join('')}</select></label>
     </div>
+    <label class="check"><input type="checkbox" id="sim-prova" ${guardado.get('simProva', false) ? 'checked' : ''}>
+      Modo prova: esconder o relógio e avisar só a cada hora e quando faltarem 30 e 15 minutos (vale também para a folha dos simulados do plano)</label>
     <button class="btn primario largo" id="sim-app">▶ Começar o simulado do app</button>
     <button class="btn largo" id="sim-imprimir">🖨 Montar um simulado para imprimir (PDF)</button>
     <p class="aviso" id="sim-aviso"></p>
@@ -1663,6 +1761,7 @@ async function telaSimulado() {
       }).join('')}` : ''}`;
 
   $('#sim-dur').addEventListener('change', (e) => guardado.set('simDur', Number(e.target.value)));
+  $('#sim-prova').addEventListener('change', (e) => guardado.set('simProva', e.target.checked));
   $('#sim-app').addEventListener('click', async () => {
     const aviso = $('#sim-aviso');
     aviso.textContent = 'Montando o simulado…';
@@ -1869,7 +1968,7 @@ async function entregarSimulado() {
   if (!window.confirm(`Entregar o simulado?${brancas ? ` ${brancas} ${brancas === 1 ? 'questão está' : 'questões estão'} em branco.` : ''}`)) return;
   const usado = Math.round((Math.min(Date.now(), sim.inicio + sim.dur * 60000 * 3) - sim.inicio) / 1000);
   const r = { tipo: sim.tipo, n: sim.n || 0, nome: sim.nome, data: dataISO(new Date(sim.inicio)), inicio: sim.inicio,
-    usado, dur: sim.dur, total: sim.total, resp: sim.resp, cert: sim.cert, ids: sim.ids || null };
+    usado, dur: sim.dur, total: sim.total, resp: sim.resp, cert: sim.cert, ids: sim.ids || null, prova: !!sim.prova };
   if (sim.tipo === 'app') { // grava as respostas no histórico: caderno de erros e revisão espaçada
     const mapa = new Map((await obterQuestoes()).map((q) => [q.id, q]));
     let acertos = 0, feitas = 0;
@@ -2198,7 +2297,8 @@ async function telaEdital() {
       <div><b>${geral.pct != null ? `${geral.pct}%` : '–'}</b><span>de acerto</span></div>
       <div><b>${fracos}</b><span>${fracos === 1 ? 'item fraco' : 'itens fracos'} (abaixo de 60%)</span></div>
     </div>
-    <p><a class="btn" href="#/retafinal">🏁 Modo reta final: erros, itens fracos e artigos mais cobrados</a></p>
+    <div class="acoes"><button class="btn primario" id="ed-fracos">🎯 Treinar meus pontos fracos (20 questões)</button>
+      <a class="btn" href="#/retafinal">🏁 Modo reta final</a></div>
     <p class="aviso">✅ estudado (material concluído ou marcado por você) · ⏳ já passou no plano, falta concluir · 📅 ainda vem no plano ·
       🔥 questões das provas que cobram o item. Barra de cima: seu acerto; de baixo: incidência nas provas.</p>
     <div class="chips">${chip('', `Todas (${estudados}/${ed.length})`)}${ORDEM_DISC.map((s) => chip(s, `${s} (${contaDisc(s)})`)).join('')}</div>
@@ -2212,6 +2312,7 @@ async function telaEdital() {
   const salvarF = (m) => { guardado.set('filtroEdital', Object.assign(f, m)); telaEdital(); };
   tela.querySelectorAll('[data-disc]').forEach((b) => b.addEventListener('click', () => salvarF({ disc: b.dataset.disc })));
   $('#ed-ordem').addEventListener('change', (e) => salvarF({ ordem: e.target.value }));
+  $('#ed-fracos').addEventListener('click', treinarPontosFracos);
   const mudar = (c, fn) => {
     const todasM = marcasEdital();
     const m = todasM[c] || {};
