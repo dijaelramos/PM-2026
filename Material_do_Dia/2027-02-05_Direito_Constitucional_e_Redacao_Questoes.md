@@ -190,6 +190,16 @@ São funções institucionais do Ministério Público previstas na Constituiçã
 
 **Por que as outras são funções do MP:** (A) art. 129, I; (B) III; (C) VIII; (E) V.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Ministério Público**, **Advocacia Pública**, **Advocacia** e **Defensoria Pública**. (O Tribunal de Contas **não** está entre elas.)
+2. Incumbe ao MP, instituição **permanente**, a **defesa da ordem jurídica, do regime democrático e dos interesses sociais e individuais indisponíveis** (art. 127). Princípios: **unidade, indivisibilidade e independência funcional**.
+3. MPU: **Federal**, do **Trabalho**, **Militar** e do **DF e Territórios**. O **PGR** é nomeado pelo **Presidente** entre integrantes da **carreira**, **maiores de 35 anos**, após aprovação pela **maioria absoluta do Senado**, para **2 anos**, permitida a recondução; a destituição pelo Presidente depende de autorização da **maioria absoluta do Senado**. O **Procurador-Geral de Justiça** sai de **lista tríplice** da carreira, é nomeado pelo **Governador** para **2 anos**, com **uma** recondução, e é destituído pela **maioria absoluta da Assembleia Legislativa**.
+4. Quaisquer seis, incluindo o VII (art. 129): **promover, privativamente, a ação penal pública**; zelar pelo respeito dos poderes públicos aos direitos constitucionais; **inquérito civil e ação civil pública**; ação de inconstitucionalidade e representação para intervenção; defender as **populações indígenas**; **requisitar informações** e documentos; **exercer o controle externo da atividade policial**; **requisitar diligências e a instauração de inquérito policial**.
+5. **Garantias**: **vitaliciedade** após **2 anos**; **inamovibilidade** (salvo interesse público, por decisão do colegiado); **irredutibilidade de subsídio**. **Vedações**: receber honorários ou custas; **exercer a advocacia**; participar de sociedade comercial; exercer outra função pública, **salvo uma de magistério**; atividade **político-partidária**.
+6. É de **livre nomeação** pelo **Presidente**, entre cidadãos **maiores de 35 anos**, de notável saber jurídico e reputação ilibada. A **AGU** **representa a União**, judicial e extrajudicialmente, e faz a **consultoria e o assessoramento jurídico** do Executivo.
+7. O advogado é **indispensável à administração da justiça** e **inviolável** por seus atos e manifestações no exercício da profissão, **nos limites da lei** (art. 133). A **Defensoria** é instituição **permanente**, **expressão e instrumento do regime democrático**, que faz a **orientação jurídica**, a **promoção dos direitos humanos** e a **defesa dos necessitados**, judicial e extrajudicialmente; seus princípios são **unidade, indivisibilidade e independência funcional**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. O **Tribunal do Júri** (art. 125, § 4º, ressalva).
