@@ -33,6 +33,7 @@ from questoes import sem_links_locais  # noqa: E402
 from plano import ler_datas, ler_plano  # noqa: E402
 from edital import itens as itens_edital, itens_da_sessao, topicos_no_texto  # noqa: E402
 from simulados import montar as montar_simulados, gabarito_2023  # noqa: E402
+from incidencia import LEIS as LEIS_INCIDENCIA, contar as contar_incidencia, marcar as marcar_incidencia  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
 APP = RAIZ / "app"
@@ -361,6 +362,7 @@ def main():
             for c in tops:
                 incidencia[c] = incidencia.get(c, 0) + 1
     total_banco = len(banco["q"])
+    banco_todas = banco["q"]
     banco["q"] = [{k: v for k, v in q.items() if not k.startswith("_")} for q in banco["q"] if not reservada(q)]
     print(f"  Banco: {total_banco - len(banco['q'])} questões reservadas para os materiais e os simulados.")
     usados = {q.get("ap") for q in banco["q"]}
@@ -390,6 +392,31 @@ def main():
     por_doc = {}
     for q in questoes:
         por_doc[q["doc"]] = por_doc.get(q["doc"], 0) + 1
+
+    # Lei seca com incidência: artigos da CF e das leis citados nas questões oficiais dos materiais (de todas as
+    # datas: o comentário cita o artigo que decide a questão) e do banco. Uma questão conta uma vez por artigo.
+    pendente_s1 = simulado1_pendente(texto_perfil)
+    oficiais = {}
+    for p in sorted((RAIZ / "Material_do_Dia").glob("*_Questoes.md")):
+        stem_mat = p.stem[: -len("_Questoes")]
+        dm = re.match(r"(\d{4}-\d{2}-\d{2})", stem_mat)
+        for q in extrair_questoes(p.read_text(encoding="utf-8-sig"), doc_id=slug(stem_mat), disciplina="", origem="",
+                                  autoral=False, md=md, pendente_simulado=pendente_s1, avisos=[]):
+            if q["tipo"] != "oficial":
+                continue
+            id_banco = usadas.get((p.stem, q["numero"]))
+            q["top"] = (topicos_no_texto(f"{q['meta']} {q['fonte']}") or top_banco.get(id_banco)
+                        or (itens_por_data.get(dm.group(1), []) if dm else []))
+            oficiais.setdefault(id_banco or chave_texto(q["enunciado"]), q)
+    for q in banco_todas:
+        if q["id"] not in oficiais:
+            oficiais[q["id"]] = {"id": q["id"], "enunciado": q["e"], "alternativas": q["a"], "comentario": q.get("c", ""),
+                                 "top": top_banco.get(q["id"], [])}
+    incid_leis = contar_incidencia(oficiais.values())
+    for d in docs:
+        if d["categoria"] == "base" and d["caminho"].stem in LEIS_INCIDENCIA:
+            d["incidencia"] = marcar_incidencia(d["html"], incid_leis.get(d["caminho"].stem, {}))
+    print(f"  Incidência: {sum(len(v) for v in incid_leis.values())} artigos citados em {len(oficiais)} questões oficiais.")
     corpo_q = json.dumps(questoes, ensure_ascii=False, separators=(",", ":")).encode()
     arquivo_q = f"data/questoes.{hash_curto(corpo_q)}.json"
 
@@ -437,8 +464,11 @@ def main():
                 c["inicio"] = ini
                 c["t"] = t  # início de cada parágrafo no MP3 (marcação do texto)
             item["audio"] = {"url": nome, "bytes": len(mp3), "duracao": round(len(mp3) / 6000)}
-        corpo = json.dumps({"id": d["id"], "titulo": d["titulo"], "origem": d["rel"], "html": d["html"],
-                            "capitulos": caps}, ensure_ascii=False, separators=(",", ":")).encode()
+        conteudo_doc = {"id": d["id"], "titulo": d["titulo"], "origem": d["rel"], "html": d["html"], "capitulos": caps}
+        if d.get("incidencia"):
+            conteudo_doc["incidencia"] = d["incidencia"]
+            item["incidencia"] = sum(x[2] for x in d["incidencia"])
+        corpo = json.dumps(conteudo_doc, ensure_ascii=False, separators=(",", ":")).encode()
         item["arquivo"] = f"data/docs/{d['id']}.{hash_curto(corpo)}.json"
         item["palavras"] = sum(len(p.split()) for c in caps for p in c["paragrafos"])
         (saida / item["arquivo"]).write_bytes(corpo)
@@ -460,8 +490,23 @@ def main():
             it["datas"] = sorted(dt_ for dt_, cs in itens_por_data.items() if it["c"] in cs)
             it["inc"] = incidencia.get(it["c"], 0)
             edital.append(it)
+    # Redação no app: propostas oficiais da AOCP (tabela do arquivo de regras) e as do plano (materiais "..._Redacao").
+    redacao = {"oficiais": [], "plano": []}
+    regras = RAIZ / "Base_de_Conhecimento" / "REDAÇÃO" / "Redacao_regras_do_edital.md"
+    if regras.exists():
+        secao = regras.read_text(encoding="utf-8-sig").split("## 3. Propostas oficiais", 1)
+        for ln in (secao[1].split("\n## ", 1)[0].splitlines() if len(secao) > 1 else []):
+            cel = [re.sub(r"[*`]", "", c).strip() for c in ln.strip().strip("|").split("|")]
+            if len(cel) >= 3 and cel[1].startswith(("\"", "“")):
+                redacao["oficiais"].append({"prova": cel[0], "tema": cel[1].strip("\"“” "), "formato": cel[2]})
+    for d in docs:
+        if d["categoria"] == "material" and d.get("data") and "Redacao" in d["caminho"].stem:
+            m = re.search(r'Proposta:\s*([^"\n]{5,200}?)\s*\(15 a 20 linhas\)', d["texto"])
+            tema = re.sub(r"^autoral do tutor,\s*", "", m.group(1)).split(";")[0].strip(" '‘’\"") if m else ""
+            redacao["plano"].append({"data": d["data"], "doc": d["id"], "tema": tema[:1].upper() + tema[1:]})
+    redacao["plano"].sort(key=lambda x: x["data"], reverse=True)
     (saida / "data" / "catalogo.json").write_text(
-        json.dumps({"versao": versao, "gerado_em": agora, "docs": catalogo, "simulados": simulados, "edital": edital,
+        json.dumps({"versao": versao, "gerado_em": agora, "docs": catalogo, "simulados": simulados, "edital": edital, "redacao": redacao,
                     "questoes": {"arquivo": arquivo_q, "total": len(questoes)}, "plano": plano,
                     "busca": {"arquivo": arquivo_b},
                     "banco": {"arquivo": arquivo_banco, "total": len(banco["q"])}, "cartoes": {"arquivo": arquivo_c, "total": len(cartoes)}},

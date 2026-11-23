@@ -484,3 +484,33 @@ body.tocando .q-botoes { bottom: calc(var(--player-h) + env(safe-area-inset-bott
 .ie-detalhe p { margin: 8px 0; }
 .ie-detalhe .meta { font-size: 13px; color: var(--suave); }
 #d-arquivo { display: block; margin: 8px 0 12px; max-width: 100%; }
+
+/* Atalhos da tela inicial */
+.atalhos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 4px 0 14px; }
+.atalhos a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 4px; border-radius: 14px;
+  background: var(--superficie); border: 1px solid var(--linha); color: var(--texto); text-decoration: none; font-size: 13px; font-weight: 600; }
+.atalhos a span { font-size: 22px; }
+
+/* Lei seca com incidência */
+.incid-caixa { background: var(--superficie); border: 1px solid var(--linha); border-left: 4px solid var(--destaque); border-radius: 14px; padding: 4px 14px 10px; margin: 0 0 14px; }
+.incid-caixa > summary { font-weight: 600; padding: 8px 0; cursor: pointer; }
+.incid-caixa details summary { font-size: 14px; color: var(--destaque); cursor: pointer; margin: 6px 0; }
+article strong[data-inc]::after { content: " 🔥" attr(data-inc); font-size: .78em; font-weight: 700; color: var(--destaque); white-space: nowrap; }
+.acoes-bloco button[hidden] { display: none; }
+
+/* Redação */
+.redacao-texto { width: 100%; min-height: 50vh; padding: 12px; border-radius: 12px; border: 1px solid var(--linha); background: var(--superficie);
+  color: var(--texto); font: calc(17px * var(--escala-texto, 1))/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; resize: vertical; }
+.linhas-ok { color: var(--ok); font-weight: 700; }
+.linhas-alerta { color: var(--errado); font-weight: 700; }
+.check-redacao { display: flex; flex-direction: column; gap: 8px; margin: 0 0 12px; font-size: 15px; }
+.check-redacao label { display: flex; gap: 8px; align-items: flex-start; }
+.redacao-final { background: var(--superficie); border: 1px solid var(--linha); border-radius: 14px; padding: 4px 14px; margin: 0 0 12px; }
+.redacao-final p { text-indent: 1.5em; margin: 8px 0; }
+.notas-redacao { display: flex; flex-direction: column; gap: 10px; }
+.notas-redacao label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+.notas-redacao input, .notas-redacao textarea { font: inherit; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--linha); background: var(--superficie); color: var(--texto); }
+.notas-redacao input { max-width: 120px; }
+.filtros input[type="text"] { font: inherit; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--linha); background: var(--superficie); color: var(--texto); }
+.acoes-bloco { overflow-x: auto; scrollbar-width: none; }
+@media (max-width: 440px) { .acoes-bloco button { padding: 8px 8px; font-size: 13px; } }

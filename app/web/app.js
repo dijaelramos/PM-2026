@@ -174,6 +174,10 @@ function rota() {
   if (h === '#/questoes/resolver') { telaResolver(); return; }
   if (h === '#/questoes/banco') { telaBanco(); return; }
   if (h === '#/edital') { telaEdital(); return; }
+  if (h === '#/redacao') { telaRedacao(); return; }
+  if (h === '#/redacao/escrever') { telaRedacaoEscrever(); return; }
+  const rv = h.match(/^#\/redacao\/ver\/(\d+)$/);
+  if (rv) { telaRedacaoVer(rv[1]); return; }
   if (h === '#/dados') { telaDados(); return; }
   if (h === '#/simulado') { telaSimulado(); return; }
   if (h === '#/simulado/fazer') { telaSimuladoFazer(); return; }
@@ -332,10 +336,16 @@ function desenharLista(filtro) {
   }
   if (!f) {
     const nDest = contarDestaques();
-    const blocos = resumoConviteHome() + resumoSimuladoHome() + resumoCronoHome() + resumoProgressoHome() + resumoEditalHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
+    const blocos = resumoConviteHome() + resumoSimuladoHome() + resumoRedacaoHome() + resumoCronoHome() + resumoProgressoHome() + resumoEditalHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
       <div class="icone-q" aria-hidden="true">🖍</div><div class="corpo"><strong>Meus destaques</strong>
       <span class="meta">${nDest} ${nDest === 1 ? 'trecho destacado' : 'trechos destacados'}, por disciplina</span></div><span aria-hidden="true">›</span></a>` : '') + resumoBackupHome();
-    if (blocos) html += `<h2 class="secao">Seu estudo</h2>${blocos}`;
+    html += `<h2 class="secao">Seu estudo</h2>${blocos}
+      <nav class="atalhos" aria-label="Ferramentas">
+        <a href="#/simulado"><span aria-hidden="true">⏱</span>Simulado</a>
+        <a href="#/redacao"><span aria-hidden="true">✒</span>Redação</a>
+        <a href="#/edital"><span aria-hidden="true">🧭</span>Edital</a>
+        <a href="#/dados"><span aria-hidden="true">💾</span>Meus dados</a>
+      </nav>`;
   }
   if (revisoes.length) html += secaoRevisoes(revisoes, !!f);
   if (materiais.length) html += `<h2 class="secao">Material do Dia</h2>${materiais.map(cartaoMaterial).join('')}`;
@@ -391,6 +401,7 @@ async function telaDoc(id) {
     <details class="capitulos"><summary>Capítulos (${caps.length})</summary><ol>
       ${caps.map((c, i) => `<li data-i="${i}"><button>${esc(c.titulo)}${c.inicio != null ? ` <small>${fmt(c.inicio)}</small>` : ''}</button></li>`).join('')}
     </ol></details>
+    ${caixaIncidencia(doc)}
     <article>${doc.html}</article>
     ${fimDoMaterial(item)}`;
   window.scrollTo(0, 0);
@@ -411,6 +422,8 @@ async function telaDoc(id) {
     mostrarDaqui(bloco, e.clientY, item, doc);
   });
   aplicarDestaques(item);
+  aplicarIncidencia(doc);
+  ligarIncidencia(item, doc);
   if (irParaDestaque && irParaDestaque.id === id) {
     const el = irParaDestaque.confiarF // vindo da busca: o número do bloco é do mesmo build
       ? art.querySelector(`[data-f="${irParaDestaque.h.f}"]`) : acharBloco(art, irParaDestaque.h);
@@ -2149,6 +2162,326 @@ function aplicarCopia(dados, juntar) {
   setTimeout(() => { location.hash = '#/'; location.reload(); }, 800);
 }
 
+/* ---------- lei seca com incidência ---------- */
+/* Na CF e nas leis do edital, o build marca quantas questões oficiais citam cada artigo (doc.incidencia:
+   [[bloco, artigo, nº de questões, [ids]]]). O número aparece ao lado do "Art. Xº" (por CSS, fora do texto,
+   para não mexer nos destaques) e a caixa do topo lista os mais cobrados. */
+
+const rotuloArt = (a) => a.replace(/^(\d)(?!\d)/, '$1º');
+
+function caixaIncidencia(doc) {
+  const inc = doc.incidencia || [];
+  if (!inc.length) return '';
+  const ordem = inc.slice().sort((a, b) => b[2] - a[2] || a[0] - b[0]);
+  const total = new Set(inc.flatMap((x) => x[3])).size;
+  const chip = (x) => `<button class="chip" data-ir-f="${x[0]}">Art. ${esc(rotuloArt(x[1]))} · ${x[2]}</button>`;
+  return `<details class="incid-caixa"${guardado.get('incidAberta', true) ? ' open' : ''}><summary>🔥 Artigos mais cobrados nas provas</summary>
+    <p class="aviso">${total} ${total === 1 ? 'questão oficial cita' : 'questões oficiais citam'} ${inc.length} ${inc.length === 1 ? 'artigo' : 'artigos'} desta norma
+      (contagem automática pelo artigo citado no enunciado ou no comentário). O 🔥 ao lado do artigo, no texto, é quantas questões o cobram;
+      toque no parágrafo para resolver as questões dele.</p>
+    <div class="chips">${ordem.slice(0, 12).map(chip).join('')}</div>
+    ${ordem.length > 12 ? `<details><summary>Ver todos (${ordem.length})</summary><div class="chips">${ordem.slice(12).map(chip).join('')}</div></details>` : ''}
+    <button class="btn" id="incid-resolver">✍ Resolver as questões desta norma</button>
+    <p class="aviso" id="incid-aviso"></p></details>`;
+}
+
+function aplicarIncidencia(doc) {
+  const art = tela.querySelector('article');
+  if (!art || !doc.incidencia) return;
+  for (const [f, , n] of doc.incidencia) {
+    const forte = art.querySelector(`[data-f="${f}"] > strong`);
+    if (forte) { forte.dataset.inc = n; forte.parentElement.classList.add('com-incid'); }
+  }
+}
+
+/* Sessão com as questões de uma lista de ids que já estão no app (as dos materiais futuros chegam depois). */
+async function resolverIds(ids, titulo, aviso) {
+  let todas;
+  try { todas = await obterQuestoes(); } catch { if (aviso) aviso.textContent = 'As questões ainda não foram guardadas no celular.'; return; }
+  const mapa = new Map(filtrarAutorais(todas).map((q) => [q.id, q]));
+  const resp = respostas();
+  const l = [...new Set(ids)].map((id) => mapa.get(id)).filter(Boolean);
+  if (!l.length) {
+    if (aviso) aviso.textContent = 'As questões deste artigo estão em materiais que ainda vão ser liberados (ou na prova reservada para o Simulado 1).';
+    return;
+  }
+  const ordem = [...l.filter((q) => !resp[q.id]), ...l.filter((q) => resp[q.id] && !resp[q.id].ok), ...l.filter((q) => resp[q.id] && resp[q.id].ok)];
+  iniciarSessao(ordem.map((q) => q.id), titulo);
+}
+
+function ligarIncidencia(item, doc) {
+  const caixa = tela.querySelector('.incid-caixa');
+  if (!caixa) return;
+  caixa.addEventListener('toggle', () => guardado.set('incidAberta', caixa.open));
+  caixa.querySelectorAll('[data-ir-f]').forEach((b) => b.addEventListener('click', () => {
+    const el = tela.querySelector(`article [data-f="${b.dataset.irF}"]`);
+    if (!el) return;
+    seguir = false;
+    el.scrollIntoView({ block: 'center' });
+    el.classList.add('escolhido');
+    setTimeout(() => el.classList.remove('escolhido'), 2500);
+  }));
+  $('#incid-resolver').addEventListener('click', () => resolverIds(doc.incidencia.flatMap((x) => x[3]), `Questões: ${tituloCurto(item)}`, $('#incid-aviso')));
+}
+
+/* ---------- redação no app ---------- */
+/* guardado 'redacaoAtual': rascunho em andamento { id, tema, texto, inicio, dur (min, 0 = sem tempo), check }.
+   guardado 'redacoes': [{ id, tema, texto, data, usado (s), notas: [a1, a2, a3, a4] ou null, obs }].
+   As linhas são uma estimativa: cada parágrafo ocupa (letras + recuo) / letras por linha da sua letra. */
+
+const ASPECTOS = ['Tema e argumentação', 'Coesão e coerência', 'Estrutura dissertativa', 'Gramática e grafia'];
+const ASPECTOS_LONGOS = ['1. Atendimento e desenvolvimento do tema / informatividade e argumentação',
+  '2. Coesão (referencial e sequencial) / coerência (progressão, articulação, não contradição)',
+  '3. Estrutura do texto dissertativo-argumentativo e dos parágrafos',
+  '4. Modalidade gramatical: pontuação, grafia, concordância, regência e colocação pronominal'];
+const CHECK_REDACAO = ['Respondi ao tema proposto, sem fugir para um assunto vizinho', 'Escrevi dissertação-argumentativa (tese + argumentos), sem narrar nem fazer carta',
+  'Tenho introdução com tese, dois parágrafos de desenvolvimento e conclusão', 'Não pus nome, assinatura, sinal ou desenho (identificação zera a redação)',
+  'Ficou entre 15 e 20 linhas na folha'];
+const redacoes = () => guardado.get('redacoes', []);
+const letrasPorLinha = () => guardado.get('letrasLinha', 70);
+
+function contarLinhas(texto) {
+  const cpl = letrasPorLinha();
+  const pars = texto.split('\n').map((p) => p.trim()).filter(Boolean);
+  const linhas = pars.reduce((t, p) => t + Math.max(1, Math.ceil((p.length + 4) / cpl)), 0);
+  const palavras = pars.join(' ').split(/\s+/).filter(Boolean).length;
+  return { linhas, palavras, paragrafos: pars.length };
+}
+
+const totalNotas = (n) => (n ? n.reduce((t, x) => t + (Number(x) || 0), 0) : null);
+const fmtNota = (x) => String(Math.round(x * 10) / 10).replace('.', ',');
+
+function resumoRedacaoHome() {
+  const atual = guardado.get('redacaoAtual', null);
+  if (atual) {
+    return `<a class="cartao cartao-q continuar" href="#/redacao/escrever"><div class="icone-q" aria-hidden="true">✒</div>
+      <div class="corpo"><strong>Continuar a redação</strong><span class="meta">${esc(atual.tema || 'Tema livre')} · ≈ ${contarLinhas(atual.texto || '').linhas} linhas</span></div>
+      <span aria-hidden="true">▶</span></a>`;
+  }
+  const hoje = dataISO();
+  const s = ((catalogo.plano && catalogo.plano.sessoes) || []).find((x) => x.data === hoje && x.r > 0);
+  if (!s || redacoes().some((r) => r.data === hoje)) return '';
+  return `<a class="cartao cartao-q" href="#/redacao"><div class="icone-q" aria-hidden="true">✒</div>
+    <div class="corpo"><strong>Redação de hoje (${fmtMin(Math.round(s.r * 60))})</strong>
+    <span class="meta">Escreva no app com cronômetro e contador de linhas, ou no papel e registre a nota depois</span></div>
+    <span aria-hidden="true">›</span></a>`;
+}
+
+function telaRedacao() {
+  pararRelogio();
+  setTopo('Redação', true);
+  const atual = guardado.get('redacaoAtual', null);
+  const lista = redacoes();
+  const prop = catalogo.redacao || { oficiais: [], plano: [] };
+  const hoje = dataISO();
+  const doPlano = prop.plano.filter((p) => p.data <= hoje);
+  const corrigidas = lista.filter((r) => r.notas);
+  const ultimas = corrigidas.slice(-3);
+  const medias = ASPECTOS.map((_, i) => (ultimas.length ? ultimas.reduce((t, r) => t + Number(r.notas[i] || 0), 0) / ultimas.length : null));
+  const fraco = ultimas.length ? medias.indexOf(Math.min(...medias)) : -1;
+  const fmtD = (d) => `${d.slice(8, 10)}/${d.slice(5, 7)}`;
+
+  tela.innerHTML = `
+    <p class="aviso">Prova: dissertação-argumentativa de 15 a 20 linhas, 40 pontos (4 aspectos de 10, Tabela 12.2); menos de 12 elimina.
+      Escreva aqui com cronômetro e contador de linhas, ou no papel. Depois mande ao Tutor de Redação e registre a nota de cada aspecto para ver a evolução.</p>
+    ${atual ? `<a class="cartao continuar" href="#/redacao/escrever"><div class="corpo"><strong>Continuar: ${esc(atual.tema || 'Tema livre')}</strong>
+      <span class="meta">≈ ${contarLinhas(atual.texto || '').linhas} linhas</span></div><span aria-hidden="true">▶</span></a>` : ''}
+    <h2 class="secao">Nova redação</h2>
+    <div class="filtros">
+      <label>Proposta
+        <select id="r-tema">
+          ${doPlano.length ? `<optgroup label="Do plano (o texto de apoio está no material do dia)">${doPlano.map((p, i) => `<option value="p${i}">${esc(fmtD(p.data))} · ${esc(p.tema || 'proposta do material do dia')}</option>`).join('')}</optgroup>` : ''}
+          ${prop.oficiais.length ? `<optgroup label="Provas oficiais da AOCP">${prop.oficiais.map((p, i) => `<option value="o${i}">${esc(p.prova)} · ${esc(p.tema)}</option>`).join('')}</optgroup>` : ''}
+          <option value="livre">Outro tema (escrevo abaixo)</option>
+        </select></label>
+      <label id="r-livre-rot" hidden>Tema<input id="r-livre" type="text" placeholder="Escreva o tema"></label>
+      <label>Tempo
+        <select id="r-dur">${[[60, '1 h (como no plano)'], [50, '50 min'], [40, '40 min'], [0, 'Sem cronômetro (escrevi no papel)']]
+          .map(([v, r]) => `<option value="${v}" ${guardado.get('redacaoDur', 60) === v ? 'selected' : ''}>${r}</option>`).join('')}</select></label>
+    </div>
+    <p class="aviso" id="r-prop-aviso"></p>
+    <button class="btn primario largo" id="r-nova">✒ Começar a redação</button>
+    ${corrigidas.length ? `<h2 class="secao">Sua evolução</h2>
+      ${ultimas.length ? `<p class="aviso">Média das últimas ${ultimas.length}: ${medias.map((m, i) => `${ASPECTOS[i]} ${fmtNota(m)}`).join(' · ')}.
+        ${fraco >= 0 ? `Ponto mais fraco: <b>${esc(ASPECTOS[fraco])}</b>.` : ''}</p>` : ''}
+      <div class="redacao-evolucao">${corrigidas.map((r) => {
+        const t = totalNotas(r.notas);
+        return `<a class="cartao" href="#/redacao/ver/${r.id}"><div class="data"><b>${fmtD(r.data)}</b>${fmtNota(t)}/40</div>
+          <div class="corpo"><strong>${esc(r.tema || 'Tema livre')}</strong>
+          <span class="meta">${r.notas.map((x, i) => `A${i + 1} ${fmtNota(Number(x) || 0)}`).join(' · ')}${t < 12 ? ' · abaixo do mínimo de 12' : ''}</span>
+          <span class="barra" aria-hidden="true"><span style="width:${Math.round((t / 40) * 100)}%"></span></span></div></a>`;
+      }).join('')}</div>` : ''}
+    ${lista.length ? `<h2 class="secao">Suas redações (${lista.length})</h2>
+      ${lista.slice().reverse().map((r) => `<a class="cartao" href="#/redacao/ver/${r.id}"><div class="data"><b>${fmtD(r.data)}</b>${esc(DIAS_CURTOS[deISO(r.data).getDay()])}</div>
+        <div class="corpo"><strong>${esc(r.tema || 'Tema livre')}</strong><span class="meta">≈ ${contarLinhas(r.texto || '').linhas} linhas${r.usado ? ` · ${esc(fmtMin(Math.max(1, Math.round(r.usado / 60))))}` : ''}${r.notas ? ` · nota ${fmtNota(totalNotas(r.notas))}/40` : ' · sem nota registrada'}</span></div>
+        <span aria-hidden="true">›</span></a>`).join('')}` : ''}`;
+
+  const sel = $('#r-tema');
+  const mostrarProposta = () => {
+    const v = sel.value;
+    $('#r-livre-rot').hidden = v !== 'livre';
+    let html = '';
+    if (v[0] === 'p') {
+      const p = doPlano[Number(v.slice(1))];
+      html = `A proposta e os textos de apoio estão no <a href="#/doc/${encodeURIComponent(p.doc)}">material de ${fmtD(p.data)}</a>. Leia antes de começar.`;
+    } else if (v[0] === 'o') {
+      html = `Formato original: ${esc(prop.oficiais[Number(v.slice(1))].formato)}. Na PMPE 2026 são 15 a 20 linhas.`;
+    }
+    $('#r-prop-aviso').innerHTML = html;
+  };
+  sel.addEventListener('change', mostrarProposta);
+  mostrarProposta();
+  $('#r-dur').addEventListener('change', (e) => guardado.set('redacaoDur', Number(e.target.value)));
+  $('#r-nova').addEventListener('click', () => {
+    if (atual && !window.confirm('Há uma redação em andamento. Descartar o rascunho e começar outra?')) return;
+    const v = sel.value;
+    const tema = v[0] === 'p' ? (doPlano[Number(v.slice(1))].tema || `Proposta do material de ${fmtD(doPlano[Number(v.slice(1))].data)}`)
+      : v[0] === 'o' ? prop.oficiais[Number(v.slice(1))].tema : $('#r-livre').value.trim();
+    guardado.set('redacaoAtual', { id: Date.now(), tema, texto: '', inicio: Date.now(), dur: Number($('#r-dur').value), check: [] });
+    location.hash = '#/redacao/escrever';
+  });
+}
+
+let relogioRed = null;
+function telaRedacaoEscrever() {
+  pararRelogio();
+  const r = guardado.get('redacaoAtual', null);
+  if (!r) { location.hash = '#/redacao'; return; }
+  setTopo('Escrevendo', true);
+  const cpl = letrasPorLinha();
+  tela.innerHTML = `
+    <div class="q-topo sim-topo"><span id="r-linhas"></span><span id="r-relogio" class="sim-relogio"></span></div>
+    <p class="q-meta"><b>Tema:</b> ${esc(r.tema || 'livre')}</p>
+    <textarea id="r-texto" class="redacao-texto" rows="18" placeholder="Escreva aqui. Um parágrafo por linha (Enter para o próximo parágrafo)." spellcheck="false">${esc(r.texto || '')}</textarea>
+    <div class="filtros"><label>Letras por linha na sua folha (para estimar as linhas)
+      <select id="r-cpl">${[55, 60, 65, 70, 75, 80, 85].map((n) => `<option value="${n}" ${n === cpl ? 'selected' : ''}>${n}</option>`).join('')}</select></label></div>
+    <p class="aviso">A contagem é uma estimativa: conte quantas letras cabem numa linha sua no papel e ajuste acima. O corretor do celular fica desligado, como na prova.</p>
+    <h2 class="secao">Antes de entregar</h2>
+    <div class="check-redacao">${CHECK_REDACAO.map((t, i) => `<label><input type="checkbox" data-ck="${i}" ${(r.check || []).includes(i) ? 'checked' : ''}> ${esc(t)}</label>`).join('')}</div>
+    <div class="acoes">
+      <button class="btn primario" id="r-terminar">✓ Terminar</button>
+      <button class="btn" id="r-copiar">Copiar para o Tutor de Redação</button>
+      <button class="btn-link" id="r-descartar">Descartar</button>
+    </div>
+    <p class="aviso" id="r-aviso" aria-live="polite"></p>`;
+  const ta = $('#r-texto');
+  const atualizar = () => {
+    const c = contarLinhas(ta.value);
+    const el = $('#r-linhas');
+    el.textContent = `≈ ${c.linhas} ${c.linhas === 1 ? 'linha' : 'linhas'} · ${c.paragrafos} par. · ${c.palavras} palavras`;
+    el.className = c.linhas >= 15 && c.linhas <= 20 ? 'linhas-ok' : c.linhas > 20 ? 'linhas-alerta' : '';
+  };
+  let tSalvar = null;
+  ta.addEventListener('input', () => {
+    atualizar();
+    clearTimeout(tSalvar);
+    tSalvar = setTimeout(() => { r.texto = ta.value; guardado.set('redacaoAtual', r); }, 500);
+  });
+  atualizar();
+  const relogio = () => {
+    const el = $('#r-relogio');
+    if (!el || !guardado.get('redacaoAtual', null)) { clearInterval(relogioRed); relogioRed = null; return; }
+    const passou = (Date.now() - r.inicio) / 1000;
+    if (!r.dur) { el.textContent = `⏱ ${fmt(passou)}`; return; }
+    const resta = r.dur * 60 - passou;
+    el.textContent = resta > 0 ? `⏱ ${fmt(resta)}` : `⏰ +${fmt(-resta)}`;
+    el.classList.toggle('esgotado', resta <= 0);
+  };
+  if (relogioRed) clearInterval(relogioRed);
+  relogioRed = setInterval(relogio, 1000);
+  relogio();
+  $('#r-cpl').addEventListener('change', (e) => { guardado.set('letrasLinha', Number(e.target.value)); atualizar(); });
+  tela.querySelectorAll('[data-ck]').forEach((c) => c.addEventListener('change', () => {
+    const i = Number(c.dataset.ck);
+    r.check = (r.check || []).filter((x) => x !== i).concat(c.checked ? [i] : []);
+    r.texto = ta.value;
+    guardado.set('redacaoAtual', r);
+  }));
+  $('#r-copiar').addEventListener('click', async () => {
+    r.texto = ta.value;
+    guardado.set('redacaoAtual', r);
+    $('#r-aviso').textContent = (await copiarTexto(textoParaTutor(r))) ? 'Copiado. Cole na conversa com o Tutor de Redação.' : 'Não deu para copiar neste celular.';
+  });
+  $('#r-terminar').addEventListener('click', () => {
+    r.texto = ta.value;
+    if (!r.texto.trim() && !window.confirm('O texto está vazio (escreveu no papel?). Guardar assim mesmo, só para registrar a nota depois?')) return;
+    const usado = Math.round((Date.now() - r.inicio) / 1000);
+    const lista = redacoes();
+    lista.push({ id: r.id, tema: r.tema, texto: r.texto, data: dataISO(new Date(r.inicio)), usado, notas: null, obs: '' });
+    guardado.set('redacoes', lista);
+    guardado.set('redacaoAtual', null);
+    registrarAtividade({ c: Math.min(usado, 3 * 3600) });
+    location.hash = `#/redacao/ver/${r.id}`;
+  });
+  $('#r-descartar').addEventListener('click', () => {
+    if (!window.confirm('Descartar este rascunho?')) return;
+    guardado.set('redacaoAtual', null);
+    location.hash = '#/redacao';
+  });
+}
+
+function textoParaTutor(r) {
+  const c = contarLinhas(r.texto || '');
+  return `Corrija minha redação pela Tabela 12.2 da PMPE (Soldado). Proposta: ${r.tema || 'tema livre'} (15 a 20 linhas).
+Meu texto tem cerca de ${c.linhas} linhas (estimativa do app; ${c.paragrafos} parágrafos, ${c.palavras} palavras).
+Dê a nota de cada aspecto (0 a 10), com o trecho que justifica cada desconto, e diga o que reescrever primeiro.
+
+${r.texto || '(escrito no papel: vou mandar a foto)'}`;
+}
+
+function telaRedacaoVer(id) {
+  pararRelogio();
+  const lista = redacoes();
+  const i = lista.findIndex((x) => String(x.id) === id);
+  const r = lista[i];
+  if (!r) { location.hash = '#/redacao'; return; }
+  setTopo('Redação', true);
+  const c = contarLinhas(r.texto || '');
+  const t = totalNotas(r.notas);
+  tela.innerHTML = `
+    <p class="q-meta"><b>${esc(dataCurta(r.data))}</b> · ${esc(r.tema || 'Tema livre')}</p>
+    <p class="aviso">≈ ${c.linhas} linhas · ${c.paragrafos} parágrafos · ${c.palavras} palavras${r.usado ? ` · ${esc(fmtMin(Math.max(1, Math.round(r.usado / 60))))}` : ''}</p>
+    ${r.texto ? `<div class="redacao-final">${esc(r.texto).split('\n').filter((p) => p.trim()).map((p) => `<p>${p}</p>`).join('')}</div>` : '<p class="aviso">Escrita no papel.</p>'}
+    <div class="acoes">
+      <button class="btn primario" id="rv-copiar">Copiar para o Tutor de Redação</button>
+      <button class="btn" id="rv-reescrever">✒ Reescrever</button>
+    </div>
+    <p class="aviso" id="rv-aviso" aria-live="polite"></p>
+    <h2 class="secao">Nota da correção</h2>
+    ${t != null ? `<div class="q-veredito ${t >= 12 ? 'ok' : 'erro'}">${fmtNota(t)} de 40${t < 12 ? ' · abaixo do mínimo de 12: eliminaria' : ''}</div>` : '<p class="aviso">Depois da correção do Tutor de Redação, registre a nota de cada aspecto (0 a 10).</p>'}
+    <div class="notas-redacao">${ASPECTOS_LONGOS.map((a, k) => `<label>${esc(a)}
+      <input type="number" inputmode="decimal" min="0" max="10" step="0.5" data-nota="${k}" value="${r.notas ? esc(r.notas[k]) : ''}"></label>`).join('')}
+      <label>Observações da correção<textarea id="rv-obs" rows="3">${esc(r.obs || '')}</textarea></label></div>
+    <div class="acoes"><button class="btn primario" id="rv-salvar">Salvar a nota</button></div>
+    <p class="rodape"><button class="btn-link" id="rv-apagar">Apagar esta redação</button></p>`;
+  $('#rv-copiar').addEventListener('click', async () => {
+    $('#rv-aviso').textContent = (await copiarTexto(textoParaTutor(r))) ? 'Copiado. Cole na conversa com o Tutor de Redação.' : 'Não deu para copiar neste celular.';
+  });
+  $('#rv-reescrever').addEventListener('click', () => {
+    if (guardado.get('redacaoAtual', null) && !window.confirm('Há uma redação em andamento. Descartar e reescrever esta?')) return;
+    guardado.set('redacaoAtual', { id: Date.now(), tema: r.tema, texto: r.texto, inicio: Date.now(), dur: 0, check: [] });
+    location.hash = '#/redacao/escrever';
+  });
+  $('#rv-salvar').addEventListener('click', () => {
+    const vals = [...tela.querySelectorAll('[data-nota]')].map((x) => x.value.trim().replace(',', '.'));
+    if (vals.some((v) => v === '' || Number.isNaN(Number(v)) || Number(v) < 0 || Number(v) > 10)) {
+      $('#rv-aviso').textContent = 'Preencha os 4 aspectos com notas de 0 a 10.';
+      return;
+    }
+    r.notas = vals.map(Number);
+    r.obs = $('#rv-obs').value;
+    lista[i] = r;
+    guardado.set('redacoes', lista);
+    telaRedacaoVer(id);
+  });
+  $('#rv-apagar').addEventListener('click', () => {
+    if (!window.confirm('Apagar esta redação e a nota?')) return;
+    lista.splice(i, 1);
+    guardado.set('redacoes', lista);
+    location.hash = '#/redacao';
+  });
+}
+
 /* ---------- flashcards com revisão espaçada ---------- */
 /* Cada linha das "Pegadinhas" e dos "Quadros para não confundir" vira um cartão.
    Estado em guardado 'cartoes': { id: { c, p, n, e, u, k } }: c = degrau (INTERVALOS[c] dias), p = próxima revisão,
@@ -2569,6 +2902,10 @@ function mostrarDaqui(bloco, y, item, doc) {
   const h = destaqueDoBloco(item, bloco);
   $('#ab-destacar').textContent = h ? '✕ Tirar destaque' : '🖍 Destacar';
   $('#ab-anotar').textContent = h && h.nota ? '📝 Editar anotação' : '📝 Anotar';
+  const inc = (doc.incidencia || []).find((x) => String(x[0]) === bloco.dataset.f);
+  const bq = $('#ab-questoes');
+  bq.hidden = !inc;
+  if (inc) bq.textContent = `✍ ${inc[2]} ${inc[2] === 1 ? 'questão' : 'questões'}`;
   const b = $('#acoes-bloco');
   const topo = $('.topo').offsetHeight + 8;
   const baixo = window.innerHeight - ($('#player').hidden ? 0 : $('#player').offsetHeight) - 56;
@@ -2598,6 +2935,12 @@ $('#ab-anotar').addEventListener('click', () => {
   const b = blocoAtual;
   esconderDaqui();
   if (b) abrirEditorNota(b.item, b.el);
+});
+$('#ab-questoes').addEventListener('click', () => {
+  const b = blocoAtual;
+  esconderDaqui();
+  const inc = b && (b.doc.incidencia || []).find((x) => String(x[0]) === b.el.dataset.f);
+  if (inc) resolverIds(inc[3], `Art. ${rotuloArt(inc[1])} · ${tituloCurto(b.item)}`, $('#aviso-doc'));
 });
 
 /* ---------- destaques e anotações ---------- */
