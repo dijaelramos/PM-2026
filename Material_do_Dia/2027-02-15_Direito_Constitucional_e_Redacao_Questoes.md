@@ -223,6 +223,15 @@ Sobre a ação popular, segundo a Constituição Federal, assinale a alternativa
 
 **Por que as outras estão erradas:** (A) a legitimidade é do **cidadão**; (C) locomoção é caso de **habeas corpus**; (D) falta de norma é caso de **mandado de injunção**; (E) o autor de boa-fé é **isento** de custas e de sucumbência.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Fundamentos (**SO-CI-DI-VA-PLU**): **soberania**, **cidadania**, **dignidade da pessoa humana**, **valores sociais do trabalho e da livre iniciativa** e **pluralismo político**. Os **objetivos** (art. 3º) começam com **verbo** (construir, garantir, erradicar, promover); os **princípios das relações internacionais** (art. 4º) são **substantivos de política externa** (independência nacional, prevalência dos direitos humanos, não intervenção, asilo político…).
+2. Que **não é crime** a interrupção da gravidez de **feto anencéfalo**. Mostra que os direitos fundamentais **não são absolutos**: o direito à vida foi **ponderado** com a dignidade, a saúde e a liberdade da gestante.
+3. **Sim**: a gravação ambiental feita **por um dos interlocutores**, sem o conhecimento do outro, é **lícita** (Tema 237). **Não**: a prova declarada **ilícita** pelo Judiciário é **inadmissível** também em processo **administrativo** (Tema 1238).
+4. O **defensor** tem **acesso amplo** às provas **já documentadas** no procedimento investigatório que digam respeito ao direito de defesa (as diligências em andamento podem ficar sob sigilo).
+5. **SV 45**: a competência do **Júri prevalece** sobre o foro por prerrogativa de função **criado só pela Constituição Estadual**. **Tema 1068**: a **soberania dos veredictos** autoriza a **execução imediata** da pena imposta pelo Júri.
+6. **Mandado de injunção**: quando a **falta de norma regulamentadora** torna inviável o exercício de direitos e prerrogativas da nacionalidade, da soberania e da cidadania. **Habeas data**: para **conhecer ou retificar** informações sobre a **própria pessoa** em registros públicos. **Ação popular**: **qualquer cidadão** pode propor para **anular ato lesivo** ao patrimônio público, à moralidade, ao meio ambiente e ao patrimônio histórico e cultural. **Súmula 2 do STJ**: **não cabe habeas data** se **não houve recusa** de informações pela autoridade administrativa.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. O posto do oficial é conferido pelo **Governador**; a graduação da praça, pelo **Comandante-Geral**.

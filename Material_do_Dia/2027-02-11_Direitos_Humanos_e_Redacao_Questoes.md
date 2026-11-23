@@ -235,6 +235,17 @@ Uma guarnição da PMPE apreende em flagrante um adolescente de 16 anos pela pr�
 
 **Por que as outras estão erradas:** (A) o adolescente **nunca** fica com adultos; (C) **45 dias** é o prazo máximo da **internação provisória**, decretada pelo **juiz**, não de permanência na delegacia; (D) é proibido o transporte em **compartimento fechado** em condições atentatórias à dignidade ou que impliquem risco (art. 178); (E) **adolescente** recebe medida **socioeducativa**; medida de proteção é para **criança** (até 12 anos incompletos).
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Direitos humanos** estão no plano **internacional**; **direitos fundamentais**, no plano **constitucional** (interno). Características (quaisquer quatro): **universais, indivisíveis, interdependentes e inter-relacionados** (Viena, 1993); **inalienáveis**, **irrenunciáveis**, **imprescritíveis**, **históricos** e **relativos**.
+2. **1ª**: **liberdade** (direitos civis e políticos; abstenção do Estado). **2ª**: **igualdade** (sociais, econômicos e culturais; prestação). **3ª**: **fraternidade** ou solidariedade (difusos: meio ambiente, paz, desenvolvimento). As dimensões **se somam**.
+3. **Com o rito do § 3º** (cada Casa, 2 turnos, 3/5): **equivalente a emenda constitucional**. **Sem o rito**: **supralegal** (abaixo da CF, acima das leis), segundo o STF.
+4. A **finalidade específica** de **prejudicar outrem**, de **beneficiar a si ou a terceiro**, ou por **mero capricho ou satisfação pessoal** (e a divergência de interpretação não é crime). **Não**: a perda do cargo (e a inabilitação) só ocorre com **reincidência**, **não é automática** e deve ser **motivada**.
+5. Constranger alguém com violência ou grave ameaça, causando sofrimento físico ou mental, para obter **informação, declaração ou confissão** (prova), para provocar **ação ou omissão criminosa**, ou por **discriminação racial ou religiosa**; desde 2026, também submeter **mulher, reiteradamente**, a intenso sofrimento na violência doméstica. **Tortura-castigo**: submeter pessoa **sob guarda, poder ou autoridade** a **intenso** sofrimento como **castigo pessoal** ou medida preventiva.
+6. É encaminhado **desde logo ao Ministério Público**; se impossível, a uma **entidade de atendimento**, que o apresenta em **24 horas**; onde não houver entidade, a própria autoridade policial o apresenta, e ele aguarda **separado dos adultos**. Nunca é conduzido em compartimento fechado de viatura em condições indignas.
+7. Na **reserva remunerada**, o PM recebe e **pode ser convocado**; o **reformado** está **dispensado definitivamente** do serviço ativo. O **posto** (oficial) é conferido pelo **Governador**; a **graduação** (praça), pelo **Comandante-Geral**.
+8. **Idoso**: **60 anos ou mais** (prioridade especial aos maiores de 80). **Jovem**: **15 a 29 anos**. Os crimes do Estatuto da Pessoa Idosa são de **ação penal pública incondicionada**, sem as imunidades dos arts. 181 e 182 do CP.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. Em caso de **resistência**, de **fundado receio de fuga** ou de **perigo à integridade física** própria ou alheia, com a justificativa **por escrito**.
