@@ -55,11 +55,11 @@ Desde 19/11/2026, o material do dia é entregue em **dois arquivos separados**. 
 **Arquivo 2 — questões do dia:** `AAAA-MM-DD_<Disciplina>_Questoes.md`
 
 1. Título `# Questões do dia — <dia da semana>, DD/MM/AAAA — <Disciplina>`, com o link do arquivo 1, a instrução de como responder (estudo dirigido por escrito e sem consultar, depois as questões, e mandar as respostas ao Orquestrador para a correção) e a nota da reserva do Simulado 1.
-2. **Estudo dirigido:** perguntas abertas para responder sem consultar, cobrindo todos os subtópicos explicados.
+2. **Estudo dirigido:** perguntas abertas para responder sem consultar, cobrindo todos os subtópicos explicados, numeradas "1." (ou "10-A.").
 3. **Mapa das questões** (1.4), apontando as seções do arquivo 1.
 4. Texto de apoio, se alguma questão depender de um (título "Texto de apoio das questões N e M").
 5. **Questões oficiais** (regras de `questoes_oficiais.md`, reserva do Simulado 1 e status do gabarito), no formato `### Questão N — banca, órgão, ano, cargo, número` com as alternativas `- **(A)** texto`. Se houver poucas, diga quantas existem e ofereça as autorais prontas, com rótulo.
-6. Gabarito e comentários **só no fim**, numa seção cujo título comece com "Gabarito", identificados como **análise do tutor**, já no formato da Parte 2. O app lê esse formato para montar os exercícios interativos.
+6. Gabarito e comentários **só no fim**, numa seção cujo título comece com "Gabarito", identificados como **análise do tutor**, já no formato da Parte 2. O app lê esse formato para montar os exercícios interativos. Dentro do gabarito, inclua `### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*`, com a resposta-modelo de **cada** pergunta do estudo dirigido, numerada igual à pergunta ("1. …"). O app mostra essa resposta quando o estudante toca em "Conferir".
 
 O material fica longo, e isso é esperado: priorize clareza e cobertura em vez de brevidade. No chat, entregue as duas partes separadas: primeiro o material de estudo, com o link do arquivo 1; depois, num bloco à parte, o estudo dirigido e as questões, com o link do arquivo 2. O gabarito fica só no arquivo 2.
 
