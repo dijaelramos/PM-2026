@@ -223,6 +223,15 @@ Sobre os remédios constitucionais, todas as alternativas estão corretas, **EXC
 
 **Por que as outras estão corretas:** (A) art. 5º, LXVIII; (B) LXXI; (C) LXXIII; (E) LXXII, "a".
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **MP3.COM**: **Ministro do STF**; **Presidente e Vice-Presidente da República**; **Presidente da Câmara**; **Presidente do Senado**; **carreira diplomática**; **oficial das Forças Armadas**; **Ministro de Estado da Defesa**.
+2. **Presidente**: 35. **Senador**: 35. **Governador**: 30. **Deputado** (federal, estadual ou distrital): 21. **Vereador**: 18.
+3. É proposta por **1/3** da Câmara ou do Senado, pelo **Presidente** ou por **mais da metade das Assembleias Legislativas**; votada em **dois turnos em cada Casa**, aprovada por **3/5**, e promulgada pelas **Mesas** (sem sanção nem veto); não se emenda a CF durante intervenção federal, estado de defesa ou de sítio. Cláusulas pétreas: **forma federativa**; **voto direto, secreto, universal e periódico**; **separação dos Poderes**; **direitos e garantias individuais**.
+4. **Crime militar**: a **Justiça Militar estadual** (em PE, em 2º grau, o **TJPE**). **Homicídio doloso de civil**: o **Tribunal do Júri**.
+5. **Estado de defesa**: preservar ou restabelecer, em **locais restritos e determinados**, a ordem pública ou a paz social ameaçadas por **grave e iminente instabilidade institucional** ou atingidas por **calamidades naturais de grandes proporções**. **Estado de sítio**: **comoção grave de repercussão nacional**; **ineficácia** do estado de defesa; **declaração de guerra** ou resposta a **agressão armada estrangeira**.
+6. **Polícia federal**, **polícia rodoviária federal**, **polícia ferroviária federal**, **polícias civis**, **polícias militares e corpos de bombeiros militares** e **polícias penais**. À PM cabem a **polícia ostensiva** e a **preservação da ordem pública**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. Até o **terceiro grau**, inclusive.

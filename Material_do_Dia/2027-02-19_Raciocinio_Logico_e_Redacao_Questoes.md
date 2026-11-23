@@ -201,6 +201,14 @@ Entre 5 cabos, serão escolhidos um comandante e um subcomandante de uma equipe 
 
 **Por que a (D) está correta:** os cargos são diferentes, então a ordem importa (arranjo): 5 opções para comandante × 4 para subcomandante = **20**. (A) 10 seria a combinação (sem distinguir os cargos).
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **E** (p ∧ q): falso quando **uma** das duas é falsa. **OU** (p ∨ q): falso quando **as duas** são falsas. **SE… ENTÃO** (p → q): falso só em **V → F**. **SE E SOMENTE SE** (p ↔ q): falso quando os valores são **diferentes**.
+2. Equivalências: **se ~q, então ~p** (contrapositiva) e **~p ou q**. Negação: **p e ~q**.
+3. "**Todo** A é B" → **algum A não é B**. "**Nenhum** A é B" → **algum A é B**. "**Algum** A é B" → **nenhum A é B**.
+4. **Válidos**: **modus ponens** (p → q; p; logo q) e **modus tollens** (p → q; ~q; logo ~p) — e o silogismo hipotético. **Falácias**: **afirmar o consequente** (p → q; q; logo p) e **negar o antecedente** (p → q; ~p; logo ~q).
+5. **Permutação** (n!): todos em fila. **Arranjo**: escolher **com ordem** ou cargos diferentes. **Combinação** (arranjo ÷ k!): escolher **sem ordem**, um grupo. **Pelo menos um**: **1 − P(nenhum)**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Não**: é promulgada pelas Mesas da Câmara e do Senado (art. 60, § 3º).

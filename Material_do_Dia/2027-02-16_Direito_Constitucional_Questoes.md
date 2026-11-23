@@ -226,6 +226,16 @@ Segundo a Constituição Federal, o Presidente da República ficará suspenso de
 
 **Por que as outras estão erradas:** (A) não basta o **oferecimento**: é preciso o **recebimento** pelo STF; (B) e (E) no crime de responsabilidade, a suspensão vem com a **instauração** do processo pelo **Senado**, depois da autorização da Câmara; (C) a suspensão é **anterior** à condenação.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **SV 2**: é inconstitucional lei **estadual ou distrital** sobre **consórcios e sorteios**, inclusive bingos e loterias (privativa da União). **SV 38**: o **Município** é competente para fixar o **horário de funcionamento do comércio** (interesse local). **SV 39**: compete privativamente à **União** legislar sobre **vencimentos** das polícias civil e militar e dos bombeiros **do DF**. **SV 46**: a definição dos **crimes de responsabilidade** e seu processo são de competência legislativa **privativa da União**.
+2. **LIMPE**: **legalidade, impessoalidade, moralidade, publicidade e eficiência**. Validade do concurso: **até 2 anos, prorrogável uma vez, por igual período**.
+3. Proíbe o **nepotismo**: nomear cônjuge, companheiro ou parente da autoridade nomeante (ou de servidor em direção, chefia ou assessoramento) para **cargo em comissão, de confiança ou função gratificada**, inclusive por **designações recíprocas** (nepotismo cruzado). Vai até o **3º grau**, inclusive.
+4. **SV 44**: só **por lei** se pode exigir **exame psicotécnico** de candidato a cargo público. **SV 5**: a falta de **advogado** no **processo administrativo disciplinar** **não ofende** a Constituição. **SV 21**: é inconstitucional exigir **depósito prévio** para admitir **recurso administrativo**.
+5. Os **§§ 2º e 3º do art. 142**, via art. 42, § 1º: **não cabe HC** contra punição disciplinar (salvo exame de legalidade); **proibidas sindicalização e greve**; **proibida a filiação partidária** na ativa; regras de cargo civil e de perda do posto; e as **patentes** dos oficiais são conferidas pelos **Governadores**. **SV 6**: não viola a Constituição pagar **menos que o salário mínimo** às **praças prestadoras de serviço militar inicial** (o serviço obrigatório, não o PM concursado).
+6. **Legislativo**: típica, **legislar e fiscalizar**; atípica, **julgar** (o Senado julga o Presidente por crime de responsabilidade). **Executivo**: típica, **administrar**; atípica, **legislar** (medida provisória). **Judiciário**: típica, **julgar**; atípica, **administrar** (concursos, servidores) ou editar **regimentos internos**.
+7. A **Câmara** **autoriza**, por **2/3**, a instauração do processo; o **Senado** **julga** o Presidente nos **crimes de responsabilidade** (o STF julga os crimes comuns). O Presidente fica **suspenso**: no **crime comum**, quando o **STF recebe** a denúncia ou queixa; no **crime de responsabilidade**, quando o **Senado instaura** o processo (por até 180 dias).
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Princípio das relações internacionais** (art. 4º, III).
