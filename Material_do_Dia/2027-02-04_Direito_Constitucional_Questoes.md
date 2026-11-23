@@ -231,6 +231,17 @@ O Conselho Nacional de Justiça (CNJ)
 
 **Por que as outras estão erradas:** (A) o CNJ não julga processos nem revê decisões do STF; (B) são **15** membros com **mandato**; (D) o CNJ **é** órgão do Judiciário (art. 92, I-A); (E) é presidido pelo **Presidente do STF**.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **STF**; **CNJ**; **STJ**; **TST**; **TRFs e juízes federais**; tribunais e juízes do **Trabalho**; tribunais e juízes **Eleitorais**; tribunais e juízes **Militares**; tribunais e juízes dos **Estados e do DF**.
+2. **Lei complementar**, de iniciativa do **Supremo Tribunal Federal** (art. 93).
+3. **Um quinto** dos lugares dos **TRFs** e dos **tribunais dos Estados e do DF** é ocupado por membros do **Ministério Público** e **advogados** com mais de **10 anos** de carreira ou atividade, indicados em **lista sêxtupla**; o tribunal reduz a **lista tríplice** e o **Executivo** escolhe um (art. 94).
+4. **Garantias**: **vitaliciedade** (no 1º grau, após **2 anos**; depois, só perde o cargo por sentença transitada em julgado); **inamovibilidade** (salvo interesse público); **irredutibilidade de subsídio**. **Vedações**: exercer outro cargo, **salvo um de magistério**; receber **custas** ou participação em processo; atividade **político-partidária**; receber **auxílios ou contribuições**, salvo exceções da lei; advogar no juízo ou tribunal de onde saiu **antes de 3 anos** (quarentena).
+5. **Onze Ministros**, cidadãos com mais de **35 e menos de 70 anos**, de **notável saber jurídico** e **reputação ilibada**, nomeados pelo **Presidente da República** depois de aprovados pela **maioria absoluta do Senado**.
+6. Quaisquer três (art. 102, I): **ADI e ADC**; julgar nas **infrações penais comuns** o **Presidente**, o Vice, os **membros do Congresso**, os **próprios Ministros** e o **PGR**; **HC, MS e HD** contra atos do Presidente, das Mesas do Congresso, do TCU e do PGR; **extradição** pedida por Estado estrangeiro. **Súmula vinculante**: aprovada por **2/3** dos Ministros, depois de **reiteradas decisões** sobre matéria constitucional; vincula os **demais órgãos do Judiciário** e a **administração pública**; contra ato que a contrarie cabe **reclamação** ao STF.
+7. O **CNJ** faz o **controle administrativo e financeiro** do Judiciário e do cumprimento dos deveres dos juízes (**não julga processos**); tem 15 membros e é presidido pelo Presidente do STF. O **STJ** (no mínimo **33 Ministros**) **uniformiza a interpretação da lei federal** (recurso especial) e julga originariamente, por exemplo, os **Governadores** nos crimes comuns.
+8. É criada por lei estadual, por proposta do TJ: no **1º grau**, **juízes de direito** e **Conselhos de Justiça**; no **2º grau**, o **próprio TJ** ou um **Tribunal de Justiça Militar** (só onde o efetivo passa de 20 mil; Pernambuco não tem). Julga os **militares dos Estados** nos **crimes militares** e as **ações contra atos disciplinares**, e decide a perda do posto e da patente dos oficiais. O **juiz de direito, sozinho**, julga os crimes militares **contra civis** e os atos disciplinares; o **Conselho**, os demais. O **crime doloso contra a vida de civil** praticado por PM vai ao **Júri**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. A **Câmara** autoriza (2/3); o **Senado** julga.

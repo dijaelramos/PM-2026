@@ -289,6 +289,17 @@ P(não encontrar nas duas) = 0,2 × 0,2 = 0,04. P(pelo menos uma vez) = 1 − 0,
 
 As outras: (A) é a chance de encontrar nas **duas**; (E) somar as probabilidades passa de 100%, o que é impossível.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **E**: falso quando **uma** das duas é falsa. **OU** (inclusivo): falso quando **as duas** são falsas. **OU… OU** (exclusivo): falso quando as duas têm o **mesmo** valor. **SE… ENTÃO**: falso só em **V → F**. **SE E SOMENTE SE**: falso quando os valores são **diferentes**.
+2. "**Todo** A é B" → **algum A não é B**. "**Nenhum** A é B" → **algum A é B**. "**Algum** A é B" → **nenhum A é B**. "**Algum** A **não** é B" → **todo A é B**.
+3. Equivalências: **~q → ~p** (contrapositiva) e **~p ∨ q**. Negação: **p ∧ ~q**. **Recíproca**: q → p; **inversa**: ~p → ~q. Nenhuma das duas é equivalente a p → q.
+4. ~(p **e** q) = **~p ou ~q**. ~(p **ou** q) = **~p e ~q**.
+5. **Válidas**: **modus ponens** (p → q; p ⊢ q), **modus tollens** (p → q; ~q ⊢ ~p), **silogismo hipotético** (p → q; q → r ⊢ p → r) e **silogismo disjuntivo** (p ∨ q; ~p ⊢ q). **Falácias**: **afirmar o consequente** (p → q; q ⊢ p) e **negar o antecedente** (p → q; ~p ⊢ ~q).
+6. Que **pelo menos uma** das hipóteses é **falsa** (modus tollens com conjunção: ~(H1 ∧ … ∧ Hn) = ~H1 ∨ … ∨ ~Hn). Não se sabe qual.
+7. O círculo de **A dentro** do círculo de **B** (B contém A).
+8. Quantidade = **(último múltiplo − primeiro múltiplo) ÷ k + 1**, usando o primeiro e o último múltiplos de k dentro do intervalo. Ex.: múltiplos de 4 entre 10 e 50: 12 a 48 → (48 − 12) ÷ 4 + 1 = **10**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. "**a**" (visar **ao** cargo).
