@@ -336,9 +336,9 @@ function desenharLista(filtro) {
   }
   if (!f) {
     const nDest = contarDestaques();
-    const blocos = resumoConviteHome() + resumoSimuladoHome() + resumoRedacaoHome() + resumoCronoHome() + resumoProgressoHome() + resumoEditalHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
+    const blocos = resumoMetaHome() + resumoConviteHome() + resumoSimuladoHome() + resumoRedacaoHome() + resumoCronoHome() + resumoProgressoHome() + resumoEditalHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
       <div class="icone-q" aria-hidden="true">🖍</div><div class="corpo"><strong>Meus destaques</strong>
-      <span class="meta">${nDest} ${nDest === 1 ? 'trecho destacado' : 'trechos destacados'}, por disciplina</span></div><span aria-hidden="true">›</span></a>` : '') + resumoBackupHome();
+      <span class="meta">${nDest} ${nDest === 1 ? 'trecho destacado' : 'trechos destacados'}, por disciplina</span></div><span aria-hidden="true">›</span></a>` : '') + resumoRelatorioHome() + resumoBackupHome();
     html += `<h2 class="secao">Seu estudo</h2>${blocos}
       <nav class="atalhos" aria-label="Ferramentas">
         <a href="#/simulado"><span aria-hidden="true">⏱</span>Simulado</a>
@@ -749,6 +749,7 @@ function telaProgresso() {
       <p class="dica" id="g-dica" aria-live="polite">${totalPeriodo ? 'Toque numa barra para ver o dia.' : 'O app começa a contar a partir de agora: ouça um material ou resolva questões.'}</p>
     </figure>
 
+    ${secaoMeta()}
     <h2 class="secao">Plano por disciplina</h2>
     <p class="aviso">Horas que o plano previu até hoje e materiais que você concluiu (ouviu até o fim ou marcou como estudado).</p>
     ${[...porDisc].map(([nome, x]) => `<div class="cartao linha-q"><div class="corpo"><strong>${esc(nome)}</strong>
@@ -761,6 +762,7 @@ function telaProgresso() {
 
     <p class="rodape">A atividade é registrada só neste celular. <a class="btn-link" href="#/dados">Fazer uma cópia de segurança</a></p>`;
 
+  ligarMeta();
   tela.querySelectorAll('.barra-dia').forEach((b) => b.addEventListener('click', () => {
     tela.querySelectorAll('.barra-dia').forEach((x) => x.classList.toggle('ativa', x === b));
     $('#g-dica').textContent = b.getAttribute('aria-label');
@@ -2021,6 +2023,7 @@ function dadosDoApp() {
   const dados = {};
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
+    if (k === 'github') continue; // o token do GitHub não sai do celular
     try { dados[k] = JSON.parse(localStorage.getItem(k)); } catch { /* valor que não é JSON: fica de fora */ }
   }
   return dados;
@@ -2060,6 +2063,7 @@ function telaDados() {
       <button class="btn primario" id="d-salvar">⬇ Salvar cópia de segurança</button>
       ${podeCompartilhar ? '<button class="btn" id="d-compartilhar">📤 Enviar a cópia (Drive, WhatsApp…)</button>' : ''}
     </div>
+    ${secaoRelatorio()}
     <h2 class="secao">Restaurar ou juntar uma cópia</h2>
     <p class="aviso">Escolha o arquivo .json salvo antes. <b>Juntar</b> soma o que está no arquivo com o que está aqui (bom para usar dois celulares:
       vale a resposta mais recente de cada questão e o maior tempo de cada dia). <b>Substituir</b> apaga o que está aqui e põe o do arquivo.</p>
@@ -2093,6 +2097,7 @@ function telaDados() {
     if (!navigator.canShare({ files: [arq] })) { $('#d-aviso').textContent = 'Este celular não envia arquivos por aqui. Use "Salvar cópia de segurança".'; return; }
     try { await navigator.share({ files: [arq], title: 'Cópia do PMPE Ouvir' }); feito(); } catch { /* cancelado */ }
   });
+  ligarRelatorio();
   $('#d-arquivo').addEventListener('change', async (e) => {
     const arq = e.target.files && e.target.files[0];
     if (!arq) return;
@@ -2492,6 +2497,296 @@ function telaRedacaoVer(id) {
     guardado.set('redacoes', lista);
     location.hash = '#/redacao';
   });
+}
+
+/* ---------- relatório para o Orquestrador (e envio ao GitHub) ---------- */
+/* O relatório em Markdown junta o que o app guarda: desempenho por disciplina e por item do edital, as respostas de cada
+   material do dia, simulados, redações e atividade. Vai para a área de transferência ou, com um token do GitHub,
+   direto para Relatorios_do_App/ no repositório, onde o Orquestrador lê no VS Code.
+   guardado 'github': { dono, repo, ramo, token } (fica fora da cópia de segurança); 'ultimoRelatorio': data e hora. */
+
+function configGitHub() {
+  const padrao = { dono: '', repo: '', ramo: 'main', token: '' };
+  if (location.hostname.endsWith('.github.io')) {
+    padrao.dono = location.hostname.split('.')[0];
+    padrao.repo = location.pathname.split('/').filter(Boolean)[0] || '';
+  }
+  return Object.assign(padrao, guardado.get('github', {}));
+}
+
+const pctTxt = (a, n) => (n ? `${Math.round((a / n) * 100)}%` : '–');
+
+async function montarRelatorio() {
+  const agora = new Date();
+  const todas = await obterQuestoes().catch(() => []);
+  const mapa = new Map(todas.map((q) => [q.id, q]));
+  const resp = respostas();
+  const rev = revErros();
+  const hoje = dataISO();
+  const L = [`# Relatório do app PMPE Ouvir — ${dataCurta(hoje)}/${hoje.slice(0, 4)} ${horaRelogio(agora.getTime())}`, '',
+    '> Gerado no celular do estudante pelo app. Cobre só o que foi feito no app. "Acerto" conta todas as tentativas; "última" é a última resposta de cada questão.', ''];
+
+  const ids = Object.keys(resp);
+  const tent = ids.reduce((t, id) => t + resp[id].n, 0);
+  const acertos = ids.reduce((t, id) => t + resp[id].a, 0);
+  const erradas = ids.filter((id) => !resp[id].ok);
+  const vencidas = Object.values(rev).filter((e) => e.p <= hoje).length;
+  const est = estadoCartoes();
+  const cart = Object.values(est);
+  const at = guardado.get('atividade', {});
+  let min7 = 0;
+  for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() - i); const a = at[dataISO(d)] || {}; min7 += Math.max(a.s || 0, a.c || 0) / 60; }
+  L.push('## Resumo', '',
+    `- **Questões:** ${ids.length} resolvidas, ${tent} tentativas, ${pctTxt(acertos, tent)} de acerto; ${erradas.length} com a última resposta errada (caderno de erros); ${Object.keys(rev).length} na revisão espaçada (${vencidas} para hoje).`,
+    `- **Flashcards:** ${cart.length} vistos, ${cart.filter((c) => c.c >= DOMINADO).length} dominados, ${cart.filter((c) => c.k === false).length} errados na última vez.`,
+    `- **Estudo no app:** ${sequencia()} dias seguidos; cerca de ${Math.round(min7)} min nos últimos 7 dias (áudio ou cronômetro).`, '');
+
+  // por disciplina
+  const porDisc = new Map();
+  for (const id of ids) {
+    const q = mapa.get(id);
+    const d = q ? (nomeDisc(siglaQuestao(q)) || q.disciplina) : 'Questões que saíram do app';
+    if (!porDisc.has(d)) porDisc.set(d, { n: 0, t: 0, a: 0, e: 0 });
+    const x = porDisc.get(d);
+    x.n++; x.t += resp[id].n; x.a += resp[id].a; if (!resp[id].ok) x.e++;
+  }
+  if (porDisc.size) {
+    L.push('## Por disciplina', '', '| Disciplina | Resolvidas | Acerto | Última errada |', '|---|---|---|---|');
+    for (const [d, x] of porDisc) L.push(`| ${d} | ${x.n} | ${pctTxt(x.a, x.t)} | ${x.e} |`);
+    L.push('');
+  }
+
+  // por item do edital
+  const nomes = new Map((catalogo.edital || []).map((it) => [it.c, it.curto]));
+  const porItem = new Map();
+  for (const id of ids) {
+    const q = mapa.get(id);
+    for (const c0 of (q && q.top) || []) {
+      const c = c0.startsWith('HP ') ? `HPE ${c0.slice(3)}` : c0;
+      if (!porItem.has(c)) porItem.set(c, { n: 0, t: 0, a: 0 });
+      const x = porItem.get(c);
+      x.n++; x.t += resp[id].n; x.a += resp[id].a;
+    }
+  }
+  const itens = [...porItem].filter(([, x]) => x.n >= 3).sort((a, b) => a[1].a / a[1].t - b[1].a / b[1].t);
+  if (itens.length) {
+    L.push('## Itens do edital (3 ou mais questões resolvidas, do pior para o melhor)', '', '| Item | Resolvidas | Acerto | |', '|---|---|---|---|');
+    for (const [c, x] of itens) L.push(`| ${c} – ${nomes.get(c) || ''} | ${x.n} | ${pctTxt(x.a, x.t)} | ${x.a / x.t < 0.6 ? '⚠️ fraco' : ''} |`);
+    L.push('');
+  }
+  const marcas = marcasEdital();
+  if (Object.keys(marcas).length) {
+    L.push('## Marcas do edital verticalizado', '');
+    for (const [c, m] of Object.entries(marcas)) L.push(`- ${c} – ${nomes.get(c) || ''}: ${m.t ? `teoria estudada em ${dataCurta(m.t)}` : ''}${m.r && m.r.length ? `${m.t ? '; ' : ''}revisões em ${m.r.map(dataCurta).join(', ')}` : ''}`);
+    L.push('');
+  }
+
+  // respostas dos materiais do dia
+  const porMat = new Map();
+  for (const id of ids) {
+    const q = mapa.get(id);
+    if (!q || !q.doc || q.banco) continue;
+    if (!porMat.has(q.doc)) porMat.set(q.doc, []);
+    porMat.get(q.doc).push(q);
+  }
+  if (porMat.size) {
+    L.push('## Respostas dos materiais do dia', '', 'Valem como respostas enviadas para correção (a letra é a última marcada no app).', '');
+    const docsOrd = [...porMat.keys()].sort();
+    for (const doc of docsOrd) {
+      const it = catalogo.docs.find((d) => d.id === doc);
+      const qs = porMat.get(doc).sort((a, b) => (Number(a.numero) || 0) - (Number(b.numero) || 0) || String(a.numero).localeCompare(String(b.numero)));
+      const certas = qs.filter((q) => resp[q.id].ok).length;
+      L.push(`### ${it ? `${it.subtitulo || ''} — ${it.titulo}` : doc} (${certas}/${qs.length} na última resposta)`, '',
+        '| Questão | Marcou | Gabarito | Última | Tentativas (acertos) |', '|---|---|---|---|---|');
+      for (const q of qs) {
+        const r = resp[q.id];
+        L.push(`| ${q.numero}${q.tipo === 'oficial' ? '' : ' (autoral)'} | ${rotuloResp(r.u)} | ${rotuloResp(q.resposta)} | ${r.ok ? '✓' : '✗'} | ${r.n} (${r.a}) |`);
+      }
+      L.push('');
+    }
+  }
+  const doBanco = ids.map((id) => mapa.get(id)).filter((q) => q && q.banco);
+  if (doBanco.length) {
+    const errB = doBanco.filter((q) => !resp[q.id].ok);
+    L.push('## Banco de questões', '', `${doBanco.length} resolvidas, ${doBanco.filter((q) => resp[q.id].ok).length} certas na última resposta.`);
+    if (errB.length) L.push('', `Erradas na última resposta: ${errB.map((q) => `${q.origem} Q${q.numero} (${(q.top || []).join(', ')}; marcou ${rotuloResp(resp[q.id].u)}, gabarito ${rotuloResp(q.resposta)})`).join('; ')}.`);
+    L.push('');
+  }
+
+  // simulados
+  const hist = historicoSim();
+  if (hist.length) {
+    L.push('## Simulados', '');
+    for (const r of hist) {
+      const itensS = await corrigirSimulado(r).catch(() => null);
+      if (!itensS) { L.push(`- **${r.nome}** (${dataCurta(r.data)}): folha entregue, aguardando o gabarito. Folha: ${textoFolha(r, null, null).split('\n').slice(2, 8).join(' / ')}`); continue; }
+      const an = analisarSimulado(itensS);
+      L.push(`- **${r.nome}** (${dataCurta(r.data)}, ${fmtDur(r.usado / 60)} de ${fmtDur(r.dur)}): ${an.acertos}/${itensS.length}. ${an.blocos.map((b) => `Bloco ${b.b} ${b.a}/${b.n}`).join(', ')}. ${DISC_PROVA.filter(([s]) => an.porDisc[s].n).map(([s]) => `${s} ${an.porDisc[s].a}/${an.porDisc[s].n}`).join(', ')}.${an.problemas.length ? ` Não passaria: ${an.problemas.join('; ')}.` : ''}`);
+      const errTop = new Map();
+      for (const x of itensS.filter((y) => !y.ok)) for (const c of x.top.slice(0, 2)) errTop.set(c, (errTop.get(c) || 0) + 1);
+      if (errTop.size) L.push(`  - Erros por item: ${[...errTop].sort((a, b) => b[1] - a[1]).map(([c, n]) => `${c} (${n})`).join(', ')}.`);
+      const cert = {};
+      for (const x of itensS) { const k = r.cert[x.i] || '-'; cert[k] = cert[k] || [0, 0]; cert[k][1]++; if (x.ok) cert[k][0]++; }
+      if (Object.keys(r.cert).length) L.push(`  - Certeza × acerto: ${Object.entries(cert).map(([k, [a, n]]) => `${k === '-' ? 'sem marca' : CERTEZAS[k]} ${a}/${n}`).join(', ')}.`);
+    }
+    L.push('');
+  }
+
+  // redações
+  const reds = redacoes();
+  if (reds.length) {
+    L.push('## Redações', '', '| Dia | Tema | Linhas (estim.) | Nota | Aspectos 1 a 4 |', '|---|---|---|---|---|');
+    for (const r of reds) L.push(`| ${dataCurta(r.data)} | ${r.tema || 'livre'} | ${contarLinhas(r.texto || '').linhas} | ${r.notas ? `${fmtNota(totalNotas(r.notas))}/40` : 'sem nota'} | ${r.notas ? r.notas.map(fmtNota).join(' · ') : ''} |`);
+    L.push('');
+  }
+
+  // atividade
+  const dias = [];
+  for (let i = 13; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); dias.push(dataISO(d)); }
+  L.push('## Atividade dos últimos 14 dias', '', '| Dia | Min. ouvindo | Min. cronômetro/simulado/redação | Questões (certas) | Flashcards |', '|---|---|---|---|---|');
+  for (const d of dias) { const a = at[d] || {}; L.push(`| ${dataCurta(d)} | ${Math.round((a.s || 0) / 60)} | ${Math.round((a.c || 0) / 60)} | ${a.q || 0} (${a.a || 0}) | ${a.k || 0} |`); }
+  L.push('', '---', 'Orquestrador: corrija as respostas dos materiais que ainda não foram corrigidas e proponha a atualização do perfil (Treinos diários, dificuldades por item do edital, simulados e redações).');
+  return L.join('\n');
+}
+
+const base64Utf8 = (t) => { let s = ''; for (const b of new TextEncoder().encode(t)) s += String.fromCharCode(b); return btoa(s); };
+
+async function gravarNoGitHub(caminho, texto, mensagem) {
+  const g = configGitHub();
+  if (!g.token || !g.dono || !g.repo) throw new Error('ligue o app ao GitHub primeiro');
+  const url = `https://api.github.com/repos/${encodeURIComponent(g.dono)}/${encodeURIComponent(g.repo)}/contents/${caminho.split('/').map(encodeURIComponent).join('/')}`;
+  const cab = { Authorization: `Bearer ${g.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+  const r0 = await fetch(`${url}?ref=${encodeURIComponent(g.ramo)}`, { headers: cab, cache: 'no-store' });
+  let sha = null;
+  if (r0.ok) sha = (await r0.json()).sha;
+  else if (r0.status === 401) throw new Error('o token não vale (expirou ou foi copiado errado)');
+  else if (r0.status !== 404) throw new Error(`o GitHub respondeu ${r0.status}`);
+  const corpo = { message: mensagem, content: base64Utf8(texto), branch: g.ramo };
+  if (sha) corpo.sha = sha;
+  const r = await fetch(url, { method: 'PUT', headers: Object.assign({ 'Content-Type': 'application/json' }, cab), body: JSON.stringify(corpo) });
+  if (r.status === 401) throw new Error('o token não vale (expirou ou foi copiado errado)');
+  if (r.status === 403 || r.status === 404) throw new Error('o token não tem permissão de escrita neste repositório (Contents: Read and write)');
+  if (!r.ok) throw new Error(`o GitHub respondeu ${r.status}`);
+}
+
+async function enviarRelatorio(aviso) {
+  aviso.textContent = 'Montando o relatório…';
+  try {
+    const texto = await montarRelatorio();
+    aviso.textContent = 'Enviando ao GitHub…';
+    const hoje = dataISO();
+    await gravarNoGitHub(`Relatorios_do_App/${hoje}.md`, texto, `Relatório do app ${dataCurta(hoje)}`);
+    await gravarNoGitHub('Relatorios_do_App/ultimo.md', texto, `Relatório do app ${dataCurta(hoje)} (último)`);
+    guardado.set('ultimoRelatorio', Date.now());
+    aviso.textContent = '✓ Relatório enviado. No VS Code, sincronize (git pull) e diga ao Orquestrador: "li o relatório do app? atualize o perfil".';
+  } catch (e) {
+    aviso.textContent = navigator.onLine ? `Não deu para enviar: ${e.message || e}.` : 'Sem internet: o relatório vai quando houver conexão. Por enquanto, use "Copiar relatório".';
+  }
+}
+
+function secaoRelatorio() {
+  const g = configGitHub();
+  const ult = guardado.get('ultimoRelatorio', null);
+  return `<h2 class="secao">Relatório para o Orquestrador</h2>
+    <p class="aviso">Junta o seu desempenho (por disciplina e item do edital), as respostas de cada material do dia, os simulados, as redações e a atividade.
+      Enviado ao GitHub, ele fica em <code>Relatorios_do_App/</code>, e o Orquestrador lê no VS Code para corrigir e atualizar o perfil.
+      ${ult ? `Último envio: ${esc(new Date(ult).toLocaleString('pt-BR'))}.` : ''}</p>
+    <div class="acoes">
+      ${g.token ? '<button class="btn primario" id="rel-enviar">📤 Enviar relatório ao GitHub</button>' : ''}
+      <button class="btn" id="rel-copiar">📋 Copiar relatório</button>
+    </div>
+    <p class="aviso" id="rel-aviso" aria-live="polite"></p>
+    <details class="q-apoio"${g.token ? '' : ' open'}><summary>${g.token ? '✓ Ligado ao GitHub' : 'Ligar ao GitHub (uma vez)'}</summary>
+      <p class="aviso">1. No GitHub (computador ou navegador): Settings → Developer settings → Personal access tokens → <b>Fine-grained tokens</b> → Generate new token.
+        2. Em "Repository access", escolha só o repositório <b>${esc(g.repo || 'PM-2026')}</b>. 3. Em "Permissions → Contents", escolha <b>Read and write</b>.
+        4. Copie o token e cole abaixo. Ele fica só neste celular e não entra na cópia de segurança. O repositório é público: o relatório também fica público, como o perfil.</p>
+      <div class="filtros">
+        <label>Dono do repositório<input type="text" id="gh-dono" value="${esc(g.dono)}" autocomplete="off"></label>
+        <label>Repositório<input type="text" id="gh-repo" value="${esc(g.repo)}" autocomplete="off"></label>
+        <label>Token<input type="password" id="gh-token" value="${esc(g.token)}" autocomplete="off" placeholder="github_pat_…"></label>
+      </div>
+      <div class="acoes"><button class="btn" id="gh-salvar">Salvar</button>${g.token ? '<button class="btn-link" id="gh-sair">Desligar (apagar o token)</button>' : ''}</div>
+    </details>`;
+}
+
+function ligarRelatorio() {
+  const aviso = $('#rel-aviso');
+  const be = $('#rel-enviar');
+  if (be) be.addEventListener('click', () => enviarRelatorio(aviso));
+  $('#rel-copiar').addEventListener('click', async () => {
+    aviso.textContent = 'Montando o relatório…';
+    const texto = await montarRelatorio();
+    if (await copiarTexto(texto)) { guardado.set('ultimoRelatorio', Date.now()); aviso.textContent = 'Copiado. Cole na conversa com o Orquestrador.'; }
+    else aviso.textContent = 'Não deu para copiar neste celular.';
+  });
+  $('#gh-salvar').addEventListener('click', () => {
+    const g = { dono: $('#gh-dono').value.trim(), repo: $('#gh-repo').value.trim(), ramo: 'main', token: $('#gh-token').value.trim() };
+    guardado.set('github', g);
+    telaDados();
+    if (g.token) $('#rel-aviso').textContent = 'Token salvo. Toque em "Enviar relatório" para testar.';
+  });
+  const sair = $('#gh-sair');
+  if (sair) sair.addEventListener('click', () => { guardado.set('github', { token: '' }); telaDados(); });
+}
+
+function resumoRelatorioHome() {
+  const n = Object.keys(respostas()).length + historicoSim().length + redacoes().length;
+  if (n < 5) return '';
+  const ult = guardado.get('ultimoRelatorio', 0);
+  if (Date.now() - ult < 3 * 864e5) return '';
+  return `<a class="cartao cartao-q" href="#/dados"><div class="icone-q" aria-hidden="true">📤</div>
+    <div class="corpo"><strong>Envie o relatório ao Orquestrador</strong>
+    <span class="meta">${ult ? `O último foi em ${esc(dataCurta(dataISO(new Date(ult))))}.` : 'Você ainda não enviou nenhum.'} Ele corrige as respostas e atualiza o perfil.</span></div>
+    <span aria-hidden="true">›</span></a>`;
+}
+
+/* ---------- meta do dia ---------- */
+/* guardado 'meta': { min, q, k } (0 = sem meta). Tempo = o maior entre o áudio ouvido e o cronômetro/simulado/redação
+   do dia (os dois costumam acontecer juntos). */
+
+const metaDia = () => Object.assign({ min: 120, q: 20, k: 20 }, guardado.get('meta', {}));
+
+function anel(valor, meta, rotulo, unidade) {
+  const f = meta ? Math.min(1, valor / meta) : 0;
+  const r = 26, c = 2 * Math.PI * r;
+  const ok = meta && valor >= meta;
+  return `<div class="anel${ok ? ' ok' : ''}" role="img" aria-label="${esc(rotulo)}: ${valor} de ${meta} ${esc(unidade)}${ok ? ', meta cumprida' : ''}">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="${r}" class="anel-fundo"/>
+      <circle cx="32" cy="32" r="${r}" class="anel-valor" stroke-dasharray="${(f * c).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 32 32)"/></svg>
+    <b>${ok ? '✓' : `${Math.round(f * 100)}%`}</b>
+    <span>${valor}/${meta} ${esc(unidade)}</span><small>${esc(rotulo)}</small></div>`;
+}
+
+function progressoMeta() {
+  const a = guardado.get('atividade', {})[dataISO()] || {};
+  return { min: Math.round(Math.max(a.s || 0, a.c || 0) / 60), q: a.q || 0, k: a.k || 0 };
+}
+
+function resumoMetaHome() {
+  const m = metaDia();
+  if (!m.min && !m.q && !m.k) return '';
+  const p = progressoMeta();
+  const partes = [m.min ? anel(p.min, m.min, 'estudo', 'min') : '', m.q ? anel(p.q, m.q, 'questões', '') : '', m.k ? anel(p.k, m.k, 'flashcards', '') : ''].filter(Boolean);
+  const feito = (!m.min || p.min >= m.min) && (!m.q || p.q >= m.q) && (!m.k || p.k >= m.k);
+  return `<a class="cartao meta-dia" href="#/progresso"><div class="corpo"><strong>${feito ? '🎉 Meta do dia cumprida' : 'Meta do dia'}</strong>
+    <div class="aneis">${partes.join('')}</div></div></a>`;
+}
+
+function secaoMeta() {
+  const m = metaDia();
+  const sel = (id, v, ops, u) => `<select id="${id}">${ops.map((n) => `<option value="${n}" ${n === v ? 'selected' : ''}>${n ? `${n} ${u}` : 'sem meta'}</option>`).join('')}</select>`;
+  return `<h2 class="secao">Meta do dia</h2>
+    <p class="aviso">Aparece na tela inicial com três anéis. O tempo conta o áudio ouvido e o cronômetro, o simulado e a redação do app (o maior dos dois, porque costumam ser juntos).</p>
+    <div class="filtros meta-filtros">
+      <label>Tempo de estudo no app${sel('m-min', m.min, [0, 30, 60, 90, 120, 150, 180], 'min')}</label>
+      <label>Questões${sel('m-q', m.q, [0, 10, 20, 30, 40, 60], 'questões')}</label>
+      <label>Flashcards${sel('m-k', m.k, [0, 10, 20, 30, 50], 'cartões')}</label>
+    </div>`;
+}
+
+function ligarMeta() {
+  const salvar = () => guardado.set('meta', { min: Number($('#m-min').value), q: Number($('#m-q').value), k: Number($('#m-k').value) });
+  ['#m-min', '#m-q', '#m-k'].forEach((s) => $(s).addEventListener('change', salvar));
 }
 
 /* ---------- flashcards com revisão espaçada ---------- */
