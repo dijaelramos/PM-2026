@@ -466,3 +466,21 @@ body.tocando .q-botoes { bottom: calc(var(--player-h) + env(safe-area-inset-bott
 .cert-btn { color: var(--destaque); }
 .q-fim-pct small { font-size: .45em; color: var(--suave); }
 .sim-plano .acoes { margin: 8px 0 0; }
+
+/* Edital verticalizado */
+.item-edital { background: var(--superficie); border: 1px solid var(--linha); border-radius: 14px; margin: 0 0 8px; }
+.item-edital.fraco { border-left: 4px solid var(--errado); }
+.item-edital > summary { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; cursor: pointer; list-style: none; }
+.item-edital > summary::-webkit-details-marker { display: none; }
+.ie-cod { flex: none; min-width: 52px; font-size: 13px; font-weight: 700; color: var(--suave); padding-top: 2px; }
+.ie-corpo { flex: 1; min-width: 0; }
+.ie-corpo strong { display: block; font-weight: 600; }
+.ie-corpo .meta { display: block; font-size: 13px; color: var(--suave); }
+.ie-barras { display: block; height: 5px; border-radius: 999px; background: var(--linha); margin-top: 6px; overflow: hidden; }
+.ie-barras span { display: block; height: 100%; border-radius: inherit; background: var(--ok); }
+.ie-barras.inc { margin-top: 3px; }
+.ie-barras.inc span { background: var(--destaque); }
+.ie-detalhe { padding: 0 12px 10px; border-top: 1px solid var(--linha); }
+.ie-detalhe p { margin: 8px 0; }
+.ie-detalhe .meta { font-size: 13px; color: var(--suave); }
+#d-arquivo { display: block; margin: 8px 0 12px; max-width: 100%; }

@@ -173,6 +173,8 @@ function rota() {
   if (h === '#/destaques') { telaDestaques(); return; }
   if (h === '#/questoes/resolver') { telaResolver(); return; }
   if (h === '#/questoes/banco') { telaBanco(); return; }
+  if (h === '#/edital') { telaEdital(); return; }
+  if (h === '#/dados') { telaDados(); return; }
   if (h === '#/simulado') { telaSimulado(); return; }
   if (h === '#/simulado/fazer') { telaSimuladoFazer(); return; }
   if (h === '#/simulado/folha') { telaSimuladoFolha(); return; }
@@ -298,6 +300,7 @@ function telaInicio() {
           <option value="parar">parar</option>
         </select></label><br>
       <label><input id="auto" type="checkbox" ${guardado.get('autoBaixar', true) ? 'checked' : ''}> Baixar sozinho o áudio das 5 revisões e dos 3 materiais mais recentes</label>
+      <div><a class="btn-link" href="#/dados">💾 Meus dados e cópia de segurança</a></div>
     </div>`;
   const busca = $('#busca');
   busca.value = guardado.get('busca', '');
@@ -329,9 +332,9 @@ function desenharLista(filtro) {
   }
   if (!f) {
     const nDest = contarDestaques();
-    const blocos = resumoConviteHome() + resumoSimuladoHome() + resumoCronoHome() + resumoProgressoHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
+    const blocos = resumoConviteHome() + resumoSimuladoHome() + resumoCronoHome() + resumoProgressoHome() + resumoEditalHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
       <div class="icone-q" aria-hidden="true">🖍</div><div class="corpo"><strong>Meus destaques</strong>
-      <span class="meta">${nDest} ${nDest === 1 ? 'trecho destacado' : 'trechos destacados'}, por disciplina</span></div><span aria-hidden="true">›</span></a>` : '');
+      <span class="meta">${nDest} ${nDest === 1 ? 'trecho destacado' : 'trechos destacados'}, por disciplina</span></div><span aria-hidden="true">›</span></a>` : '') + resumoBackupHome();
     if (blocos) html += `<h2 class="secao">Seu estudo</h2>${blocos}`;
   }
   if (revisoes.length) html += secaoRevisoes(revisoes, !!f);
@@ -743,7 +746,7 @@ function telaProgresso() {
       ${proximas.map((s) => `<div class="cartao"><div class="data"><b>${s.data.slice(8, 10)}/${s.data.slice(5, 7)}</b>${esc(DIAS_CURTOS[deISO(s.data).getDay()])}</div>
         <div class="corpo"><strong>${esc(s.disciplina)}</strong><span class="meta">${esc(s.sessao)}${s.topicos ? ` · ${esc(s.topicos)}` : ''}</span></div></div>`).join('')}` : ''}
 
-    <p class="rodape">A atividade é registrada só neste celular.</p>`;
+    <p class="rodape">A atividade é registrada só neste celular. <a class="btn-link" href="#/dados">Fazer uma cópia de segurança</a></p>`;
 
   tela.querySelectorAll('.barra-dia').forEach((b) => b.addEventListener('click', () => {
     tela.querySelectorAll('.barra-dia').forEach((x) => x.classList.toggle('ativa', x === b));
@@ -1845,6 +1848,305 @@ async function copiarTexto(texto) {
     t.remove();
     return ok;
   }
+}
+
+/* ---------- edital verticalizado ---------- */
+/* Cada item do Anexo II com: os dias do plano que o estudam (e se o material foi concluído), o acerto nas questões
+   do app ligadas a ele, quantas questões das provas o cobram e as marcas do estudante.
+   guardado 'edital': { 'LP 1': { t: dia em que marcou a teoria como estudada, r: [dias de revisão] } }. */
+
+const marcasEdital = () => guardado.get('edital', {});
+
+function situacaoItem(it, hoje, mats, marcas) {
+  const m = marcas[it.c] || {};
+  const passados = it.datas.filter((d) => d <= hoje);
+  const feitos = passados.filter((d) => (mats.get(d) || []).some(concluido));
+  const proxima = it.datas.find((d) => d > hoje);
+  const estudado = !!m.t || feitos.length > 0;
+  return { m, passados, feitos, proxima, estudado, revisoes: (m.r || []).length };
+}
+
+function resumoEditalHome() {
+  const ed = catalogo.edital || [];
+  if (!ed.length) return '';
+  const hoje = dataISO();
+  const mats = materiaisPorData();
+  const marcas = marcasEdital();
+  const n = ed.filter((it) => situacaoItem(it, hoje, mats, marcas).estudado).length;
+  return `<a class="cartao cartao-q" href="#/edital"><div class="icone-q" aria-hidden="true">🧭</div>
+    <div class="corpo"><strong>Edital verticalizado</strong>
+    <span class="meta">${n} de ${ed.length} itens do edital estudados · acerto e incidência de cada item</span></div>
+    <span aria-hidden="true">›</span></a>`;
+}
+
+function materiaisPorData() {
+  const m = new Map();
+  for (const d of catalogo.docs) {
+    if (d.categoria !== 'material' || !d.data) continue;
+    if (!m.has(d.data)) m.set(d.data, []);
+    m.get(d.data).push(d);
+  }
+  return m;
+}
+
+async function telaEdital() {
+  pararRelogio();
+  setTopo('Edital verticalizado', true);
+  const ed = catalogo.edital || [];
+  if (!ed.length) { tela.innerHTML = '<p class="aviso">O edital ainda não está no app.</p>'; return; }
+  tela.innerHTML = '<p class="aviso">Carregando…</p>';
+  let todas = [];
+  try { todas = filtrarAutorais(await obterQuestoes()); } catch { /* sem questões: mostra o resto */ }
+  if (location.hash !== '#/edital') return;
+  const hoje = dataISO();
+  const mats = materiaisPorData();
+  const marcas = marcasEdital();
+  const f = Object.assign({ disc: '', ordem: 'edital' }, guardado.get('filtroEdital', {}));
+  const porItem = new Map(ed.map((it) => [it.c, []]));
+  for (const q of todas) for (const c of q.top || []) { const k = c.startsWith('HP ') ? `HPE ${c.slice(3)}` : c; if (porItem.has(k)) porItem.get(k).push(q); }
+  const linhas = ed.map((it) => {
+    const s = situacaoItem(it, hoje, mats, marcas);
+    const st = estatisticas(porItem.get(it.c));
+    return { it, s, st, fraco: st.pct != null && st.pct < 60 && st.resolvidas >= 3 };
+  });
+  const estudados = linhas.filter((l) => l.s.estudado).length;
+  const fracos = linhas.filter((l) => l.fraco).length;
+  const geral = estatisticas(todas.filter((q) => q.top && q.top.length));
+  const maxInc = Math.max(1, ...ed.map((it) => it.inc || 0));
+  let lista = linhas.filter((l) => !f.disc || l.it.d === f.disc);
+  if (f.ordem === 'incidencia') lista = lista.slice().sort((a, b) => (b.it.inc || 0) - (a.it.inc || 0));
+  if (f.ordem === 'acerto') lista = lista.slice().sort((a, b) => (a.st.pct == null ? 101 : a.st.pct) - (b.st.pct == null ? 101 : b.st.pct));
+  if (f.ordem === 'prioridade') { // muito cobrado e pouco acertado (ou ainda sem questões resolvidas)
+    const prio = (l) => (l.it.inc || 0) * (1 - (l.st.pct == null ? 0.5 : l.st.pct / 100));
+    lista = lista.slice().sort((a, b) => prio(b) - prio(a));
+  }
+  const chip = (valor, rotulo) => `<button class="chip${f.disc === valor ? ' ativo' : ''}" data-disc="${valor}" aria-pressed="${f.disc === valor}">${esc(rotulo)}</button>`;
+  const contaDisc = (s) => { const l = linhas.filter((x) => x.it.d === s); return `${l.filter((x) => x.s.estudado).length}/${l.length}`; };
+  const fmtD = (d) => `${d.slice(8, 10)}/${d.slice(5, 7)}`;
+
+  const linhaItem = (l) => {
+    const { it, s, st } = l;
+    const situ = s.estudado ? '✅' : s.passados.length ? '⏳' : '📅';
+    const quando = s.estudado ? (s.feitos.length ? `estudado em ${fmtD(s.feitos[s.feitos.length - 1])}` : `estudado em ${fmtD(s.m.t)}`)
+      : s.passados.length ? `no plano em ${fmtD(s.passados[s.passados.length - 1])}, material não concluído` : s.proxima ? `no plano em ${fmtD(s.proxima)}` : 'sem sessão própria no plano';
+    const mid = s.passados.flatMap((d) => (mats.get(d) || []).map((m) => `<a class="btn" href="#/doc/${encodeURIComponent(m.id)}">📄 ${fmtD(d)}${concluido(m) ? ' ✓' : ''}</a>`)).join('');
+    return `<details class="item-edital${l.fraco ? ' fraco' : ''}"><summary>
+      <span class="ie-cod">${esc(it.c)}</span>
+      <span class="ie-corpo"><strong>${esc(it.curto)}</strong>
+        <span class="meta">${situ} ${esc(quando)}${s.revisoes ? ` · 🔁 ${s.revisoes}×` : ''}${st.resolvidas ? ` · ${st.pct}% em ${st.resolvidas}` : ''}${it.inc ? ` · 🔥 ${it.inc}` : ''}</span>
+        <span class="barra ie-barras" aria-hidden="true"><span class="ie-acerto" style="width:${st.pct != null ? st.pct : 0}%"></span></span>
+        <span class="barra ie-barras inc" aria-hidden="true"><span style="width:${Math.round(((it.inc || 0) / maxInc) * 100)}%"></span></span>
+      </span></summary>
+      <div class="ie-detalhe">
+        <p>${esc(it.nome)}</p>
+        <p class="meta">${it.inc ? `🔥 ${it.inc} ${it.inc === 1 ? 'questão' : 'questões'} das provas do banco e da PMPE 2023 cobram este item.` : 'Nenhuma questão das provas do banco cobra este item.'}
+          ${st.total ? ` ✍ ${st.total} ${st.total === 1 ? 'questão' : 'questões'} no app: ${st.resolvidas} resolvidas${st.pct != null ? `, ${st.pct}% de acerto` : ''}${st.erros ? `, ${st.erros} no caderno de erros` : ''}.` : ''}
+          ${it.datas.length ? ` 📅 No plano: ${it.datas.map(fmtD).join(', ')}.` : ''}</p>
+        <div class="acoes">
+          ${st.total ? `<button class="btn primario" data-resolver="${esc(it.c)}">✍ Resolver (${st.total})</button>` : ''}
+          ${mid}
+          <button class="btn" data-teoria="${esc(it.c)}" aria-pressed="${!!s.m.t}">${s.m.t ? `✓ Teoria estudada (${fmtD(s.m.t)})` : '☐ Marcar a teoria como estudada'}</button>
+          <button class="btn" data-revisao="${esc(it.c)}">🔁 Registrar revisão hoje</button>
+          ${s.revisoes ? `<button class="btn-link" data-desfazer="${esc(it.c)}">Desfazer a última revisão (${fmtD(s.m.r[s.m.r.length - 1])})</button>` : ''}
+        </div></div></details>`;
+  };
+
+  tela.innerHTML = `
+    <div class="placar">
+      <div><b>${estudados}/${ed.length}</b><span>itens estudados</span></div>
+      <div><b>${geral.pct != null ? `${geral.pct}%` : '–'}</b><span>de acerto</span></div>
+      <div><b>${fracos}</b><span>${fracos === 1 ? 'item fraco' : 'itens fracos'} (abaixo de 60%)</span></div>
+    </div>
+    <p class="aviso">✅ estudado (material concluído ou marcado por você) · ⏳ já passou no plano, falta concluir · 📅 ainda vem no plano ·
+      🔥 questões das provas que cobram o item. Barra de cima: seu acerto; de baixo: incidência nas provas.</p>
+    <div class="chips">${chip('', `Todas (${estudados}/${ed.length})`)}${ORDEM_DISC.map((s) => chip(s, `${s} (${contaDisc(s)})`)).join('')}</div>
+    <div class="filtros"><label>Ordem
+      <select id="ed-ordem">${[['edital', 'Do edital'], ['prioridade', 'Prioridade: muito cobrado e pouco acertado'], ['incidencia', 'Mais cobrados nas provas'], ['acerto', 'Pior acerto primeiro']]
+        .map(([v, r]) => `<option value="${v}" ${f.ordem === v ? 'selected' : ''}>${r}</option>`).join('')}</select></label></div>
+    ${f.ordem === 'edital' ? ORDEM_DISC.filter((s) => !f.disc || s === f.disc).map((s) => `<h2 class="secao">${esc(DISC_SIGLA[s])}</h2>${lista.filter((l) => l.it.d === s).map(linhaItem).join('')}`).join('')
+      : lista.map(linhaItem).join('')}
+    <p class="rodape">A ligação das questões dos materiais com os itens vem do cabeçalho da questão ou, sem ele, do item estudado no dia: use como indicação.</p>`;
+
+  const salvarF = (m) => { guardado.set('filtroEdital', Object.assign(f, m)); telaEdital(); };
+  tela.querySelectorAll('[data-disc]').forEach((b) => b.addEventListener('click', () => salvarF({ disc: b.dataset.disc })));
+  $('#ed-ordem').addEventListener('change', (e) => salvarF({ ordem: e.target.value }));
+  const mudar = (c, fn) => {
+    const todasM = marcasEdital();
+    const m = todasM[c] || {};
+    fn(m);
+    if (m.t || (m.r && m.r.length)) todasM[c] = m; else delete todasM[c];
+    guardado.set('edital', todasM);
+    const aberto = c;
+    telaEdital().then(() => {
+      const el = [...tela.querySelectorAll('.item-edital')].find((d) => d.querySelector('.ie-cod').textContent === aberto);
+      if (el) { el.open = true; el.scrollIntoView({ block: 'center' }); }
+    });
+  };
+  tela.querySelectorAll('[data-teoria]').forEach((b) => b.addEventListener('click', () => mudar(b.dataset.teoria, (m) => { if (m.t) delete m.t; else m.t = hoje; })));
+  tela.querySelectorAll('[data-revisao]').forEach((b) => b.addEventListener('click', () => mudar(b.dataset.revisao, (m) => {
+    m.r = (m.r || []).concat(hoje);
+    registrarAtividade({ m: 1 });
+  })));
+  tela.querySelectorAll('[data-desfazer]').forEach((b) => b.addEventListener('click', () => mudar(b.dataset.desfazer, (m) => { m.r = (m.r || []).slice(0, -1); })));
+  tela.querySelectorAll('[data-resolver]').forEach((b) => b.addEventListener('click', () => {
+    const c = b.dataset.resolver;
+    const l = porItem.get(c) || [];
+    const resp = respostas();
+    const ordem = [...l.filter((q) => !resp[q.id]), ...l.filter((q) => resp[q.id] && !resp[q.id].ok), ...l.filter((q) => resp[q.id] && resp[q.id].ok)];
+    const it = ed.find((x) => x.c === c);
+    iniciarSessao(ordem.map((q) => q.id), `${c} – ${it ? it.curto : ''}`);
+  }));
+}
+
+/* ---------- cópia de segurança (exportar e importar os dados do app) ---------- */
+/* Tudo o que o app guarda fica no localStorage deste celular. A cópia é um arquivo JSON com todas as chaves.
+   Importar pode juntar com o que já existe (para usar dois celulares) ou substituir tudo. */
+
+const APP_BACKUP = 'pmpe-ouvir';
+
+function dadosDoApp() {
+  const dados = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    try { dados[k] = JSON.parse(localStorage.getItem(k)); } catch { /* valor que não é JSON: fica de fora */ }
+  }
+  return dados;
+}
+
+function resumoDados(d) {
+  const n = (x) => (x && typeof x === 'object' ? Object.keys(x).length : 0);
+  const dest = Object.values(d.destaques || {}).reduce((t, l) => t + (Array.isArray(l) ? l.length : 0), 0);
+  const partes = [`${n(d.respostas)} questões respondidas`, `${n(d.cartoes)} flashcards vistos`, `${dest} destaques`,
+    `${(d.simulados || []).length} simulados`, `${(d.redacoes || []).length} redações`, `${n(d.atividade)} dias de atividade`];
+  return partes.join(' · ');
+}
+
+function resumoBackupHome() {
+  const n = Object.keys(respostas()).length + Object.keys(estadoCartoes()).length;
+  if (n < 20) return '';
+  const ult = guardado.get('ultimoBackup', null);
+  if (ult && diasEntre(ult, dataISO()) < 7) return '';
+  return `<a class="cartao cartao-q" href="#/dados"><div class="icone-q" aria-hidden="true">💾</div>
+    <div class="corpo"><strong>Faça uma cópia de segurança</strong>
+    <span class="meta">${ult ? `A última foi em ${esc(dataCurta(ult))}.` : 'Você ainda não fez nenhuma.'} Seu progresso fica só neste celular.</span></div>
+    <span aria-hidden="true">›</span></a>`;
+}
+
+function telaDados() {
+  pararRelogio();
+  setTopo('Meus dados', true);
+  const ult = guardado.get('ultimoBackup', null);
+  const podeCompartilhar = !!(navigator.canShare && window.File);
+  tela.innerHTML = `
+    <p class="aviso">Seu progresso (questões, flashcards, simulados, redações, destaques, anotações e atividade) fica guardado só neste celular.
+      Se ele for trocado, formatado ou o navegador limpar os dados, tudo se perde. Salve uma cópia de vez em quando e guarde o arquivo
+      fora do celular (Google Drive, e-mail ou mandando para você mesmo no WhatsApp).</p>
+    <div class="cartao"><div class="corpo"><strong>Neste celular</strong><span class="meta">${esc(resumoDados(dadosDoApp()))}</span>
+      <span class="meta">${ult ? `Última cópia: ${esc(dataCurta(ult))}` : 'Nenhuma cópia feita ainda'}</span></div></div>
+    <div class="acoes">
+      <button class="btn primario" id="d-salvar">⬇ Salvar cópia de segurança</button>
+      ${podeCompartilhar ? '<button class="btn" id="d-compartilhar">📤 Enviar a cópia (Drive, WhatsApp…)</button>' : ''}
+    </div>
+    <h2 class="secao">Restaurar ou juntar uma cópia</h2>
+    <p class="aviso">Escolha o arquivo .json salvo antes. <b>Juntar</b> soma o que está no arquivo com o que está aqui (bom para usar dois celulares:
+      vale a resposta mais recente de cada questão e o maior tempo de cada dia). <b>Substituir</b> apaga o que está aqui e põe o do arquivo.</p>
+    <input type="file" id="d-arquivo" accept=".json,application/json">
+    <div id="d-importar"></div>
+    <p class="aviso" id="d-aviso" aria-live="polite"></p>`;
+
+  const arquivoCopia = () => {
+    const corpo = JSON.stringify({ app: APP_BACKUP, versao: 1, criado: new Date().toISOString(), dados: dadosDoApp() });
+    return { nome: `pmpe-ouvir-${dataISO()}.json`, blob: new Blob([corpo], { type: 'application/json' }) };
+  };
+  const feito = () => {
+    guardado.set('ultimoBackup', dataISO());
+    $('#d-aviso').textContent = 'Cópia criada. Guarde o arquivo fora do celular.';
+  };
+  $('#d-salvar').addEventListener('click', () => {
+    const { nome, blob } = arquivoCopia();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = nome;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    feito();
+  });
+  const bc = $('#d-compartilhar');
+  if (bc) bc.addEventListener('click', async () => {
+    const { nome, blob } = arquivoCopia();
+    const arq = new File([blob], nome, { type: 'application/json' });
+    if (!navigator.canShare({ files: [arq] })) { $('#d-aviso').textContent = 'Este celular não envia arquivos por aqui. Use "Salvar cópia de segurança".'; return; }
+    try { await navigator.share({ files: [arq], title: 'Cópia do PMPE Ouvir' }); feito(); } catch { /* cancelado */ }
+  });
+  $('#d-arquivo').addEventListener('change', async (e) => {
+    const arq = e.target.files && e.target.files[0];
+    if (!arq) return;
+    let copia;
+    try { copia = JSON.parse(await arq.text()); } catch { copia = null; }
+    if (!copia || copia.app !== APP_BACKUP || !copia.dados) {
+      $('#d-importar').innerHTML = '';
+      $('#d-aviso').textContent = 'Este arquivo não é uma cópia do PMPE Ouvir.';
+      return;
+    }
+    $('#d-aviso').textContent = '';
+    $('#d-importar').innerHTML = `<div class="cartao"><div class="corpo"><strong>Cópia de ${esc(new Date(copia.criado).toLocaleString('pt-BR'))}</strong>
+      <span class="meta">${esc(resumoDados(copia.dados))}</span></div></div>
+      <div class="acoes"><button class="btn primario" id="d-juntar">Juntar com os dados deste celular</button>
+      <button class="btn" id="d-substituir">Substituir tudo</button></div>`;
+    $('#d-juntar').addEventListener('click', () => { aplicarCopia(copia.dados, true); });
+    $('#d-substituir').addEventListener('click', () => {
+      if (!window.confirm('Apagar os dados deste celular e pôr os da cópia? Não dá para desfazer.')) return;
+      aplicarCopia(copia.dados, false);
+    });
+  });
+}
+
+/* Junta dois valores da mesma chave: fica o mais completo ou o mais recente. */
+function juntarValor(k, aqui, dela) {
+  if (aqui == null) return dela;
+  if (dela == null) return aqui;
+  const porId = (fn) => { const r = Object.assign({}, dela, aqui); for (const id of Object.keys(dela)) if (aqui[id]) r[id] = fn(aqui[id], dela[id]); return r; };
+  if (k === 'respostas') return porId((a, b) => ((b.t || 0) > (a.t || 0) ? Object.assign({}, b, { n: Math.max(a.n, b.n), a: Math.max(a.a, b.a) }) : Object.assign({}, a, { n: Math.max(a.n, b.n), a: Math.max(a.a, b.a) })));
+  if (k === 'cartoes') return porId((a, b) => ((b.u || '') > (a.u || '') || ((b.u || '') === (a.u || '') && (b.n || 0) > (a.n || 0)) ? b : a));
+  if (k === 'revErros') return porId((a, b) => ((b.c > a.c || (b.c === a.c && b.p > a.p)) ? b : a));
+  if (k === 'atividade') return porId((a, b) => { const r = Object.assign({}, a); for (const [c, v] of Object.entries(b)) r[c] = Math.max(r[c] || 0, v); return r; });
+  if (k === 'edital') return porId((a, b) => ({ t: [a.t, b.t].filter(Boolean).sort()[0], r: [...new Set([...(a.r || []), ...(b.r || [])])].sort() }));
+  if (k === 'destaques') {
+    return porId((a, b) => {
+      const r = a.slice();
+      for (const h of b) {
+        const i = r.findIndex((x) => x.texto.slice(0, 60) === h.texto.slice(0, 60));
+        if (i < 0) r.push(h); else if ((h.t || 0) > (r[i].t || 0)) r[i] = h;
+      }
+      return r;
+    });
+  }
+  if (k === 'simulados' || k === 'redacoes') {
+    const chave = (x) => String(x.id || x.inicio);
+    const vistos = new Set(aqui.map(chave));
+    return aqui.concat(dela.filter((x) => !vistos.has(chave(x)))).sort((a, b) => (a.inicio || a.id || 0) - (b.inicio || b.id || 0));
+  }
+  if (/^(estudado|ouvido):/.test(k)) return aqui || dela;
+  if (/^(pos|tts):/.test(k) && typeof aqui === 'number' && typeof dela === 'number') return Math.max(aqui, dela);
+  return aqui; // preferências e sessões em andamento: fica o deste celular
+}
+
+function aplicarCopia(dados, juntar) {
+  try {
+    if (!juntar) localStorage.clear();
+    for (const [k, v] of Object.entries(dados)) {
+      const novo = juntar ? juntarValor(k, guardado.get(k, null), v) : v;
+      guardado.set(k, novo);
+    }
+    guardado.set('ultimoBackup', dataISO());
+  } catch (e) {
+    $('#d-aviso').textContent = `Não deu para importar (${e.message || e}).`;
+    return;
+  }
+  $('#d-aviso').textContent = juntar ? 'Dados juntados. Recarregando…' : 'Dados restaurados. Recarregando…';
+  setTimeout(() => { location.hash = '#/'; location.reload(); }, 800);
 }
 
 /* ---------- flashcards com revisão espaçada ---------- */
