@@ -215,7 +215,7 @@ function fimDoMaterial(item) {
   const titulo = teste ? 'Leu o resumão? Agora teste a memória' : 'Terminou o estudo? Agora é praticar';
   const botao = teste ? '⚡ Fazer o teste-relâmpago' : `📝 Responder as questões ${hoje ? 'de hoje' : 'deste dia'}`;
   const meta = teste ? 'Perguntas rápidas, sem consultar, com as respostas no fim'
-    : `Estudo dirigido${cad.questoes ? ` e ${cad.questoes} ${cad.questoes === 1 ? 'questão oficial' : 'questões oficiais'}` : ''}, com o gabarito comentado no fim`;
+    : `Estudo dirigido${cad.questoes ? ` e ${cad.questoes} ${cad.questoes === 1 ? 'questão' : 'questões'} (primeiro as autorais, depois as oficiais): marque a letra e veja na hora se acertou` : ''}`;
   return `<section class="fim-material" aria-label="Próximo passo">
     <p class="fim-titulo">${titulo}</p>
     <a class="btn primario largo" href="#/doc/${encodeURIComponent(cad.id)}">${botao} →</a>
@@ -560,6 +560,11 @@ async function telaDoc(id) {
     tela.innerHTML = '<p class="aviso">Este texto ainda não foi guardado no celular. Abra o app com internet uma vez.</p>';
     return;
   }
+  let qsDoTexto = [];
+  if (item.questoes && (item.categoria === 'questoes' || !item.caderno)) {
+    const dono = item.categoria === 'questoes' ? item.material : item.id;
+    try { qsDoTexto = (await obterQuestoes()).filter((q) => q.doc === dono); } catch { /* sem as questões: fica o texto */ }
+  }
   if (!location.hash.endsWith(encodeURIComponent(id))) return; // usuário já saiu
 
   const pos = guardado.get(`pos:${id}`, 0);
@@ -593,6 +598,7 @@ async function telaDoc(id) {
   const ouvir = $('#b-ouvir');
   if (ouvir) ouvir.addEventListener('click', () => iniciarAudio(item, doc, null));
   const art = tela.querySelector('article');
+  questoesNoTexto(art, qsDoTexto);
   art.addEventListener('click', (e) => {
     if (e.target.closest('a, button, summary, input') || String(window.getSelection() || '').trim()) return;
     const nota = e.target.closest('.nota-bloco');
@@ -645,7 +651,7 @@ async function telaDoc(id) {
       const todas = await obterQuestoes();
       const titulo = item.subtitulo ? `Material de ${item.subtitulo.split(' ').pop()}` : item.titulo;
       const dono = item.categoria === 'questoes' ? item.material : item.id; // as questões guardam o id do material
-      iniciarSessao(todas.filter((q) => q.doc === dono).map((q) => q.id), titulo);
+      iniciarSessao(ordemDoCaderno(todas.filter((q) => q.doc === dono)).map((q) => q.id), titulo);
     } catch { $('#aviso-doc').textContent = 'As questões ainda não foram guardadas no celular. Abra o app com internet.'; }
   });
   $('#b-tts').addEventListener('click', () => iniciarTts(item, doc, null));
@@ -672,6 +678,104 @@ async function telaDoc(id) {
   seguir = true;
   $('#seguir').hidden = true;
   if (docNaTela()) marcarLeitura(player.f, estaTocando());
+}
+
+/* Questões dentro do texto (caderno do dia): no lugar do texto parado, cada questão vira um cartão para marcar a
+   letra, tocar em Responder e ver na hora se acertou, com o comentário. Primeiro as autorais de treino, depois as
+   oficiais. A resposta conta no seu desempenho como nas outras telas de questões. O gabarito do arquivo fica fechado. */
+const ordemDoCaderno = (l) => l.slice().sort((a, b) => (a.tipo === 'oficial') - (b.tipo === 'oficial')
+  || String(a.numero).localeCompare(String(b.numero), 'pt-BR', { numeric: true }));
+
+function questoesNoTexto(art, lista) {
+  if (!lista.length) return;
+  const porNum = new Map(lista.map((q) => [String(q.numero), q]));
+  const fim = (el) => !el || /^H[12]$/.test(el.tagName);
+  let ancora = null;
+  for (const h of [...art.querySelectorAll(':scope > h3')]) {
+    const m = h.textContent.trim().match(/^Questão\s+(\d+)\b/);
+    if (!m || /gabarito/i.test(h.textContent) || !porNum.has(m[1])) continue;
+    if (!ancora) { ancora = document.createElement('section'); h.before(ancora); }
+    let el = h.nextElementSibling;
+    h.remove();
+    while (!fim(el) && el.tagName !== 'H3' && el.tagName !== 'HR') { const prox = el.nextElementSibling; el.remove(); el = prox; }
+  }
+  const gab = [...art.querySelectorAll(':scope > h2')].find((h) => /gabarito/i.test(h.textContent));
+  if (!ancora) { ancora = document.createElement('section'); if (gab) gab.before(ancora); else art.append(ancora); }
+  if (gab) { // o gabarito do arquivo fica fechado: a correção aparece em cada questão
+    const det = document.createElement('details');
+    det.className = 'qi-gabarito';
+    det.innerHTML = '<summary>Gabarito comentado do arquivo (a correção já aparece em cada questão)</summary>';
+    let el = gab.nextElementSibling;
+    while (!fim(el)) { const prox = el.nextElementSibling; det.append(el); el = prox; }
+    gab.after(det);
+  }
+  const ordem = ordemDoCaderno(lista);
+  const aut = ordem.filter((q) => q.tipo !== 'oficial');
+  const ofi = ordem.filter((q) => q.tipo === 'oficial');
+  const resp = respostas();
+  const cartao = (q) => {
+    const r = resp[q.id];
+    const fonte = q.tipo === 'oficial' ? [q.fonte, q.meta].filter(Boolean).join(' · ') : (q.meta || '');
+    return `<div class="qi" data-id="${esc(q.id)}">
+      <div class="q-fonte"><b>Questão ${esc(q.numero)}</b><span class="selo ${q.tipo === 'oficial' ? 'oficial' : 'autoral'}">${q.tipo === 'oficial' ? 'Oficial' : 'Autoral · no estilo AOCP — não oficial'}</span></div>
+      ${fonte ? `<p class="q-meta">${esc(fonte)}</p>` : ''}
+      ${r ? `<p class="q-meta">Da última vez você ${r.ok ? 'acertou' : `marcou ${rotuloResp(r.u)} e errou`}.</p>` : ''}
+      ${q.apoio ? `<details class="q-apoio"><summary>Texto de apoio</summary><div class="q-html">${q.apoio}</div></details>` : ''}
+      <div class="q-html q-enunciado">${q.enunciado}</div>
+      <div class="q-alts" role="radiogroup" aria-label="Alternativas da questão ${esc(q.numero)}">
+        ${q.alternativas.map(([k, html]) => `<div class="q-alt">
+          <button class="alt" data-k="${k}" role="radio" aria-checked="false"><span class="letra">${k.length > 1 ? k[0] : k}</span><span class="txt">${html}</span></button>
+          ${k.length === 1 ? `<button class="riscar" aria-label="Riscar a alternativa ${k}" title="Riscar alternativa">✂</button>` : ''}
+        </div>`).join('')}
+      </div>
+      <div class="qi-res" aria-live="polite"></div>
+      <div class="q-botoes"><button class="btn primario qi-responder" disabled>Responder</button></div>
+    </div>`;
+  };
+  ancora.className = 'qi-lista';
+  ancora.innerHTML = `
+    ${aut.length ? `<h3 class="qi-titulo">Questões autorais de treino <small>(no estilo AOCP — não oficiais)</small></h3>${aut.map(cartao).join('')}` : ''}
+    ${ofi.length ? `<h3 class="qi-titulo">Questões oficiais <small>(de provas anteriores)</small></h3>${ofi.map(cartao).join('')}` : ''}
+    <p class="qi-placar" aria-live="polite"></p>`;
+  ancora.querySelectorAll('[data-f]').forEach((e) => e.removeAttribute('data-f')); // não é parágrafo do texto lido
+  const feitas = { n: 0, a: 0 };
+  ancora.querySelectorAll('.qi').forEach((box) => {
+    const q = lista.find((x) => x.id === box.dataset.id);
+    let escolhida = null;
+    let feita = false;
+    const btn = box.querySelector('.qi-responder');
+    const inicio = Date.now();
+    box.querySelectorAll('.alt').forEach((b) => b.addEventListener('click', () => {
+      if (feita) return;
+      escolhida = b.dataset.k;
+      box.querySelectorAll('.alt').forEach((x) => { x.classList.toggle('escolhida', x === b); x.setAttribute('aria-checked', String(x === b)); });
+      btn.disabled = false;
+    }));
+    box.querySelectorAll('.riscar').forEach((b) => b.addEventListener('click', () => b.parentElement.classList.toggle('riscada')));
+    btn.addEventListener('click', () => {
+      if (feita || !escolhida) return;
+      feita = true;
+      const ok = escolhida === q.resposta;
+      const aviso = gravarResposta(q.id, escolhida, ok);
+      registrarAtividade({ q: 1, a: ok ? 1 : 0 });
+      feitas.n++;
+      if (ok) feitas.a++;
+      box.querySelectorAll('.alt').forEach((b) => {
+        b.disabled = true;
+        b.classList.toggle('certa', b.dataset.k === q.resposta);
+        b.classList.toggle('errada', b.dataset.k === escolhida && !ok);
+      });
+      box.querySelectorAll('.riscar').forEach((b) => { b.disabled = true; });
+      box.querySelector('.qi-res').innerHTML = `
+        <div class="q-veredito ${ok ? 'ok' : 'erro'}">${ok ? '✓ Você acertou!' : `✗ Você marcou ${rotuloResp(escolhida)}. Resposta: ${rotuloResp(q.resposta)}`}</div>
+        <p class="q-meta">Tempo: ${fmt((Date.now() - inicio) / 1000)}${aviso ? ` · ${esc(aviso)}` : ''}</p>
+        ${q.comentario ? `<div class="q-comentario"><h3>Comentário</h3><div class="q-html">${q.comentario}</div></div>` : ''}`;
+      box.querySelector('.qi-res').querySelectorAll('[data-f]').forEach((e) => e.removeAttribute('data-f'));
+      btn.parentElement.remove();
+      const total = lista.length;
+      ancora.querySelector('.qi-placar').textContent = `Nesta página: ${feitas.a} de ${feitas.n} certas${feitas.n < total ? ` · faltam ${total - feitas.n}` : ' · todas respondidas'}.`;
+    });
+  });
 }
 
 function atualizarBotaoBaixar(item) {
