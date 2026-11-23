@@ -238,6 +238,20 @@ Um policial conectou uma impressora nova ao computador da companhia pela porta U
 
 **Por que as outras estão erradas:** (A) o driver é **software**; (B) USB aceita conectar com o computador ligado; (C) o VGA é **analógico** e só de vídeo; (E) a impressora é de **saída**.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Hardware** é a parte **física** (o que se toca); **software** é a parte **lógica**, os **programas**. Tipos de software: **sistema operacional** (Windows, Linux), **aplicativos** (Word, navegador), **utilitários** (antivírus, compactador), **firmware** (BIOS/UEFI) — e o **malware**, software malicioso.
+2. A **placa-mãe** **interliga** os componentes internos e permite a comunicação entre eles. O **processador (CPU)** **executa** as instruções dos programas. A **ULA** (Unidade Lógica e Aritmética) faz os **cálculos**; a **UC** (Unidade de Controle) **coordena** o funcionamento.
+3. O **processador** e a **memória RAM**, ligados pela **placa-mãe** (com a fonte, que dá energia).
+4. **RAM**: **volátil**; rápida; guarda os programas e dados **em uso**. **ROM**: **não volátil**; vem **gravada de fábrica**; guarda o **firmware** de inicialização. **Cache**: volátil; **mais rápida que a RAM**; fica entre o processador e a RAM e guarda o que o processador mais usa.
+5. São **tipos de ROM** programáveis: a **EPROM** pode ser apagada (por luz ultravioleta) e regravada; a **EEPROM** pode ser apagada **eletricamente** (como a memória flash).
+6. É uma parte do **disco** usada como **extensão da RAM** quando ela **enche**.
+7. **Scanner**: entrada. **Monitor**: saída. **Touchscreen**: mista. **Leitor biométrico**: entrada. **Impressora multifuncional**: mista. **Caixa de som**: saída.
+8. Porque são componentes **internos essenciais** do computador, e não equipamentos ligados a ele para trocar informações.
+9. **Driver** é o **software** que permite ao sistema operacional controlar um dispositivo. **Plug and Play** é o sistema **reconhecer e configurar automaticamente** o dispositivo ao ser conectado (instalando o driver sozinho).
+10. **USB**: porta **universal** para periféricos e armazenamento, que aceita conectar e desconectar com o computador ligado. **HDMI**: leva **vídeo e áudio** digitais (monitor, TV, projetor). **Bluetooth**: conexão **sem fio de curto alcance** (fone, mouse, teclado).
+11. **1 KB = 1.024 bytes**. **1 byte = 8 bits**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. Pelo menos um = 28 + 22 − 9 = 41; nenhum = 50 − 41 = **9**. Só tiro = 28 − 9 = **19**.

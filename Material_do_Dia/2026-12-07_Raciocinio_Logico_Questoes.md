@@ -259,6 +259,20 @@ Dados os conjuntos A = {1, 2, 3, 4, 5} e B = {4, 5, 6}, assinale a alternativa c
 
 **Por que as outras estão erradas:** (B) A ∩ B = {4, 5}; (C) B − A = {6}; (D) A ∪ B = {1, 2, 3, 4, 5, 6}, com 6 elementos; (E) A tem 2⁵ = **32** subconjuntos.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **∈** (pertence) liga um **elemento** a um conjunto: 2 ∈ {1, 2, 3}. **⊂** (está contido) liga um **conjunto** a outro conjunto: {1, 2} ⊂ {1, 2, 3}.
+2. **2⁵ = 32** subconjuntos, porque cada um dos 5 elementos pode **entrar ou não** no subconjunto (2 escolhas cada); a conta inclui o **vazio** e o **próprio conjunto**.
+3. O número **2 não é** elemento de M (2 ∉ M). O **conjunto {2} é** elemento de M ({2} ∈ M). Os elementos de M são 1, {2} e 3.
+4. Com A = {1, 2, 3, 4} e B = {3, 4, 5, 6}: **união** (A ∪ B, o que está em A **ou** B) = {1, 2, 3, 4, 5, 6}; **interseção** (A ∩ B, o que está em A **e** B) = {3, 4}; **diferença** (A − B, o que está em A **mas não** em B) = {1, 2}; **complementar** (Aᶜ, o que **não** está em A, dentro do universo): se o universo é {1, …, 6}, Aᶜ = {5, 6}.
+5. **n(A ∪ B) = n(A) + n(B) − n(A ∩ B)**. Subtrai-se a interseção porque ela foi contada **duas vezes**: uma em A e outra em B.
+6. (1) Desenhe os dois círculos num retângulo (o universo); (2) ponha primeiro a **interseção**; (3) calcule "**só A**" = n(A) − interseção e "**só B**" = n(B) − interseção; (4) "**nenhum**" = total − (só A + os dois + só B).
+7. **Somente A**: está em A e **não** está em B (sem a interseção). **Pelo menos um**: a **união**. **Exatamente um**: só A + só B. **Nenhum**: quem está **fora** da união (total − união).
+8. Do **centro para fora**: (1) os **três** no centro; (2) cada "**exatamente esses dois**" = (par) − (centro); (3) cada "**só ele**" = (conjunto) − (as duas pétalas dele) − (centro); (4) **nenhum** = total − soma das regiões. Confira se a soma dá o total. O erro mais comum é **não descontar o centro** das pétalas: o número dado para "A e B" já inclui quem está nos três.
+9. Quando cada pessoa tem **duas características** do tipo sim/não. Ex.: 40 soldados, 25 homens; 18 usam colete; 10 mulheres usam colete. Tabela: linhas homem/mulher (25/15), colunas usa/não usa (18/22); mulher-usa = 10 → mulher-não usa = 5; homem-usa = 18 − 10 = 8 → homem-não usa = 17. Conferir: 17 + 5 = 22. (O exemplo é livre; confira se os totais das linhas e colunas batem.)
+10. **Racionais** (ℚ) são os números escritos como fração a/b, com a e b inteiros e b ≠ 0: decimais finitos e **dízimas periódicas** (1/2, 0,333…). **Irracionais** são decimais infinitos **não periódicos** (√2, π). **ℚ − ℤ** são os racionais que **não são inteiros**: frações com quociente não inteiro, positivas ou negativas, finitas ou periódicas (1/2, −7/3, 0,25, 0,666…).
+11. Probabilidade = **casos favoráveis ÷ total de casos**. Lê-se no diagrama o número da região pedida e divide-se pelo total. Ex.: 6 de 30 pessoas fora dos círculos → 6/30 = **1/5**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Não** se conclui. O círculo dos cabos fica dentro do dos praças, mas os motoristas podem estar na parte dos praças que não são cabos.
