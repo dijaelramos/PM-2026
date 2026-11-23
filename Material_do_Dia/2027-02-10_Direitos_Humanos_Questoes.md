@@ -2,7 +2,7 @@
 
 > **Material de estudo:** [2027-02-10_Direitos_Humanos.md](2027-02-10_Direitos_Humanos.md). Estude o material antes: este arquivo traz só o que é para responder.
 > **Como responder:** faça o **estudo dirigido** por escrito, sem consultar (bloco de aprofundamento); depois resolva as **questões** e anote suas letras. Mande as respostas ao Orquestrador para a correção. O **gabarito comentado** está no fim deste arquivo: só confira depois de responder.
-> **Origem:** as questões 1 a 3 são **oficiais** do Instituto AOCP. A 1 é da **prova de Soldado PMPE 2023**, já feita no Simulado 1: refaça sem olhar a sua folha e depois compare (se ainda não fez o Simulado 1, pule). As 4 a 10 são **autorais de treino, não oficiais**.
+> **Origem:** as questões 1 e 3 são **oficiais** do Instituto AOCP. A 1 é da **prova de Soldado PMPE 2023**, já feita no Simulado 1: refaça sem olhar a sua folha e depois compare (se ainda não fez o Simulado 1, pule). As questões 2 e 4 a 10 são **autorais de treino, não oficiais**.
 
 ## 9. Estudo dirigido (responda por escrito, sem consultar)
 
@@ -22,7 +22,7 @@
 | Questão | Conteúdo exigido | Onde foi ensinado (material de estudo) |
 |---|---|---|
 | 1 — PMPE 2023 (Soldado), Q41 | Art. 5º: associação, crimes inafiançáveis e imprescritíveis, Júri; SV 6 | Seção 3 (e DC 2 e 3) |
-| 2 — PMGO 2022, Q22 | Status de tratado sem o rito do § 3º | Seção 7 |
+| 2 — autoral | Status dos tratados de direitos humanos | Seção 7 |
 | 3 — PC-PA 2021 (Delegado), Q65 | Depositário infiel e Convenção Americana | Seção 7 |
 | 4 — autoral | Uso de algemas (SV 11) | Seção 6 |
 | 5 — autoral | Ingresso em domicílio (Tema 280) | Seção 6 |
@@ -36,7 +36,7 @@
 
 ## 10. Questões (resolva antes de ver a seção 11)
 
-Questões 1 a 3: Instituto AOCP (a 1 do [caderno de 2023](../Editais/2023/2023%20-%20PMPE%20-%20Prova%20Soldado.md); as demais, do [Banco de Provas](../Banco_de_Provas/README.md)). Transcrição sem alteração.
+Questões 1 e 3: Instituto AOCP (a 1 do [caderno de 2023](../Editais/2023/2023%20-%20PMPE%20-%20Prova%20Soldado.md); a 3, do [Banco de Provas](../Banco_de_Provas/README.md)). Transcrição sem alteração.
 
 ### Questão 1 — PMPE 2023, Soldado (AOCP), Q41
 
@@ -50,17 +50,15 @@ Joaquim foi aprovado no concurso para Polícia Militar do Estado de Pernambuco e
 - **(D)** é reconhecida a instituição do júri, com a organização que lhe der a lei, assegurada a competência para o julgamento dos crimes culposos contra a vida.
 - **(E)** a Constituição da República Federativa do Brasil estendeu aos militares a garantia de remuneração não inferior ao salário mínimo, como o fez para outras categorias de trabalhadores.
 
-### Questão 2 — PMGO 2022, Soldado (AOCP), Q22
+### Questão 2 — Questão autoral de treino, no estilo AOCP — não oficial · DH 3 e 18
 
-*Prova de **Soldado de PM** da AOCP (nível superior) · gabarito oficial pós-recursos · [prova](../Banco_de_Provas/AOCP/PMGO_2022_Soldado/prova.md), p. 7*
+Sobre a hierarquia dos tratados internacionais de direitos humanos no ordenamento jurídico brasileiro, segundo a Constituição Federal e o entendimento do Supremo Tribunal Federal, assinale a alternativa correta.
 
-Suponha que a República Federativa do Brasil tenha celebrado tratado internacional sobre direitos humanos, o qual foi aprovado pelo Congresso Nacional pelo procedimento ordinário (CF, art. 47). Nesse caso, segundo o entendimento do Supremo Tribunal Federal, o referido tratado internacional ingressará no ordenamento jurídico brasileiro
-
-- **(A)** com status equivalente às emendas constitucionais.
-- **(B)** como norma de natureza supralegal.
-- **(C)** com força de lei ordinária.
-- **(D)** com força de lei complementar.
-- **(E)** como norma de natureza infralegal.
+- **(A)** Todo tratado de direitos humanos ratificado pelo Brasil tem status de emenda constitucional, qualquer que seja o rito de aprovação.
+- **(B)** Os tratados de direitos humanos aprovados, em cada Casa do Congresso Nacional, em dois turnos, por três quintos dos votos dos respectivos membros equivalem às emendas constitucionais; os aprovados sem esse rito têm status supralegal.
+- **(C)** Os tratados de direitos humanos têm sempre a mesma hierarquia das leis ordinárias.
+- **(D)** Os tratados de direitos humanos aprovados antes da EC 45/2004 passaram automaticamente a ter status de emenda constitucional.
+- **(E)** Os tratados de direitos humanos estão acima da Constituição Federal.
 
 ### Questão 3 — PC-PA 2021, Delegado (AOCP), Q65
 
@@ -150,14 +148,14 @@ Após prender um suspeito em flagrante, policiais apreendem o celular dele. De a
 
 ## 11. Gabarito e comentários
 
-*Questões 1 a 3: gabaritos oficiais do Instituto AOCP. Questões 4 a 10: **autorais, não oficiais**. Os comentários são **análise do tutor**.*
+*Questões 1 e 3: gabaritos oficiais do Instituto AOCP. Questões 2 e 4 a 10: **autorais, não oficiais**. Os comentários são **análise do tutor**.*
 
 ### Placar de referência
 
 | Questão | Gabarito | Tema |
 |---|---|---|
 | 1 — PMPE 2023 Q41 | **C** | Grupos armados: imprescritível |
-| 2 — PMGO Q22 | **B** | Status supralegal |
+| 2 — autoral | **B** | Status supralegal |
 | 3 — PC-PA Del. Q65 | **A** | Depositário infiel |
 | 4 — autoral | **E** | SV 11 |
 | 5 — autoral | **D** | Tema 280 |
@@ -175,9 +173,9 @@ Após prender um suspeito em flagrante, policiais apreendem o celular dele. De a
 
 ### Questão 2 — gabarito B
 
-**Por que a (B) está correta:** aprovado pelo procedimento **ordinário** (sem o rito do art. 5º, § 3º), o tratado de direitos humanos tem, para o STF, status **supralegal**: abaixo da Constituição e acima das leis.
+**Por que a (B) está correta:** a primeira parte é o **art. 5º, § 3º**; a segunda é a posição do **STF**: aprovado sem esse rito, o tratado de direitos humanos é **supralegal**, abaixo da Constituição e acima das leis.
 
-**Por que as outras estão erradas:** (A) status de **emenda** só com o rito do § 3º (dois turnos, três quintos, em cada Casa); (C), (D) e (E) não correspondem à posição do STF para tratados **de direitos humanos** (força de lei ordinária é o status dos tratados **comuns**).
+**Por que as outras estão erradas:** (A) status de **emenda** só com o rito do § 3º; (C) força de lei ordinária é a regra dos tratados **comuns**, não dos de direitos humanos; (D) os anteriores à EC 45/2004, aprovados pelo rito comum, são **supralegais**; (E) nenhum tratado está **acima** da Constituição.
 
 ### Questão 3 — gabarito A
 

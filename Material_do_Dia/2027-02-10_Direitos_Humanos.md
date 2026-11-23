@@ -4,7 +4,7 @@
 > **Distribuição (do plano):** 1 h de retomada · 1 h de aprofundamento · 1 h de questões com correção.
 > **Formato:** padrão em três níveis ([regra](../.github/regras/material_e_correcao.md)). 🟢 Iniciante = entender · 🟡 Intermediário = aplicar · 🔴 Avançado = acertar a prova.
 > **Fonte:** [Súmulas e jurisprudência](../Base_de_Conhecimento/Sumulas_e_Jurisprudencia.md) (texto oficial das súmulas vinculantes do STF, das súmulas do STJ e das teses de repercussão geral) e [Constituição Federal](../Base_de_Conhecimento/Direito_Constitucional/CF_1988_arts_1_a_144.md) (art. 5º, XLII a XLIV, e art. 125). Trechos entre aspas são **cópia literal**; os exemplos foram **criados pelo tutor**.
-> **Questões do dia:** em arquivo separado, [2027-02-10_Direitos_Humanos_Questoes.md](2027-02-10_Direitos_Humanos_Questoes.md), com o estudo dirigido, o mapa, 3 questões **oficiais** da AOCP (1 delas da **prova de Soldado PMPE 2023**, já feita no Simulado 1) e 7 **autorais**, com gabarito comentado.
+> **Questões do dia:** em arquivo separado, [2027-02-10_Direitos_Humanos_Questoes.md](2027-02-10_Direitos_Humanos_Questoes.md), com o estudo dirigido, o mapa, 2 questões **oficiais** da AOCP (1 delas da **prova de Soldado PMPE 2023**, já feita no Simulado 1) e 8 **autorais**, com gabarito comentado.
 > **Como a AOCP cobra jurisprudência:** na prova de 2023, a jurisprudência apareceu **dentro** de questões de Direito Constitucional e de Direitos Humanos (Q41 e Q53), com o comando "levando em consideração [...] a jurisprudência dominante dos Tribunais Superiores". Ou seja: não decore números de súmula; decore **o que cada uma diz** e **a que lei ela se liga**.
 
 ## Roteiro
