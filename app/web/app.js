@@ -598,9 +598,10 @@ async function telaDoc(id) {
   const ouvir = $('#b-ouvir');
   if (ouvir) ouvir.addEventListener('click', () => iniciarAudio(item, doc, null));
   const art = tela.querySelector('article');
+  estudoNoTexto(art, doc.estudo, item);
   questoesNoTexto(art, qsDoTexto);
   art.addEventListener('click', (e) => {
-    if (e.target.closest('a, button, summary, input') || String(window.getSelection() || '').trim()) return;
+    if (e.target.closest('a, button, summary, input, textarea, .ei-lista, .qi-lista') || String(window.getSelection() || '').trim()) return;
     const nota = e.target.closest('.nota-bloco');
     if (nota) {
       const alvo = art.querySelector(`[data-f="${nota.dataset.notaDe}"]`);
@@ -776,6 +777,105 @@ function questoesNoTexto(art, lista) {
       ancora.querySelector('.qi-placar').textContent = `Nesta página: ${feitas.a} de ${feitas.n} certas${feitas.n < total ? ` · faltam ${total - feitas.n}` : ' · todas respondidas'}.`;
     });
   });
+}
+
+/* Estudo dirigido (e teste-relâmpago) dentro do texto: cada pergunta vira um cartão para escrever a resposta sem
+   consultar, tocar em Conferir, ver a resposta-modelo e dizer como foi (acertei, em parte, errei). O que você escreve
+   e a sua avaliação ficam no celular (guardado 'estudo:<doc>'). As respostas do arquivo ficam fechadas. */
+const AVAL_ESTUDO = { c: ['✓', 'Acertei'], p: ['½', 'Em parte'], e: ['✗', 'Errei'] };
+
+function fecharSecao(h, rotulo) {
+  const nivel = Number(h.tagName[1]);
+  const det = document.createElement('details');
+  det.className = 'qi-gabarito';
+  det.innerHTML = `<summary>${esc(rotulo)}</summary>`;
+  let el = h.nextElementSibling;
+  while (el && !(/^H[1-6]$/.test(el.tagName) && Number(el.tagName[1]) <= nivel)) { const prox = el.nextElementSibling; det.append(el); el = prox; }
+  h.after(det);
+}
+
+function estudoNoTexto(art, est, item) {
+  if (!est || !est.itens || !est.itens.length) return;
+  const h2 = [...art.querySelectorAll(':scope > h2')].find((h) => /estudo dirigido|teste-rel[aâ]mpago/i.test(h.textContent) && !/respostas/i.test(h.textContent));
+  if (!h2) return;
+  let el = h2.nextElementSibling;
+  while (el && el.tagName !== 'H2' && el.tagName !== 'HR') { const prox = el.nextElementSibling; el.remove(); el = prox; }
+  for (const h of art.querySelectorAll(':scope > h2, :scope > h3')) {
+    if (/respostas/i.test(h.textContent) && /estudo dirigido|teste-rel[aâ]mpago/i.test(h.textContent)) {
+      fecharSecao(h, 'Respostas do arquivo (a resposta já aparece em cada pergunta)');
+    }
+  }
+  const chave = `estudo:${item.id}`;
+  const salvo = guardado.get(chave, {});
+  const gravar = () => guardado.set(chave, salvo);
+  const mat = item.material && catalogo.docs.find((d) => d.id === item.material);
+  const temResp = est.itens.filter((i) => i.r).length;
+  const box = document.createElement('section');
+  box.className = 'ei-lista';
+  box.innerHTML = `
+    ${est.intro ? `<div class="q-html">${est.intro}</div>` : ''}
+    <p class="meta">Escreva a resposta sem consultar e toque em <b>Conferir</b>. Depois diga como foi: o placar fica guardado.${temResp < est.itens.length
+      ? ` ${temResp ? `${est.itens.length - temResp} perguntas ainda` : 'As perguntas deste dia ainda'} não têm resposta-modelo: confira no material.` : ''}</p>
+    ${est.itens.map((it) => `${it.g ? `<h3 class="qi-titulo">${esc(it.g)}</h3>` : ''}
+      <div class="ei" data-n="${esc(it.n)}">
+        <div class="ei-pergunta"><b class="ei-num">${esc(it.n)}.</b><div class="q-html">${it.p}</div></div>
+        <textarea rows="3" aria-label="Sua resposta à pergunta ${esc(it.n)}" placeholder="Sua resposta, sem consultar…"></textarea>
+        <div class="ei-res" aria-live="polite"></div>
+        <div class="acoes ei-botoes"><button class="btn primario ei-conferir">Conferir</button></div>
+      </div>`).join('')}
+    <p class="qi-placar" aria-live="polite"></p>`;
+  h2.after(box);
+  box.querySelectorAll('[data-f]').forEach((e) => e.removeAttribute('data-f'));
+
+  const placar = () => {
+    const v = Object.values(salvo).map((x) => x.a).filter(Boolean);
+    const c = (k) => v.filter((a) => a === k).length;
+    box.querySelector('.qi-placar').textContent = v.length
+      ? `Estudo dirigido: ${c('c')} certas, ${c('p')} em parte e ${c('e')} erradas de ${est.itens.length}${v.length < est.itens.length ? ` · faltam ${est.itens.length - v.length}` : ''}.`
+      : '';
+  };
+  box.querySelectorAll('.ei').forEach((card) => {
+    const it = est.itens.find((x) => x.n === card.dataset.n);
+    const ta = card.querySelector('textarea');
+    const res = card.querySelector('.ei-res');
+    const botoes = card.querySelector('.ei-botoes');
+    const s = () => (salvo[it.n] = salvo[it.n] || {});
+    ta.value = (salvo[it.n] && salvo[it.n].t) || '';
+    ta.addEventListener('input', () => { s().t = ta.value; gravar(); });
+    const mostrar = () => {
+      const a = salvo[it.n] && salvo[it.n].a;
+      res.innerHTML = `${it.r
+        ? `<div class="q-comentario"><h3>Resposta-modelo</h3><div class="q-html">${it.r}</div></div>`
+        : `<p class="aviso">Esta pergunta ainda não tem resposta-modelo. ${mat ? `Confira no <a href="#/doc/${encodeURIComponent(mat.id)}">material de estudo</a>.` : 'Confira no material.'}</p>`}
+        <div class="ei-aval" role="group" aria-label="Como foi a sua resposta?"><span>Como foi?</span>
+          ${Object.entries(AVAL_ESTUDO).map(([k, [ic, nome]]) => `<button class="btn ei-a${a === k ? ' escolhida' : ''}" data-a="${k}" aria-pressed="${a === k}">${ic} ${nome}</button>`).join('')}
+        </div>`;
+      res.querySelectorAll('[data-f]').forEach((e) => e.removeAttribute('data-f'));
+      res.querySelectorAll('.ei-a').forEach((b) => b.addEventListener('click', () => {
+        const novo = s().a === b.dataset.a ? null : b.dataset.a;
+        s().a = novo;
+        gravar();
+        res.querySelectorAll('.ei-a').forEach((x) => { x.classList.toggle('escolhida', x.dataset.a === novo); x.setAttribute('aria-pressed', String(x.dataset.a === novo)); });
+        placar();
+      }));
+      botoes.innerHTML = '<button class="btn-link ei-esconder">Esconder a resposta</button>';
+      botoes.querySelector('.ei-esconder').addEventListener('click', esconder);
+    };
+    const esconder = () => {
+      res.innerHTML = '';
+      botoes.innerHTML = '<button class="btn primario ei-conferir">Conferir</button>';
+      botoes.querySelector('.ei-conferir').addEventListener('click', conferir);
+    };
+    const conferir = () => {
+      if (!ta.value.trim() && !window.confirm('Você ainda não escreveu nada. Ver a resposta assim mesmo?')) return;
+      s().v = 1;
+      gravar();
+      mostrar();
+    };
+    card.querySelector('.ei-conferir').addEventListener('click', conferir);
+    if (salvo[it.n] && salvo[it.n].v) mostrar();
+  });
+  placar();
 }
 
 function atualizarBotaoBaixar(item) {

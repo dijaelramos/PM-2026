@@ -663,3 +663,14 @@ body.player-compacto { --player-h: 66px; }
 .qi-placar { font-weight: 600; }
 .qi-gabarito { margin: 8px 0 18px; }
 .qi-gabarito > summary { cursor: pointer; color: var(--suave); }
+
+/* Estudo dirigido interativo */
+.ei-lista { margin: 8px 0 20px; }
+.ei { margin: 12px 0 18px; padding: 12px 14px; border: 1px solid var(--linha); border-radius: 14px; background: var(--superficie); }
+.ei-pergunta { display: flex; gap: 8px; align-items: baseline; }
+.ei-pergunta .q-html p { margin: 0 0 6px; }
+.ei textarea { width: 100%; box-sizing: border-box; margin: 6px 0; font: inherit; padding: 8px 10px; border-radius: 10px;
+  border: 1px solid var(--linha); background: var(--fundo); color: var(--texto); resize: vertical; }
+.ei-aval { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 2px; }
+.ei-aval .escolhida { background: var(--marca); color: var(--marca-texto); border-color: var(--marca); }
+.ei-botoes { margin-top: 4px; }

@@ -28,6 +28,7 @@ from questoes import extrair as extrair_questoes  # noqa: E402
 from revisao import montar as montar_revisao  # noqa: E402
 from roteiro import roteiro as ler_roteiro  # noqa: E402
 from cartoes import extrair as extrair_cartoes  # noqa: E402
+from estudo import extrair as extrair_estudo  # noqa: E402
 from banco import coletar as coletar_banco, usadas_nos_materiais  # noqa: E402
 from questoes import sem_links_locais  # noqa: E402
 from plano import ler_datas, ler_plano  # noqa: E402
@@ -300,6 +301,7 @@ def main():
                 f"{'Resumão' if resumao else 'Material'} de {d['subtitulo'].split(' ')[-1]}")
         reescrever_links(tokens, d, por_caminho)
         d["html"] = d["md"].renderer.render(tokens, d["md"].options, {})
+        d["estudo"] = extrair_estudo(d["texto"], d["md"]) if d["categoria"] == "questoes" else None
 
     saida = args.saida
     if saida.exists():
@@ -466,6 +468,9 @@ def main():
                 c["t"] = t  # início de cada parágrafo no MP3 (marcação do texto)
             item["audio"] = {"url": nome, "bytes": len(mp3), "duracao": round(len(mp3) / 6000)}
         conteudo_doc = {"id": d["id"], "titulo": d["titulo"], "origem": d["rel"], "html": d["html"], "capitulos": caps}
+        if d.get("estudo") and d["estudo"]["itens"]:  # estudo dirigido / teste-relâmpago interativo
+            conteudo_doc["estudo"] = d["estudo"]
+            item["estudo"] = len(d["estudo"]["itens"])
         if d.get("incidencia"):
             conteudo_doc["incidencia"] = d["incidencia"]
             item["incidencia"] = sum(x[2] for x in d["incidencia"])
