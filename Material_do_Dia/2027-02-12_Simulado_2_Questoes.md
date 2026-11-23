@@ -3,7 +3,7 @@
 > **Instruções:** [2027-02-12_Simulado_2.md](2027-02-12_Simulado_2.md). Leia as regras e copie a folha de respostas **antes** de abrir este caderno.
 > **Tempo:** 3 h corridas, **sem consulta**. Marque as respostas na folha, com o grau de certeza.
 > **Sem gabarito neste arquivo:** a correção é na quinta, **18/02**. Não abra o Banco de Provas nem os índices das provas: eles trazem as respostas.
-> **Origem:** 33 questões **oficiais** do Instituto AOCP, de provas de Soldado de PM, de carreiras de segurança pública e de nível médio, **nunca usadas** nos seus materiais, e 27 **autorais de treino, não oficiais**, no estilo da banca, nas disciplinas em que o banco não tinha mais questões oficiais novas (História de Pernambuco, Raciocínio Lógico e parte de Informática e de Direitos Humanos). As oficiais estão transcritas sem alteração, salvo as notas de cada uma; os dois textos de Língua Portuguesa tiveram as quebras de linha do PDF unidas em parágrafos.
+> **Origem:** 32 questões **oficiais** do Instituto AOCP, de provas de Soldado de PM, de carreiras de segurança pública e de nível médio, **nunca usadas** nos seus materiais, e 28 **autorais de treino, não oficiais**, no estilo da banca, nas disciplinas em que o banco não tinha mais questões oficiais novas (História de Pernambuco, Raciocínio Lógico e parte de Informática e de Direitos Humanos). As oficiais estão transcritas sem alteração, salvo as notas de cada uma; os dois textos de Língua Portuguesa tiveram as quebras de linha do PDF unidas em parágrafos.
 
 ---
 
@@ -609,15 +609,15 @@ Assinale a alternativa correta acerca da Convenção Americana sobre os Direitos
 - **(D)** Toda pessoa tem direito à liberdade de consciência e de religião. Assim, a liberdade de manifestar a própria religião e as próprias crenças não está sujeita às limitações prescritas pela lei.
 - **(E)** A Comissão Interamericana de Direitos Humanos compor-se-á de oito membros, que deverão ser pessoas de alta autoridade moral e de reconhecido saber em matéria de direitos humanos.
 
-### Questão 55 — PC-PA 2021, Escrivão de Polícia Civil (AOCP), Q53
+### Questão 55 — Questão autoral de treino, no estilo AOCP — não oficial · DH 6
 
-João, utilizando seus conhecimentos em informática e visando a ganho financeiro, vendeu, por intermédio da internet, vídeo que continha cena de sexo explícito envolvendo crianças e adolescentes. Tendo em vista a conduta hipotética narrada, bem como as disposições do Estatuto da Criança e do Adolescente (Lei nº 8.069/1990), João, caso condenado, estará sujeito à pena de
+Sobre o Conselho Tutelar, segundo o Estatuto da Criança e do Adolescente (Lei nº 8.069/1990), assinale a alternativa correta.
 
-- **(A)** detenção, de um a três anos, e multa.
-- **(B)** detenção, de dois a quatro anos, e multa.
-- **(C)** reclusão, de dois a quatro anos, e multa.
-- **(D)** reclusão, de três a seis anos, e multa.
-- **(E)** reclusão, de quatro a oito anos, e multa.
+- **(A)** É órgão jurisdicional, vinculado ao Juizado da Infância e da Juventude.
+- **(B)** É composto por 3 membros, escolhidos pelo Prefeito para mandato de 2 anos.
+- **(C)** Pode aplicar ao adolescente a medida socioeducativa de internação.
+- **(D)** Seus membros devem ter idade mínima de 18 anos.
+- **(E)** É órgão permanente e autônomo, não jurisdicional, encarregado pela sociedade de zelar pelo cumprimento dos direitos da criança e do adolescente.
 
 ### Questão 56 — Questão autoral de treino, no estilo AOCP — não oficial · DH 7
 
