@@ -4805,6 +4805,22 @@ function pararLeituraNaTela() { /* a leitura continua ao voltar para o início *
 
 /* ---------- controles ---------- */
 
+/* Reprodutor compacto (padrão): uma linha com a barra fina, tocar, −15, +30 e o tempo. ⌃ abre os controles todos. */
+function aplicarCompacto(c) {
+  $('#player').classList.toggle('compacto', c);
+  document.body.classList.toggle('player-compacto', c);
+  const b = $('#p-expandir');
+  b.textContent = c ? '⌃' : '⌄';
+  b.setAttribute('aria-label', c ? 'Mostrar todos os controles' : 'Diminuir o reprodutor');
+  b.title = b.getAttribute('aria-label');
+}
+$('#p-expandir').addEventListener('click', () => {
+  const c = !$('#player').classList.contains('compacto');
+  guardado.set('playerCompacto', c);
+  aplicarCompacto(c);
+});
+aplicarCompacto(guardado.get('playerCompacto', true));
+
 /* À direita da barra: o tempo que falta (padrão, já na velocidade escolhida) ou a duração total. Toque alterna. */
 let ultimoFim = null;
 function mostrarFim(t, d, taxa, prefixo = '') {
