@@ -245,6 +245,19 @@ Assinale a alternativa que **NÃO** apresenta uma proposição.
 
 **Por que as outras estão erradas:** (A) e (B) são **falsas**, mas são proposições; (D) é verdadeira; (E) tem valor lógico (com quantificador).
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. É uma frase **declarativa** que pode ser julgada **verdadeira ou falsa**, nunca as duas. **Sim**, frase falsa também é proposição ("10 é número ímpar"). **Não**: a sentença aberta ("y − 4 = 10", "Ela chegou cedo") depende de quem ou do que é a variável, então não é proposição.
+2. **2³ = 8 linhas** (2ⁿ, com n = número de proposições simples **diferentes**).
+3. Só quando o antecedente é **verdadeiro** e o consequente é **falso** (**V → F**).
+4. **Tautologia**: sempre verdadeira (**p ∨ ~p**). **Contradição**: sempre falsa (**p ∧ ~p**). **Contingência**: às vezes V, às vezes F (**p ∧ q** ou **p → q**).
+5. Equivalentes: **~q → ~p** (contrapositiva) e **~p ∨ q**. Negação: **p ∧ ~q** (MANÉ: mantém a 1ª, troca por "e", nega a 2ª). Só a **contrapositiva** começa com "se"; a negação de um "se" **nunca** começa com "se".
+6. **Nega a primeira parte**, põe "**se… então**" e **mantém a segunda**: ~p ∨ q ≡ **p → q**. Ex.: "O motorista não está habilitado ou a multa é aplicada" ≡ "Se o motorista está habilitado, então a multa é aplicada".
+7. ~(p **e** q) = **~p ou ~q** (De Morgan). ~(**ou** p **ou** q) = **p se e somente se q** (bicondicional).
+8. **Fica intacto**: a negação é "(p e q) **e** ~r" — mantém o antecedente inteiro, troca por "e" e nega só o consequente.
+9. "Todo A é B" → **algum A não é B**. "Algum A é B" → **nenhum A é B**. "Nenhum A é B" → **algum A é B**.
+10. **Afirmar o consequente**: p → q; q; logo p (inválido: q pode ser verdadeiro por outro motivo — o alarme tocou por falha). **Negar o antecedente**: p → q; ~p; logo ~q (inválido também). São falácias; as formas válidas são o modus ponens e o modus tollens.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. Contrapositiva: "Se o cadete **não** é aprovado, **então** ele **não** estuda." Negação: "O cadete estuda **e não** é aprovado."

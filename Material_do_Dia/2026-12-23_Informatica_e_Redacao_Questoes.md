@@ -237,6 +237,18 @@ Considerando o padrão de arquivos utilizado pelo LibreOffice (ODF – Open Docu
 
 **Por que as outras estão erradas:** (A) .txt é texto simples, e .ppt e .xls são do Office antigo; (B) formatos do Office 97-2003; (C) .pdf não é formato ODF, .odt é de **texto** (não de apresentação) e .csv é texto separado por vírgulas; (E) formatos do Office atual, CSV e XML.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Orientação da página**: guia **Layout**. **Sumário**: guia **Referências**. **Mala direta**: guia **Correspondências**. **Controlar alterações**: guia **Revisão**. **Marca d'água**: guia **Design**.
+2. **Formatar → Estilo de página → guia Página → Orientação** (retrato ou paisagem). Nas versões antigas, Formatar → Página.
+3. Força o texto seguinte a começar no **topo da próxima página** (o jeito certo de começar um capítulo novo, em vez de apertar Enter até a página acabar). Atalho: **Ctrl + Enter**, no Word e no Writer.
+4. **Na página**, **no parágrafo**, **no caractere** e **como caractere**. A que deixa o objeto preso à página é **Na página**.
+5. **Macro** grava uma **sequência de comandos** e a executa de novo com **um só comando**, para **automatizar tarefas repetitivas**. Documento do Word com macros é salvo como **.docm**.
+6. **Parágrafos** (dentro ou fora de tabela), **linhas de uma tabela** pelo conteúdo de uma coluna (texto, número ou data, crescente ou decrescente) e itens de **lista**. Não reordena as palavras dentro de um mesmo parágrafo.
+7. **Writer**: **.odt**. **Calc**: **.ods**. **Impress**: **.odp**. **Word**: **.docx**.
+8. **Word 2019**: **Arquivo → Exportar → Criar PDF/XPS** (ou Salvar como → tipo PDF). **Writer 7**: **Arquivo → Exportar como → Exportar como PDF** (ou Exportar diretamente como PDF).
+9. Word: Ctrl + N = **negrito**; Ctrl + S = **sublinhado**; Ctrl + B = **salvar**; Ctrl + T = **selecionar tudo**. Writer: Ctrl + B = **negrito**; Ctrl + S = **salvar**; Ctrl + N = **novo documento**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Windows + M** minimiza todas as janelas; **Windows + I** abre as Configurações.

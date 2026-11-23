@@ -233,6 +233,18 @@ No Prompt de Comando do Windows 11, os comandos que, respectivamente, criam uma 
 
 **Por que as outras estão erradas:** (B) cd entra numa pasta, del apaga arquivo, ren renomeia; (C) está fora de ordem; (D) copy e move copiam e movem, cls limpa a tela; (E) del apaga **arquivo**, e cd não lista.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. É o final do nome, depois do ponto, que indica o **tipo** do arquivo e o programa que o abre. Vídeo (duas): **.mp4, .avi**, .wmv, .mov, .mkv. Áudio (duas): **.mp3, .wav**, .wma. Imagem (duas): **.jpg, .png**, .gif, .bmp, .tif, .svg.
+2. **\ / : * ? " < > |**
+3. **Copiar**: **Ctrl + C** na origem e **Ctrl + V** no destino (o arquivo fica nos dois lugares). **Mover**: **Ctrl + X** (recortar) na origem e **Ctrl + V** no destino (sai da origem).
+4. Na **mesma unidade**: **move**. Para **outra unidade** (pen drive): **copia**. Segurando **Ctrl**: **copia**; **Shift**: **move**; **Alt**: cria **atalho**.
+5. Quando se usa **Shift + Delete** (exclusão permanente) e quando o arquivo está num **pen drive** ou numa **pasta de rede**.
+6. **Win + E**: abre o **Explorador de Arquivos**. **Win + D**: mostra e oculta a **área de trabalho**. **Win + M**: **minimiza todas** as janelas. **Win + L**: **bloqueia** o computador. **Win + I**: abre as **Configurações**. **Ctrl + Shift + Esc**: abre o **Gerenciador de Tarefas**.
+7. **Configurações** (Win + I) é o aplicativo **novo**, centro da maioria dos ajustes (sistema, dispositivos, rede, aplicativos, contas, Windows Update). O **Painel de Controle** é o **antigo**, que **ainda existe** (Win + R > **control**) e reúne opções antigas.
+8. A permissão de **Leitura** (ver e abrir, sem alterar nem excluir).
+9. **dir**: lista arquivos e pastas. **cd**: entra numa pasta (**cd ..** volta um nível). **md**: cria pasta. **rd**: remove pasta. **del**: apaga arquivo. **ren**: renomeia arquivo.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **RAM** é volátil. Teclado: **entrada**; impressora: **saída**; touchscreen: **mista**.
