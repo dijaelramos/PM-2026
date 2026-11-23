@@ -4981,7 +4981,9 @@ aplicarLargura(guardado.get('larguraTexto', 'media'));
 /* Versão nova do app (service worker novo assumiu): recarrega para usar o código novo. Se algo estiver tocando,
    espera: mostra um aviso no topo e recarrega no toque. */
 function aplicarVersaoNova() {
-  if (!estaTocando() && !(location.hash || '').startsWith('#/simulado/fazer')) { location.reload(); return; }
+  // não recarrega no meio de algo em andamento: áudio, leitura no fone, simulado, questões, flashcards ou redação
+  const ocupado = /^#\/(simulado\/(fazer|folha)|questoes\/resolver|cartoes\/estudar|redacao\/escrever|cronometro)/.test(location.hash || '');
+  if (!estaTocando() && !foneAtivo && !ocupado) { location.reload(); return; }
   if ($('#versao-nova')) return;
   const b = document.createElement('button');
   b.id = 'versao-nova';
