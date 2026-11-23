@@ -227,6 +227,18 @@ Relacione cada elemento ao tipo de maracatu.
 
 **Por que a (E) está correta:** calunga = **nação** (1); caboclo de lança = **rural** (2); só percussão = **nação** (1); Nazaré da Mata = **rural** (2). Sequência: **1 – 2 – 1 – 2**.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Comunidades de africanos escravizados **fugidos** e seus descendentes (também com indígenas e brancos livres), que produziam o que precisavam e comerciavam com vizinhos. Quatro citados: **Palmares** (Serra da Barriga), **Catucá**, **Conceição das Crioulas**, **Castainho** (e Onze Negras).
+2. Fica em **Salgueiro**, no **Sertão**. Segundo a memória oral, surgiu no **século XVIII** com a chegada de **seis mulheres negras** que **arrendaram** terras e as **pagaram com a fiação e a venda de algodão**. O nome vem da imagem de **Nossa Senhora da Conceição** trazida por elas (as "crioulas").
+3. A **Constituição** e o **Decreto nº 4.887/2003**. O critério é o **autorreconhecimento** (a própria comunidade se declara); a **Fundação Cultural Palmares** certifica.
+4. Associações **católicas** de pessoas negras, escravizadas e livres, com santos negros e festas próprias (sincretismo). A **Igreja de Nossa Senhora do Rosário dos Homens Pretos**, no bairro de **Santo Antônio**, no Recife, foi erguida no século XVII pela **Irmandade do Rosário dos Homens Pretos**.
+5. É o nome dado em Pernambuco ao culto aos **orixás**, religião de **matriz africana** (equivalente ao candomblé baiano); o **Sítio de Pai Adão** é um dos terreiros de referência. Não é festa junina.
+6. Foi **reprimida sistematicamente**: capoeiras foram **presos e deportados para Fernando de Noronha**, acusados de **vadiagem**, e a capoeira quase desapareceu no Recife no início do século XX. Deixou sua marca no **passo do frevo**, considerado evolução dos movimentos da capoeira.
+7. Encontros **mensais**, numa **terça-feira**, no **Pátio de São Pedro** (Santo Antônio, Recife), com apresentações de tradição **africana** e regional; em **novembro** (Consciência Negra), acontecem em **todas as terças**.
+8. **Joaquim Nabuco** (Recife, 1849–1910) foi político e escritor pernambucano, um dos maiores **abolicionistas** do Brasil, autor de *O Abolicionismo* (1883). A **Lei Áurea** foi assinada pela **princesa Isabel**, em **13 de maio de 1888**, no **Rio de Janeiro**.
+9. **1** — Ocupação: pré-colonial (pau-brasil, escambo), tabajaras aliados e caetés inimigos, capitanias (1534), Duarte Coelho e Nova Lusitânia. **2** — Açúcar: engenho, plantation (LEME), sociedade PREE, crise depois de 1654. **3** — Olinda (sede, senhores, incendiada em 1631) × Recife (porto, mascates, vila em 1709/1710, capital em 1827). **4** — Holandeses: União Ibérica, WIC, 1630, Nassau (1637–1644), Insurreição e Guararapes, expulsão em 1654. **5** — Movimentos: Guerra dos Mascates (1710–1711), 1817, Confederação do Equador (1824), Cabanada e Praieira. **6** — República: Rosa e Silva e 1911, Agamenon e os mocambos, Ligas Camponesas, Arraes e 1964. **7** — Cultura popular: frevo (UNESCO), maracatu nação × rural, caboclinho, ciranda, coco, manguebeat e Armorial. **8** — Herança afro: quilombos (Palmares, Conceição das Crioulas), irmandades, xangô, capoeira, Terça Negra, Nabuco. (As linhas são livres; confira o ponto principal de cada item.)
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. O **caboclo de lança**.

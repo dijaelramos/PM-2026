@@ -185,6 +185,15 @@ Um rádio de comunicação falha em 10% das transmissões, de modo independente.
 
 **Por que as outras estão erradas:** (A) é a chance de as **duas** falharem (0,1 × 0,1); (D) soma as chances (conta duas vezes o caso das duas falhas); (E) é a chance de **nenhuma** falhar.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Se uma escolha tem **m** opções e outra, independente, tem **n**, as duas juntas têm **m × n** possibilidades. Ex.: 3 fardas × 2 coturnos = **6** combinações de uniforme.
+2. Com letras repetidas: **n! ÷ (a! · b! · …)** (ARARA: 5! ÷ (3! · 2!) = 10). Com letras fixas: **permute só as que se movem**, recalculando as repetições entre elas (POLICIA com as consoantes fixas: vogais O, I, I, A → 4! ÷ 2! = 12).
+3. "**Trocar a ordem muda o resultado?**" Se sim, **arranjo**: A(n, p) = n! ÷ (n − p)!. Se não, **combinação**: C(n, p) = n! ÷ [p! · (n − p)!].
+4. Escolhe-se **em cada grupo** com combinação e **multiplicam-se** os resultados. Ex.: 2 de 5 cabos e 1 de 4 sargentos = C(5, 2) × C(4, 1) = 10 × 4 = **40**.
+5. **Complementar**: em "**pelo menos um**" ou "não": P(não A) = 1 − P(A). **Multiplica** no "**e**" com eventos independentes; **soma** no "**ou**" com eventos que não se sobrepõem (com sobreposição, subtrai-se a interseção).
+6. Com 20% Pastor Belga, 30% cadelas e 40% das cadelas Pastor Belga: cadela e Pastor Belga = 0,3 × 0,4 = **12%**; cadela de outra raça = **18%**; cachorro Pastor Belga = 20% − 12% = **8%**; cachorro de outra raça = 70% − 8% = **62%**. Totais: cadelas 30%, cachorros 70%, Pastor Belga 20%, outra raça 80%.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. "**Algum** cabo **não** é motorista."
