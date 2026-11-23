@@ -197,6 +197,17 @@ Relacione a manifestação à característica correspondente.
 
 **Por que a (C) está correta:** arcos e flechas = **caboclinho** (4); passo e sombrinha = **frevo** (1); roda de mãos dadas = **ciranda** (3); cortejo real e calungas = **maracatu nação** (2). Sequência: **4 – 1 – 3 – 2**.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. O **passo** veio da **capoeira**: perseguidos pela polícia, os capoeiristas que acompanhavam as bandas **disfarçaram os golpes** como dança. A **música** é a evolução das **marchas, dobrados e polcas** das **bandas militares** e dos clubes, a partir de meados do século XIX. Clubes: **Vassourinhas (1889)** e **Lenhadores (1897)**, formados por trabalhadores.
+2. Porque teria sido usada como **arma** pelos capoeiristas (um guarda-chuva velho, hoje pequeno e colorido). O frevo foi reconhecido pela **UNESCO** como **Patrimônio Cultural Imaterial da Humanidade** (2012).
+3. Vem da tradição da **coroação do Rei do Congo**, ligada às **irmandades de negros** (N. Sra. do Rosário, São Benedito), surgida em meados do século XVIII. **Cortejo**: porta-estandarte, **Damas do Paço** com as **calungas**, a corte, **Rei e Rainha** sob o **pálio** e, em alguns, o Caboclo de Pena. **Orquestra**: **só percussão** — **alfaias**, caixas e taróis, ganzás, **gonguê** e agbês.
+4. O **nação** (baque virado) é do **Recife**, com **calungas**, cortejo real e orquestra **só de percussão**. O **rural** (baque solto) é da **Zona da Mata Norte** (Nazaré da Mata), entre trabalhadores da cana, e tem como figura central o **caboclo de lança**, com orquestra que inclui instrumentos de sopro.
+5. **Caboclinho**: grupos que representam **indígenas**, com arcos e flechas que estalam no ritmo. **Ciranda**: dança de **roda**, de mãos dadas, do litoral (Itamaracá, Lia de Itamaracá). **Coco**: dança com traços **indígenas** (fileira e roda) e **africanos** (**umbigada**), do litoral, da Mata e de comunidades quilombolas.
+6. **Manguebeat**: **anos 1990**, no Recife, com **Chico Science**; movimento de contracultura que misturou maracatu e outros ritmos com rock, hip hop e eletrônica. **Movimento Armorial**: **1970**, com **Ariano Suassuna**; buscava uma arte **erudita** a partir das raízes da **cultura popular** nordestina.
+7. Quaisquer cinco: **bolo de rolo** (pão-de-ló com **goiabada**); **bolo Souza Leão** (**mandioca**, calda, ovos, manteiga); **cartola** (**banana** frita, **queijo coalho**, açúcar e canela); **tapioca** (goma de **mandioca**); **buchada** (bucho de **bode ou carneiro** com miúdos); **sarapatel** (**sangue e miúdos de porco**); **munguzá e canjica** (**milho**).
+8. **Nossa Senhora do Carmo**, padroeira do Recife: **16 de julho**. **Nossa Senhora da Conceição**: **8 de dezembro**, no Morro da Conceição. O ciclo natalino termina em **6 de janeiro** (Dia de Reis), com a **Queima da Lapinha**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Agamenon Magalhães**, interventor no Estado Novo, em **1939**.

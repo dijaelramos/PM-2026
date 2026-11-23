@@ -232,6 +232,18 @@ A seção de pessoal precisa enviar a 200 policiais uma carta igual, mas com o n
 
 **Por que as outras estão erradas:** (B) registra edições de revisores; (C) gera PDF; (D) é recurso de apresentações; (E) é recurso de fórmulas de planilha.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Windows + Tab** abre a **Visão de Tarefas**, onde se cria uma nova área de trabalho (ou **Windows + Ctrl + D**); alterna-se com **Windows + Ctrl + ← / →**. **Windows + Z** abre os **layouts de ajuste** (Snap), para organizar as janelas lado a lado.
+2. **PrtScn**: seleciona uma região e copia para a **área de transferência** (não salva arquivo). **Alt + PrtScn**: captura a **janela ativa** para a área de transferência. **Windows + Shift + S**: recorte de uma região (Ferramenta de Captura) para a área de transferência. **Windows + PrtScn**: captura a **tela inteira** e **salva um arquivo** em **Imagens > Capturas de Tela**.
+3. O **administrador** instala programas, muda configurações que afetam todos e cria contas. A conta **padrão** usa os programas e muda só as **próprias** configurações. O **UAC** (Controle de Conta de Usuário) pede a **senha de um administrador** quando a conta padrão tenta instalar algo ou alterar o sistema.
+4. **Restauração do Sistema**: volta **configurações do sistema e programas** a um ponto anterior, **sem apagar** os documentos (não é backup). **Histórico de Arquivos**: **backup** de versões dos **arquivos pessoais**. **Redefinir este PC**: **reinstala** o Windows, com opção de manter ou remover os arquivos pessoais.
+5. Desinstalar e escolher o aplicativo padrão: **Configurações > Aplicativos** (Aplicativos instalados; Aplicativos padrão). Atualizações: página **Windows Update** (com o histórico).
+6. **ipconfig**: mostra a **configuração de rede** (IP, máscara, gateway). **ping**: **testa a conexão** com outro computador. **tracert**: mostra o **caminho** (roteadores) até o destino. **nslookup**: **consulta o DNS** (o IP de um nome). **tasklist**: **lista** os processos. **taskkill**: **encerra** um processo.
+7. **\*** substitui **qualquer sequência** de caracteres; **?** substitui **um único** caractere. Ex.: "del \*.tmp" apaga todos os arquivos .tmp da pasta.
+8. **Word 2019**: **Arquivo > Exportar > Criar PDF/XPS** (ou Salvar como > PDF). **Writer 7**: **Arquivo > Exportar como > Exportar como PDF**.
+9. **Colar**: cola uma **cópia** simples; mudar a origem não muda o documento. **Colar vínculo**: cria uma **ligação**; quando a origem muda, o documento é **atualizado**. **Incorporar objeto**: coloca o arquivo inteiro dentro do documento, **editável** com duplo clique, mas **sem ligação** com o original. **Mala direta**: junta um **documento principal** (carta, etiqueta) com uma **fonte de dados** (lista em planilha) para gerar cópias **personalizadas**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **md** (mkdir) cria; **rd** (rmdir) remove pasta.

@@ -229,6 +229,18 @@ Assinale a alternativa que apresenta os fatos na **ordem cronológica correta**.
 
 **Por que as outras estão erradas:** todas trocam a ordem de pelo menos dois fatos.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Era uma **oligarquia**: a rede chefiada pelo conselheiro **Francisco de Assis Rosa e Silva**, em que **coronéis** e clientes urbanos entregavam votos e participavam de **fraudes eleitorais** em troca de cargos e favores. Controlava a administração estadual **desde 1896**.
+2. Rosa e Silva disputou o governo com o **general Dantas Barreto**; mesmo vencendo nas urnas, teve de aceitar a **diplomação de Dantas Barreto** (1911–1915). Foi a eleição **mais sangrenta da Primeira República** e marcou o **declínio** do rosismo. As "**salvações**" foram a participação de **militares contra as oligarquias** nas sucessões estaduais de **1911 e 1912**.
+3. Depois de 1930, **Carlos de Lima Cavalcanti**, como **interventor federal**. Em **3 de dezembro de 1937**, já no **Estado Novo**, assumiu **Agamenon Magalhães**, também como **interventor nomeado** (não eleito).
+4. Criada em **12 de julho de 1939** (governo Agamenon) para **construir e financiar casas populares** e **erradicar os mocambos**. **Positivo**: casas populares para parte da população. **Negativo**: **expulsou** famílias pobres das áreas centrais do Recife para a **periferia**, num clima de ideias higienistas.
+5. Coligação de esquerda e centro-esquerda que venceu eleições no Recife e no estado nos anos 1950. Ligados a ela: **Pelópidas Silveira** (prefeito em 1955), **Cid Sampaio** (governador, 1959–1963) e **Miguel Arraes** (prefeito em 1959).
+6. Em **janeiro de 1955**, no **Engenho Galileia**, em **Vitória de Santo Antão**, com a fundação da **SAPPP** por foreiros pobres. **Francisco Julião**, **deputado estadual e advogado**, foi chamado para ajudar e tornou-se **presidente honorário**. O nome "**Liga Camponesa**" foi dado pelos **latifundiários**, em referência às organizações comunistas de mesmo nome.
+7. **Cordeiro de Farias** (1954–1958) **reprimiu**: tentou interromper as atividades, e Julião foi preso em 1956. **Cid Sampaio** **expropriou o Engenho Galileia** em **1960**, uma vitória das Ligas.
+8. Em **1º de abril de 1964**, Arraes foi **deposto**, **preso** e levado para **Fernando de Noronha**, teve o mandato cassado e depois **exilou-se na Argélia**. Com a **Lei de Anistia de 1979**, voltou e foi eleito governador de novo (ao todo, três vezes).
+9. **1896** domínio de Rosa e Silva → **1911** eleição sangrenta; Dantas Barreto governador → **1930** Revolução; Lima Cavalcanti interventor → **1937** Estado Novo; Agamenon interventor → **1939** Liga Social contra o Mocambo → **1955** Ligas Camponesas no Engenho Galileia → **1959** SUDENE; Arraes prefeito → **1960** expropriação do Galileia → **1963** Arraes governador → **1964** golpe; Arraes deposto → **1979** anistia. (Escolha oito; confira a ordem.)
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. A **Confederação do Equador**; o líder religioso executado foi **Frei Caneca** (1825).
