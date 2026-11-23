@@ -275,6 +275,21 @@ Assinale a alternativa correta a respeito do sinal indicativo de crase.
 - **(B)** Antes de **"um"** (artigo indefinido masculino), a crase é **proibida**.
 - **(D)** Antes de pronome **possessivo** feminino singular ("minha"), a crase é **facultativa**, não obrigatória.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Substantivo** (viatura), **adjetivo** (viatura **nova**), **artigo** (**a** ocorrência), **numeral** (**dois** soldados), **pronome** (**ele**, **esta**), **verbo** (patrulhar), **advérbio** (chegou **cedo**), **preposição** (casa **de** taipa), **conjunção** (mas, porque) e **interjeição** (ufa!). (Os exemplos são livres; confira a classe.)
+2. **Substantivação**: "o **sim** do comandante", "o **porquê** da demora". **Adjetivo × advérbio**: "uma resposta **rápida**" (adjetivo) × "respondeu **rápido**" (advérbio, = rapidamente).
+3. Muda a classe: **pôr** (verbo) × **por** (preposição); ou **dê** (verbo) × **de** (preposição). Não muda: **têm** × **tem** (os dois são verbos; muda o número); ou **pôde** × **pode** (verbos; muda o tempo).
+4. Sobre o **verbo** ("patrulhou **atentamente**"), o **adjetivo** ("**muito** nervoso"), **outro advérbio** ("chegou **muito** cedo") e a **oração inteira** ("**Felizmente**, ninguém se feriu").
+5. Quaisquer cinco: **matéria** (colete de kevlar); **posse** (a farda do sargento); **assunto** (aula de história); **origem** (soldado de Caruaru); **finalidade/tipo** (sala de reunião, cão de guarda); **causa** (morreu de sede); **lugar/direção** (aproximou-se da viatura).
+6. **Aditivas** (e, nem): soma. **Adversativas** (mas, porém, contudo, todavia): oposição. **Alternativas** (ou, ou… ou, ora… ora): alternância. **Conclusivas** (logo, portanto, pois depois do verbo): conclusão. **Explicativas** (porque, pois antes do verbo, que): explicação.
+7. O **relativo** substitui um termo anterior e troca por **o qual / a qual**: "O carro **que** foi roubado apareceu" (= o qual). A **integrante** não substitui nada; a oração troca por **"isso"**: "Sabemos **que** o carro apareceu" (= sabemos isso).
+8. (1) Uma palavra **exige a preposição "a"**; (2) a palavra seguinte **aceita o artigo "a"** (feminina e determinada). **Teste do masculino**: troque por uma palavra masculina; se aparecer "**ao**", há crase ("fui à delegacia" → "fui ao quartel"). **Teste do "voltar de"**: se você volta **da**, vai **à** (voltei da Bahia → fui à Bahia); se volta **de**, vai **a** (voltei de Caruaru → fui a Caruaru).
+9. Quaisquer quatro: regência + palavra feminina com artigo (obedeceu **à** ordem); **horas** determinadas (**às** 8h); **locuções femininas** (**às** pressas, **à** noite, **à** medida que); **à moda de** (bife **à** milanesa); **a + aquele/aquela/aquilo** (**àquele** relatório); **a + a** demonstrativo (igual **à** que usei).
+10. Quaisquer seis: antes de **verbo** (disposto a colaborar); de **palavra masculina** (a cavalo); de **pronomes pessoais, de tratamento e indefinidos** (a ela, a Vossa Senhoria, a qualquer pessoa); de **esta/essa** (a esta questão); entre **palavras repetidas** (cara a cara); "**a**" singular antes de **plural** (a pessoas); antes de **uma** (a uma conclusão); antes de **cidade sem determinante** (a Olinda).
+11. Antes de **pronome possessivo feminino no singular** (à/a sua chefe), antes de **nome próprio feminino** de pessoa (à/a Maria) e depois de **até** (até à/até a praça).
+12. Na **regência verbal**, quem exige a preposição é um **verbo**: "**Obedeceu à** ordem". Na **regência nominal**, é um **nome** (substantivo ou adjetivo): "**acesso à** informação", "**favorável à** proposta".
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **autoescola**, **antissocial**, **micro-ondas**, **vice-presidente**.

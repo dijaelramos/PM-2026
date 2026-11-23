@@ -251,6 +251,17 @@ A acentuação da palavra “saúde” é justificada pela mesma regra de
 
 **Por que as outras estão erradas:** (B) "científico" e (D) "climáticas" são **proparoxítonas**; (C) "cenário" é **paroxítona terminada em ditongo**; (E) "além" é **oxítona terminada em -em**.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Radical**: a parte que guarda o sentido (**polic**-ial). **Prefixo**: afixo **antes** do radical (**re**fazer). **Sufixo**: afixo **depois** do radical (igual**dade**). **Vogal temática**: liga o radical às desinências nos verbos (patrulh**a**r, corr**e**r, part**i**r). **Desinência**: marca gênero e número (soldad**a**, soldado**s**) ou tempo, modo, número e pessoa (patrulháva**mos**).
+2. Na **prefixal e sufixal**, a palavra tem prefixo e sufixo, mas **existe sem um deles** (des-leal-dade: existem "lealdade" e "desleal"). Na **parassintética**, prefixo e sufixo entram **ao mesmo tempo**: sem um deles a palavra **não existe** (a-manh-ecer: não há "amanhe" nem "manhecer"). Teste: **tire uma peça de cada vez** e veja se a palavra continua existindo.
+3. Forma-se **tirando** uma parte da palavra; em geral, um substantivo de ação a partir de um verbo: o **ataque** (atacar), a **busca** (buscar), o **resgate** (resgatar) — também a fuga, o abate, a perda.
+4. A palavra **muda de classe sem mudar de forma** (conversão): o **não**, o **jantar**, um **sim**.
+5. **Justaposição**: os radicais se juntam **sem perder som** (guarda-chuva, girassol, passatempo, segunda-feira). **Aglutinação**: um deles **perde parte do som** (planalto = plano + alto; aguardente = água + ardente; embora = em + boa + hora).
+6. **Hibridismo**: palavra com elementos de **línguas diferentes** (automóvel: grego + latim). **Redução** (abreviação): a palavra encurtada passa a valer como forma própria (**moto**, de motocicleta; **foto**, de fotografia).
+7. **Não**. Pode ser **aumentativo** (casarão), mas também formar palavra nova **sem ideia de tamanho** (portão, cordão).
+8. **Hífen**: h → hífen; mesma vogal → hífen; vogal diferente → junta; r/s → junta e dobra; ex-, vice- → sempre; "bem" em composto (bem-humorado) × advérbio solto (bem guardadas). **Acentuação**: proparoxítonas todas; oxítonas em a, e, o, em, ens; paroxítonas em l, n, r, x, ps, ã, ão, i, us, um, on e ditongo; hiatos i/u. **Crase**: preposição a + artigo a; testes do masculino e do "voltar de"; proibida antes de verbo, masculino, pronomes e "uma"; facultativa antes de possessivo. **"Que"**: relativo (= o qual) × integrante (= isso). (O quadro é livre; confira se tem esses pontos.)
+
 ### Revisão ativa — respostas *(exercício do tutor, não oficial)*
 
 1. "chegou **a** tempo" (palavra masculina, sem crase).

@@ -246,6 +246,20 @@ IV. Eleitor que quer anular contrato superfaturado de uma prefeitura.
 
 **Por que as outras estão erradas:** (A) e (B) põem MS no lugar de HD; (C) começa com MS no lugar de HC; (D) troca HD e HC.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Protege a **liberdade de locomoção** contra **ilegalidade ou abuso de poder**. O **preventivo** é usado quando há **ameaça** de coação e gera um **salvo-conduto**. O **repressivo** (liberatório) é usado quando a coação **já ocorreu** e gera um **alvará de soltura**.
+2. **Qualquer pessoa**, em favor próprio ou de outro, **sem advogado**, inclusive o **Ministério Público**. **Sim**: juízes e tribunais podem concedê-lo **de ofício** quando veem coação ilegal no processo.
+3. O art. 142, § 2º (aplicado aos PMs pelo art. 42, § 1º), diz que **não cabe habeas corpus em relação a punições disciplinares militares**. Mas o STF admite o HC para examinar a **legalidade** da punição (competência, procedimento, pena prevista em lei), **não o mérito** (a conveniência ou a justiça da punição).
+4. **Direito líquido e certo** é o provado **de plano**, por **documentos**, sem precisar produzir provas no processo. O MS é **residual** porque só cabe quando o direito **não é amparado por habeas corpus nem por habeas data**.
+5. Contra **autoridade pública** ou **agente de pessoa jurídica no exercício de atribuições do poder público** (ex.: o diretor de universidade particular ao decidir uma matrícula).
+6. (a) **Partido político com representação no Congresso Nacional**; (b) **organização sindical, entidade de classe ou associação** **legalmente constituída** e **em funcionamento há pelo menos 1 ano**, em defesa dos **membros ou associados**. Não precisa de autorização deles (Súmula 629 do STF).
+7. A **falta de norma regulamentadora** que torna **inviável** o exercício de direitos e liberdades constitucionais e das prerrogativas de **nacionalidade, soberania e cidadania**. Ex.: a **greve dos servidores públicos civis**, sem a lei específica do art. 37, VII; o STF mandou aplicar, no que couber, a lei de greve da iniciativa privada.
+8. Para **conhecer** e **retificar** informações **relativas à pessoa do impetrante** em bancos de dados de entidades **governamentais ou de caráter público**. **Não** serve para dados de terceiros (é personalíssimo). **Súmula 2 do STJ**: não cabe habeas data se **não houve recusa** de informações pela autoridade administrativa.
+9. **Qualquer cidadão** (brasileiro **eleitor**; pessoa jurídica não pode). Contra **ato lesivo** ao **patrimônio público** (ou de entidade de que o Estado participe), à **moralidade administrativa**, ao **meio ambiente** e ao **patrimônio histórico e cultural**. O autor é **isento** de custas e de sucumbência, **salvo comprovada má-fé**.
+10. O **habeas corpus** e o **habeas data** (e, na forma da lei, os atos necessários ao exercício da cidadania) (art. 5º, LXXVII). A ação popular não é "gratuita", mas o autor é **isento** de custas, salvo má-fé.
+11. (a) **Habeas corpus**; (b) **habeas data**; (c) **mandado de injunção**; (d) **ação popular**; (e) **mandado de segurança**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **MP3.COM** = Ministro do STF; Presidente e Vice da República; Presidente da Câmara; Presidente do Senado; Carreira diplomática; Oficial das Forças Armadas; Ministro da Defesa. **35** (Presidente, Vice e Senador), **30** (Governador e Vice), **21** (Deputados, Prefeito, Vice-Prefeito, juiz de paz), **18** (Vereador).

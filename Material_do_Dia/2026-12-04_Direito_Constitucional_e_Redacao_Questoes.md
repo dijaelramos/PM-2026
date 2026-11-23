@@ -206,6 +206,21 @@ Compete à União organizar e manter a polícia civil, a polícia penal, a polí
 
 **Por que está certo:** é o art. 21, XIV. O DF usa essas polícias, nos termos de **lei federal** (art. 32, § 4º).
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **União, Estados, Distrito Federal e Municípios**, todos **autônomos** (art. 18). **Não**: os Territórios **integram a União** e não são entes federados.
+2. **Novo Estado**: **plebiscito** da população diretamente interessada **e** aprovação do **Congresso Nacional por lei complementar** (art. 18, § 3º). **Novo Município**: **lei estadual**, dentro do período fixado por **lei complementar federal**, com **plebiscito** nas populações dos Municípios envolvidos, depois da divulgação dos **Estudos de Viabilidade Municipal** (§ 4º).
+3. (I) **Estabelecer cultos**, subvencioná-los, embaraçá-los ou manter com eles aliança, ressalvada a colaboração de interesse público (Estado **laico**); (II) **recusar fé aos documentos públicos**; (III) **criar distinções entre brasileiros** ou preferências entre si.
+4. União (quaisquer cinco): **recursos minerais e do subsolo**, **mar territorial**, **terrenos de marinha**, **potenciais de energia hidráulica**, **cavidades naturais subterrâneas e sítios arqueológicos**, **terras tradicionalmente ocupadas pelos índios**, rios que banham mais de um Estado ou fazem fronteira, **praias marítimas**, terras devolutas **indispensáveis** à defesa. Estados (dois): **águas** superficiais ou subterrâneas (salvo as de obras da União); **terras devolutas não compreendidas entre as da União**; ilhas fluviais e lacustres que não sejam da União.
+5. **Exclusiva** (art. 21): administrativa, **só da União**, **indelegável** (ex.: emitir moeda). **Privativa** (art. 22): legislativa da **União**, **delegável** aos Estados por **lei complementar** para questões específicas (ex.: direito penal). **Comum** (art. 23): administrativa de **todos os entes**, juntos (ex.: cuidar da saúde). **Concorrente** (art. 24): legislativa da **União, Estados e DF**; a União faz **normas gerais** e os Estados suplementam (ex.: direito tributário).
+6. A **União** organiza e mantém a polícia civil, a polícia penal, a **polícia militar** e o corpo de bombeiros militar **do DF** (art. 21). As **normas gerais** das **PMs** (organização, efetivos, material bélico, garantias, convocação, mobilização, inatividades e pensões) são competência **privativa da União** (art. 22, XXI). A organização, as garantias, os direitos e os deveres das **polícias civis** são competência **concorrente** (art. 24, XVI).
+7. **§ 1º**: a União faz só **normas gerais**. **§ 2º**: os Estados têm competência **suplementar**. **§ 3º**: **sem lei federal** de normas gerais, os Estados exercem competência **plena**. **§ 4º**: a **lei federal posterior suspende a eficácia** da lei estadual **no que lhe for contrário** (não revoga).
+8. **CAPACETE PM** = competência **privativa** da União (art. 22, I): direito **C**ivil, **A**grário, **P**enal, **A**eronáutico, **C**omercial, **E**leitoral, **T**rabalho, **E**spacial, **P**rocessual e **M**arítimo. **PUTEF** = competência **concorrente** (art. 24, I): direito **P**enitenciário, **U**rbanístico, **T**ributário, **E**conômico e **F**inanceiro.
+9. As competências **que não lhes sejam vedadas** (competência **remanescente**, art. 25, § 1º). Os Estados exploram os serviços locais de **gás canalizado**, **vedada a medida provisória** para regulamentá-los (§ 2º), e podem instituir, por **lei complementar estadual**, **regiões metropolitanas**, aglomerações urbanas e microrregiões (§ 3º).
+10. As duas: votadas em **dois turnos**, com **interstício mínimo de 10 dias**, aprovadas por **dois terços** da Câmara Municipal (Município) ou da **Câmara Legislativa** (DF), que as promulga.
+11. O DF **não**: é **vedada** sua divisão em Municípios (art. 32). Os Territórios **sim**: **podem** ser divididos em Municípios (art. 33).
+12. Os **Municípios** (não têm Poder Judiciário nem Ministério Público próprios). O Judiciário do DF existe, mas é organizado e mantido pela **União**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. (a) **habeas data**; (b) **mandado de injunção**; (c) **ação popular**.
