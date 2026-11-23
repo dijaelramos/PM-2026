@@ -239,6 +239,21 @@ Sobre os efeitos da presença holandesa em Pernambuco, informe se é verdadeiro 
 3. **F.** A saída de Nassau **rompeu** a aliança e levou à Insurreição de 1645.
 4. **V.** A luta comum alimentou o nativismo.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Foi o período (**1580–1640**) em que **Filipe II da Espanha** assumiu o trono português, depois da morte do cardeal-rei D. Henrique sem herdeiros, e as colônias portuguesas passaram à Coroa espanhola. Como a Espanha estava em guerra com os Países Baixos (Guerra dos Oitenta Anos), **proibiu o comércio holandês** com as colônias ibéricas, e os holandeses, que financiavam, refinavam e vendiam o **açúcar**, perderam o negócio. Decidiram tomar à força as terras do açúcar.
+2. A **Companhia das Índias Ocidentais**, empresa holandesa **privada** criada em **1621**, para controlar o **tráfico de escravizados na África** e o **açúcar no Brasil**.
+3. Em **Salvador**, a capital, em **1624**. Os holandeses foram **expulsos em 1625** por uma esquadra luso-espanhola, sem passar da cidade.
+4. Em **fevereiro de 1630** (esquadra de cerca de 7 mil homens). **Olinda** foi tomada em 1630 e **incendiada em 1631**; o **Recife**, mais fácil de defender, virou a **sede** holandesa.
+5. **Matias de Albuquerque**, a partir do **Arraial do Bom Jesus**, com **guerrilha** ("companhias de emboscada"), apoiado por indígenas e negros. **Calabar** (Domingos Fernandes Calabar) foi um mameluco que conhecia bem a região e **passou para o lado holandês**, ajudando-os; a memória luso-brasileira o lembra como traidor.
+6. O conde **João Maurício de Nassau**, nobre e militar de formação **humanista**, governou de **1637 a 1644**. A WIC o nomeou para **pacificar** a região e **reerguer a produção de açúcar**, garantindo o lucro da Companhia.
+7. Quaisquer cinco: **crédito** aos senhores para reconstruir engenhos; **venda dos engenhos** abandonados ou confiscados; **redução de tributos**; suspensão de penhoras e renegociação de dívidas; **liberdade na venda do açúcar**; proibição da **agiotagem**; **plantio obrigatório de mandioca** (sem sucesso); **aliança com os senhores de engenho**, que participavam das **câmaras de escabinos**.
+8. **Tolerância religiosa**: o governo era calvinista, mas os **católicos** mantiveram o culto e os **judeus** tiveram liberdade (sinagoga **Kahal Zur Israel**, a primeira das Américas). Incomodou os **calvinistas** holandeses.
+9. Quaisquer quatro: **pontes** (a primeira grande ponte do Brasil, até a ilha de Antônio Vaz); **diques e canais**; **drenagem de pântanos**; ruas pavimentadas e alargadas; a **Cidade Maurícia**; coleta de **lixo** e **bombeiros**; **Jardim Botânico**, **Zoológico** e **Museu Natural**; o **Palácio de Friburgo**, com observatório astronômico.
+10. **Frans Post**: pintor de **paisagens**. **Albert Eckhout**: pintor de **tipos humanos, frutas e animais**. **Georg Marcgrave**: **naturalista e astrônomo**. **Willem Piso**: **médico**. Marcgrave e Piso escreveram a *Historia Naturalis Brasiliae* (1648).
+11. Porque a **WIC** passou a exigir **aumento de impostos**, **cobrança das dívidas** dos senhores e mais produção, e criticava os gastos dele; Nassau **não aceitou** e voltou à Europa em **1644**.
+12. **Político**: o fim da aliança com os senhores levou à **Insurreição Pernambucana** (1645–1654) e a um sentimento **nativista**. **Social**: o **Recife** virou o centro urbano e comercial e Olinda perdeu força (raiz da Guerra dos Mascates); houve convivência de católicos, calvinistas e judeus. **Econômico**: expulsos, os holandeses levaram o açúcar às **Antilhas**; a **concorrência** derrubou o preço e iniciou a **crise do açúcar** no Nordeste.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **L**atifúndio, **E**scravidão, **M**onocultura, **E**xportação.

@@ -237,6 +237,17 @@ Uma guarnição fará duas abordagens independentes. Em cada uma, a probabilidad
 
 **Por que as outras estão erradas:** (A) somou 20% + 20%, contando duas vezes o caso em que as duas encontram; (C) é a probabilidade de encontrar **nas duas** (0,2 × 0,2); (D) é a de **nenhuma**; (E) é a de uma só abordagem.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Multiplicativo**: quando a escolha é feita em **etapas sucessivas** ("e"); multiplicam-se as possibilidades. Ex.: 3 camisas **e** 2 calças = 3 × 2 = 6 trajes. **Aditivo**: quando se escolhe **uma opção ou outra**, de grupos que não se misturam ("ou"); somam-se. Ex.: ir de 3 ônibus **ou** de 2 vans = 3 + 2 = 5 maneiras. (Os exemplos são livres.)
+2. Com letras repetidas: **n! ÷ (a! · b! · …)**, dividindo pelo fatorial das repetições de cada letra. Com letra **fixa**: retire-a e permute **só as letras que sobram**, recalculando as repetições entre elas.
+3. No **arranjo** a **ordem importa** (cargos diferentes, pódio, senha); no **combinação** **não importa** (equipe, comissão). **A(n, p) = n! ÷ (n − p)!**; **C(n, p) = n! ÷ [p! · (n − p)!]**.
+4. **A(n, p) ÷ C(n, p) = p!**, porque cada grupo de p elementos pode ser **ordenado de p! formas**.
+5. (1) **Liste as composições** possíveis (quantos de cada grupo) que obedecem à condição; (2) em cada composição, **multiplique** as combinações de cada grupo; (3) **some** as composições. Confira cada composição com a regra (ex.: "mais cabos que soldados" exclui o empate).
+6. É contar o **contrário** e subtrair do total: **total − casos que não servem** (em probabilidade, **1 − P**). Economiza tempo em "**pelo menos um**" (total − nenhum) e em "**dois não podem ir juntos**" (total − os dois juntos).
+7. **Multiplicando** as probabilidades de cada um: P(A e B) = P(A) × P(B).
+8. **1 − P(nenhum)**: calcula-se a chance de **nenhum** acontecer e subtrai-se de 1.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. Estudam para alguma: 30 + 25 − 12 = 43. Nenhuma: 50 − 43 = **7**.

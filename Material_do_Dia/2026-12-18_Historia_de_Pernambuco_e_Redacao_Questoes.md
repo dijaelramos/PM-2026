@@ -234,6 +234,20 @@ Informe se é verdadeiro (V) ou falso (F) e assinale a sequência correta.
 3. **F.** A bandeira de Pernambuco vem da **Revolução de 1817**.
 4. **V.** Nassau saiu em 1644; a Insurreição começou em 1645.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Com a Corte no Rio (**1808**), vieram o **aumento de impostos** para sustentá-la e para a guerra na Cisplatina (até uma taxa para a **iluminação pública do Rio**) e a nomeação de **portugueses** para os cargos importantes. Somados à **crise do açúcar e do algodão**, esses fatores revoltaram Pernambuco.
+2. A **maçonaria**, com o **Areópago de Itambé**, e o **Seminário de Olinda**.
+3. Quaisquer quatro: proclamação da **república**; **liberdade de imprensa**; **liberdade de crença**; **fim dos impostos** de D. João VI; divisão em **três poderes**; aumento do soldo. A **manutenção da escravidão** mostra o caráter **elitista** (o movimento contava com grandes proprietários).
+4. Pela grande participação do **clero** (como o Padre João Ribeiro). A **bandeira de Pernambuco** é a bandeira da Revolução de 1817, oficializada pelo Estado em **1917**, no centenário.
+5. A **dissolução da Assembleia Constituinte** (1823), a **Constituição outorgada de 1824**, **centralizadora** (com o Poder Moderador), e a troca, por D. Pedro I, do presidente da província eleito (**Pais de Andrade**) por Francisco Pais Barreto; além da crise econômica. Propunha uma **república federalista**, inspirada nos **EUA** e na **Colômbia**, com capital no Recife.
+6. **Frei Joaquim do Amor Divino Rabelo Caneca**, frade e jornalista (*Typhis Pernambucano*), **mentor intelectual** da Confederação do Equador. Foi **fuzilado** em **13 de janeiro de 1825**, no Recife (os carrascos teriam se recusado a enforcá-lo).
+7. No início queriam **restaurar D. Pedro I** no trono (movimento **restaurador**), com apoio de proprietários ligados aos portugueses. Abandonado por esses proprietários, virou uma **revolta popular e antiescravista** de índios, brancos pobres, mestiços e negros fugidos, liderada por **Vicente Ferreira de Paula**; enfraqueceu com a morte de D. Pedro I (1834) e terminou em 1835.
+8. A **Cabanada** foi no **sul de Pernambuco e norte de Alagoas**, de **1832 a 1835**. A **Cabanagem** foi no **Pará**, de **1835 a 1840**.
+9. Uma **dissidência do Partido Liberal**, contra os conservadores e a família Cavalcanti. O nome vem do jornal deles, o *Diário Novo*, que ficava na **Rua da Praia**, no Recife.
+10. **Voto livre e universal**, **liberdade de imprensa**, **nacionalização do comércio a retalho** (o varejo, nas mãos de portugueses) e **extinção do Poder Moderador**. Foi escrito por **Borges da Fonseca**, influenciado pelo **socialismo utópico**.
+11. **1817**: **colônia** (Reino Unido, D. João VI). **Confederação do Equador (1824)**: **Primeiro Reinado**. **Cabanada (1832–1835)**: **Regências**. **Praieira (1848–1849)**: **Segundo Reinado**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Ganga Zumba** aceitou; **Zumbi** rejeitou.

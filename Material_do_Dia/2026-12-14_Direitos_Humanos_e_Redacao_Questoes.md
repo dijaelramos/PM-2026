@@ -252,6 +252,20 @@ Assinale a alternativa que relaciona corretamente a conduta à lei aplicável.
 - **(D)** Para adulto, é a **Lei de Abuso de Autoridade, art. 12**; o ECA, art. 231, trata do adolescente.
 - **(E)** O art. 233 foi revogado; aplica-se a **Lei de Tortura**, com aumento.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Constranger alguém com **violência ou grave ameaça**, causando **sofrimento físico ou mental**: (a) para obter **informação, declaração ou confissão** da vítima ou de terceira pessoa; (b) para **provocar ação ou omissão de natureza criminosa**; (c) em razão de **discriminação**. Na alínea c entram só a discriminação **racial ou religiosa**.
+2. A **tortura-castigo** exige vítima **sob guarda, poder ou autoridade** do agente, **intenso** sofrimento físico ou mental e a finalidade de **castigo pessoal** ou medida preventiva. Sem essa **intensidade**, o abuso dos meios de correção ou disciplina pode ser **maus-tratos** (CP, art. 136).
+3. O **inciso III**: submeter **mulher**, **reiteradamente**, a intenso sofrimento físico ou mental, no contexto de **violência doméstica e familiar**.
+4. **Qualquer pessoa** (crime comum, em regra). Se for **agente público**, a pena **aumenta de 1/6 até 1/3** (§ 4º, I), e a condenação gera a **perda do cargo**.
+5. **Detenção de 1 a 4 anos** (§ 2º), para quem se omite quando tinha o **dever de evitar ou apurar**. É a única forma que **não começa no regime fechado**.
+6. **Lesão grave ou gravíssima**: reclusão de **4 a 10 anos**. **Morte**: reclusão de **8 a 16 anos**. São **qualificadoras** (mudam a pena-base), não causas de aumento.
+7. Aumento de **1/6 até 1/3**, se cometido: (I) por **agente público**; (II) contra **criança, gestante, pessoa com deficiência, adolescente ou maior de 60 anos**; (III) mediante **sequestro**.
+8. A condenação **acarreta a perda** do cargo, função ou emprego público e a **interdição** para exercê-lo pelo **dobro do prazo da pena** — efeito **automático**. No **abuso de autoridade**, a perda (e a inabilitação de 1 a 5 anos) só ocorre com **reincidência**, **não é automática** e precisa ser **declarada motivadamente**.
+9. É **inafiançável** e **insuscetível de graça ou anistia**, mas **prescreve**. A CF declara imprescritíveis só o **racismo** e a **ação de grupos armados** contra a ordem constitucional e o Estado Democrático (RA-AÇÃO).
+10. **Sim** (art. 2º), quando a **vítima for brasileira** ou quando o agente estiver em local **sob jurisdição brasileira**.
+11. (a) **ECA, art. 230**; (b) **Lei de Abuso de Autoridade, art. 12**; (c) **Lei de Abuso de Autoridade, art. 13**; (d) **Lei de Tortura, art. 1º, I, "a"** (tortura-prova), com aumento por ser agente público.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Não**: sem violência ou grave ameaça, o auto pode ser substituído por **boletim de ocorrência circunstanciada**. Com os pais presentes, ele é **liberado** sob termo de compromisso de apresentação ao MP, salvo gravidade.

@@ -237,6 +237,21 @@ Informe se é verdadeiro (V) ou falso (F) e assinale a sequência correta.
 3. **V.** Felipe Camarão (indígena) e Henrique Dias (negro).
 4. **V.** A concorrência antilhana contribuiu para a crise do açúcar.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Comunidades formadas principalmente por **africanos escravizados que fugiam** e seus descendentes, em lugares de difícil acesso, onde viviam em liberdade, plantavam, criavam animais e comerciavam. Também acolhiam **indígenas e brancos pobres**.
+2. Na **Serra da Barriga**, no atual **Alagoas** (então capitania de Pernambuco). Teve cerca de **20 mil** habitantes, em vários mocambos; o principal era o **Macaco** (cerca de 6 mil).
+3. **Ganga Zumba** aceitou um **acordo de paz** com os portugueses que obrigava a **devolver os palmarinos não nascidos no quilombo**. Foi impopular: dividiu Palmares, Ganga Zumba foi **assassinado** e **Zumbi**, que **rejeitou o acordo**, assumiu a resistência.
+4. Palmares foi **destruído em 1694**; **Zumbi foi morto em 20 de novembro de 1695**. A expedição final foi comandada pelo bandeirante **Domingos Jorge Velho**.
+5. Quilombo nas **matas perto do Recife e de Olinda**, formado por volta de **1817–1818**, que cresceu nas agitações da Independência e da Confederação do Equador (1824) e foi duramente reprimido. Comunidades atuais (duas): **Conceição das Crioulas**, **Castainho**, Onze Negras.
+6. A **cobrança de dívidas** e de lucros "a qualquer custo" pela **WIC**, o **declínio dos engenhos** e a **saída de Nassau** (1644), que rompeu a aliança com os senhores; e, desde 1640, Portugal já tinha rei próprio (Restauração).
+7. **João Fernandes Vieira**: senhor de engenho (a elite açucareira). **André Vidal de Negreiros**: o colono luso-brasileiro. **Antônio Felipe Camarão**: o **indígena** potiguar. **Henrique Dias**: o **negro**. Juntos representam a união de brancos, indígenas e negros contra o invasor.
+8. Nos **Montes Guararapes** (atual Jaboatão dos Guararapes): a **1ª em 1648** e a **2ª em 1649**. São lembradas porque a luta conjunta de brancos, indígenas e negros é tida como a **origem simbólica do Exército Brasileiro** (e do nativismo pernambucano).
+9. Com a **rendição holandesa no Campo do Taborda**, em **janeiro de 1654**; os holandeses saíram também de Alagoas e Sergipe. Na **Paz de Haia (1661)**, Portugal pagou à Holanda uma **indenização** pela perda do Nordeste.
+10. **Mascates**: os **comerciantes portugueses do Recife**, credores dos senhores, que cobravam juros altos (o nome era pejorativo). **Nobreza da terra**: os **senhores de engenho de Olinda**, endividados com a crise do açúcar.
+11. A elevação do **Recife a vila**, com **Câmara Municipal** própria (carta régia de **1709**), e a ereção do **pelourinho** em **1710**. O pelourinho foi destruído pelos olindenses porque era o **símbolo da autonomia** do Recife em relação a Olinda.
+12. A Coroa enviou o governador **Félix José Machado de Mendonça**, que prendeu os líderes. O **Recife** manteve a autonomia e, em **1712**, virou **sede administrativa** de Pernambuco; em **1714**, D. João V concedeu **anistia**. Saíram vitoriosos os **mascates** (Recife).
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. A **União Ibérica** (1580–1640) pôs Portugal e suas colônias sob o rei da Espanha, inimiga da Holanda; os holandeses perderam o negócio do açúcar e criaram a **WIC** para tomá-lo à força.
