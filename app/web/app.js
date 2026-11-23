@@ -177,6 +177,7 @@ function rota() {
   const li = h.match(/^#\/lista\/(\w+)$/);
   if (li) { telaLista(li[1]); return; }
   if (h === '#/ajustes') { telaAjustes(); return; }
+  if (h === '#/professor') { telaProfessor(); return; }
   if (h === '#/edital') { telaEdital(); return; }
   if (h === '#/redacao') { telaRedacao(); return; }
   if (h === '#/redacao/escrever') { telaRedacaoEscrever(); return; }
@@ -406,6 +407,7 @@ function gradeEstudo() {
     blocos.push(blocoEstudo('#/edital', '🧭', 'Edital', `${n} de ${ed.length} itens estudados`));
   }
   blocos.push(blocoEstudo('#/progresso', '📊', 'Progresso', `${Math.round(Object.values(guardado.get('atividade', {})).reduce((t, a) => t + Math.max(a.s || 0, a.c || 0), 0) / 3600)} h no app`));
+  blocos.push(blocoEstudo('#/professor', '🤖', 'Professor', configIA().chave ? 'pergunte por voz ou texto' : 'tire dúvidas na sua base'));
   const nDest = contarDestaques();
   if (nDest) blocos.push(blocoEstudo('#/destaques', '🖍', 'Destaques', `${nDest} ${nDest === 1 ? 'trecho' : 'trechos'}`));
   const ult = guardado.get('ultimoBackup', null);
@@ -2351,7 +2353,7 @@ function dadosDoApp() {
   const dados = {};
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
-    if (k === 'github') continue; // o token do GitHub não sai do celular
+    if (k === 'github' || k === 'ia') continue; // o token do GitHub e a chave da IA não saem do celular
     try { dados[k] = JSON.parse(localStorage.getItem(k)); } catch { /* valor que não é JSON: fica de fora */ }
   }
   return dados;
@@ -2789,9 +2791,11 @@ function telaRedacaoVer(id) {
     ${r.texto ? `<div class="redacao-final">${esc(r.texto).split('\n').filter((p) => p.trim()).map((p) => `<p>${p}</p>`).join('')}</div>` : '<p class="aviso">Escrita no papel.</p>'}
     <div class="acoes">
       <button class="btn primario" id="rv-copiar">Copiar para o Tutor de Redação</button>
+      ${r.texto ? `<button class="btn" id="rv-ia">🤖 ${r.ia ? 'Corrigir de novo' : 'Corrigir'} com o Professor (IA)</button>` : ''}
       <button class="btn" id="rv-reescrever">✒ Reescrever</button>
     </div>
     <p class="aviso" id="rv-aviso" aria-live="polite"></p>
+    ${r.ia ? htmlCorrecaoIA(r.ia) : ''}
     <h2 class="secao">Nota da correção</h2>
     ${t != null ? `<div class="q-veredito ${t >= 12 ? 'ok' : 'erro'}">${fmtNota(t)} de 40${t < 12 ? ' · abaixo do mínimo de 12: eliminaria' : ''}</div>` : '<p class="aviso">Depois da correção do Tutor de Redação, registre a nota de cada aspecto (0 a 10).</p>'}
     <div class="notas-redacao">${ASPECTOS_LONGOS.map((a, k) => `<label>${esc(a)}
@@ -2801,6 +2805,31 @@ function telaRedacaoVer(id) {
     <p class="rodape"><button class="btn-link" id="rv-apagar">Apagar esta redação</button></p>`;
   $('#rv-copiar').addEventListener('click', async () => {
     $('#rv-aviso').textContent = (await copiarTexto(textoParaTutor(r))) ? 'Copiado. Cole na conversa com o Tutor de Redação.' : 'Não deu para copiar neste celular.';
+  });
+  const bia = $('#rv-ia');
+  if (bia) bia.addEventListener('click', async () => {
+    const av = $('#rv-aviso');
+    if (!configIA().chave) { av.innerHTML = 'Ponha a chave da API em <a href="#/professor">Professor → Ajustes do Professor</a>.'; return; }
+    if (!navigator.onLine) { av.textContent = 'Sem internet agora.'; return; }
+    bia.disabled = true;
+    av.textContent = 'O Professor está corrigindo pela Tabela 12.2 (pode levar 1 a 2 minutos)…';
+    try {
+      const d = await corrigirRedacaoIA(r);
+      const l2 = redacoes();
+      const j = l2.findIndex((x) => x.id === r.id);
+      if (j >= 0) {
+        l2[j].ia = d;
+        if (!l2[j].notas) { // sem nota registrada: usa a do Professor (dá para trocar pela do Tutor de Redação)
+          l2[j].notas = d.aspectos.map((a) => a.nota);
+          l2[j].obs = `Nota do Professor (IA). ${d.resumo}`;
+        }
+        guardado.set('redacoes', l2);
+      }
+      if (location.hash === `#/redacao/ver/${id}`) telaRedacaoVer(id);
+    } catch (e) {
+      av.textContent = e.message;
+      bia.disabled = false;
+    }
   });
   $('#rv-reescrever').addEventListener('click', () => {
     if (guardado.get('redacaoAtual', null) && !window.confirm('Há uma redação em andamento. Descartar e reescrever esta?')) return;
@@ -2825,6 +2854,384 @@ function telaRedacaoVer(id) {
     guardado.set('redacoes', lista);
     location.hash = '#/redacao';
   });
+}
+
+/* ---------- Professor (IA híbrida) ---------- */
+/* Com internet e uma chave da API da Anthropic (guardada só neste celular, fora da cópia de segurança), as perguntas
+   vão para o Claude junto com os trechos da base de estudo que mais combinam com elas (busca local no índice do app).
+   Sem internet ou sem chave, o Professor responde só com esses trechos da base: sem IA, mas funciona em qualquer lugar.
+   guardado 'ia': { chave, voz (ler a resposta), auto (enviar quando terminar de falar) }.
+   guardado 'professor': { msgs: mensagens da API (só acrescenta; nunca edita o que já foi), vis: [{ p, r, fontes, modo }] }. */
+
+const URL_SDK_CLAUDE = 'https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@1.6.0/+esm';
+const MODELO_PROFESSOR = 'claude-opus-5-5';
+const MAX_TURNOS_PROFESSOR = 12;
+const SISTEMA_PROFESSOR = `Você é o Professor do app PMPE Ouvir, tutor de um estudante do concurso de Soldado da Polícia Militar de Pernambuco (PMPE 2026, banca Instituto AOCP, prova objetiva e redação em 21/02/2027).
+Responda em português do Brasil, de forma direta e didática. O estudante muitas vezes ouve a resposta no fone, no trânsito: use frases curtas, sem tabelas nem títulos, no máximo três parágrafos curtos ou uma lista curta, a não ser que ele peça mais detalhes.
+Cada pergunta chega com trechos numerados da base de estudo dele (leis, Constituição, materiais do dia). Baseie a resposta nesses trechos e cite a fonte entre colchetes, como [2]. Se os trechos não bastarem, responda com o seu conhecimento e diga que aquela parte não está na base dele.
+Em lei e Constituição, nunca invente número de artigo, prazo, pena ou quórum: se não tiver certeza, diga isso.
+Quando ajudar, termine com uma dica de prova: como a AOCP costuma cobrar o assunto ou a pegadinha mais comum.
+Se ele pedir uma questão, crie uma no estilo AOCP, avise que é "no estilo AOCP — não oficial" e só dê o gabarito depois que ele responder.`;
+
+const SISTEMA_CORRECAO = `Você corrige redações da prova de Soldado da PMPE 2026 (banca Instituto AOCP) pela Tabela 12.2 do edital. Cada aspecto vale de 0 a 10, em passos de 0,5:
+1. Atendimento e desenvolvimento do tema / informatividade e argumentação.
+2. Coesão intra e entre parágrafos (referencial e sequencial, diversificada e recorrente) / coerência (progressão, articulação, não contradição).
+3. Atendimento à estrutura textual proposta: organização do texto dissertativo-argumentativo e dos parágrafos.
+4. Modalidade gramatical: pontuação, grafia, concordância, regência e colocação pronominal.
+Regras do edital: tipologia dissertativo-argumentativa; de 15 a 20 linhas (fora disso perde pontos, e o que passa da 20ª linha é desconsiderado); nota total abaixo de 12 de 40 elimina.
+Nota zero (item 12.8) se: fugir ao tema; não usar a tipologia exigida (narrar, escrever carta, só resumir os textos de apoio); apresentar acentuada desestruturação; identificar-se (nome, assinatura, sinal).
+Seja um corretor exigente e justo, como a banca. Em cada aspecto, explique o desconto citando o trecho exato do texto. Liste os desvios gramaticais com a correção. Escreva tudo em português do Brasil, de forma clara para o estudante.`;
+
+const ESQUEMA_CORRECAO = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['zero', 'motivo_zero', 'linhas', 'aspectos', 'desvios', 'reescrever_primeiro', 'resumo'],
+  properties: {
+    zero: { type: 'boolean' },
+    motivo_zero: { type: 'string' },
+    linhas: { type: 'string' },
+    aspectos: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['nota', 'comentario', 'trechos'],
+        properties: { nota: { type: 'number' }, comentario: { type: 'string' }, trechos: { type: 'array', items: { type: 'string' } } },
+      },
+    },
+    desvios: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['tipo', 'trecho', 'correcao'],
+        properties: {
+          tipo: { type: 'string', enum: ['pontuação', 'grafia', 'concordância', 'regência', 'colocação pronominal', 'outro'] },
+          trecho: { type: 'string' },
+          correcao: { type: 'string' },
+        },
+      },
+    },
+    reescrever_primeiro: { type: 'string' },
+    resumo: { type: 'string' },
+  },
+};
+
+const configIA = () => Object.assign({ chave: '', voz: true, auto: true }, guardado.get('ia', {}));
+let sdkClaude = null;
+
+/* O SDK oficial vem do jsDelivr (versão fixa). Carregado como módulo para o app continuar um script comum. */
+function carregarSdkClaude() {
+  if (sdkClaude) return Promise.resolve(sdkClaude);
+  return new Promise((ok, falha) => {
+    const t = setTimeout(() => falha(new Error('sdk')), 20000);
+    window.addEventListener('sdk-claude', () => { clearTimeout(t); sdkClaude = window.AnthropicSDK; ok(sdkClaude); }, { once: true });
+    const s = document.createElement('script');
+    s.type = 'module';
+    s.textContent = `import * as M from '${URL_SDK_CLAUDE}'; window.AnthropicSDK = M; window.dispatchEvent(new Event('sdk-claude'));`;
+    document.head.appendChild(s);
+  });
+}
+
+async function clienteClaude() {
+  const M = await carregarSdkClaude(); // o módulo inteiro: a classe do cliente e as classes de erro
+  const Cliente = M.Anthropic || M.default;
+  return { Anthropic: M, client: new Cliente({ apiKey: configIA().chave.trim(), dangerouslyAllowBrowser: true }) };
+}
+
+function erroClaude(Anthropic, e) {
+  const de = (nome) => !!(Anthropic && typeof Anthropic[nome] === 'function' && e instanceof Anthropic[nome]);
+  if (de('AuthenticationError')) return 'A chave da API não vale (expirou ou foi copiada errado). Confira em Ajustes do Professor.';
+  if (de('PermissionDeniedError')) return 'A chave não tem permissão para usar este modelo.';
+  if (de('RateLimitError')) return 'Muitas perguntas seguidas ou crédito esgotado na conta da API. Espere um pouco ou confira o saldo.';
+  if (de('BadRequestError')) return `A API recusou o pedido: ${e.message}`;
+  if (de('APIConnectionError')) return 'Sem conexão com a API agora.';
+  if (de('APIError')) return `A API respondeu ${e.status || 'com erro'}. Tente de novo.`;
+  if (e && e.message === 'sdk') return 'Não deu para carregar a ligação com a IA (internet fraca?).';
+  return 'Não deu para falar com a IA agora.';
+}
+
+/* Busca local: os trechos do índice com mais palavras da pergunta, pesadas pela raridade (as palavras raras contam mais). */
+const PARADAS_PROF = new Set(('a o e de da do das dos em no na nos nas um uma uns umas para pra por com que se ao aos as os qual quais como quando onde porque '
+  + 'sobre entre ser sao foi pode podem pela pelo pelas pelos mais menos nao sim isso esse essa este esta isto me meu minha voce explique explica '
+  + 'diferenca significa quero saber fale falar sobre ele ela eles elas tem ter ha').split(' '));
+
+async function trechosParaPergunta(pergunta, max = 8) {
+  let idx;
+  try { idx = await obterIndiceBusca(); } catch { idx = null; }
+  if (!idx) return [];
+  const termos = [...new Set(norm(pergunta).split(/[^a-z0-9º°§]+/)
+    .filter((t) => (t.length >= 3 || /\d/.test(t)) && !PARADAS_PROF.has(t))
+    .map((t) => (t.length > 6 ? t.slice(0, t.length - 2) : t)))];
+  if (!termos.length) return [];
+  const N = idx.norm.length;
+  const pesos = termos.map((t) => {
+    let df = 0;
+    for (const s of idx.norm) if (s.includes(t)) df++;
+    return df ? Math.log(1 + N / df) : 0;
+  });
+  const pont = [];
+  idx.norm.forEach((s, i) => {
+    let sc = 0, hits = 0;
+    termos.forEach((t, k) => { if (pesos[k] && s.includes(t)) { sc += pesos[k]; hits++; } });
+    if (hits) pont.push([(sc * (1 + 0.2 * hits) * (hits === termos.length ? 1.5 : 1)) / Math.sqrt(1 + s.length / 800), i]);
+  });
+  pont.sort((a, b) => b[0] - a[0]);
+  const porDoc = new Map();
+  const out = [];
+  for (const [, i] of pont) {
+    const x = idx.b[i];
+    const id = idx.ids[x[0]];
+    const it = catalogo.docs.find((d) => d.id === id);
+    if (!it || it.categoria === 'plano' || (porDoc.get(id) || 0) >= 3) continue; // plano e edital só repetem o nome do assunto
+    porDoc.set(id, (porDoc.get(id) || 0) + 1);
+    out.push({ id, f: x[1], texto: x[2].length > 1200 ? `${x[2].slice(0, 1200)}…` : x[2], titulo: `${it.subtitulo ? `${it.subtitulo.split(' ').pop()} · ` : ''}${it.titulo}` });
+    if (out.length >= max) break;
+  }
+  return out;
+}
+
+/* Markdown simples da resposta: parágrafos, listas, **negrito** e as citações [n]. */
+function mdResposta(t) {
+  const linhas = esc(t || '').split('\n');
+  let html = '';
+  let lista = '';
+  const fecha = () => { if (lista) { html += `</${lista}>`; lista = ''; } };
+  const inline = (s) => s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[(\d{1,2})\]/g, '<sup class="cita">[$1]</sup>');
+  for (const l of linhas) {
+    const ul = l.match(/^\s*[-*•]\s+(.*)$/);
+    const ol = l.match(/^\s*\d+[.)]\s+(.*)$/);
+    if (ul || ol) {
+      const tipo = ul ? 'ul' : 'ol';
+      if (lista !== tipo) { fecha(); html += `<${tipo}>`; lista = tipo; }
+      html += `<li>${inline((ul || ol)[1])}</li>`;
+    } else if (l.trim()) {
+      fecha();
+      html += `<p>${inline(l.replace(/^#+\s*/, ''))}</p>`;
+    } else fecha();
+  }
+  fecha();
+  return html;
+}
+
+const paraFala = (t) => String(t || '').replace(/\*\*/g, '').replace(/\[(\d{1,2})\]/g, '').replace(/^\s*[-*•]\s+/gm, '').replace(/^#+\s*/gm, '');
+
+function conversaProfessor() {
+  return Object.assign({ msgs: [], vis: [] }, guardado.get('professor', {}));
+}
+
+function htmlTurno(t, i) {
+  const fontes = t.fontes || [];
+  return `<div class="prof-turno">
+    <p class="prof-pergunta">${esc(t.p)}</p>
+    <div class="prof-resposta${t.modo === 'local' ? ' local' : ''}" id="prof-r-${i}">${t.modo === 'local' ? '<p class="prof-selo">Sem IA: trechos da sua base</p>' : ''}${mdResposta(t.r)}</div>
+    ${fontes.length ? `<details class="prof-fontes"${t.modo === 'local' ? ' open' : ''}><summary>Fontes da sua base (${fontes.length})</summary>
+      ${fontes.map((f, k) => `<button class="trecho" data-t="${i}" data-k="${k}"><b>[${k + 1}] ${esc(f.titulo)}</b><br>${esc(f.texto.slice(0, 220))}${f.texto.length > 220 ? '…' : ''}</button>`).join('')}</details>` : ''}
+    <div class="acoes prof-acoes"><button class="btn-link" data-ouvir="${i}">🔊 Ouvir</button></div>
+  </div>`;
+}
+
+function telaProfessor() {
+  pararRelogio();
+  setTopo('Professor', true);
+  const cfg = configIA();
+  const conv = conversaProfessor();
+  const temSR = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+  const sugestoes = ['Qual a diferença entre furto e roubo?', 'Explique os princípios da administração pública (LIMPE)', 'Quando a crase é obrigatória?',
+    'O que diz o Estatuto dos Militares de PE sobre transgressão disciplinar?', 'Me faça uma questão de Direito Constitucional no estilo AOCP'];
+  tela.innerHTML = `
+    ${cfg.chave ? '' : `<p class="aviso">🤖 Sem a chave da API, o Professor responde <b>sem IA</b>, com os trechos da sua base que mais combinam com a pergunta.
+      Para respostas explicadas pela IA, ponha a chave em <a href="#" id="prof-abrir-aj">Ajustes do Professor</a>.</p>`}
+    <div id="prof-conversa">${conv.vis.length ? conv.vis.map(htmlTurno).join('')
+      : `<p class="aviso">Pergunte por voz ou por texto sobre qualquer assunto do edital. A resposta usa a sua base de estudo e cita de onde veio.</p>
+        <div class="chips">${sugestoes.map((s) => `<button class="chip" data-sug="${esc(s)}">${esc(s)}</button>`).join('')}</div>`}</div>
+    <form class="prof-caixa" id="prof-form">
+      ${temSR ? '<button type="button" class="btn prof-mic" id="prof-mic" aria-label="Perguntar falando">🎤</button>' : ''}
+      <textarea id="prof-texto" rows="2" placeholder="Sua pergunta…" aria-label="Sua pergunta"></textarea>
+      <button type="submit" class="btn primario" id="prof-enviar">Enviar</button>
+    </form>
+    <p class="aviso" id="prof-aviso" aria-live="polite"></p>
+    <div class="acoes">
+      ${conv.vis.length ? '<button class="btn" id="prof-nova">🧹 Nova conversa</button>' : ''}
+    </div>
+    <details class="prof-ajustes" id="prof-ajustes"><summary>⚙ Ajustes do Professor</summary>
+      <div class="filtros">
+        <label>Chave da API da Anthropic
+          <input type="password" id="prof-chave" autocomplete="off" spellcheck="false" placeholder="sk-ant-…" value="${esc(cfg.chave)}"></label>
+        <label class="check"><input type="checkbox" id="prof-voz" ${cfg.voz ? 'checked' : ''}> Ler a resposta em voz alta</label>
+        <label class="check"><input type="checkbox" id="prof-auto" ${cfg.auto ? 'checked' : ''}> Ao perguntar falando, enviar sozinho quando eu parar de falar</label>
+      </div>
+      <div class="acoes"><button class="btn primario" id="prof-salvar">Salvar</button>${cfg.chave ? '<button class="btn" id="prof-tirar">Tirar a chave deste celular</button>' : ''}</div>
+      <p class="aviso">Como conseguir a chave: crie uma conta em console.anthropic.com, ponha crédito (o uso é pago à parte, não entra em plano do claude.ai)
+        e crie uma chave em Settings → API Keys. Cada pergunta custa em média alguns centavos de dólar; a correção de uma redação, um pouco mais.
+        A chave fica só neste celular e não entra na cópia de segurança. A pergunta, os trechos da base e as redações que você mandar corrigir vão para a Anthropic.</p>
+    </details>`;
+
+  const conversa = $('#prof-conversa');
+  const texto = $('#prof-texto');
+  const aviso = $('#prof-aviso');
+  const ligarTurnos = () => {
+    conversa.querySelectorAll('.trecho').forEach((b) => b.addEventListener('click', () => {
+      const f = conversaProfessor().vis[Number(b.dataset.t)].fontes[Number(b.dataset.k)];
+      irParaDestaque = { id: f.id, h: { f: f.f, texto: f.texto }, confiarF: true };
+      location.hash = `#/doc/${encodeURIComponent(f.id)}`;
+    }));
+    conversa.querySelectorAll('[data-ouvir]').forEach((b) => b.addEventListener('click', () => {
+      const t = conversaProfessor().vis[Number(b.dataset.ouvir)];
+      if (foneAtivo) pararFone(); else falarFone([paraFala(t.r)]);
+    }));
+  };
+  ligarTurnos();
+  conversa.querySelectorAll('[data-sug]').forEach((b) => b.addEventListener('click', () => { texto.value = b.dataset.sug; enviar(); }));
+  const aj = $('#prof-abrir-aj');
+  if (aj) aj.addEventListener('click', (e) => { e.preventDefault(); $('#prof-ajustes').open = true; $('#prof-chave').focus(); });
+
+  async function enviar() {
+    const p = texto.value.trim();
+    if (!p || $('#prof-enviar').disabled) return;
+    if (foneAtivo) pararFone();
+    const c = conversaProfessor();
+    if (c.vis.length >= MAX_TURNOS_PROFESSOR) { // conversa longa: recomeça (a IA não edita o histórico, só começa outro)
+      guardado.set('professor', { msgs: [], vis: [] });
+      aviso.textContent = 'A conversa anterior ficou longa; comecei uma nova.';
+    }
+    const conv2 = conversaProfessor();
+    texto.value = '';
+    $('#prof-enviar').disabled = true;
+    if (!conv2.vis.length) conversa.innerHTML = '';
+    const i = conv2.vis.length;
+    const fontes = await trechosParaPergunta(p);
+    const turno = { p, r: '', fontes, modo: 'ia' };
+    conversa.insertAdjacentHTML('beforeend', htmlTurno(turno, i));
+    const caixa = $(`#prof-r-${i}`);
+    caixa.innerHTML = '<p class="aviso">Pensando…</p>';
+    caixa.scrollIntoView({ block: 'start', behavior: 'smooth' });
+
+    const usarIA = configIA().chave && navigator.onLine;
+    let Anthropic = null;
+    if (usarIA) {
+      const conteudo = `${fontes.length ? `Trechos da base de estudo:\n${fontes.map((f, k) => `[${k + 1}] ${f.titulo}\n${f.texto}`).join('\n\n')}\n\n` : 'Nenhum trecho da base combinou com a pergunta.\n\n'}Pergunta: ${p}`;
+      const msgs = conv2.msgs.concat([{ role: 'user', content: conteudo }]);
+      try {
+        const cc = await clienteClaude();
+        Anthropic = cc.Anthropic;
+        const stream = cc.client.beta.messages.stream({
+          model: MODELO_PROFESSOR,
+          max_tokens: 16000,
+          betas: ['server-side-fallback-2026-07-01'],
+          fallbacks: 'default',
+          output_config: { effort: 'low' },
+          system: SISTEMA_PROFESSOR,
+          messages: msgs,
+        });
+        stream.on('text', (d) => { turno.r += d; caixa.innerHTML = mdResposta(turno.r); });
+        const msg = await stream.finalMessage();
+        if (msg.stop_reason === 'refusal') {
+          turno.r = 'A IA não quis responder a esta pergunta. Tente perguntar de outro jeito.';
+        } else {
+          turno.r = msg.content.filter((b) => b.type === 'text').map((b) => b.text).join('');
+          conv2.msgs = msgs.concat([{ role: 'assistant', content: msg.content }]); // o conteúdo volta inteiro, sem editar
+        }
+      } catch (e) {
+        turno.modo = 'local';
+        turno.r = `${erroClaude(Anthropic, e)} Abaixo, os trechos da sua base.`;
+      }
+    } else {
+      turno.modo = 'local';
+      turno.r = configIA().chave ? 'Sem internet agora: abaixo, os trechos da sua base que mais combinam com a pergunta.' : 'Os trechos da sua base que mais combinam com a pergunta estão abaixo.';
+    }
+    if (turno.modo === 'local') {
+      turno.r += fontes.length ? `\n\n${fontes.slice(0, 3).map((f, k) => `[${k + 1}] **${f.titulo}**: ${f.texto}`).join('\n\n')}` : '\n\nNenhum trecho da base combinou. Tente outras palavras.';
+    }
+    conv2.vis.push(turno);
+    guardado.set('professor', conv2);
+    const div = caixa.closest('.prof-turno');
+    div.outerHTML = htmlTurno(turno, i);
+    ligarTurnos();
+    $('#prof-enviar').disabled = false;
+    if (configIA().voz && turno.r && location.hash === '#/professor') falarFone([paraFala(turno.modo === 'local' ? turno.r.split('\n\n').slice(0, 2).join(' ') : turno.r)]);
+  }
+
+  $('#prof-form').addEventListener('submit', (e) => { e.preventDefault(); enviar(); });
+  texto.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviar(); } });
+  const mic = $('#prof-mic');
+  if (mic) {
+    mic.addEventListener('click', () => {
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (foneAtivo) pararFone();
+      const r = new SR();
+      r.lang = 'pt-BR';
+      r.interimResults = true;
+      let final = false;
+      r.onresult = (e) => {
+        texto.value = [...e.results].map((x) => x[0].transcript).join('');
+        final = e.results[e.results.length - 1].isFinal;
+      };
+      r.onerror = (e) => { aviso.textContent = e.error === 'not-allowed' ? 'Permita o uso do microfone para perguntar falando.' : 'Não entendi. Tente de novo.'; };
+      r.onend = () => {
+        mic.classList.remove('gravando');
+        mic.textContent = '🎤';
+        if (final && configIA().auto && texto.value.trim()) enviar();
+      };
+      mic.classList.add('gravando');
+      mic.textContent = '⏺';
+      aviso.textContent = 'Pode falar…';
+      try { r.start(); } catch { mic.classList.remove('gravando'); }
+    });
+  }
+  const nova = $('#prof-nova');
+  if (nova) nova.addEventListener('click', () => { guardado.set('professor', { msgs: [], vis: [] }); telaProfessor(); });
+  $('#prof-salvar').addEventListener('click', () => {
+    guardado.set('ia', { chave: $('#prof-chave').value.trim(), voz: $('#prof-voz').checked, auto: $('#prof-auto').checked });
+    telaProfessor();
+  });
+  const tirar = $('#prof-tirar');
+  if (tirar) tirar.addEventListener('click', () => { const c = configIA(); c.chave = ''; guardado.set('ia', c); telaProfessor(); });
+}
+
+/* Correção da redação pela IA, no formato da Tabela 12.2 (resposta em JSON validada aqui). */
+async function corrigirRedacaoIA(r) {
+  const c = contarLinhas(r.texto || '');
+  let Anthropic = null;
+  try {
+    const cc = await clienteClaude();
+    Anthropic = cc.Anthropic;
+    const stream = cc.client.beta.messages.stream({
+      model: MODELO_PROFESSOR,
+      max_tokens: 32000,
+      betas: ['server-side-fallback-2026-07-01'],
+      fallbacks: 'default',
+      output_config: { effort: 'medium', format: { type: 'json_schema', schema: ESQUEMA_CORRECAO } },
+      system: SISTEMA_CORRECAO,
+      messages: [{ role: 'user', content: `Proposta: ${r.tema || 'tema livre'}.\nO app estima ${c.linhas} linhas na folha (${c.paragrafos} parágrafos, ${c.palavras} palavras); comente se fica entre 15 e 20.\n\nRedação:\n${r.texto}` }],
+    });
+    const msg = await stream.finalMessage();
+    if (msg.stop_reason === 'refusal') throw new Error('recusa');
+    if (msg.stop_reason === 'max_tokens') throw new Error('cortada');
+    const d = JSON.parse(msg.content.filter((b) => b.type === 'text').map((b) => b.text).join(''));
+    if (!Array.isArray(d.aspectos) || d.aspectos.length !== 4) throw new Error('formato');
+    d.aspectos.forEach((a) => { a.nota = d.zero ? 0 : Math.max(0, Math.min(10, Math.round(Number(a.nota) * 2) / 2 || 0)); });
+    d.data = Date.now();
+    return d;
+  } catch (e) {
+    if (e.message === 'recusa') throw new Error('A IA não quis corrigir este texto.');
+    if (e.message === 'cortada' || e.message === 'formato' || e instanceof SyntaxError) throw new Error('A correção veio incompleta. Tente de novo.');
+    throw new Error(erroClaude(Anthropic, e));
+  }
+}
+
+function htmlCorrecaoIA(d) {
+  const total = d.aspectos.reduce((t, a) => t + a.nota, 0);
+  return `<div class="prof-correcao">
+    <div class="q-veredito ${total >= 12 && !d.zero ? 'ok' : 'erro'}">Professor (IA): ${fmtNota(total)} de 40${d.zero ? ` · nota zero: ${esc(d.motivo_zero)}` : total < 12 ? ' · abaixo de 12: eliminaria' : ''}</div>
+    <p class="aviso">${esc(d.linhas)}</p>
+    ${d.aspectos.map((a, k) => `<div class="prof-aspecto"><b>${esc(ASPECTOS[k])}: ${fmtNota(a.nota)}</b><p>${esc(a.comentario)}</p>
+      ${a.trechos.length ? `<ul>${a.trechos.map((t) => `<li>“${esc(t)}”</li>`).join('')}</ul>` : ''}</div>`).join('')}
+    ${d.desvios.length ? `<h3>Desvios de gramática</h3><ul class="prof-desvios">${d.desvios.map((x) => `<li><b>${esc(x.tipo)}</b>: “${esc(x.trecho)}” → ${esc(x.correcao)}</li>`).join('')}</ul>` : ''}
+    <p><b>Reescreva primeiro:</b> ${esc(d.reescrever_primeiro)}</p>
+    <p>${esc(d.resumo)}</p>
+    <p class="rodape">Correção feita por IA, no estilo da banca: use como treino. A nota oficial só vem da AOCP.</p>
+  </div>`;
 }
 
 /* ---------- relatório para o Orquestrador (e envio ao GitHub) ---------- */
@@ -5083,7 +5490,7 @@ aplicarLargura(guardado.get('larguraTexto', 'media'));
    espera: mostra um aviso no topo e recarrega no toque. */
 function aplicarVersaoNova() {
   // não recarrega no meio de algo em andamento: áudio, leitura no fone, simulado, questões, flashcards ou redação
-  const ocupado = /^#\/(simulado\/(fazer|folha)|questoes\/resolver|cartoes\/estudar|redacao\/escrever|cronometro)/.test(location.hash || '');
+  const ocupado = /^#\/(simulado\/(fazer|folha)|questoes\/resolver|cartoes\/estudar|redacao\/(escrever|ver)|cronometro|professor)/.test(location.hash || '');
   if (!estaTocando() && !foneAtivo && !ocupado) { location.reload(); return; }
   if ($('#versao-nova')) return;
   const b = document.createElement('button');
