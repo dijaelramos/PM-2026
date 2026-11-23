@@ -174,6 +174,8 @@ function rota() {
   if (h === '#/destaques') { telaDestaques(); return; }
   if (h === '#/questoes/resolver') { telaResolver(); return; }
   if (h === '#/questoes/banco') { telaBanco(); return; }
+  const li = h.match(/^#\/lista\/(\w+)$/);
+  if (li) { telaLista(li[1]); return; }
   if (h === '#/edital') { telaEdital(); return; }
   if (h === '#/redacao') { telaRedacao(); return; }
   if (h === '#/redacao/escrever') { telaRedacaoEscrever(); return; }
@@ -424,6 +426,56 @@ function gradeEstudo() {
   return `<div class="grade-estudo">${blocos.join('')}</div>`;
 }
 
+/* As listas longas ficam atrás de botões na tela inicial; cada uma abre a sua tela (#/lista/...). */
+const LISTAS = { revisoes: 'Revisão rápida', materiais: 'Material do Dia', extras: 'Plano, edital e extras', base: 'Base de Conhecimento' };
+
+function bibliotecaHome(revisoes, materiais, extras, base) {
+  const semana = revisoesDaSemana();
+  const feitos = materiais.filter(concluido).length;
+  const blocos = [];
+  if (revisoes.length) blocos.push(blocoEstudo('#/lista/revisoes', '⚡', 'Revisão rápida', semana.length ? `${semana.length} da semana · ${minutos(semana.reduce((t, d) => t + d.audio.duracao, 0))}` : `${revisoes.length} revisões`));
+  if (materiais.length) blocos.push(blocoEstudo('#/lista/materiais', '📅', 'Material do Dia', `${materiais.length} materiais · ${feitos} concluídos`));
+  if (extras.length) blocos.push(blocoEstudo('#/lista/extras', '📋', 'Plano, edital e extras', `${extras.length} documentos`));
+  if (base.length) blocos.push(blocoEstudo('#/lista/base', '📖', 'Base de Conhecimento', `${base.length} textos e leis`));
+  return blocos.length ? `<h2 class="secao">Biblioteca</h2><div class="grade-estudo">${blocos.join('')}</div>` : '';
+}
+
+function telaLista(tipo) {
+  if (!LISTAS[tipo] || !catalogo) { location.hash = '#/'; return; }
+  pararRelogio();
+  setTopo(LISTAS[tipo], true);
+  const d = catalogo.docs;
+  let html = '';
+  if (tipo === 'revisoes') {
+    const semana = revisoesDaSemana();
+    const dur = semana.reduce((t, x) => t + x.audio.duracao, 0);
+    html = `${semana.length > 1 ? `<button class="btn primario largo" id="b-semana">▶ Ouvir em sequência as revisões dos últimos 7 dias (${semana.length} · ${minutos(dur)})</button>` : ''}
+      <p class="aviso">A revisão rápida de cada material tem só o "Para levar para a prova", os quadros e as pegadinhas, de 5 a 15 minutos.</p>
+      ${d.filter((x) => x.categoria === 'revisao').map(cartaoMaterial).join('')}`;
+  } else if (tipo === 'materiais') {
+    const mats = d.filter((x) => x.categoria === 'material' && x.data);
+    const porMes = new Map();
+    for (const m of mats) {
+      const k = new Date(`${m.data}T12:00:00`).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+      if (!porMes.has(k)) porMes.set(k, []);
+      porMes.get(k).push(m);
+    }
+    html = [...porMes].map(([mes, l]) => `<h2 class="secao">${esc(mes)}</h2>${l.map(cartaoMaterial).join('')}`).join('');
+  } else if (tipo === 'extras') {
+    html = grupos(d.filter((x) => x.categoria === 'plano' || (x.categoria === 'material' && !x.data)), true);
+  } else {
+    html = grupos(d.filter((x) => x.categoria === 'base'), false);
+  }
+  tela.innerHTML = html || '<p class="aviso">Nada por aqui ainda.</p>';
+  window.scrollTo(0, 0);
+  const bs = $('#b-semana');
+  if (bs) {
+    const semana = revisoesDaSemana();
+    semana.forEach((it) => obterDoc(it).catch(() => {}));
+    bs.addEventListener('click', () => tocarSequencia(semana));
+  }
+}
+
 function desenharLista(filtro) {
   const f = norm(filtro).trim();
   const itens = catalogo.docs.filter((d) => !f || norm(`${d.titulo} ${d.grupo || ''} ${d.subtitulo || ''}`).includes(f));
@@ -446,10 +498,14 @@ function desenharLista(filtro) {
       <div class="corpo"><strong>${esc(itUlt.titulo)}</strong><span class="meta">${esc(ultimo.onde || '')}</span></div><span aria-hidden="true">▶</span></a>`;
   }
   if (!f) html += `<h2 class="secao">Seu estudo</h2>${gradeEstudo()}`;
-  if (revisoes.length) html += secaoRevisoes(revisoes, !!f);
-  if (materiais.length) html += `<h2 class="secao">Material do Dia</h2>${materiais.map(cartaoMaterial).join('')}`;
-  if (extras.length || plano.length) html += `<h2 class="secao">Plano, edital e extras</h2>${grupos([...plano, ...extras], !!f)}`;
-  if (base.length) html += `<h2 class="secao">Base de Conhecimento</h2>${grupos(base, !!f)}`;
+  if (f) { // buscando: mostra os resultados de cada lista
+    if (revisoes.length) html += secaoRevisoes(revisoes, true);
+    if (materiais.length) html += `<h2 class="secao">Material do Dia</h2>${materiais.map(cartaoMaterial).join('')}`;
+    if (extras.length || plano.length) html += `<h2 class="secao">Plano, edital e extras</h2>${grupos([...plano, ...extras], true)}`;
+    if (base.length) html += `<h2 class="secao">Base de Conhecimento</h2>${grupos(base, true)}`;
+  } else {
+    html += bibliotecaHome(revisoes, materiais, [...plano, ...extras], base);
+  }
   if (!itens.length) html = f.length >= 3 ? '<p class="aviso">Nenhum título com esse nome.</p>' : '<p class="aviso">Nada encontrado.</p>';
   if (f.length >= 3) html += '<div id="busca-textos" aria-live="polite"><p class="aviso">Buscando dentro dos textos…</p></div>';
   $('#lista').innerHTML = html;
