@@ -105,7 +105,7 @@ async function sincronizar() {
 function setStatus(t) {
   statusSync = t;
   const el = $('#status-sync');
-  if (el) el.textContent = textoStatus();
+  if (el) el.textContent = el.classList.contains('status-curto') ? statusSync : textoStatus(); // na tela inicial, só durante a sincronização
 }
 function textoStatus() {
   if (statusSync) return statusSync;
@@ -176,6 +176,7 @@ function rota() {
   if (h === '#/questoes/banco') { telaBanco(); return; }
   const li = h.match(/^#\/lista\/(\w+)$/);
   if (li) { telaLista(li[1]); return; }
+  if (h === '#/ajustes') { telaAjustes(); return; }
   if (h === '#/edital') { telaEdital(); return; }
   if (h === '#/redacao') { telaRedacao(); return; }
   if (h === '#/redacao/escrever') { telaRedacaoEscrever(); return; }
@@ -300,24 +301,10 @@ function telaInicio() {
       </label>
     </div>
     <div id="lista"></div>
-    <div class="rodape">
-      <div id="status-sync">${esc(textoStatus())}</div>
-      <label>Ao terminar um áudio:
-        <select id="ao-terminar">
-          <option value="seguir">tocar a revisão e o próximo material</option>
-          <option value="revisao">tocar só a revisão do material</option>
-          <option value="parar">parar</option>
-        </select></label><br>
-      <label><input id="auto" type="checkbox" ${guardado.get('autoBaixar', true) ? 'checked' : ''}> Baixar sozinho o áudio das 5 revisões e dos 3 materiais mais recentes</label>
-      <div><a class="btn-link" href="#/dados">💾 Meus dados e cópia de segurança</a></div>
-    </div>`;
+    <div class="rodape"><div id="status-sync" class="status-curto">${esc(statusSync)}</div></div>`;
   const busca = $('#busca');
   busca.value = guardado.get('busca', '');
   busca.addEventListener('input', () => { guardado.set('busca', busca.value); desenharLista(busca.value); });
-  const sel = $('#ao-terminar');
-  sel.value = aoTerminar();
-  sel.addEventListener('change', () => { guardado.set('aoTerminar', sel.value); if (player.item) mostrarASeguir(); });
-  $('#auto').addEventListener('change', (e) => { guardado.set('autoBaixar', e.target.checked); if (e.target.checked) sincronizar(); });
   desenharLista(busca.value);
   requestAnimationFrame(() => window.scrollTo(0, rolagemInicio));
 }
@@ -437,7 +424,47 @@ function bibliotecaHome(revisoes, materiais, extras, base) {
   if (materiais.length) blocos.push(blocoEstudo('#/lista/materiais', '📅', 'Material do Dia', `${materiais.length} materiais · ${feitos} concluídos`));
   if (extras.length) blocos.push(blocoEstudo('#/lista/extras', '📋', 'Plano, edital e extras', `${extras.length} documentos`));
   if (base.length) blocos.push(blocoEstudo('#/lista/base', '📖', 'Base de Conhecimento', `${base.length} textos e leis`));
+  blocos.push(blocoEstudo('#/ajustes', '⚙', 'Ajustes', 'áudio e conteúdo'));
   return blocos.length ? `<h2 class="secao">Biblioteca</h2><div class="grade-estudo">${blocos.join('')}</div>` : '';
+}
+
+function telaAjustes() {
+  pararRelogio();
+  setTopo('Ajustes', true);
+  tela.innerHTML = `
+    <h2 class="secao">Áudio</h2>
+    <div class="filtros">
+      <label>Ao terminar um áudio
+        <select id="ao-terminar">
+          <option value="seguir">tocar a revisão e o próximo material</option>
+          <option value="revisao">tocar só a revisão do material</option>
+          <option value="parar">parar</option>
+        </select></label>
+      <label class="check"><input id="auto" type="checkbox" ${guardado.get('autoBaixar', true) ? 'checked' : ''}> Baixar sozinho o áudio das 5 revisões e dos 3 materiais mais recentes</label>
+    </div>
+    <h2 class="secao">Conteúdo</h2>
+    <p class="aviso" id="status-sync">${esc(textoStatus())}</p>
+    <div class="acoes"><button class="btn" id="aj-sincronizar">🔄 Procurar conteúdo novo agora</button></div>
+    <h2 class="secao">Mais</h2>
+    <div class="acoes">
+      <a class="btn" href="#/dados">💾 Meus dados, cópia de segurança e relatório</a>
+      <a class="btn" href="#/progresso">🎯 Meta do dia</a>
+    </div>
+    <p class="rodape">Tema claro ou escuro e tamanho do texto: botões ☀ e Aa no topo.</p>`;
+  const sel = $('#ao-terminar');
+  sel.value = aoTerminar();
+  sel.addEventListener('change', () => { guardado.set('aoTerminar', sel.value); if (player.item) mostrarASeguir(); });
+  $('#auto').addEventListener('change', (e) => { guardado.set('autoBaixar', e.target.checked); if (e.target.checked) sincronizar(); });
+  $('#aj-sincronizar').addEventListener('click', async () => {
+    if (!navigator.onLine) { setStatus('Sem internet agora.'); return; }
+    await carregarCatalogo();
+    await sincronizar();
+    setStatus('');
+    if (navigator.serviceWorker && navigator.serviceWorker.getRegistration) {
+      const reg = await navigator.serviceWorker.getRegistration();
+      if (reg) reg.update().catch(() => {});
+    }
+  });
 }
 
 function telaLista(tipo) {
@@ -4935,8 +4962,27 @@ aplicarLargura(guardado.get('larguraTexto', 'media'));
 
 /* ---------- início ---------- */
 
+/* Versão nova do app (service worker novo assumiu): recarrega para usar o código novo. Se algo estiver tocando,
+   espera: mostra um aviso no topo e recarrega no toque. */
+function aplicarVersaoNova() {
+  if (!estaTocando() && !(location.hash || '').startsWith('#/simulado/fazer')) { location.reload(); return; }
+  if ($('#versao-nova')) return;
+  const b = document.createElement('button');
+  b.id = 'versao-nova';
+  b.className = 'versao-nova';
+  b.textContent = '✨ Versão nova do app: toque para atualizar';
+  b.addEventListener('click', () => location.reload());
+  document.body.appendChild(b);
+}
+
 (async function iniciar() {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+  if ('serviceWorker' in navigator) {
+    const tinha = !!navigator.serviceWorker.controller; // na 1ª visita a troca de controle não é versão nova
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (tinha) aplicarVersaoNova(); });
+    navigator.serviceWorker.register('sw.js').then((reg) => {
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg.update().catch(() => {}); });
+    }).catch(() => {});
+  }
   atualizarRede();
   await carregarCatalogo();
   rota();

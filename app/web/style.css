@@ -593,3 +593,8 @@ article strong[data-inc]::after { content: " 🔥" attr(data-inc); font-size: .7
 .bloco-tit { font-weight: 700; }
 .bloco-selo { font-size: 12px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: var(--destaque); color: #1b1300; }
 .bloco-linha { font-size: 13px; color: var(--suave); }
+
+.status-curto:empty { display: none; }
+.versao-nova { position: fixed; left: 50%; transform: translateX(-50%); top: calc(64px + env(safe-area-inset-top)); z-index: 40;
+  border: 0; border-radius: 999px; padding: 10px 18px; background: var(--destaque); color: #1b1300; font-weight: 700; box-shadow: 0 4px 14px rgba(0,0,0,.3); }
+.bloco { min-height: 84px; }
