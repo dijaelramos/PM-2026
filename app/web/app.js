@@ -320,6 +320,110 @@ function telaInicio() {
   requestAnimationFrame(() => window.scrollTo(0, rolagemInicio));
 }
 
+/* ---------- tela inicial: painel de hoje e blocos do estudo ---------- */
+
+function aneisMeta() {
+  const m = metaDia();
+  if (!m.min && !m.q && !m.k) return { html: '', feito: false };
+  const p = progressoMeta();
+  const partes = [m.min ? anel(p.min, m.min, 'estudo', 'min') : '', m.q ? anel(p.q, m.q, 'questões', '') : '', m.k ? anel(p.k, m.k, 'flashcards', '') : ''].filter(Boolean);
+  const feito = (!m.min || p.min >= m.min) && (!m.q || p.q >= m.q) && (!m.k || p.k >= m.k);
+  return { html: `<a class="hoje-meta" href="#/progresso" aria-label="Meta do dia. Toque para mudar"><span class="hoje-meta-tit">${feito ? '🎉 Meta cumprida' : 'Meta do dia'}</span><div class="aneis">${partes.join('')}</div></a>`, feito };
+}
+
+function painelHoje() {
+  const hoje = dataISO();
+  const plano = catalogo.plano || {};
+  const faltam = plano.prova ? diasEntre(hoje, plano.prova) : null;
+  const seq = sequencia();
+  const sessoes = sessoesDeEstudo().filter((s) => s.data === hoje);
+  const mats = catalogo.docs.filter((d) => d.categoria === 'material' && d.data === hoje);
+  const mat = mats.find((d) => !/^Resumão/.test(d.titulo)) || mats[0];
+  const resumao = mats.find((d) => /^Resumão/.test(d.titulo));
+  const dia = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit' });
+  const acoes = [];
+  if (mat) {
+    const id = encodeURIComponent(mat.id);
+    acoes.push(`<a class="btn primario" href="#/doc/${id}">${concluido(mat) ? '✓ Estudado · rever' : `📖 Estudar${mat.audio ? ` · ${minutos(mat.audio.duracao)} de áudio` : ''}`}</a>`);
+    const cad = linkCaderno(mat);
+    if (cad) acoes.push(cad);
+    if (!cronoAtivo() && blocosDoItem(mat) && !concluido(mat)) acoes.push(`<a class="btn" href="#/cronometro/${id}">⏱ Cronômetro da sessão</a>`);
+  }
+  if (cronoAtivo()) {
+    acoes.push(`<a class="btn" href="#/cronometro">⏱ ${esc(crono.blocos[crono.idx].titulo.split(' — ')[0])} · ${crono.desde ? `faltam ${Math.ceil(restanteBloco() / 60000)} min` : 'pausado'}</a>`);
+  }
+  if (resumao && resumao !== mat) acoes.push(`<a class="btn" href="#/doc/${encodeURIComponent(resumao.id)}">📚 Resumão</a>`);
+  const red = sessoes.find((s) => s.r > 0);
+  if (guardado.get('redacaoAtual', null)) acoes.push('<a class="btn" href="#/redacao/escrever">✒ Continuar a redação</a>');
+  else if (red && !redacoes().some((r) => r.data === hoje)) acoes.push(`<a class="btn" href="#/redacao">✒ Redação · ${fmtMin(Math.round(red.r * 60))}</a>`);
+
+  let titulo;
+  let sub = '';
+  if (sessoes.length) {
+    titulo = esc([...new Set(sessoes.map((s) => s.disciplina))].join(' + '));
+    const t = sessoes.map((s) => s.topicos).filter(Boolean)[0] || '';
+    sub = esc(t.replace(/^ite(?:m|ns)\s+[\d\s,e\-–]+:\s*/i, '').replace(/\s*Foco dia.*$/i, '')).slice(0, 170);
+  } else {
+    const prox = sessoesDeEstudo().find((s) => s.data > hoje);
+    titulo = 'Sem sessão do plano hoje';
+    sub = prox ? `Próxima: ${esc(dataCurta(prox.data))} · ${esc(prox.disciplina)}. Bom dia para revisar: flashcards, erros e o resumão.` : '';
+  }
+  const meta = aneisMeta();
+  return `<section class="hoje" aria-label="Hoje">
+    <div class="hoje-corpo">
+      <a class="hoje-topo" href="#/progresso">${esc(dia)}${faltam != null && faltam >= 0 ? ` · <b>${faltam === 0 ? 'dia da prova' : `${faltam} ${faltam === 1 ? 'dia' : 'dias'} para a prova`}</b>` : ''}${seq ? ` · 🔥 ${seq} ${seq === 1 ? 'dia seguido' : 'dias seguidos'}` : ''}</a>
+      <h2 class="hoje-titulo">${titulo}</h2>
+      ${sub ? `<p class="hoje-sub">${sub}</p>` : ''}
+      ${acoes.length ? `<div class="hoje-acoes">${acoes.join('')}</div>` : ''}
+    </div>
+    ${meta.html}
+  </section>`;
+}
+
+function blocoEstudo(href, icone, titulo, linha, selo = '', id = '') {
+  return `<a class="bloco" href="${href}"><span class="bloco-icone" aria-hidden="true">${icone}</span>
+    <span class="bloco-tit">${esc(titulo)}${selo ? ` <span class="bloco-selo">${esc(selo)}</span>` : ''}</span>
+    <span class="bloco-linha"${id ? ` id="${id}"` : ''}>${esc(linha)}</span></a>`;
+}
+
+function gradeEstudo() {
+  const hoje = dataISO();
+  const totalQ = (catalogo.questoes ? catalogo.questoes.total : 0) + (catalogo.banco ? catalogo.banco.total : 0);
+  const resp = Object.values(respostas());
+  const revisar = Object.values(revErros()).filter((e) => e.p <= hoje).length;
+  const blocos = [];
+  if (totalQ) blocos.push(blocoEstudo('#/questoes', '✍', 'Questões', `${resp.length} de ${totalQ} resolvidas`, revisar ? `🔁 ${revisar}` : ''));
+  if (catalogo.cartoes && catalogo.cartoes.total) {
+    blocos.push(blocoEstudo('#/cartoes', '🃏', 'Flashcards', `${catalogo.cartoes.total} cartões`, '', 'home-cartoes'));
+    obterCartoes().then((lista) => {
+      const el = $('#home-cartoes');
+      if (!el) return;
+      const { vencidos, novos } = filaCartoes(lista, true);
+      el.textContent = vencidos.length + novos.length ? `${vencidos.length + novos.length} para hoje` : 'tudo revisado hoje ✓';
+    }).catch(() => {});
+  }
+  const sim = simAtual();
+  const proxSim = (catalogo.simulados || []).find((s) => s.data >= hoje);
+  blocos.push(blocoEstudo(sim ? `#/simulado/${sim.tipo === 'folha' || sim.papel ? 'folha' : 'fazer'}` : '#/simulado', '⏱', 'Simulado',
+    sim ? 'em andamento' : proxSim ? `${proxSim.nome} em ${diasEntre(hoje, proxSim.data)} dias` : `${historicoSim().length} feitos`));
+  const reds = redacoes();
+  const nota = reds.filter((r) => r.notas).pop();
+  blocos.push(blocoEstudo('#/redacao', '✒', 'Redação', nota ? `última nota ${fmtNota(totalNotas(nota.notas))}/40` : `${reds.length} ${reds.length === 1 ? 'escrita' : 'escritas'}`));
+  const ed = catalogo.edital || [];
+  if (ed.length) {
+    const mats = materiaisPorData();
+    const marcas = marcasEdital();
+    const n = ed.filter((it) => situacaoItem(it, hoje, mats, marcas).estudado).length;
+    blocos.push(blocoEstudo('#/edital', '🧭', 'Edital', `${n} de ${ed.length} itens estudados`));
+  }
+  blocos.push(blocoEstudo('#/progresso', '📊', 'Progresso', `${Math.round(Object.values(guardado.get('atividade', {})).reduce((t, a) => t + Math.max(a.s || 0, a.c || 0), 0) / 3600)} h no app`));
+  const nDest = contarDestaques();
+  if (nDest) blocos.push(blocoEstudo('#/destaques', '🖍', 'Destaques', `${nDest} ${nDest === 1 ? 'trecho' : 'trechos'}`));
+  const ult = guardado.get('ultimoBackup', null);
+  blocos.push(blocoEstudo('#/dados', '💾', 'Meus dados', ult ? `cópia de ${dataCurta(ult)}` : 'sem cópia ainda'));
+  return `<div class="grade-estudo">${blocos.join('')}</div>`;
+}
+
 function desenharLista(filtro) {
   const f = norm(filtro).trim();
   const itens = catalogo.docs.filter((d) => !f || norm(`${d.titulo} ${d.grupo || ''} ${d.subtitulo || ''}`).includes(f));
@@ -330,26 +434,18 @@ function desenharLista(filtro) {
   const base = itens.filter((d) => d.categoria === 'base');
   let html = '';
 
+  if (!f) {
+    html += painelHoje();
+    const avisos = resumoRetaHome() + resumoConviteHome() + resumoSimuladoHome() + resumoRelatorioHome() + resumoBackupHome();
+    if (avisos) html += `<div class="avisos-home">${avisos}</div>`;
+  }
   const ultimo = guardado.get('ultimo', null);
   const itUlt = !f && ultimo && catalogo.docs.find((d) => d.id === ultimo.id);
   if (itUlt) {
-    html += `<h2 class="secao">Continuar</h2>
-      <a class="cartao continuar" href="#/doc/${encodeURIComponent(itUlt.id)}">
-      <div class="corpo"><strong>${esc(itUlt.titulo)}</strong><span class="meta">${esc(ultimo.onde || '')}</span></div><span>▶</span></a>`;
+    html += `<a class="cartao continuar" href="#/doc/${encodeURIComponent(itUlt.id)}"><span class="continuar-rot">Continuar</span>
+      <div class="corpo"><strong>${esc(itUlt.titulo)}</strong><span class="meta">${esc(ultimo.onde || '')}</span></div><span aria-hidden="true">▶</span></a>`;
   }
-  if (!f) {
-    const nDest = contarDestaques();
-    const blocos = resumoRetaHome() + resumoMetaHome() + resumoConviteHome() + resumoSimuladoHome() + resumoRedacaoHome() + resumoCronoHome() + resumoProgressoHome() + resumoEditalHome() + resumoQuestoesHome() + resumoCartoesHome() + (nDest ? `<a class="cartao cartao-q" href="#/destaques">
-      <div class="icone-q" aria-hidden="true">🖍</div><div class="corpo"><strong>Meus destaques</strong>
-      <span class="meta">${nDest} ${nDest === 1 ? 'trecho destacado' : 'trechos destacados'}, por disciplina</span></div><span aria-hidden="true">›</span></a>` : '') + resumoRelatorioHome() + resumoBackupHome();
-    html += `<h2 class="secao">Seu estudo</h2>${blocos}
-      <nav class="atalhos" aria-label="Ferramentas">
-        <a href="#/simulado"><span aria-hidden="true">⏱</span>Simulado</a>
-        <a href="#/redacao"><span aria-hidden="true">✒</span>Redação</a>
-        <a href="#/edital"><span aria-hidden="true">🧭</span>Edital</a>
-        <a href="#/dados"><span aria-hidden="true">💾</span>Meus dados</a>
-      </nav>`;
-  }
+  if (!f) html += `<h2 class="secao">Seu estudo</h2>${gradeEstudo()}`;
   if (revisoes.length) html += secaoRevisoes(revisoes, !!f);
   if (materiais.length) html += `<h2 class="secao">Material do Dia</h2>${materiais.map(cartaoMaterial).join('')}`;
   if (extras.length || plano.length) html += `<h2 class="secao">Plano, edital e extras</h2>${grupos([...plano, ...extras], !!f)}`;

@@ -95,7 +95,9 @@ main {
 .busca-dica { display: flex; flex-direction: column; gap: 3px; padding: 0 14px 10px; font-size: 13px; line-height: 1.4; color: var(--suave); cursor: text; }
 .busca-dica b { color: var(--texto); font-weight: 600; }
 .busca-dica code { font-size: 12.5px; padding: 0 4px; border-radius: 4px; background: var(--citacao); color: var(--texto); }
-.busca-caixa:focus-within .busca-dica { display: none; }
+/* as dicas só aparecem ao tocar na caixa vazia */
+.busca-dica { display: none; }
+.busca-caixa:focus-within .busca:placeholder-shown + .busca-dica { display: flex; }
 h2.secao { font-size: 14px; text-transform: uppercase; letter-spacing: .06em; color: var(--suave); margin: 22px 0 8px; }
 
 .cartao {
@@ -563,3 +565,31 @@ article strong[data-inc]::after { content: " 🔥" attr(data-inc); font-size: .7
   .imp-capa + .imp-disc { break-before: auto; page-break-before: auto; }
   .imp-apoio { break-inside: avoid; }
 }
+
+/* Tela inicial: painel de hoje e blocos */
+.hoje { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin: 4px 0 14px; padding: 16px 18px; border-radius: 18px;
+  background: var(--marca); background: linear-gradient(135deg, var(--marca), color-mix(in srgb, var(--marca) 70%, #000)); color: var(--marca-texto); }
+.hoje-corpo { flex: 1 1 360px; min-width: 0; }
+.hoje-topo { display: block; color: inherit; opacity: .9; text-decoration: none; font-size: 14px; }
+.hoje-topo::first-letter { text-transform: uppercase; }
+.hoje-titulo { margin: 4px 0 2px; font-size: 22px; line-height: 1.25; }
+.hoje-sub { margin: 0 0 10px; font-size: 14px; opacity: .88; }
+.hoje-acoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.hoje-acoes .btn { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.28); color: var(--marca-texto); text-decoration: none; }
+.hoje-acoes .btn.primario { background: var(--destaque); border-color: var(--destaque); color: #1b1300; font-weight: 700; }
+.hoje-meta { flex: 0 1 300px; display: block; color: inherit; text-decoration: none; background: rgba(0,0,0,.18); border-radius: 14px; padding: 8px 10px; }
+.hoje-meta-tit { display: block; font-size: 13px; font-weight: 600; opacity: .9; }
+.hoje-meta .anel small { color: inherit; opacity: .8; }
+.hoje-meta .anel-fundo { stroke: rgba(255,255,255,.2); }
+.hoje-meta .anel.ok .anel-valor { stroke: #5fd395; }
+.avisos-home { margin: 0 0 6px; }
+.continuar-rot { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--destaque); writing-mode: vertical-rl; transform: rotate(180deg); }
+.grade-estudo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 0 0 8px; }
+@media (max-width: 760px) { .grade-estudo { grid-template-columns: repeat(2, 1fr); } }
+.bloco { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 14px; background: var(--superficie);
+  border: 1px solid var(--linha); color: var(--texto); text-decoration: none; min-height: 92px; }
+.bloco:hover, .bloco:focus-visible { border-color: var(--destaque); }
+.bloco-icone { font-size: 22px; line-height: 1; margin-bottom: 4px; }
+.bloco-tit { font-weight: 700; }
+.bloco-selo { font-size: 12px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: var(--destaque); color: #1b1300; }
+.bloco-linha { font-size: 13px; color: var(--suave); }
