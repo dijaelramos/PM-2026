@@ -202,6 +202,29 @@ A dignidade da pessoa humana pode ser apontada como um objetivo fundamental da R
 
 A dignidade da pessoa humana é **fundamento** da República (art. 1º, III), e não objetivo fundamental (os objetivos são os quatro do art. 3º). O item troca a gaveta, como na seção 7.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Forma de Estado** diz como o poder se reparte no território: federação × Estado unitário → no Brasil, **Federação**. **Forma de governo** diz quem governa e como chega ao poder: república × monarquia → **República**. **Sistema de governo** diz como se relacionam Executivo e Legislativo: presidencialismo × parlamentarismo → **presidencialismo** (art. 76).
+2. Que **nenhum ente pode se separar** da Federação: não existe direito de **secessão**. O **art. 34, I**, permite à União **intervir** nos Estados para "manter a integridade nacional". (E a forma federativa é cláusula pétrea, art. 60, § 4º, I.)
+3. **SO-CI-DI-VA-PLU**: I — **soberania**; II — **cidadania**; III — **dignidade da pessoa humana**; IV — **valores sociais do trabalho e da livre iniciativa**; V — **pluralismo político**.
+4. **Um só** fundamento: os dois estão juntos no **mesmo inciso** (IV), "os valores sociais do trabalho **e** da livre iniciativa".
+5. "Todo o poder **emana do povo**, que o exerce **por meio de representantes eleitos ou diretamente**, **nos termos desta Constituição**." É **semidireta** porque junta a **representação** (eleições) com a **participação direta** (plebiscito, referendo e iniciativa popular).
+6. **Plebiscito**, **referendo** e **iniciativa popular**. No **plebiscito**, o povo é consultado **antes** do ato; no **referendo**, confirma ou rejeita **depois** que o ato já existe.
+7. Porque ela é um **remédio constitucional** (art. 5º, LXXIII): uma **ação judicial** para anular ato lesivo ao patrimônio público. Os instrumentos do art. 14 são formas de **participação política** (plebiscito, referendo, iniciativa popular).
+8. **Legislativo, Executivo e Judiciário**, "**independentes e harmônicos entre si**" — sem hierarquia. Exemplos de freios e contrapesos: o **veto** do Presidente a projeto de lei; a **CPI** do Legislativo; o **julgamento do Presidente pelo Senado** nos crimes de responsabilidade (art. 52, I).
+9. **Típica** é a função principal de cada Poder (legislar, administrar, julgar); **atípica** é a que ele exerce de forma secundária. **Legislativo** julga (o Senado julga o Presidente nos crimes de responsabilidade); **Executivo** legisla (medida provisória, art. 62); **Judiciário** administra (os tribunais organizam suas secretarias, art. 96, I, "b").
+10. **CON-GA-ER-PRO**: **construir** uma sociedade livre, justa e solidária; **garantir** o desenvolvimento nacional; **erradicar** a pobreza e a marginalização e **reduzir** as desigualdades sociais e regionais; **promover** o bem de todos, sem preconceitos.
+11. **Erradica-se** a **pobreza e a marginalização**; **reduzem-se** as **desigualdades sociais e regionais**.
+12. **Erradicar** = arrancar pela raiz, **eliminar**. **Radicar** = o contrário: **fixar raiz**, enraizar.
+13. **Respeito entre Estados**: independência nacional, autodeterminação dos povos, não-intervenção, igualdade entre os Estados. **Paz**: defesa da paz, solução pacífica dos conflitos, repúdio ao terrorismo e ao racismo. **Humanidade**: prevalência dos direitos humanos, cooperação entre os povos para o progresso da humanidade, concessão de asilo político.
+14. Com os povos da **América Latina** (não "América do Sul" nem "Mercosul"), em quatro dimensões: **econômica, política, social e cultural**, visando à formação de uma **comunidade latino-americana de nações**.
+15. Porque **soberania** é **fundamento** (art. 1º, I), e o art. 4º trata só das relações **com outros países**. No lugar, aparece "**independência nacional**" (art. 4º, I).
+16. (a) **fundamento**; (b) **princípio das relações internacionais**; (c) **objetivo**; (d) **fundamento**; (e) **princípio das relações internacionais**; (f) **objetivo**.
+17. Em caso de **flagrante delito**, **desastre** ou para **prestar socorro**, a **qualquer hora**; e por **determinação judicial**, que **só pode ser cumprida durante o dia**.
+18. A lei federal superveniente **suspende a eficácia** da lei estadual **no que lhe for contrário** (art. 24, § 4º). Não a **revoga**.
+19. **Suspensos** (art. 37, § 4º). A **cassação** de direitos políticos é **vedada** pela CF (art. 15).
+20. (I) **Sentença judicial transitada em julgado**; (II) **processo administrativo** com ampla defesa; (III) **avaliação periódica de desempenho**, na forma de lei complementar, com ampla defesa (art. 41, § 1º).
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. (a) **erradicar**; (b) **mandado**; (c) **mandato**; (d) **tráfego** (tráfico é comércio ilegal).

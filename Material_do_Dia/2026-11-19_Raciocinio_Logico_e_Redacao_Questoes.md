@@ -354,6 +354,24 @@ Sabendo que não houve empate, é possível afirmar que a ordem correta de class
 
 **O detalhe que mais derruba:** tentar deduzir do zero. Em questão de ordem com alternativas completas, **testar as alternativas** é mais rápido e seguro.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. É válido quando é **impossível** as premissas serem verdadeiras e a conclusão falsa: a conclusão **decorre necessariamente** delas. A validade depende da **forma**, não da verdade. Exemplo com premissa falsa: "Todo pernambucano mora no Recife. Ana é pernambucana. Logo, Ana mora no Recife." A forma é perfeita; a 1ª premissa é que é falsa.
+2. **Dedução**: conclusão **necessária** ("Todo cabo é praça; todo praça é militar; logo, todo cabo é militar"). **Indução**: conclusão **provável**, tirada de casos observados ("houve acidente nas últimas dez sextas; logo, haverá nesta"). **Analogia**: conclusão tirada da **semelhança** entre casos ("deu certo em Caruaru; Petrolina é parecida; logo dará certo lá"), também só provável.
+3. Tenta-se montar uma situação em que **todas as premissas são verdadeiras e a conclusão é falsa**. Se der, o argumento é **inválido**; se for impossível, é **válido**. Use só as premissas, não o que você sabe do mundo.
+4. **Modus ponens**: p → q; p; logo q. Ex.: "Se o alarme tocar, a central aciona a viatura. O alarme tocou. Logo, a central acionou a viatura." **Modus tollens**: p → q; ~q; logo ~p. Ex.: "Se o suspeito estava no metrô, aparece nas câmeras. Não aparece. Logo, não estava no metrô." (Os exemplos são livres; confira o molde.)
+5. **Afirmar o consequente** (p → q; q; logo p) e **negar o antecedente** (p → q; ~p; logo ~q). São inválidas porque **q pode ser verdadeira por outro motivo**: a equipe pode ter usado o celular sem o rádio ter falhado. No condicional só se pode **afirmar a 1ª parte** ou **negar a 2ª**.
+6. "p ou q; não p; logo q": se uma parte do "ou" é falsa, a outra **tem** de ser verdadeira. Já "p ou q; p; logo não q" é **inválido** porque no "ou" **inclusivo** as duas partes podem ser verdadeiras ao mesmo tempo. Só valeria com o "**ou… ou**" exclusivo.
+7. **Contrapositiva**: "Se o carro **não** foi retido, então o motorista **não** recusou o teste." **Com "ou"**: "O motorista **não** recusou o teste **ou** o carro foi retido."
+8. "Se o detento **perde a vaga**, então **não trabalha**." (Inverte e nega: a negação de "não perde a vaga" é "perde a vaga".)
+9. **Equivalência**: as duas frases têm sempre o mesmo valor ("ida e volta"). **Implicação**: quando a primeira é verdadeira, a segunda tem de ser, mas não o contrário ("só ida"). Exemplo: "Ana é cabo **e** é motorista" **implica** "Ana é cabo", mas não equivale: ela pode ser cabo sem ser motorista.
+10. "**Se** alguém é vigilante, **então** é treinado." · "**Quem não é treinado não é vigilante.**" · "**Ninguém é vigilante sem ser treinado.**" (Também: "Não é vigilante ou é treinado".) Não vale: "Todo treinado é vigilante".
+11. "Todo A é B; nenhum B é C": A fica **dentro** de B, e C fica **fora** de B → **nenhum A é C** (e nenhum C é A). "Todo A é B; todo C é B": A e C ficam dentro de B, mas podem coincidir, cruzar-se ou ficar separados → **nada se conclui** sobre A e C.
+12. Pode-se concluir "**algum B é A**" (pela convenção de que os grupos existem). **Não** se pode concluir "**todo B é A**" (é a recíproca).
+13. (1) **Separe os fatos** e comece por eles; (2) **destrave** cada condicional e cada "ou" com ponens, tollens ou disjuntivo; (3) **anote cada conclusão nova** e volte às premissas ainda não usadas; (4) se travar, **teste hipóteses**: suponha algo verdadeiro e veja se dá contradição.
+14. "p **e** q" falsa → **pelo menos uma** das duas é falsa. "p **ou** q" falsa → **as duas** são falsas. "**se** p, então q" falsa → **p verdadeira e q falsa**.
+15. Exemplo: "**AD** está para **GJ** assim como **BE** está para ___." Regra: cada letra avança 3 posições (A→D; D→G; G→J). B → E → **H**, e E → H → **K**: a resposta é **HK**. (O exemplo é livre: confira se a regra de +3 foi aplicada a cada letra.)
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. (a) "Se o PM **não** está fardado, então **não** está de serviço." (b) "O PM **não** está de serviço **ou** está fardado." (c) "O PM está de serviço **e não** está fardado."
