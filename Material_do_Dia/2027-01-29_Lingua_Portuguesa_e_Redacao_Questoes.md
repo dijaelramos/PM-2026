@@ -195,6 +195,15 @@ Considere o período "**Embora** a chuva fosse forte, a guarnição manteve o pa
 
 **Por que as outras mantêm:** (A) e (B) são locuções **concessivas** com subjuntivo; (C) "apesar de" + substantivo é concessivo; (D) a **adversativa** "mas" mantém a oposição, com o verbo no indicativo e o período reorganizado.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. É o recurso que faz um termo **apontar para outro** do texto, para não repetir palavras e manter o assunto. **Anáfora** **retoma** o que foi dito **antes** ("O sargento chegou. **Ele** trazia o relatório"). **Catáfora** **antecipa** o que vem **depois** ("O comandante disse **isto**: a operação começa às 5 h").
+2. **Pronome**: "A viatura **que** chegou estava avariada". **Sinônimo**: "relatório… o **documento**". **Hiperônimo** (mais geral): "um revólver… a **arma**". **Nominalização**: "Os policiais **cercaram** o prédio. O **cerco** durou duas horas". **Elipse**: "O cabo chegou cedo; ___ saiu tarde". (Os exemplos são livres.)
+3. **Este/isto**: para o que **ainda vai ser dito** (catáfora) ou, entre dois termos, para o **mais próximo**. **Esse/isso**: para o que **já foi dito** (anáfora).
+4. Quaisquer oito, com dois conectivos: **adição** (e, além disso); **oposição** (mas, porém); **concessão** (embora, ainda que); **causa** (porque, já que); **consequência** (tão… que, de modo que); **conclusão** (portanto, logo); **explicação** (pois, porque); **condição** (se, caso); **finalidade** (para que, a fim de); **tempo** (quando, assim que); **conformidade** (conforme, segundo); **proporção** (à medida que, quanto mais).
+5. Os dois opõem ideias, mas "**mas**" é **adversativa** (coordenação, verbo no indicativo) e "**embora**" é **concessiva** (subordinação, verbo no **subjuntivo**): trocar exige reorganizar o período. "**Pois**" **antes** do verbo é **explicativo**; deslocado, **depois** do verbo, é **conclusivo**.
+6. No **início** do parágrafo, com conectivos que ligam ao anterior ("Além disso", "Por outro lado", "Diante disso", "Nesse sentido"); com **expressões resumitivas** que retomam a ideia ("Essa situação…", "Tal cenário…"); garantindo **progressão** (informação nova a cada parágrafo); e, na conclusão, com "Portanto", "Assim", "Dessa forma", "Em suma".
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. O **relativo** retoma um nome e troca por "o qual"; o **integrante** não retoma nada e a oração troca por "isso".

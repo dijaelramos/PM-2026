@@ -272,6 +272,18 @@ No Microsoft Word 2019 e no LibreOffice Writer 7, em português, com a configura
 
 **Por que as outras estão erradas:** (A) inverte; no Word, Ctrl + S é **sublinhado**; (C) Ctrl + N é **negrito** no Word e novo documento no Writer; (D) no Word, Ctrl + S não salva; (E) Ctrl + G não salva no Word.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Internet**: rede **mundial**, pública, que usa **TCP/IP**. **Intranet**: rede **privada** de uma organização, com as **mesmas tecnologias** da internet e acesso **restrito**, com autenticação. **Extranet**: parte da intranet aberta a **parceiros externos** autorizados. **Sim**: a intranet pode ser acessada de fora por **VPN** (e pode estar ligada à internet com firewall).
+2. Quaisquer cinco: **Ctrl + T** nova guia; **Ctrl + Shift + T** reabrir guia fechada; **Ctrl + H** histórico; **Ctrl + J** downloads; **Ctrl + D** favoritar; **Ctrl + Shift + N** (Chrome) ou **Ctrl + Shift + P** (Firefox, Edge) janela anônima; **F5** recarregar. A navegação anônima **não guarda histórico, cookies e dados de formulário** no computador, mas **não esconde** a navegação do provedor, do empregador nem dos sites.
+3. **Vírus**: precisa de **hospedeiro** e de **execução**. **Worm**: espalha-se **sozinho** pela rede. **Cavalo de troia**: parece útil, mas **esconde** função maliciosa. **Spyware**: **espiona** e envia informações. **Keylogger**: spyware que grava as **teclas**. **Ransomware**: **sequestra** (criptografa) os dados e pede **resgate**.
+4. **Firewall**: filtra o **tráfego** de rede e bloqueia acessos não autorizados. **Antivírus**: **detecta e remove** malware. **VPN**: "túnel" **criptografado** para acesso remoto seguro a uma rede. **2FA**: exige **dois fatores de tipos diferentes** (sabe, tem, é) para autenticar.
+5. **Completo**: copia **tudo** (marca). **Incremental**: o que mudou desde o **último backup de qualquer tipo** (marca); restaura com o completo + **todos** os incrementais. **Diferencial**: o que mudou desde o **último completo** (não marca, cresce); restaura com o completo + **o último** diferencial. **3-2-1**: **3** cópias, em **2** tipos de mídia, **1** fora do local.
+6. **Windows**: software **básico** (sistema operacional). **Word**: **aplicativo**. **Antivírus**: **utilitário**. **Compactador**: **utilitário**. **Linux**: software **básico** (sistema operacional).
+7. **RAM**: **volátil**, memória de trabalho (programas e dados em uso). **ROM**: **não volátil**, de **inicialização** (firmware, BIOS/UEFI). **Cache**: **rapidíssima**, entre a CPU e a RAM, guarda o que o processador mais usa.
+8. Quaisquer oito: **Win + E** Explorador; **Win + D** área de trabalho; **Win + L** bloquear; **Win + I** Configurações; **Win + R** Executar; **Win + V** área de transferência; **Win + Tab** Visão de Tarefas; **Win + Shift + S** captura; **Win + PrtScn** salva print; **Ctrl + Shift + Esc** Gerenciador de Tarefas. Prompt (quatro): **dir, cd, md, rd, copy, move, del, ren, ipconfig, ping, tracert, nslookup, tasklist, taskkill**.
+9. **Salvar**: Word **Ctrl + B**; Writer **Ctrl + S**. **Negrito**: Word **Ctrl + N**; Writer **Ctrl + B**. **Sublinhado**: Word **Ctrl + S**; Writer **Ctrl + U**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. Pessoas entre **15 e 29 anos**.
