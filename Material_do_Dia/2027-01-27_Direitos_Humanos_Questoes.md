@@ -264,6 +264,18 @@ Sobre o Estatuto da Pessoa Idosa, assinale a alternativa correta.
 
 **Por que as outras estão erradas:** (A) as medidas são determinadas pelo **MP** ou pelo **Juiz** (art. 45); (B) a ação é **incondicionada** e as imunidades de parentesco são **afastadas**; (C) a violência inclui **sofrimento psicológico** (art. 19, § 1º); (D) a comunicação vale para **suspeita ou confirmação** (art. 19).
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Jovem é quem tem **entre 15 e 29 anos**. Ao jovem de 16 anos (adolescente) aplica-se o **ECA** e, **excepcionalmente**, o Estatuto da Juventude, quando **não conflitar** com a proteção integral.
+2. Quaisquer quatro: **autonomia e emancipação** dos jovens; **participação social e política**; jovem como **sujeito de direitos**; bem-estar e desenvolvimento integral; respeito à **identidade e à diversidade**; promoção da **vida segura** e da cultura da paz. "Emancipação" é a **trajetória de inclusão, liberdade e participação**, e **não** a emancipação do Código Civil.
+3. Quaisquer quatro, incluindo a de 2025: **intersetorialidade** das políticas; ampla **participação juvenil**; atendimento conforme as especificidades; **promover o território como espaço de integração**; integração internacional, **preferencialmente com a América Latina e a África**; e, desde 2025 (Lei 15.178), **zelar pelos direitos dos jovens de 18 a 29 anos privados de liberdade e egressos** do sistema prisional.
+4. (I) **Etnia, raça, cor da pele, cultura, origem, idade e sexo**; (II) **orientação sexual, idioma ou religião**; (III) **opinião, deficiência e condição social ou econômica**.
+5. **Estudantes** e jovens de **até 29 anos** de famílias de **baixa renda**. A meia-entrada é limitada a **40%** dos ingressos. Baixa renda = família inscrita no **CadÚnico** com renda de **até 2 salários mínimos**.
+6. Por veículo, **2 vagas gratuitas** para jovens de **baixa renda** e, esgotadas essas, **2 vagas com desconto mínimo de 50%** (art. 32).
+7. Articulação entre União, Estados, DF, Municípios e ações não governamentais, com: integração com as demais políticas de juventude; **prevenção e enfrentamento da violência**; estudos e estatísticas sobre a violência contra os jovens; **prioridade** para jovens em **situação de risco, vulnerabilidade social e egressos do sistema penitenciário**; acesso à **Defensoria Pública**; acesso à justiça dos jovens com deficiência.
+8. Órgãos **permanentes e autônomos, não jurisdicionais**, encarregados das políticas de juventude e da garantia dos direitos do jovem; a composição é definida em lei de cada ente, com participação da **sociedade civil** em critério **no mínimo paritário** com o poder público.
+9. **PMs de PE** (quaisquer cinco): PMPE subordinada ao Governador, força auxiliar e reserva do Exército; reserva remunerada pode ser convocada, o reformado não; posto pelo Governador, graduação pelo Comandante-Geral; comércio vedado, salvo como acionista ou quotista; crime + transgressão = só a pena do crime, prisão disciplinar até 30 dias; Justificação (oficial, TJPE) × Disciplina (praça estável, Comandante-Geral). **Pessoa idosa** (quaisquer cinco): 60 anos ou mais, prioridade especial aos maiores de 80; todo cidadão deve comunicar violações; medidas de proteção pelo MP ou juiz; crimes de ação pública incondicionada, sem imunidades dos arts. 181/182 e sem Lei 9.099; maus-tratos (art. 99) com reclusão de 2 a 5. (As linhas são livres; confira os pontos.)
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Reclusão de 2 a 5 anos** (3 a 7 se lesão grave; 8 a 14 se morte).

@@ -226,6 +226,20 @@ Assinale a alternativa que apresenta graus hierárquicos da PMPE em ordem **decr
 
 **Por que as outras estão erradas:** (A) o Tenente-Coronel está acima do Major; (B) o **Aspirante** é superior às demais praças, inclusive ao Subtenente (art. 16, I); (D) o Major está acima do Capitão; (E) está em ordem crescente e embaralhada.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. A PMPE é instituição **permanente**, **subordinada ao Governador**, **força auxiliar e reserva do Exército** (art. 2º); seus integrantes formam uma **categoria especial de servidores públicos estaduais**, os **policiais-militares** (art. 3º). **Ativa**: os de carreira; os incluídos voluntariamente, no prazo a que se obrigaram; os da reserva remunerada **quando convocados**; os **alunos** de formação. **Inatividade**: **reserva remunerada** e **reformados**.
+2. Na **reserva remunerada**, o PM recebe do Estado e **ainda pode ser convocado**. O **reformado** está **dispensado definitivamente** do serviço ativo, mas continua remunerado.
+3. **Hierarquia**: a **ordenação de autoridade** em níveis diferentes, por postos ou graduações (e, no mesmo grau, pela antiguidade). **Disciplina**: a **rigorosa observância e o acatamento integral** das leis, regulamentos e normas, traduzida no **perfeito cumprimento do dever**. O **posto** (oficial) é conferido pelo **Governador**; a **graduação** (praça), pelo **Comandante-Geral**.
+4. **Oficiais superiores**: Coronel, Tenente-Coronel, Major. **Intermediários**: Capitão. **Subalternos**: 1º Tenente, 2º Tenente. **Praças especiais**: Aspirante-a-Oficial e Aluno-Oficial. **Subtenentes e sargentos**: Subtenente, 1º, 2º e 3º Sargento. **Cabos e soldados**: Cabo e Soldado.
+5. **Cargo** é o que **só pode ser exercido por policial-militar em serviço ativo** (art. 19), provido por nomeação, designação ou determinação. **Função** é o **exercício das obrigações** inerentes ao cargo (art. 22).
+6. Ética (cinco): amar a **verdade** e a responsabilidade; exercer as funções com **autoridade, eficiência e probidade**; **respeitar a dignidade da pessoa humana**; **cumprir e fazer cumprir** as leis e ordens; ser **justo e imparcial** com os subordinados; acatar as autoridades civis. Deveres do art. 30 (cinco): **dedicação integral** e fidelidade à instituição, mesmo com sacrifício da vida; **culto aos símbolos nacionais**; **probidade e lealdade**; **disciplina e respeito à hierarquia**; **rigoroso cumprimento das obrigações e ordens**.
+7. Ao PM da ativa é **vedado comerciar** ou participar da **administração ou gerência** de sociedade ou ser sócio dela, **exceto como acionista ou quotista** (sem administrar); pode **gerir os próprios bens** (art. 28).
+8. **Cabos e soldados** são, essencialmente, os **elementos de execução** (art. 37). **Subtenentes e sargentos** **auxiliam e complementam** os oficiais e podem atuar no policiamento ostensivo (art. 36).
+9. Aplica-se **somente a pena do crime** (art. 40, § 2º). A detenção ou prisão disciplinar **não pode passar de 30 dias** (art. 46).
+10. **Conselho de Justificação**: para o **oficial** presumivelmente incapaz de permanecer na ativa (também da reserva e reformados); julgado pelo **Tribunal de Justiça de Pernambuco**. **Conselho de Disciplina**: para o **Aspirante-a-Oficial** e as **praças com estabilidade** (também da reserva e reformadas); julgado, em última instância, pelo **Comandante-Geral**.
+11. É a situação em que o PM da ativa **permanece sem número** na escala hierárquica (não abre vaga). Hipóteses (três): **mais de 1 ano** contínuo de licença para **saúde própria**; **mais de 6 meses** de licença para **interesse particular** ou para **saúde de pessoa da família**; posse em **cargo público civil temporário**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. Os membros das **Polícias Militares** e dos **Corpos de Bombeiros Militares** (art. 42 da CF).

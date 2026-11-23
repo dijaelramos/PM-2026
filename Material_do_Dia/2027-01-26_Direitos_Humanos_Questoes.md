@@ -216,6 +216,18 @@ Uma pessoa publica numa rede social um vídeo que expõe e ridiculariza um vizin
 
 **Por que a (C) está correta:** é o **art. 105**.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Pessoa idosa é quem tem **60 anos ou mais**. A **prioridade especial** é dos **maiores de 80 anos**, atendidos preferencialmente em relação às demais pessoas idosas.
+2. Quaisquer quatro: **atendimento preferencial imediato e individualizado** em órgãos públicos e privados; **preferência** na formulação e execução de **políticas sociais**; **destinação privilegiada de recursos**; atendimento pela **própria família** em vez do asilar; prioridade na **restituição do Imposto de Renda**.
+3. **Todo cidadão** tem o dever de comunicar à autoridade qualquer violação que testemunhe ou conheça (art. 6º). A **notificação compulsória** é feita pelos **serviços de saúde**, públicos e privados, que notificam a autoridade sanitária e comunicam os casos de suspeita ou confirmação de violência à **autoridade policial**, ao **Ministério Público** e aos **Conselhos** Municipal, Estadual e Nacional da Pessoa Idosa (art. 19).
+4. "Qualquer **ação ou omissão** praticada em local **público ou privado** que lhe cause **morte, dano ou sofrimento físico ou psicológico**" (art. 19, § 1º).
+5. O **Ministério Público** ou o **Poder Judiciário**, a requerimento do MP (art. 45). Quaisquer quatro: encaminhamento à **família ou curador**, com termo de responsabilidade; **orientação, apoio e acompanhamento** temporários; requisição de **tratamento de saúde**; inclusão em programa de tratamento de **dependentes de drogas**; **abrigo** em entidade; **abrigo temporário**.
+6. **Pública incondicionada** (art. 95). Afastar os arts. 181 e 182 do CP significa que **não valem as imunidades de parentesco** nos crimes patrimoniais: o filho que se apropria da aposentadoria do pai idoso **responde** pelo crime, e a ação não depende de representação.
+7. A Lei 15.163/2025 determinou que **não se aplica a Lei 9.099** (nada de transação penal nem sursis processual) aos crimes do Estatuto **e aos crimes praticados com violência contra a pessoa idosa**, **independentemente da pena**.
+8. **Art. 98**: **abandonar** a pessoa idosa em hospitais, casas de saúde ou entidades, ou **não prover suas necessidades básicas** quando obrigado; **detenção de 6 meses a 3 anos** e multa. **Art. 99**: **expor a perigo** sua integridade e saúde com **condições desumanas ou degradantes**, **privação de alimentos e cuidados** ou **trabalho excessivo** (maus-tratos); **reclusão de 2 a 5 anos** (3 a 7 com lesão grave; **8 a 14** com morte).
+9. **102**: **apropriar-se** de ou **desviar** bens, proventos, pensão ou rendimentos (reclusão de **1 a 4** anos). **104**: **reter o cartão magnético** ou documento para garantir o **recebimento de dívida** (detenção de **6 meses a 2 anos**). **106**: **induzir** pessoa idosa **sem discernimento** a outorgar procuração (reclusão de **2 a 4**). **107**: **coagir** a pessoa idosa a doar, contratar, testar ou outorgar procuração (reclusão de **2 a 5**).
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Reserva remunerada**: recebe do Estado e ainda pode ser **convocado**. **Reforma**: dispensado **definitivamente** do serviço ativo, continuando remunerado.
