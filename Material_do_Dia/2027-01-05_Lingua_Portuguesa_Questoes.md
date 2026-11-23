@@ -243,6 +243,18 @@ Assinale a alternativa em que o "se" é **partícula apassivadora**.
 
 **Por que as outras estão erradas:** (A) o "se" inicia oração que é objeto de "perguntou": **conjunção integrante**; (B) "necessitar **de**" pede preposição: **índice de indeterminação do sujeito** (verbo no singular); (C) ação mútua (um ao outro): **pronome recíproco**; (E) "arrepender-se" é verbo **pronominal**: o "se" é **parte integrante do verbo**.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. Na **coordenação**, as orações são **independentes** ("O cabo chegou **e** o soldado saiu"). Na **subordinação**, uma oração **depende** da outra e exerce uma **função** dentro dela ("O cabo disse **que o soldado saiu**" — objeto direto).
+2. **Aditiva** (e, nem); **adversativa** (mas, porém, contudo); **alternativa** (ou… ou, ora… ora); **conclusiva** (logo, portanto, pois depois do verbo); **explicativa** (pois antes do verbo, porque, que).
+3. **Subjetiva**, **objetiva direta**, **objetiva indireta**, **completiva nominal**, **predicativa** e **apositiva**. A **subjetiva** funciona como **sujeito** da principal; a principal tem verbo na 3ª pessoa do singular sem sujeito próprio, como **é necessário, é preciso, convém, importa, sabe-se, parece** ("Convém **que o relatório seja entregue**" → convém isso).
+4. A **restritiva** vem **sem vírgula** e **limita** (só uma parte do grupo: "Os soldados **que fizeram o curso** foram promovidos" — só esses). A **explicativa** vem **entre vírgulas** e **generaliza**, comentando o termo inteiro ("Os soldados, **que fizeram o curso**, foram promovidos" — todos fizeram).
+5. Quaisquer cinco: **causal** (porque, como no início, já que); **consecutiva** (tão… que); **condicional** (se, caso); **concessiva** (embora, ainda que); **comparativa** (como, mais… do que); **conformativa** (conforme, segundo); **final** (para que); **proporcional** (à proporção que); **temporal** (quando, assim que). A **reduzida** se classifica **desenvolvendo-a**: troque pela forma com conjunção ("Ao entrar no quartel" → "Quando entrar" → temporal).
+6. O **relativo** retoma um nome anterior e troca por **"o qual / a qual"**; o **integrante** não retoma nada, e a oração inteira troca por **"isso"**. Função do relativo: (1) troque o "que" pelo nome retomado; (2) reescreva a oração adjetiva em ordem direta; (3) veja a função desse nome ("O relatório **que** o tenente assinou" → o tenente assinou **o relatório** → objeto direto).
+7. **Apassivador**: verbo **transitivo direto** + se; dá para passar para a passiva ("Alugam-se salas" = salas **são alugadas**); o verbo **concorda** com o sujeito (plural se o sujeito for plural). **Indeterminação do sujeito**: verbo **intransitivo, transitivo indireto** ou de ligação + se ("Precisa-se **de** vigilantes"); o verbo fica **sempre no singular**.
+8. **Obrigatória** (três): entre **coordenadas assindéticas**; antes de **mas, porém, logo, pois**; isolando **adjetiva explicativa**; (e um par de vírgulas na adverbial **intercalada**). **Proibida** (dois): antes de **adjetiva restritiva**; antes de oração **substantiva** (exceto a apositiva).
+9. **Ponto e vírgula**: separa orações coordenadas **longas** ou que **já têm vírgulas** dentro, e itens de lista em incisos. **Dois-pontos**: anunciam **enumeração**, **explicação**, **citação** ou **conclusão**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Complemento nominal**: "defesa" é substantivo abstrato, e o patrimônio é o **alvo** da defesa (o patrimônio é defendido).

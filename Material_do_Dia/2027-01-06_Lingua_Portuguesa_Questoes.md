@@ -223,6 +223,18 @@ Assinale a alternativa correta quanto à concordância.
 
 **Por que as outras estão erradas:** (B) "que" retoma o **coletivo** "a turma" (singular): "que ontem **saiu**"; (C) "meia" se refere a "hora" (meia hora): "**Era** meio-dia e **meia**" (o verbo "ser" concorda com o numeral "meio-dia", singular); (D) "sobrar" concorda com o sujeito posposto "muitas cadeiras": "**Sobraram**"; (E) "faltar" concorda com "dois relatórios": "**Faltavam**".
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. O verbo concorda com o **sujeito** em **número e pessoa**. O sujeito **posposto** (depois do verbo) engana porque não parece sujeito, mas também manda na concordância: "**Faltam** duas viaturas" (o que falta? duas viaturas).
+2. Composto **antes** do verbo: **plural** ("O cabo e o soldado **saíram**"). Composto **depois**: **plural ou** concordância com o **mais próximo** ("Saíram/Saiu o cabo e o soldado"). Com **"ou"**: **singular** se houver **exclusão** (só um pode: "O major ou o capitão **assumirá**"); **plural** se não houver ("Calor ou frio **atrapalham**").
+3. **Haver** no sentido de **existir/acontecer** ou de **tempo decorrido**; **fazer** indicando **tempo decorrido** ou **clima**. Numa locução, o **auxiliar** também fica no **singular**: "**Deve** haver vagas"; "**Vai** fazer cinco anos".
+4. Quaisquer três: **existir, ocorrer, acontecer, faltar, sobrar, restar, bastar** ("**Existem** dúvidas"; "**Faltaram** três soldados").
+5. Com o **apassivador** (verbo transitivo direto + se), o verbo **concorda** com o sujeito: "**Consertam-se** rádios". Com o **indeterminador** (verbo com preposição, intransitivo ou de ligação + se), fica **sempre no singular**: "**Precisa-se** de técnicos".
+6. **A maioria de** + plural: **singular ou plural**. **Mais de um**: **singular** (plural se houver reciprocidade ou numeral maior: "Mais de dez **faltaram**"). **Um dos que**: **plural** (preferível) ou singular. **Muitos de nós**: 3ª do plural **ou** concordando com "nós" ("ficaram" ou "ficamos").
+7. **Meio** varia quando é **metade** (adjetivo: "**meia** hora") e não varia quando é **um pouco**, antes de adjetivo ("**meio** nervosa"). **Bastante** varia quando acompanha **substantivo** ("**bastantes** provas") e não varia quando acompanha adjetivo ou verbo ("**bastante** cansados"). **Anexo** e **obrigado** **sempre concordam** ("seguem **anexas** as fotos"; ela diz "**obrigada**").
+8. **Sem** artigo, a expressão fica **invariável**: "**É proibido** entrada". **Com** artigo, **concorda**: "**É proibida a** entrada". Depois de **Vossa Excelência**, o adjetivo concorda com o **sexo da pessoa** ("está **ocupado**" ao juiz; "**ocupada**" à juíza); o verbo vai à 3ª pessoa.
+9. (1) **Ache os verbos** (cada verbo ou locução = uma oração; sem verbo, não há oração); (2) **ache o sujeito** de cada verbo e confira a concordância; (3) **classifique** o trecho (termo ou oração, e qual); (4) **julgue a pontuação pela função** — a vírgula isola o intercalado, deslocado ou explicativo e nunca separa sujeito, verbo e complemento.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Restritiva**: só os agentes que estavam de folga foram chamados. Com vírgulas ("Os agentes, que estavam de folga, foram chamados"), vira **explicativa**: todos os agentes estavam de folga e foram chamados.

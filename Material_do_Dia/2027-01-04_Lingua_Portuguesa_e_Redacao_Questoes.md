@@ -231,6 +231,18 @@ Sequência: **4, 3, 2, 1**.
 
 **Por que as outras estão erradas:** (A) ignora o predicativo; (B) "chegar" não é verbo de ligação; (C) "chegar" não pede objeto direto; (D) "cansada" não acompanha um substantivo como adjunto.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Simples** tem **uma** oração (um verbo); **composto**, duas ou mais. "A equipe deve chegar às 8 h" tem **uma** oração: "deve chegar" é **locução verbal**, que conta como um verbo só.
+2. **Simples** ("**O soldado** chegou"); **composto** ("**O cabo e o soldado** chegaram"); **oculto** ("Chegamos cedo" — nós); **indeterminado** ("**Roubaram** o celular"; "**Precisa-se de** motoristas"). Oração sem sujeito (três): **haver** = existir ("Houve duas ocorrências"); **fazer** indicando tempo ("Faz dez anos"); **fenômeno natural** ("Choveu"); "São dez horas".
+3. **Verbal**: o núcleo é um **verbo significativo** ("A tropa marchou"). **Nominal**: o núcleo é um **nome** (o predicativo), com **verbo de ligação** ("A tropa estava cansada"). **Verbo-nominal**: tem um **verbo significativo e um predicativo** ("A tropa chegou cansada").
+4. Quaisquer cinco: **ser, estar, parecer, permanecer, ficar, continuar, andar, tornar-se**. **Predicativo do sujeito**: qualidade ou estado atribuído ao **sujeito** ("O cabo parecia **tranquilo**"). **Predicativo do objeto**: qualidade atribuída ao **objeto** ("O comando considerou a operação **perigosa**").
+5. **Objeto direto**: completa verbo transitivo direto, **sem** preposição ("analisou **as provas**"). **Objeto indireto**: completa verbo transitivo indireto, **com** preposição exigida pelo **verbo** ("assistiu **ao vídeo**"). **Complemento nominal**: completa um **nome** (substantivo, adjetivo, advérbio), sempre com preposição ("obediência **à lei**"). **Objeto direto preposicionado**: o verbo é **transitivo direto**, mas aparece uma preposição por clareza ou com pronome ("Amar **a Deus**"); continua sendo OD.
+6. Se liga a **adjetivo ou advérbio**, é sempre CN. Com substantivo **abstrato**: se o termo **sofre** a ação (é o alvo), é **CN**; se **pratica** a ação ou indica posse, é **adjunto adnominal**. Ex.: "O respeito **aos direitos humanos**" (os direitos são respeitados → CN) × "O respeito **do comandante**" (o comandante respeita → AA).
+7. Termo que **explica, resume ou especifica** outro termo. Tipos: **explicativo** ("O tenente Lima, **comandante da companhia**, falou"); **enumerativo** ("Levou o essencial: **colete, rádio e lanterna**"); **resumitivo** ("Colete, rádio, lanterna, **tudo** estava pronto"); **especificativo** ("a cidade **de Olinda**").
+8. O **aposto** **explica** um termo da oração (faz parte dela). O **vocativo** **chama** o interlocutor e fica **fora** da estrutura da oração ("**Soldado**, apresente-se").
+9. **Obrigatória**: para separar o **vocativo** e isolar o **aposto explicativo**. **Facultativa**: com **adjunto adverbial deslocado** curto (recomendada se longo). **Proibida**: entre **sujeito e verbo** e entre **verbo e complemento**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. "a sargento": **não** (palavra masculina). "à delegacia": **sim** (ir **a** + **a** delegacia).
