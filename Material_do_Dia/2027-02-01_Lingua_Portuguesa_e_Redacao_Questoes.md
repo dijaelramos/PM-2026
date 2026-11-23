@@ -272,6 +272,16 @@ Sequência: **F – F – V – V**.
 
 **Por que as outras estão corretas:** (A) "das… às" (intervalo com artigo); (B) "assistir" (ver) pede "a" + "a reconstituição"; (C) "ir a" + "a delegacia"; (E) "atenção **a**" + "as vítimas".
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Assistir**: no sentido de **ver**, pede "**a**" ("Assisti **ao** jogo"); de **ajudar**, é transitivo direto ("O médico assiste **o** ferido"); de **caber, ser direito**, pede "a" ("Esse direito assiste **ao** preso"). **Aspirar**: **desejar**, pede "**a**" ("Aspira **ao** posto"); **inspirar, sorver**, transitivo direto ("Aspirou **o** ar"). **Visar**: **ter como objetivo**, pede "**a**" ("Visava **ao** cargo"); **mirar ou dar visto**, transitivo direto ("Visou **o** alvo").
+2. **Preferir** algo **a** outra coisa, nunca "do que" nem "mais" ("Prefiro estudar **a** dormir"). **Obedecer** pede "**a**" ("Obedeço **às** ordens"). **Implicar** (acarretar) é transitivo direto, **sem "em"** ("A falta implica punição"). **Proceder** (realizar) pede "**a**" ("procedeu **à** análise"). **Informar** algo **a** alguém ou alguém **de/sobre** algo ("Informou o fato **ao** juiz" / "Informou o juiz **do** fato").
+3. **Sem** pronome, são transitivos **diretos**: "Lembrei **o** nome"; "Esqueci **a** senha". **Com** pronome, pedem "**de**": "Lembrei-**me do** nome"; "Esqueci-**me da** senha". Errado: "esqueci **do**" sem pronome.
+4. Com "**a**" (cinco): **acessível, alheio, favorável, contrário, fiel, obediente, prejudicial, semelhante, imune**; também assistência, obediência, respeito. Com "**de**" (três): **ansioso, ávido, capaz, digno, cheio, orgulhoso, passível**.
+5. **Atrativas da próclise**: palavras **negativas** (não, nunca, ninguém), **pronomes relativos** (que, quem), **advérbios** sem vírgula (aqui, já, sempre, talvez), **pronomes indefinidos** (tudo, alguém), **conjunções subordinativas** (quando, se, embora) e frases **interrogativas, exclamativas e optativas**. **Ênclise obrigatória**: no **início de frase**, no **imperativo afirmativo**, com **gerúndio** e **infinitivo** soltos (sem atrativa). **Mesóclise**: só com **futuro do presente e do pretérito**, **sem** palavra atrativa ("Entregar-lhe-ei").
+6. **Nunca ênclise** com o **futuro** do presente ou do pretérito ("entregarei-lhe" está errado: use próclise ou mesóclise) nem **depois do particípio** ("tinha entregado-lhe" está errado).
+7. **Obrigatória**: quando um termo exige a preposição "**a**" e a palavra seguinte é **feminina com artigo** ("Fui **à** delegacia"), em **locuções femininas** (às pressas, à noite) e nos intervalos com artigo ("das 8 **às** 18 h"). **Facultativa**: antes de **possessivo feminino singular** e de **nome próprio feminino**. **Proibida**: antes de **masculino**, de **verbo**, de pronomes como "ela", "esta", "você", e entre **palavras repetidas**. A **regência** explica: só há crase se o regente pedir "a"; com verbo **transitivo direto**, não há preposição e não há crase ("Viu **a** viatura" × "Aspira **à** promoção").
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Anáfora** retoma o que veio antes; **catáfora** antecipa o que vem depois.

@@ -309,6 +309,15 @@ A palavra **"entardecer"** é formada por
 
 **Por que a (C) está correta:** "en- + tarde + -ecer": o prefixo e o sufixo entram **ao mesmo tempo** (não existem "entarde" nem "tardecer"): **parassíntese**.
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. **Narrativo**: conta **fatos em sequência**, com personagens, tempo e lugar. **Descritivo**: apresenta **características** de seres, objetos ou lugares. **Expositivo**: **explica e informa**, de forma objetiva (a notícia é expositiva/informativa). **Argumentativo**: **defende uma tese** com argumentos. **Injuntivo**: **instrui ou manda**, com verbos no imperativo (manual, receita, ordem).
+2. Quaisquer cinco: **metáfora** (comparação implícita: "Aquele cabo é uma rocha"); **comparação** (com "como": "forte como uma rocha"); **metonímia** (parte pelo todo, autor pela obra: "leu Machado"); **hipérbole** (exagero: "chorou rios"); **personificação** (ação humana a ser inanimado: "a cidade dormia"); **antítese** (ideias opostas: "riso e choro"); **ironia** (dizer o contrário); **eufemismo** (suavizar: "partiu" por "morreu"). (Os exemplos são livres.)
+3. Quaisquer três: **ratificar** (confirmar) × **retificar** (corrigir); **descrição** (ato de descrever) × **discrição** (qualidade de discreto); **eminente** (ilustre) × **iminente** (prestes a acontecer); **infligir** (aplicar pena) × **infringir** (violar); **comprimento** (medida) × **cumprimento** (saudação, ato de cumprir).
+4. **Oxítonas**: terminadas em **a(s), e(s), o(s), em, ens** (está, você, avô, também). **Paroxítonas**: terminadas em **l, n, r, x, ps, ã(s), ão(s), i(s), us, um, uns, on(s)** e **ditongo** (fácil, hífen, caráter, órgão). **Proparoxítonas**: **todas** (órbita).
+5. Na **prefixal e sufixal**, a palavra tem prefixo e sufixo, mas **existe sem um deles** (infelizmente: existe "infeliz" e "felizmente"). Na **parassintética**, prefixo e sufixo entram **juntos**: sem um deles, a palavra **não existe** (entardecer: não há "entarde" nem "tardecer").
+6. Resposta pessoal: monte a sua lista com os erros que mais apareceram nas suas correções e no simulado. Para conferir, use como referência os pontos de prioridade do seu perfil — **comando INCORRETA/EXCETO**, **parônimos**, **"que" relativo × integrante**, **"se" apassivador × indeterminador**, **haver/fazer impessoais**, **crase antes de verbo e masculino**, **vírgula entre sujeito e verbo**, **ênclise com futuro e particípio**, **"pois" antes e depois do verbo**, **regência de assistir/aspirar/visar**.
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **Transitivo indireto** ("assistir **ao** jogo").
