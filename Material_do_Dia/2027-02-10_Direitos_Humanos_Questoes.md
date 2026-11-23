@@ -225,6 +225,17 @@ Após prender um suspeito em flagrante, policiais apreendem o celular dele. De a
 
 **Por que as outras estão erradas:** (A) a **apreensão** não depende de juiz; (B) o acesso aos dados de aparelho apreendido no flagrante exige **consentimento** ou **decisão judicial**; (C) o delegado **não** substitui a decisão judicial; (E) a autoridade policial **pode** adotar providências para **preservar** os dados antes da autorização, justificando depois (item 2).
 
+### Estudo dirigido — respostas *(resposta-modelo do tutor, não oficial)*
+
+1. A **súmula vinculante** é editada só pelo **STF**, por **2/3**, e **obriga** os demais órgãos do Judiciário e a administração pública (cabe reclamação contra quem a descumpre). A **súmula do STJ** **orienta**, mas **não vincula** da mesma forma (uniformiza a lei federal). A **tese de repercussão geral** é fixada pelo **STF** ao julgar um recurso extraordinário e orienta todos os tribunais nos casos iguais, mas **não é** súmula vinculante.
+2. **536**: **não** se aplicam suspensão condicional do processo nem transação penal. **542**: a ação na **lesão corporal** é **pública incondicionada**. **588**: com **violência ou grave ameaça**, **não cabe substituição** da pena por restritiva de direitos. **589**: **não se aplica** o princípio da **insignificância**. **600**: **não se exige coabitação**.
+3. Que **não é infração penal** adquirir, guardar ou trazer consigo **cannabis para consumo pessoal**; a droga é apreendida e as sanções (advertência e curso) são aplicadas em procedimento **não penal**. Presume-se usuário quem tem até **40 g** ou **6 plantas-fêmeas**. A presunção é **relativa**: com indícios de tráfico, pode haver prisão mesmo abaixo de 40 g.
+4. **Imprescritíveis** (e inafiançáveis): **racismo** (XLII) e **ação de grupos armados** contra a ordem constitucional e o Estado Democrático (XLIV). **Inafiançáveis e insuscetíveis de graça ou anistia** (mas prescrevem): **tortura, tráfico de drogas, terrorismo e hediondos** (XLIII).
+5. **492**: o ato infracional análogo ao **tráfico**, **por si só**, **não** obriga à **internação**. **605**: a **maioridade** não impede a apuração do ato infracional nem a execução da medida em curso, **até os 21 anos**.
+6. **Crime militar**: **Justiça Militar estadual**. **Crime comum simultâneo**: **Justiça comum** (Súmula 90 — cada justiça julga o seu). **Crime militar em outro Estado**: Justiça Militar **do Estado dele** (Súmula 78). **Fuga de preso de estabelecimento penal**: **Justiça comum estadual** (Súmula 75). **Homicídio doloso de civil**: **Júri**.
+7. **Algemas (SV 11)**: só em caso de **resistência**, **fundado receio de fuga** ou **perigo à integridade física** própria ou alheia, com a excepcionalidade **justificada por escrito**. **Casa sem mandado (Tema 280)**: só com **fundadas razões**, **prévias** e **justificadas a posteriori**, de **flagrante delito** dentro da casa, **de dia ou de noite**. **Celular (Tema 977)**: **apreender** não depende de juiz, mas **acessar os dados** exige **consentimento expresso e livre** do titular **ou decisão judicial** prévia.
+8. Status **supralegal**: **abaixo da Constituição** e **acima das leis**. **SV 25**: "É **ilícita** a prisão civil de **depositário infiel**, qualquer que seja a modalidade de depósito" (a Convenção Americana, supralegal, paralisou as leis que a regulavam).
+
 ### Revisão espaçada — respostas *(exercícios do tutor, não oficiais)*
 
 1. **12 meses**, contados do dia em que a ofendida soube quem é o autor (art. 16-A).
