@@ -395,10 +395,10 @@ def montar(caminho, limite_telas=None):
     dia = info["data"]
     data_extenso = f"{DIAS[dia.weekday()]}, {dia.day} de {MESES[dia.month - 1]} de {dia.year}"
     titulo_aula = info["disciplina"]
-    assuntos = ", ".join(s for s in info["secoes"] if not re.search(r"quadro|pegadinha", s, re.I))
+    assuntos = " · ".join(s for s in info["secoes"] if not re.search(r"quadro|pegadinha", s, re.I))
     abertura = {"secao": "Abertura", "sub": "", "tipo": "capa",
                 "fala": f"Aula de {titulo_aula}, para o concurso de soldado da Polícia Militar de Pernambuco, "
-                        f"de {data_extenso}. Nesta aula: {assuntos}. Este é um material de estudo independente, "
+                        f"de {data_extenso}. Nesta aula: {assuntos.replace(" · ", "; ")}. Este é um material de estudo independente, "
                         f"não oficial. Bons estudos!"}
     fim = {"secao": "Encerramento", "sub": "", "tipo": "capa",
            "fala": "Fim da aula. Revise os quadros e as pegadinhas e resolva questões sobre o tema. Até a próxima aula!"}
@@ -439,7 +439,7 @@ def montar(caminho, limite_telas=None):
     caps = "\n".join(f"{tempo(s)} {nome}" for s, nome in capitulos)
     descricao = (
         f"Aula narrada de {titulo_aula} para o concurso de Soldado da PM-PE 2026 (banca Instituto AOCP), "
-        f"conforme o conteúdo do edital. Assuntos: {assuntos}.\n\n"
+        f"conforme o conteúdo do edital. Assuntos: {assuntos.replace(" · ", "; ")}.\n\n"
         f"Capítulos:\n{caps}\n\n"
         "Material de estudo independente e não oficial, sem vínculo com a Polícia Militar de Pernambuco, com o "
         "Governo do Estado ou com a banca. Confira sempre o edital e a legislação oficial.\n"
