@@ -74,9 +74,9 @@ def hoje_recife():
 def coletar(ate=None):
     """Lista os documentos que entram no app.
 
-    Os materiais do dia são liberados só a partir da data do nome do arquivo (AAAA-MM-DD_...).
-    Assim os materiais montados com antecedência não aparecem nem ganham áudio antes do dia.
-    O workflow roda todo dia de madrugada para liberar o material novo.
+    Entram os materiais até a data `ate` (hoje + alguns dias de folga, ver --antecipar). O app esconde os de
+    data futura e libera cada um à meia-noite, pela data do celular: assim o material do dia aparece mesmo
+    quando o agendamento diário do GitHub atrasa ou falha (ele já atrasou mais de 8 horas).
     """
     ate = ate or hoje_recife()
     docs = []
@@ -245,6 +245,8 @@ def main():
     ap.add_argument("--taxa", default="-10%", help="velocidade da voz no MP3, ex.: -10%% (mais lenta) ou +10%%")
     ap.add_argument("--cache", type=Path, default=APP / ".cache" / "audio")
     ap.add_argument("--limpar-cache", action="store_true", help="apaga do cache os trechos de áudio que não foram usados")
+    ap.add_argument("--antecipar", type=int, default=3,
+                    help="inclui os materiais dos próximos N dias; o app só os mostra na data de cada um")
     ap.add_argument("--ate", type=dt.date.fromisoformat, default=None,
                     help="libera os materiais do dia até esta data, AAAA-MM-DD (padrão: hoje, horário de Pernambuco)")
     args = ap.parse_args()
@@ -252,7 +254,7 @@ def main():
     md = MarkdownIt("commonmark", {"html": False}).enable(["table", "strikethrough"])
     md_txt = MarkdownIt("commonmark", {"html": False, "breaks": True}).enable(["table"])
 
-    docs = coletar(args.ate)
+    docs = coletar((args.ate or hoje_recife()) + dt.timedelta(days=max(args.antecipar, 0)))
     for d in docs:
         preparar(d, md, md_txt)
     ids = {}

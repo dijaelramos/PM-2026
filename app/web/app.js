@@ -42,11 +42,28 @@ async function carregarCatalogo() {
     const c = await caches.match(abs('data/catalogo.json'));
     if (c) catalogo = await c.json();
   }
+  if (catalogo) { catalogo.todosDocs = catalogo.docs; diaLiberado = ''; liberarPorData(); }
   try {
     const keys = await (await caches.open(CACHE_AUDIO)).keys();
     baixados = new Set(keys.map((k) => k.url));
   } catch { /* sem Cache API */ }
 }
+
+/* O catálogo traz também os materiais dos próximos dias (o build antecipa alguns dias). Eles ficam escondidos
+   até a data deles no celular: à meia-noite o material do dia aparece, sem depender de o site ser publicado de novo.
+   Questões, flashcards e busca desses materiais ficam escondidos junto. */
+let ocultos = new Set();
+let diaLiberado = '';
+function liberarPorData() {
+  if (!catalogo || !catalogo.todosDocs) return;
+  const d = new Date();
+  const hoje = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  if (hoje === diaLiberado) return;
+  diaLiberado = hoje;
+  ocultos = new Set(catalogo.todosDocs.filter((x) => x.data && x.data > hoje && x.categoria !== 'plano').map((x) => x.id));
+  catalogo.docs = catalogo.todosDocs.filter((x) => !ocultos.has(x.id));
+}
+const visivel = (x) => !x.doc || !ocultos.has(x.doc);
 
 async function obterDoc(item) {
   if (docs.has(item.id)) return docs.get(item.id);
@@ -164,6 +181,7 @@ function setTopo(titulo, comVoltar) {
 }
 
 function rota() {
+  liberarPorData(); // virou o dia com o app aberto: libera o material novo
   if (foneAtivo) pararFone();
   esconderDaqui();
   seguir = true;
@@ -1245,7 +1263,7 @@ let questoes = null;
 let relogioQ = null;
 
 async function obterQuestoes() {
-  if (questoes) return questoes;
+  if (questoes) return questoes.filter(visivel);
   const info = catalogo && catalogo.questoes;
   if (!info) return [];
   let r = await caches.match(abs(info.arquivo));
@@ -1258,7 +1276,7 @@ async function obterQuestoes() {
   let doBanco = [];
   try { doBanco = (await obterBanco()).q; } catch { /* sem o banco (offline na 1ª vez): só as dos materiais */ }
   questoes = lista.concat(doBanco);
-  return questoes;
+  return questoes.filter(visivel);
 }
 
 const respostas = () => guardado.get('respostas', {});
@@ -4042,7 +4060,7 @@ const OPCOES_NOVOS = [10, 20, 30, 50, 0]; // 0 = sem limite
 let cartoes = null;
 
 async function obterCartoes() {
-  if (cartoes) return cartoes;
+  if (cartoes) return cartoes.filter(visivel);
   const info = catalogo && catalogo.cartoes;
   if (!info) return [];
   let r = await caches.match(abs(info.arquivo));
@@ -4052,7 +4070,7 @@ async function obterCartoes() {
     try { (await caches.open(CACHE_DADOS)).put(abs(info.arquivo), r.clone()); } catch { /* ok */ }
   }
   cartoes = await r.json();
-  return cartoes;
+  return cartoes.filter(visivel);
 }
 
 const estadoCartoes = () => guardado.get('cartoes', {});
