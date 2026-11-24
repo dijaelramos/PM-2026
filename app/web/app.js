@@ -622,7 +622,7 @@ async function telaDoc(id) {
   if (ouvir) ouvir.addEventListener('click', () => iniciarAudio(item, doc, null));
   const art = tela.querySelector('article');
   estudoNoTexto(art, doc.estudo, item);
-  if (item.categoria === 'questoes' && qsDoTexto.length && art.querySelector('.ei-lista')) fimDoEstudo(art, item, qsDoTexto);
+  if (item.categoria === 'questoes' && qsDoTexto.length) fimDoEstudo(art, item, qsDoTexto);
   else questoesNoTexto(art, qsDoTexto);
   art.addEventListener('click', (e) => {
     if (e.target.closest('a, button, summary, input, textarea, .ei-lista, .qi-lista') || String(window.getSelection() || '').trim()) return;
@@ -711,20 +711,25 @@ async function telaDoc(id) {
 const ordemDoCaderno = (l) => l.slice().sort((a, b) => (a.tipo === 'oficial') - (b.tipo === 'oficial')
   || String(a.numero).localeCompare(String(b.numero), 'pt-BR', { numeric: true }));
 
-/* Caderno do dia em duas telas: esta termina no estudo dirigido, com um botão para a tela das questões
-   (#/questoes-dia/<caderno>), onde ficam as autorais, depois as oficiais, e o gabarito fechado. */
+/* Caderno do dia em duas partes: esta página termina no estudo dirigido, com um botão (#/questoes-dia/<caderno>)
+   que abre as questões no mesmo formato das questões da banca: uma por tela, primeiro as autorais, depois as oficiais. */
 function fimDoEstudo(art, item, lista) {
   const box = art.querySelector('.ei-lista');
-  while (box.nextElementSibling) box.nextElementSibling.remove();
+  if (box) while (box.nextElementSibling) box.nextElementSibling.remove();
+  else { // caderno sem estudo dirigido (os primeiros dias): fica só o cabeçalho, e as questões abrem na tela própria
+    const h2 = art.querySelector(':scope > h2');
+    if (h2) while (h2.nextElementSibling) h2.nextElementSibling.remove();
+    if (h2) h2.remove();
+  }
   const aut = lista.filter((q) => q.tipo !== 'oficial').length;
   const ofi = lista.length - aut;
   const partes = [aut ? `${aut} ${aut === 1 ? 'autoral' : 'autorais'} de treino` : '', ofi ? `${ofi} ${ofi === 1 ? 'oficial' : 'oficiais'}` : ''].filter(Boolean);
   const fim = document.createElement('section');
   fim.className = 'fim-material';
   fim.setAttribute('aria-label', 'Próximo passo');
-  fim.innerHTML = `<p class="fim-titulo">Terminou o estudo dirigido? Agora as questões</p>
+  fim.innerHTML = `<p class="fim-titulo">${box ? 'Terminou o estudo dirigido? Agora as questões' : 'Questões do dia'}</p>
     <a class="btn primario largo" href="#/questoes-dia/${encodeURIComponent(item.id)}">✅ Ir para as questões do dia →</a>
-    <p class="meta">${lista.length} ${lista.length === 1 ? 'questão' : 'questões'}: ${partes.join(' e ')}${aut && ofi ? ' (primeiro as autorais)' : ''}. Marque a letra e veja na hora se acertou.</p>`;
+    <p class="meta">${lista.length} ${lista.length === 1 ? 'questão' : 'questões'}: ${partes.join(' e ')}${aut && ofi ? ' (primeiro as autorais)' : ''}. Uma por tela, como as questões da banca: marque a letra e veja na hora se acertou.</p>`;
   art.after(fim);
 }
 
@@ -734,46 +739,27 @@ async function telaQuestoesDia(id) {
   const hash = `#/questoes-dia/${encodeURIComponent(id)}`;
   setTopo(`Questões do dia${item.subtitulo ? ` · ${item.subtitulo.split(' ').pop()}` : ''}`, true);
   tela.innerHTML = '<p class="aviso">Abrindo…</p>';
-  let doc;
   let qs = [];
   try {
-    doc = await obterDoc(item);
     qs = (await obterQuestoes()).filter((q) => q.doc === item.material);
   } catch {
     tela.innerHTML = '<p class="aviso">As questões ainda não foram guardadas no celular. Abra o app com internet uma vez.</p>';
     return;
   }
   if (location.hash !== hash) return;
-  const mat = item.material && catalogo.docs.find((d) => d.id === item.material);
-  tela.innerHTML = `
-    <p class="meta">${esc(item.titulo.replace(/^Questões: /, ''))}${item.subtitulo ? ` · ${esc(item.subtitulo)}` : ''}</p>
-    <article></article>
-    <div class="acoes">
-      <a class="btn" href="#/doc/${encodeURIComponent(item.id)}">📝 Voltar ao estudo dirigido</a>
-      ${mat ? `<a class="btn" href="#/doc/${encodeURIComponent(mat.id)}">📄 Material de estudo</a>` : ''}
-      <a class="btn" href="#/">🏠 Tela inicial</a>
-    </div>`;
-  const art = tela.querySelector('article');
-  art.innerHTML = doc.html;
-  // fica só o que é das questões: sai o cabeçalho do arquivo e o estudo dirigido (que está na outra tela)
-  while (art.firstElementChild && art.firstElementChild.tagName !== 'H2') art.firstElementChild.remove();
-  const ed = [...art.querySelectorAll(':scope > h2')].find((h) => /estudo dirigido|teste-rel[aâ]mpago/i.test(h.textContent) && !/respostas/i.test(h.textContent));
-  if (ed) {
-    let el = ed.nextElementSibling;
-    while (el && el.tagName !== 'H2') { const prox = el.nextElementSibling; el.remove(); el = prox; }
-    ed.remove();
+  if (!qs.length) {
+    tela.innerHTML = '<p class="aviso">As questões deste dia ainda não estão no celular. Abra o app com internet uma vez.</p>';
+    return;
   }
-  while (art.firstElementChild && art.firstElementChild.tagName === 'HR') art.firstElementChild.remove();
-  art.querySelectorAll('[data-f]').forEach((e) => e.removeAttribute('data-f'));
-  for (const h of [...art.querySelectorAll(':scope > h3')]) { // as respostas do estudo dirigido ficam na outra tela
-    if (!/respostas/i.test(h.textContent) || !/estudo dirigido/i.test(h.textContent)) continue;
-    let el = h.nextElementSibling;
-    while (el && !/^H[1-3]$/.test(el.tagName) && el.tagName !== 'HR') { const prox = el.nextElementSibling; el.remove(); el = prox; }
-    h.remove();
+  // Mesmo formato das questões oficiais da banca: uma questão por tela, marcar, Responder e ver a correção.
+  // Se já há uma sessão deste caderno em andamento, continua de onde parou.
+  const s0 = guardado.get('sessaoQ', null);
+  if (!(s0 && s0.caderno === id && s0.idx < s0.ids.length)) {
+    const dia = item.subtitulo ? item.subtitulo.split(' ').pop() : '';
+    guardado.set('sessaoQ', { titulo: `Questões do dia${dia ? ` ${dia}` : ''}`, ids: ordemDoCaderno(qs).map((q) => q.id),
+      idx: 0, certas: 0, feitas: 0, tempo: 0, erradas: [], resp: null, caderno: id });
   }
-  if (qs.length) questoesNoTexto(art, qs);
-  else art.insertAdjacentHTML('afterbegin', '<p class="aviso">As questões deste dia ainda não estão no celular. Abra o app com internet uma vez.</p>');
-  window.scrollTo(0, 0);
+  location.replace('#/questoes/resolver'); // substitui esta entrada: o "voltar" leva ao estudo dirigido
 }
 
 function questoesNoTexto(art, lista) {
@@ -1843,6 +1829,7 @@ function telaFimSessao(s) {
     </div>
     <div class="acoes">
       ${s.erradas.length ? `<button class="btn primario" id="q-refazer">Refazer as que errei (${s.erradas.length})</button>` : ''}
+      ${s.caderno ? `<a class="btn" href="#/doc/${encodeURIComponent(s.caderno)}">📝 Voltar ao estudo dirigido</a>` : ''}
       <button class="btn" id="q-painel">Voltar às questões</button>
     </div>`;
   const refazer = $('#q-refazer');
