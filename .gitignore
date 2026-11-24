@@ -1,3 +1,7 @@
 app/dist/
 app/.cache/
 __pycache__/
+canal/.cache/
+canal/saida/
+canal/client_secret*.json
+canal/token*.json
