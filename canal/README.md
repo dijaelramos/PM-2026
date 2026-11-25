@@ -14,6 +14,12 @@ com o nome da seção, a barra de progresso e capítulos clicáveis no YouTube. 
 **O que vai para o vídeo:** só as seções de conteúdo (1, 2, 3…, quadros e pegadinhas). Ficam de fora o roteiro,
 a cobertura do edital, a revisão espaçada, a redação e qualquer parágrafo sobre o seu perfil ou o Orquestrador.
 
+**Questões no final (todos os vídeos):** na abertura, a voz avisa que haverá questões no final, para o espectador
+assistir até o fim. Depois do conteúdo vêm até 5 questões do caderno do dia (`_Questoes.md`): primeiro as autorais,
+depois as oficiais. Cada questão tem uma pausa de 4 segundos, e então vêm a chamada "deixe as suas respostas nos
+comentários" e o gabarito comentado. Nos resumões entram as perguntas do teste-relâmpago, com a resposta-modelo.
+A quantidade fica em `config.json` (`"questoes_no_final"`).
+
 ## O que você precisa fazer (uma vez)
 
 ### 1. Criar o canal

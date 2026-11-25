@@ -101,6 +101,35 @@ O cabeçalho do resumão dá o link desse arquivo.
 
 **No chat:** depois de apresentar o material do dia, dê o link do resumão e o do teste-relâmpago e diga o que eles cobrem e para quando são. O conteúdo fica nos arquivos.
 
+### 1.7 Revisão gramatical (obrigatória) e vídeo do canal
+
+**Antes de salvar qualquer arquivo** (material, questões, gabarito, respostas-modelo, resumão, correção), releia o texto inteiro e corrija os erros de português, seguindo a norma-padrão e o Acordo Ortográfico:
+
+- ortografia, acentuação e hífen;
+- crase;
+- concordância verbal e nominal;
+- regência;
+- pontuação;
+- letra maiúscula no começo de frase;
+- palavras repetidas ou que faltam;
+- frases truncadas.
+
+Os trechos de lei, de súmula e de questão oficial ficam **exatamente como no original**, mesmo com erro. Esta revisão vale também para os materiais já prontos que você editar.
+
+O material também vira um vídeo do canal do YouTube (`canal/video.py`, veja `canal/README.md`). O vídeo é montado sozinho a partir dos dois arquivos:
+
+- **No começo,** a narração avisa que haverá questões no final.
+- **No final,** vêm até 5 questões para o espectador responder nos comentários, seguidas do gabarito comentado. O gerador escolhe primeiro as autorais e depois as oficiais, e deixa de fora as que dependem de texto de apoio, tabela ou figura.
+- **Nos resumões,** entram as perguntas do teste-relâmpago, com as respostas-modelo.
+
+Para isso funcionar, mantenha os formatos da 1.5:
+
+- `### Questão N — …` com as alternativas `- **(A)** texto`;
+- no gabarito, `### Questão N — gabarito X`;
+- logo abaixo do gabarito, um primeiro parágrafo **curto**, que se entenda sozinho, no formato `**Por que a (X) está correta:** …`. É ele que a voz lê no vídeo.
+
+Cada caderno deve ter pelo menos 3 questões de múltipla escolha que não dependam de texto de apoio.
+
 ## Parte 2 — Correção
 
 Vale para questões oficiais, autorais, exercícios do tutor e estudo dirigido. **Explique todos os itens, inclusive os que o estudante acertou e os que deixou em branco.**

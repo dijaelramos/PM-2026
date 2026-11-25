@@ -56,7 +56,9 @@ def limpar_md(t):
     t = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", t)
     t = ATRIBUICAO.sub("", t)
     t = re.sub(r"[*_`]", "", t)
-    t = re.sub(r"(?i)(consenso dos manuais|doutrina|apostila|base do curso)\s*:\s*", "", t)
+    # "Consenso dos manuais: a nova área…" -> "A nova área…" (no começo de frase, a letra seguinte fica maiúscula)
+    t = re.sub(r"(?i)(^|(?<=[.!?] ))(?:consenso dos manuais|doutrina|apostila|base do curso)\s*:\s*(\W*\w)",
+               lambda m: m.group(1) + m.group(2)[:-1] + m.group(2)[-1].upper(), t)
     t = EMOJI.sub("", t)
     return re.sub(r"[ \t]+", " ", t).strip()
 
@@ -144,6 +146,8 @@ def roteiro(caminho):
     m = re.match(r"(\d{4})-(\d{2})-(\d{2})", caminho.stem)
     data = dt.date(*map(int, m.groups())) if m else hoje_recife()
     disciplina = re.sub(r"\s*\(\d+\s*h.*?\)\s*$", "", h1.split(" — ")[-1]).strip()
+    if h1.lower().startswith("resumão"):  # "Resumão da semana — 23 a 27/11/2026"
+        disciplina = h1.split(" — ")[0].strip()
     secoes, atual = [], None
     for ln in linhas:
         h2 = re.match(r"^##\s+(?!#)(.*)$", ln)
@@ -205,6 +209,158 @@ def roteiro(caminho):
             "secoes": [s["titulo"] for s in secoes], "telas": telas}
 
 
+# ---------------------------------------------------------------- questões do final do vídeo
+
+RE_QUESTAO = re.compile(r"^###\s+Questão\s+(\d+)\s+—\s+(.*)$")
+RE_ALTERNATIVA = re.compile(r"^\s*[-*]\s+\*\*\(([A-E])\)\*\*\s*(.*)$")
+
+
+def questoes_do_video(caminho, maximo=None):
+    """Questões de múltipla escolha do caderno do dia (arquivo _Questoes), com gabarito e justificativa curta.
+
+    Autorais primeiro, depois oficiais. Ficam de fora as que dependem de texto de apoio, tabela, figura ou que são
+    longas demais para ler numa tela.
+    """
+    maximo = maximo or CONFIG.get("questoes_no_final", 5)
+    arq = caminho.with_name(f"{caminho.stem}_Questoes.md")
+    if not arq.exists():
+        arq = caminho
+    enunciados, gabaritos, atual, no_gabarito = {}, {}, None, False
+    for ln in arq.read_text(encoding="utf-8-sig").splitlines():
+        if re.match(r"^##\s+(?!#)", ln):
+            no_gabarito, atual = bool(re.search(r"(?i)gabarito", ln)), None
+            continue
+        m = RE_QUESTAO.match(ln)
+        if m:
+            num, resto = int(m.group(1)), m.group(2).strip()
+            destino = gabaritos if no_gabarito else enunciados
+            if num in destino:
+                atual = None
+            elif no_gabarito:
+                g = re.match(r"gabarito\s+([A-E])\b", resto)
+                atual = destino[num] = {"letra": g.group(1) if g else None, "linhas": []}
+            else:
+                atual = destino[num] = {"origem": resto, "linhas": []}
+            continue
+        if ln.startswith("#"):
+            atual = None
+            continue
+        if atual is not None:
+            atual["linhas"].append(ln)
+
+    escolhidas = []
+    for num, q in enunciados.items():
+        g = gabaritos.get(num)
+        if not g or not g["letra"]:
+            continue
+        alts, enun, ok = [], [], True
+        for ln in q["linhas"]:
+            s = ln.strip()
+            if not s:
+                if enun and enun[-1]:
+                    enun.append("")  # fim de parágrafo
+                continue
+            m = RE_ALTERNATIVA.match(s)
+            if m:
+                alts.append((m.group(1), limpar_md(m.group(2))))
+                continue
+            if alts or s.startswith(("|", "![", "```", "<")):
+                ok = False
+            if re.fullmatch(r"\*[^*].*\*", s):  # linha de metadados (nível, prova, página)
+                continue
+            linha = limpar_md(re.sub(r"^(?:>\s*)+|^[-*]\s+", "", s))
+            novo_par = re.match(r"^(?:[IVX]+[.)–-]|\d+[.)]|[a-e]\))\s", linha)  # assertivas I, II… começam linha
+            if enun and enun[-1] and not novo_par:
+                enun[-1] += " " + linha
+            else:
+                if enun and not enun[-1]:
+                    enun.pop()
+                enun.append(linha)
+        enunciado = "\n".join(e for e in enun if e)
+        letras = "".join(a for a, _ in alts)
+        if (not ok or letras not in ("ABCDE", "ABCD") or g["letra"] not in letras or not enunciado
+                or len(enunciado) > 650 or sum(len(t) for _, t in alts) > 750
+                or re.search(r"(?i)\b(texto|figura|imagem|tabela|gráfico|quadro)\s+(acima|abaixo|a seguir|I\b)", enunciado)):
+            continue
+        just = ""
+        for par in re.split(r"\n\s*\n", "\n".join(g["linhas"]).strip()):
+            par = par.strip()
+            if par and not par.startswith(("|", "-", "*Fonte")):
+                just = limpar_md(re.sub(r"^\*\*[^*]*\*\*\s*", "", par))
+                break
+        if len(just) > 380:
+            just = partir(just, 380)[0]
+        just = just[:1].upper() + just[1:]
+        autoral = "autoral" in q["origem"].lower()
+        escolhidas.append({"autoral": autoral, "num": num, "enunciado": enunciado, "alts": alts, "letra": g["letra"],
+                           "just": just, "origem": "Questão autoral no estilo AOCP — não oficial" if autoral
+                           else limpar_md(q["origem"])})
+    escolhidas.sort(key=lambda q: (not q["autoral"], q["num"]))
+    escolhidas = escolhidas[:maximo]
+    if len(escolhidas) < 3:  # resumões e dias sem múltipla escolha: perguntas abertas com resposta-modelo
+        escolhidas += perguntas_abertas(arq, maximo - len(escolhidas))
+    return escolhidas
+
+
+def perguntas_abertas(arq, quantas):
+    """Perguntas do estudo dirigido ou do teste-relâmpago (com resposta-modelo), espalhadas pela lista."""
+    sys.path.insert(0, str(RAIZ / "app"))
+    from estudo import extrair
+
+    class SemHtml:
+        render = staticmethod(lambda t: t)
+
+    est = extrair(arq.read_text(encoding="utf-8-sig"), SemHtml())
+    if not est or quantas <= 0:
+        return []
+    boas = []
+    for it in est["itens"]:
+        p, r = limpar_md(it["p"].replace("\n", " ")), limpar_md(it["r"].replace("\n", " "))
+        if r and len(p) <= 300 and len(r) <= 420 and not re.search(r"(?i)texto|tabela|figura|quadro abaixo", p):
+            boas.append({"autoral": True, "num": it["n"], "enunciado": p, "alts": [], "letra": None, "just": r,
+                         "origem": "Pergunta de revisão — não oficial"})
+    if len(boas) <= quantas:
+        return boas
+    passo = len(boas) / quantas
+    return [boas[int(i * passo)] for i in range(quantas)]
+
+
+def telas_de_questoes(questoes):
+    """Telas do bloco final: as questões (com pausa para pensar), a chamada para os comentários e o gabarito."""
+    n, telas = len(questoes), []
+    if not n:
+        return telas
+    for k, q in enumerate(questoes, 1):
+        if q["alts"]:
+            fim = (" Pause o vídeo, se precisar de mais tempo, e escolha a sua resposta." if k == 1 else
+                   " Qual é a sua resposta?")
+        else:
+            fim = (" Pause o vídeo e responda com as suas palavras, em voz alta ou por escrito." if k == 1 else
+                   " Responda com as suas palavras.")
+        fala = (f"{'Hora de testar o que você aprendeu. ' if k == 1 else ''}Questão {k}. {para_fala(q['enunciado'])} "
+                + " ".join(f"Letra {a}: {para_fala(t).rstrip('.;')}." for a, t in q["alts"]) + fim)
+        telas.append({"secao": "Questões para você responder", "sub": f"Questão {k} de {n} · {q['origem']}",
+                      "tipo": "questao", "tela": q, "fala": fala, "pausa": 4 if q["alts"] else 6})
+    if all(q["alts"] for q in questoes):
+        exemplo = ", ".join(f"{k}-?" for k in range(1, min(n, 3) + 1))
+        chamada = f"Escreva as suas respostas nos comentários, com o número da questão e a letra: {exemplo}…"
+        fala_chamada = "Anote as suas respostas e deixe nos comentários, com o número da questão e a letra. "
+    else:
+        chamada = "Escreva nos comentários a sua resposta de uma das questões."
+        fala_chamada = "Escolha uma das questões e escreva a sua resposta nos comentários. "
+    telas.append({"secao": "Questões para você responder", "sub": "Deixe as suas respostas nos comentários",
+                  "tipo": "texto", "tela": f"{chamada}\n\nAgora, confira o gabarito comentado.",
+                  "fala": fala_chamada + "Agora, confira o gabarito comentado."})
+    for k, q in enumerate(questoes, 1):
+        if q["alts"]:
+            fala = f"Questão {k}: resposta, letra {q['letra']}. {para_fala(q['just'] or dict(q['alts'])[q['letra']])}"
+        else:
+            fala = f"Questão {k}. Uma boa resposta: {para_fala(q['just'])}"
+        telas.append({"secao": "Gabarito comentado", "sub": f"Questão {k} de {n}", "tipo": "gabarito", "tela": q,
+                      "fala": fala})
+    return telas
+
+
 # ---------------------------------------------------------------- voz
 
 def _chave(texto):
@@ -239,6 +395,12 @@ def _azure(texto):
                                "X-Microsoft-OutputFormat": FORMATO_AZURE, "User-Agent": "canal-estudos"}, timeout=120)
     r.raise_for_status()
     return r.content
+
+
+def silencio(segundos):
+    """Quadros MP3 mudos no mesmo formato da voz (MPEG-2 camada III, 24 kHz, 48 kbit/s, mono: 144 bytes = 24 ms)."""
+    quadro = b"\xff\xf3\x64\xc4" + bytes(140)
+    return quadro * int(segundos / 0.024)
 
 
 def sintetizar(texto):
@@ -325,6 +487,48 @@ def desenhar_tela(info, tela, progresso, destino):
                 d.text((130, y), l, font=f, fill=COR["texto"])
                 y += 56
             y += 14
+    elif tela["tipo"] == "questao":
+        q = tela["tela"]
+        for tam in (42, 38, 35, 32, 29, 26):
+            f, fb = fonte(tam), fonte(tam, True)
+            alto = int(tam * 1.32)
+            enun = quebrar(d, q["enunciado"], f, LARG - 160)
+            alts = [quebrar(d, t, f, LARG - 160 - 90) for _, t in q["alts"]]
+            total = len(enun) * alto + 24 + sum(len(a) * alto + 10 for a in alts)
+            if total <= area:
+                break
+        y = topo
+        for l in enun:
+            d.text((80, y), l, font=f, fill=COR["texto"])
+            y += alto
+        y += 24
+        for (letra, _), ls in zip(q["alts"], alts):
+            d.text((80, y), f"({letra})", font=fb, fill=COR["destaque"])
+            for l in ls:
+                d.text((170, y), l, font=f, fill=COR["texto"])
+                y += alto
+            y += 10
+    elif tela["tipo"] == "gabarito":
+        q = tela["tela"]
+        aberta = not q["alts"]
+        d.text((80, topo), "Uma boa resposta" if aberta else f"Resposta: letra {q['letra']}", font=fonte(64, True),
+               fill=COR["destaque"])
+        y = topo + 110
+        for tam in (40, 36, 32, 28):
+            f = fonte(tam)
+            alto = int(tam * 1.35)
+            certa = quebrar(d, q["enunciado"] if aberta else f"({q['letra']}) {dict(q['alts'])[q['letra']]}",
+                            fonte(tam, True), LARG - 160)
+            just = quebrar(d, q["just"], f, LARG - 160) if q["just"] else []
+            if (len(certa) + len(just)) * alto + 30 <= ALT - 90 - y:
+                break
+        for l in certa:
+            d.text((80, y), l, font=fonte(tam, True), fill=COR["suave" if aberta else "texto"])
+            y += alto
+        y += 30
+        for l in just:
+            d.text((80, y), l, font=f, fill=COR["texto" if aberta else "suave"])
+            y += alto
     else:  # tabela
         cab, linhas = tela["tela"][0], tela["tela"][1:]
         n = max(len(cab), 1)
@@ -345,7 +549,7 @@ def desenhar_tela(info, tela, progresso, destino):
     img.save(destino)
 
 
-def desenhar_capa(info, titulo, destino, tamanho=(LARG, ALT), subtitulo=""):
+def desenhar_capa(info, titulo, destino, tamanho=(LARG, ALT), subtitulo="", chamada=""):
     from PIL import Image, ImageDraw
     w, h = tamanho
     img = Image.new("RGB", (w, h), COR["fundo"])
@@ -363,6 +567,8 @@ def desenhar_capa(info, titulo, destino, tamanho=(LARG, ALT), subtitulo=""):
         for l in quebrar(d, subtitulo, fonte(int(54 * esc)), w - int(160 * esc))[:3]:
             d.text((int(70 * esc), y + int(20 * esc)), l, font=fonte(int(54 * esc)), fill=COR["texto"])
             y += int(70 * esc)
+    if chamada:
+        d.text((int(70 * esc), h - int(180 * esc)), chamada, font=fonte(int(56 * esc), True), fill=COR["destaque"])
     d.text((int(70 * esc), h - int(90 * esc)), "Aula narrada · material de estudo não oficial", font=fonte(int(40 * esc)),
            fill=COR["suave"])
     img.save(destino)
@@ -393,25 +599,31 @@ def montar(caminho, limite_telas=None):
         shutil.rmtree(pasta)
     (pasta / "telas").mkdir(parents=True)
     dia = info["data"]
+    questoes = questoes_do_video(caminho)
+    chamada = f"No final: {len(questoes)} questões para você responder" if questoes else ""
     data_extenso = f"{DIAS[dia.weekday()]}, {dia.day} de {MESES[dia.month - 1]} de {dia.year}"
     titulo_aula = info["disciplina"]
     assuntos = " · ".join(s for s in info["secoes"] if not re.search(r"quadro|pegadinha", s, re.I))
     abertura = {"secao": "Abertura", "sub": "", "tipo": "capa",
                 "fala": f"Aula de {titulo_aula}, para o concurso de soldado da Polícia Militar de Pernambuco, "
-                        f"de {data_extenso}. Nesta aula: {assuntos.replace(" · ", "; ")}. Este é um material de estudo independente, "
-                        f"não oficial. Bons estudos!"}
+                        f"de {data_extenso}. Nesta aula: {assuntos.replace(" · ", "; ")}. "
+                        + (f"Fique até o final: depois da explicação, há {len(questoes)} questões para você responder, "
+                           f"com o gabarito comentado. " if questoes else "")
+                        + "Este é um material de estudo independente, não oficial. Bons estudos!"}
     fim = {"secao": "Encerramento", "sub": "", "tipo": "capa",
-           "fala": "Fim da aula. Revise os quadros e as pegadinhas e resolva questões sobre o tema. Até a próxima aula!"}
-    telas = [abertura] + info["telas"][:limite_telas] + [fim]
+           "fala": ("Fim da aula. Conte nos comentários quantas questões você acertou. " if questoes else "Fim da aula. ")
+                   + "Revise os quadros e as pegadinhas e até a próxima aula!"}
+    telas = [abertura] + info["telas"][:limite_telas] + telas_de_questoes(questoes) + [fim]
 
     lista, audio, capitulos, t = [], bytearray(), [], 0.0
     ultima_secao = None
     for i, tela in enumerate(telas):
-        mp3 = sintetizar(tela["fala"])
+        mp3 = sintetizar(tela["fala"]) + silencio(tela.get("pausa", 0))
         dur = len(mp3) / BYTES_POR_SEGUNDO + 0.0
         img = pasta / "telas" / f"{i:04d}.png"
         if tela["tipo"] == "capa":
-            desenhar_capa(info, titulo_aula, img, subtitulo=assuntos if i == 0 else "Fim da aula")
+            desenhar_capa(info, titulo_aula, img, subtitulo=assuntos if i == 0 else "Fim da aula",
+                          chamada=chamada if i == 0 else ("Conte nos comentários quantas você acertou!" if questoes else ""))
         else:
             desenhar_tela(info, tela, (i + 1) / len(telas), img)
         if tela["secao"] != ultima_secao:
@@ -429,7 +641,7 @@ def montar(caminho, limite_telas=None):
                     "-i", str(pasta / "audio.mp3"), "-c:v", "libx264", "-tune", "stillimage", "-preset", "veryfast",
                     "-r", "12", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-shortest",
                     "-movflags", "+faststart", str(pasta / "video.mp4")], check=True)
-    desenhar_capa(info, titulo_aula, pasta / "miniatura.png", (1280, 720), subtitulo=assuntos)
+    desenhar_capa(info, titulo_aula, pasta / "miniatura.png", (1280, 720), subtitulo=assuntos, chamada=chamada)
 
     # título, descrição (com capítulos: o primeiro precisa ser 00:00) e tags
     titulo = f"{titulo_aula}: {assuntos}"
@@ -440,7 +652,9 @@ def montar(caminho, limite_telas=None):
     descricao = (
         f"Aula narrada de {titulo_aula} para o concurso de Soldado da PM-PE 2026 (banca Instituto AOCP), "
         f"conforme o conteúdo do edital. Assuntos: {assuntos.replace(" · ", "; ")}.\n\n"
-        f"Capítulos:\n{caps}\n\n"
+        + (f"No final, {len(questoes)} questões para você responder, com gabarito comentado. Deixe as suas respostas "
+           "nos comentários!\n\n" if questoes else "")
+        + f"Capítulos:\n{caps}\n\n"
         "Material de estudo independente e não oficial, sem vínculo com a Polícia Militar de Pernambuco, com o "
         "Governo do Estado ou com a banca. Confira sempre o edital e a legislação oficial.\n"
         f"{CONFIG.get('creditos', '')}\n"
