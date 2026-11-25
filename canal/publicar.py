@@ -19,6 +19,7 @@ import argparse
 import datetime as dt
 import json
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -30,11 +31,22 @@ ESCOPOS = ["https://www.googleapis.com/auth/youtube.upload", "https://www.google
 RECIFE = dt.timezone(dt.timedelta(hours=-3))
 
 
+def segredo(nome):
+    """Valor do secret sem os deslizes comuns de cópia: espaços, aspas, vírgula, 'NOME =' ou '"NOME":' na frente."""
+    v = os.environ.get(nome, "").strip()
+    v = re.sub(r'^\s*"?%s"?\s*[:=]\s*' % nome, "", v)
+    return v.strip().rstrip(",").strip().strip('"').strip("'").strip()
+
+
 def cliente():
     from google.oauth2.credentials import Credentials
     from googleapiclient.discovery import build
-    cred = Credentials(None, refresh_token=os.environ["YT_REFRESH_TOKEN"], token_uri="https://oauth2.googleapis.com/token",
-                       client_id=os.environ["YT_CLIENT_ID"], client_secret=os.environ["YT_CLIENT_SECRET"], scopes=ESCOPOS)
+    cid = segredo("YT_CLIENT_ID")
+    if not re.fullmatch(r"\d+-[a-z0-9]+\.apps\.googleusercontent\.com", cid):
+        print(f"AVISO: o secret YT_CLIENT_ID não tem o formato esperado ({len(cid)} caracteres; o certo termina em "
+              "'.apps.googleusercontent.com'). Confira o valor em Settings > Secrets and variables > Actions.")
+    cred = Credentials(None, refresh_token=segredo("YT_REFRESH_TOKEN"), token_uri="https://oauth2.googleapis.com/token",
+                       client_id=cid, client_secret=segredo("YT_CLIENT_SECRET"), scopes=ESCOPOS)
     return build("youtube", "v3", credentials=cred, cache_discovery=False)
 
 
