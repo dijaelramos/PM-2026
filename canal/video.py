@@ -607,9 +607,10 @@ def montar(caminho, limite_telas=None):
     data_extenso = f"{DIAS[dia.weekday()]}, {dia.day} de {MESES[dia.month - 1]} de {dia.year}"
     titulo_aula = info["disciplina"]
     assuntos = " · ".join(s for s in info["secoes"] if not re.search(r"quadro|pegadinha", s, re.I))
+    assuntos_lista = assuntos.replace(" · ", "; ")  # (fora do f-string: compatível com Python antes do 3.12)
     abertura = {"secao": "Abertura", "sub": "", "tipo": "capa",
                 "fala": f"Aula de {titulo_aula}, para o concurso de soldado da Polícia Militar de Pernambuco, "
-                        f"de {data_extenso}. Nesta aula: {assuntos.replace(" · ", "; ")}. "
+                        f"de {data_extenso}. Nesta aula: {assuntos_lista}. "
                         + (f"Fique até o final: depois da explicação, há {len(questoes)} questões para você responder, "
                            f"com o gabarito comentado. " if questoes else "")
                         + "Este é um material de estudo independente, não oficial. Bons estudos!"}
@@ -640,7 +641,8 @@ def montar(caminho, limite_telas=None):
         t += dur
         print(f"  tela {i + 1}/{len(telas)} ({tempo(t)})", end="\r")
     print()
-    lista.append(f"file '{(pasta / 'telas' / f'{len(telas) - 1:04d}.png').as_posix()}'")
+    ultima = pasta / "telas" / "{:04d}.png".format(len(telas) - 1)
+    lista.append(f"file '{ultima.as_posix()}'")
     (pasta / "lista.txt").write_text("\n".join(lista), encoding="utf-8")
     (pasta / "audio.mp3").write_bytes(bytes(audio))
     subprocess.run([ffmpeg(), "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(pasta / "lista.txt"),
@@ -657,7 +659,7 @@ def montar(caminho, limite_telas=None):
     caps = "\n".join(f"{tempo(s)} {nome}" for s, nome in capitulos)
     descricao = (
         f"Aula narrada de {titulo_aula} para o concurso de Soldado da PM-PE 2026 (banca Instituto AOCP), "
-        f"conforme o conteúdo do edital. Assuntos: {assuntos.replace(" · ", "; ")}.\n\n"
+        f"conforme o conteúdo do edital. Assuntos: {assuntos_lista}.\n\n"
         + (f"No final, {len(questoes)} questões para você responder, com gabarito comentado. Deixe as suas respostas "
            "nos comentários!\n\n" if questoes else "")
         + f"Capítulos:\n{caps}\n\n"

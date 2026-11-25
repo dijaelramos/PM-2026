@@ -107,6 +107,21 @@ Ligado tarde, ele posta o que estiver atrasado, com pelo menos 1 hora entre os S
 `canal/.postados.json`, para nunca postar duas vezes. Se der erro, a foto da tela vai para `canal/saida/_erros/`, e
 ele tenta de novo até 3 vezes.
 
+### Em outro computador (Windows 10/11)
+
+1. Baixe o repositório. O melhor é usar `git clone https://github.com/dijaelramos/PM-2026.git`, porque assim o robô
+   baixa sozinho, todo dia, os materiais novos e as correções. Baixar o ZIP também funciona, mas sem essa atualização.
+2. Dê dois cliques em `canal\iniciar_robo.bat`:
+   - se faltar o Python, ele instala o 3.12 pelo winget (feche e abra de novo depois);
+   - os pacotes (edge-tts, pillow, imageio-ffmpeg, playwright, requests) são instalados na hora e atualizados toda semana;
+   - o navegador é o Google Chrome; sem ele, o robô usa o Microsoft Edge do Windows.
+3. Só na primeira vez nesse computador: no terminal, rode `canal\iniciar_robo.bat --login` e entre na conta do canal.
+4. Depois, é só dar dois cliques em `canal\iniciar_robo.bat`. Quando chega uma atualização do código, o robô reinicia
+   sozinho.
+
+Cada computador tem o próprio login, o próprio registro de postagens e o próprio `log.txt`. **Deixe o robô ligado
+em um computador só**, senão os dois postam o mesmo vídeo.
+
 **Visibilidade:** `"visibilidade_robo": "public"`. Com a voz gratuita (`"voz": "edge"`), o robô posta como
 PRIVADO, a menos que você marque `"aceito_voz_edge_em_publico": true`, por sua conta e risco.
 

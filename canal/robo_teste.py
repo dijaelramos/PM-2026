@@ -18,6 +18,8 @@ def main():
         sys.stdout.reconfigure(encoding="utf-8")
     except Exception:
         pass
+    if not R.dependencias.garantir(R.log):
+        return 1
     tarefas = R.tarefas_do_dia(R.agora().date())
     escolhidas = [t for t in tarefas if t["tipo"] == "aula"][:1] + \
                  [t for t in tarefas if t["tipo"] == "short" and t["n"] == 1]

@@ -19,7 +19,9 @@ import argparse
 import ctypes
 import datetime as dt
 import json
+import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -27,13 +29,29 @@ import traceback
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import dependencias  # noqa: E402
 import shorts as S  # noqa: E402
 import video as V  # noqa: E402
 
 PERFIL = V.CANAL / ".chrome_perfil"
 REGISTRO = V.CANAL / ".postados.json"
 ERROS = V.SAIDA / "_erros"
-CHROME = Path(r"C:\Program Files\Google\Chrome\Application\chrome.exe")
+REINICIAR = 3  # código de saída que pede ao iniciar_robo.bat para abrir o robô de novo (depois de atualizar)
+
+
+def navegador():
+    """(canal do Playwright, executável) do navegador do robô: Google Chrome; sem ele, o Microsoft Edge."""
+    pf = [os.environ.get(v) for v in ("PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA")]
+    pf = [Path(x) for x in pf if x]
+    opcoes = [("chrome", [b / "Google/Chrome/Application/chrome.exe" for b in pf]
+               + [Path(x) for x in (shutil.which("chrome"), shutil.which("google-chrome")) if x]),
+              ("msedge", [b / "Microsoft/Edge/Application/msedge.exe" for b in pf]
+               + [Path(x) for x in (shutil.which("msedge"), shutil.which("microsoft-edge")) if x])]
+    for canal, caminhos in opcoes:
+        for c in caminhos:
+            if c.exists():
+                return canal, c
+    raise RuntimeError("Nenhum navegador encontrado: instale o Google Chrome (https://www.google.com/chrome/).")
 INTERVALO_SHORTS = dt.timedelta(hours=1)
 MAX_TENTATIVAS = 3
 
@@ -88,7 +106,9 @@ def log_erro(onde):
 def fechar_chrome_do_robo():
     """Fecha só os Chrome abertos com o perfil do robô (por exemplo, o do --login que ficou em segundo plano).
     O seu Chrome normal não é tocado."""
-    cmd = ("$p = Get-CimInstance Win32_Process -Filter \"Name='chrome.exe'\" | "
+    if os.name != "nt":
+        return
+    cmd = ("$p = Get-CimInstance Win32_Process | Where-Object { $_.Name -in 'chrome.exe','msedge.exe' } | "
            "Where-Object { $_.CommandLine -like '*.chrome_perfil*' }; "
            "$p | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }; "
            "@($p).Count")
@@ -174,7 +194,7 @@ def limpo(texto, limite):
 def abrir_chrome(pw):
     PERFIL.mkdir(parents=True, exist_ok=True)
     fechar_chrome_do_robo()
-    return pw.chromium.launch_persistent_context(str(PERFIL), channel="chrome", headless=False,
+    return pw.chromium.launch_persistent_context(str(PERFIL), channel=navegador()[0], headless=False,
                                                  viewport={"width": 1400, "height": 900}, args=["--lang=pt-BR"])
 
 
@@ -353,7 +373,9 @@ def login():
     PERFIL.mkdir(parents=True, exist_ok=True)
     print("Abrindo o Chrome do robô. Entre na conta do canal (infinitycursosbeberibe), confira se o YouTube Studio "
           "abre e depois FECHE essa janela do Chrome.")
-    subprocess.Popen([str(CHROME), f"--user-data-dir={PERFIL}", "https://studio.youtube.com"]).wait()
+    canal, exe = navegador()
+    print(f"Navegador do robô: {'Google Chrome' if canal == 'chrome' else 'Microsoft Edge'} ({exe})")
+    subprocess.Popen([str(exe), f"--user-data-dir={PERFIL}", "https://studio.youtube.com"]).wait()
     input("Quando tiver fechado a janela, aperte Enter para eu conferir o login… ")
     fechar_chrome_do_robo()
     return testar()
@@ -384,15 +406,48 @@ def simular():
     return 0
 
 
+def atualizar_repositorio():
+    """git pull (se houver Git). Se o código do canal mudou, devolve True para o robô reiniciar com a versão nova."""
+    raiz = V.RAIZ
+    if not shutil.which("git") or not (raiz / ".git").exists():
+        return False
+    try:
+        antes = subprocess.run(["git", "-C", str(raiz), "rev-parse", "HEAD"], capture_output=True, text=True,
+                               timeout=60).stdout.strip()
+        r = subprocess.run(["git", "-C", str(raiz), "pull", "--ff-only", "-q"], capture_output=True, text=True,
+                           timeout=300)
+        if r.returncode != 0:
+            log(f"  aviso: não consegui atualizar o repositório (git pull): {(r.stderr or r.stdout).strip()[:200]}")
+            return False
+        depois = subprocess.run(["git", "-C", str(raiz), "rev-parse", "HEAD"], capture_output=True, text=True,
+                                timeout=60).stdout.strip()
+        if antes == depois:
+            return False
+        mudou = subprocess.run(["git", "-C", str(raiz), "diff", "--name-only", antes, depois], capture_output=True,
+                               text=True, timeout=60).stdout.split()
+        log(f"Repositório atualizado ({len(mudou)} arquivo(s) novos ou alterados).")
+        return any(m.startswith("canal/") and m.endswith((".py", ".json")) for m in mudou)
+    except Exception as erro:
+        log(f"  aviso: falha ao atualizar o repositório: {erro}")
+        return False
+
+
 def ligar():
     try:  # mantém o Windows acordado enquanto o robô roda (sem suspender)
         ctypes.windll.kernel32.SetThreadExecutionState(0x80000000 | 0x00000001)
     except Exception:
         pass
     log("Robô ligado. Deixe este terminal aberto; Ctrl+C desliga.")
-    falhas, ultimo_short, ultimo_aviso = {}, None, None
+    falhas, ultimo_short, ultimo_aviso, dia_atualizado = {}, None, None, None
     while True:
         dia, r = agora().date(), registro()
+        if dia_atualizado != dia:  # uma vez por dia (e ao ligar): baixa materiais novos e correções do robô
+            dia_atualizado = dia
+            if atualizar_repositorio():
+                log("O código do robô mudou: reiniciando com a versão nova…")
+                return REINICIAR
+            if not dependencias.garantir(log, atualizar=False):
+                log("Sem as dependências não dá para gerar os vídeos; tento de novo amanhã.")
         pendentes = [t for t in tarefas_do_dia(dia) if t["chave"] not in r and falhas.get(t["chave"], 0) < MAX_TENTATIVAS]
         prontas = [t for t in pendentes if agora() >= t["quando"]
                    and not (t["tipo"] == "short" and ultimo_short and agora() - ultimo_short < INTERVALO_SHORTS)]
@@ -437,6 +492,8 @@ def main():
     g.add_argument("--testar", action="store_true")
     g.add_argument("--simular", action="store_true")
     a = ap.parse_args()
+    if not dependencias.garantir(log):
+        return 1
     if a.login:
         return login()
     if a.testar:
@@ -444,7 +501,7 @@ def main():
     if a.simular:
         return simular()
     try:
-        ligar()
+        return ligar() or 0
     except KeyboardInterrupt:
         log("Robô desligado.")
     return 0

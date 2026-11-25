@@ -216,7 +216,8 @@ def montar_short(info, r, n, pasta):
         desenhar(info, tela, t / total, img)
         lista.append(f"file '{img.as_posix()}'\nduration {dur:.3f}")
         audio += mp3
-    lista.append(f"file '{(tmp / f'{len(r['telas']) - 1:02d}.png').as_posix()}'")
+    ultima = tmp / "{:02d}.png".format(len(r["telas"]) - 1)
+    lista.append(f"file '{ultima.as_posix()}'")
     (tmp / "lista.txt").write_text("\n".join(lista), encoding="utf-8")
     (tmp / "audio.mp3").write_bytes(bytes(audio))
     destino = pasta / f"short_{n}.mp4"
