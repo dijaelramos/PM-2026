@@ -43,7 +43,10 @@ As regras são as mesmas para qualquer IA. Este arquivo só aponta para elas:
 
 - Guia completo: `canal/README.md`.
 - O robô `canal/robo.py` posta pelo YouTube Studio no PC do estudante. Os registros e os erros completos ficam em **`canal/log.txt`**. Quando o estudante disser "leia o log", leia esse arquivo, as fotos de erro em `canal/saida/_erros/` e `canal/.postados.json`, e corrija o código.
-- **Não poste nem publique nada no YouTube por conta própria.** Rodar `robo.py`, `robo_teste.py` ou `publicar.py` só com o pedido do estudante.
+- **As postagens são automáticas.** Esse é o funcionamento combinado com o estudante: o `robo.py` posta sozinho, todo dia útil, a aula às 07:00 e os Shorts às 12:00, 18:00 e 21:00, como **públicos**. Os horários e a visibilidade ficam em `canal/config.json`.
+  - Depois de corrigir um erro do robô, ligue-o de novo (`python canal/robo.py`), para que as postagens continuem sem depender do estudante. Ele não repete o que já está em `canal/.postados.json`.
+  - Para não perder um dia, o que falhou pode ser postado de novo pelo próprio robô.
+  - Só com o pedido do estudante: apagar vídeos do canal, mudar as configurações do canal ou mudar os horários e a visibilidade.
 - **Nunca envie ao Git:**
   - credenciais: `canal/client_secret*.json` e `canal/token*.json`;
   - o perfil do Chrome do robô: `canal/.chrome_perfil/`;
