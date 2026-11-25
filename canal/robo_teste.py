@@ -25,6 +25,7 @@ def main():
         print("Hoje não há material (fim de semana ou dia sem sessão): nada para testar.")
         return 1
     vis = R.visibilidade()
+    erros = 0
     for t in escolhidas:
         ja = R.registro().get(t["chave"])
         if ja:
@@ -40,12 +41,14 @@ def main():
         except Exception as erro:
             R.log(f"  ERRO: {str(erro).splitlines()[0][:300]}")
             R.log_erro(t["nome"])
-            R.log("  O teste parou aqui. O erro completo está em canal/log.txt: é só pedir para a IA ler o log.")
-            return 1
+            R.log("  O erro completo está em canal/log.txt: é só pedir para a IA ler o log.")
+            erros += 1
+            continue  # segue para o próximo (o Short testa o caminho mesmo se a aula falhar)
         R.registrar(t["chave"], link)
         R.log(f"  postado: {link}")
-    R.log("Teste concluído. Confira em YouTube Studio > Conteúdo (aba Vídeos e aba Shorts).")
-    return 0
+    R.log("Teste concluído" + (f" com {erros} erro(s)." if erros else ".")
+          + " Confira em YouTube Studio > Conteúdo (aba Vídeos e aba Shorts).")
+    return 1 if erros else 0
 
 
 if __name__ == "__main__":

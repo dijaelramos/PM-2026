@@ -187,6 +187,32 @@ def preencher(page, seletor, texto):
     page.keyboard.type(texto)
 
 
+class FalhaDefinitiva(RuntimeError):
+    """Recusa do YouTube que não adianta tentar de novo (vídeo longo demais, limite diário…)."""
+
+
+RECUSAS = [
+    (r"muito longo|too long", "O YouTube recusou: vídeo longo demais. Canais sem verificação por telefone só aceitam "
+     "até 15 minutos. Verifique o telefone do canal em https://www.youtube.com/verify e rode de novo."),
+    (r"limite di[áa]rio|daily upload limit", "O YouTube recusou: limite diário de envios do canal atingido. "
+     "Tente amanhã."),
+    (r"processamento interrompido|processing abandoned|falha no (envio|upload)|upload failed",
+     "O YouTube interrompeu o envio/processamento do vídeo."),
+]
+
+
+def recusa_do_youtube(page):
+    """Se a janela de envio mostra um erro do YouTube, devolve a explicação; senão, None."""
+    try:
+        txt = page.locator("ytcp-uploads-dialog").first.inner_text(timeout=3000)
+    except Exception:
+        return None
+    for padrao, explicacao in RECUSAS:
+        if re.search(padrao, txt, re.I):
+            return explicacao
+    return None
+
+
 def esperar_envio(page, limite_min=90):
     """Espera o upload terminar (o rótulo de progresso deixa de mostrar porcentagem/'enviando')."""
     fim = time.time() + limite_min * 60
@@ -196,6 +222,9 @@ def esperar_envio(page, limite_min=90):
             txt = rotulo.inner_text(timeout=5000)
         except Exception:
             txt = ""
+        recusa = recusa_do_youtube(page)
+        if recusa:
+            raise FalhaDefinitiva(recusa)
         if txt and not re.search(r"\d+\s*%|enviando|uploading|carregando", txt, re.I):
             return txt.strip()
         time.sleep(5)
@@ -220,6 +249,10 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None):
                     page.locator("input#file-loader").first.set_input_files(str(miniatura), timeout=10_000)
                 except Exception:
                     log("  (miniatura não enviada: o canal precisa de verificação por telefone)")
+            page.wait_for_timeout(3000)
+            recusa = recusa_do_youtube(page)
+            if recusa:
+                raise FalhaDefinitiva(recusa)
             page.locator('tp-yt-paper-radio-button[name="VIDEO_MADE_FOR_KIDS_NOT_MFK"]').first.click()
             link = None
             for _ in range(60):  # o link aparece depois que o upload começa
@@ -319,7 +352,7 @@ def ligar():
             except KeyboardInterrupt:
                 raise
             except Exception as erro:
-                falhas[t["chave"]] = falhas.get(t["chave"], 0) + 1
+                falhas[t["chave"]] = MAX_TENTATIVAS if isinstance(erro, FalhaDefinitiva) else falhas.get(t["chave"], 0) + 1
                 log(f"  ERRO ({falhas[t['chave']]}/{MAX_TENTATIVAS}): {str(erro).splitlines()[0][:300]}")
                 log_erro(t["nome"])
                 time.sleep(15 * 60)
