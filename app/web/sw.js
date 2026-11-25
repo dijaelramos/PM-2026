@@ -44,6 +44,7 @@ self.addEventListener('fetch', (e) => {
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
   const caminho = url.pathname;
+  if (caminho.includes('/canal/')) return; // páginas públicas do canal (início e privacidade): sempre da rede
 
   if (caminho.endsWith('/data/catalogo.json')) { // rede primeiro, cópia guardada se offline
     e.respondWith((async () => {

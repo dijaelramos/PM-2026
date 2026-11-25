@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de Privacidade</title>
+<meta name="description" content="Política de Privacidade do Publicador do canal @infinityCursosBeberibe.">
+<style>
+  :root { --fundo: #f7f8fa; --texto: #1d2733; --suave: #5b6878; --link: #1f5fa8; --cartao: #ffffff; --borda: #dde3ea; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fundo: #0f1b2e; --texto: #eef2f8; --suave: #a0b1c8; --link: #8cc0ff; --cartao: #16263f; --borda: #2a3d5a; }
+  }
+  body { margin: 0; background: var(--fundo); color: var(--texto); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 1.7rem; line-height: 1.25; margin: 0 0 8px; }
+  .sub { color: var(--suave); margin: 0 0 28px; }
+  section { background: var(--cartao); border: 1px solid var(--borda); border-radius: 12px; padding: 20px 22px; margin-bottom: 18px; }
+  h2 { font-size: 1.15rem; margin: 0 0 8px; }
+  ul { padding-left: 1.2em; }
+  a { color: var(--link); overflow-wrap: anywhere; }
+  footer { color: var(--suave); font-size: .9rem; margin-top: 28px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Política de Privacidade do Publicador do canal</h1>
+  <p class="sub">Vigente desde 25 de novembro de 2026 · <a href="./">Página inicial</a></p>
+
+  <section>
+    <h2>1. Quem usa este aplicativo</h2>
+    <p>O "Publicador do canal" é uma ferramenta interna do canal
+    <a href="https://www.youtube.com/@infinityCursosBeberibe">@infinityCursosBeberibe</a>. Ele é usado
+    <strong>somente pelo dono do canal</strong>, para enviar vídeos ao <strong>próprio canal</strong> pela API do
+    YouTube. Nenhuma outra pessoa faz login nele.</p>
+  </section>
+
+  <section>
+    <h2>2. Que dados ele acessa</h2>
+    <p>Com a autorização do dono do canal, feita pelo login do Google (OAuth), o aplicativo acessa apenas:</p>
+    <ul>
+      <li><strong>Envio de vídeos</strong> (escopo <code>youtube.upload</code>): para publicar as aulas e os Shorts no
+      canal, com título, descrição e miniatura.</li>
+      <li><strong>Leitura do canal</strong> (escopo <code>youtube.readonly</code>): para conferir o nome do canal e a
+      lista de vídeos já enviados, e assim não publicar o mesmo vídeo duas vezes.</li>
+    </ul>
+    <p>O aplicativo <strong>não</strong> coleta dados de espectadores, comentários, inscritos, e-mails, contatos ou
+    qualquer informação de terceiros, nem dados de pagamento.</p>
+  </section>
+
+  <section>
+    <h2>3. Como os dados são guardados</h2>
+    <p>A autorização fica guardada como um <em>token</em> em área secreta e criptografada do serviço de automação
+    usado pelo dono do canal (segredos do GitHub Actions). Ela não é publicada, vendida nem compartilhada. Os vídeos
+    enviados ficam no YouTube, sob as regras do próprio YouTube.</p>
+  </section>
+
+  <section>
+    <h2>4. Serviços do Google e do YouTube</h2>
+    <p>Este aplicativo usa os Serviços de API do YouTube. Ao usá-lo, valem os
+    <a href="https://www.youtube.com/t/terms">Termos de Serviço do YouTube</a> e a
+    <a href="https://policies.google.com/privacy">Política de Privacidade do Google</a>.</p>
+  </section>
+
+  <section>
+    <h2>5. Como revogar o acesso</h2>
+    <p>O dono do canal pode revogar a autorização a qualquer momento na página de permissões da conta Google:
+    <a href="https://myaccount.google.com/connections">myaccount.google.com/connections</a> (ou
+    <a href="https://security.google.com/settings/security/permissions">security.google.com/settings/security/permissions</a>).
+    Depois da revogação, o aplicativo deixa de ter qualquer acesso, e o token guardado é apagado.</p>
+  </section>
+
+  <section>
+    <h2>6. Contato</h2>
+    <p>Dúvidas sobre esta política: pelo canal
+    <a href="https://www.youtube.com/@infinityCursosBeberibe">@infinityCursosBeberibe</a> no YouTube.</p>
+  </section>
+
+  <footer>English summary: this internal tool is used only by the owner of the YouTube channel
+  @infinityCursosBeberibe to upload videos to their own channel. It uses the youtube.upload and youtube.readonly
+  scopes, collects no third-party data, stores the OAuth token only as an encrypted CI secret, and follows the
+  <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a> and the
+  <a href="https://policies.google.com/privacy">Google Privacy Policy</a>. Access can be revoked at
+  <a href="https://security.google.com/settings/security/permissions">security.google.com/settings/security/permissions</a>.</footer>
+</main>
+</body>
+</html>
