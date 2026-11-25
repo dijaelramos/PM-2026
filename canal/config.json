@@ -1,9 +1,10 @@
 {
-  "nome_canal": "",
+  "nome_canal": "@infinityCursosBeberibe",
   "voz": "edge",
   "voz_nome": "pt-BR-AntonioNeural",
   "taxa": "-5%",
   "privacidade": "private",
   "creditos": "Fontes: Constituição Federal e leis citadas (texto oficial), edital PMPE 2026 e bibliografia de apoio citada na aula.",
-  "questoes_no_final": 5
+  "questoes_no_final": 5,
+  "url_canal": "https://www.youtube.com/@infinityCursosBeberibe"
 }

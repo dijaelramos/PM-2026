@@ -556,6 +556,9 @@ def desenhar_capa(info, titulo, destino, tamanho=(LARG, ALT), subtitulo="", cham
     d = ImageDraw.Draw(img)
     esc = w / 1920
     d.rectangle([0, 0, w, int(140 * esc)], fill=COR["faixa"])
+    if CONFIG.get("nome_canal"):
+        nome, fn = CONFIG["nome_canal"], fonte(int(40 * esc))
+        d.text((w - int(70 * esc) - d.textlength(nome, font=fn), int(48 * esc)), nome, font=fn, fill=COR["texto"])
     d.text((int(70 * esc), int(40 * esc)), f"{info['data']:%d/%m/%Y} · Concurso Soldado PM-PE 2026", font=fonte(int(52 * esc), True),
            fill=COR["texto"])
     f = fonte(int(120 * esc), True)
@@ -612,7 +615,10 @@ def montar(caminho, limite_telas=None):
                         + "Este é um material de estudo independente, não oficial. Bons estudos!"}
     fim = {"secao": "Encerramento", "sub": "", "tipo": "capa",
            "fala": ("Fim da aula. Conte nos comentários quantas questões você acertou. " if questoes else "Fim da aula. ")
-                   + "Revise os quadros e as pegadinhas e até a próxima aula!"}
+                   + "Revise os quadros e as pegadinhas. "
+                   + ("Se esta aula ajudou, inscreva-se no canal e ative o sininho para receber a aula de cada dia. "
+                      if CONFIG.get("nome_canal") else "")
+                   + "Até a próxima aula!"}
     telas = [abertura] + info["telas"][:limite_telas] + telas_de_questoes(questoes) + [fim]
 
     lista, audio, capitulos, t = [], bytearray(), [], 0.0
@@ -658,7 +664,9 @@ def montar(caminho, limite_telas=None):
         "Material de estudo independente e não oficial, sem vínculo com a Polícia Militar de Pernambuco, com o "
         "Governo do Estado ou com a banca. Confira sempre o edital e a legislação oficial.\n"
         f"{CONFIG.get('creditos', '')}\n"
-        f"Narração com voz sintética.\n\nCódigo da aula: {info['id']}"
+        f"Narração com voz sintética.\n\n"
+        + (f"Inscreva-se para receber a aula de cada dia: {CONFIG['url_canal']}\n\n" if CONFIG.get("url_canal") else "")
+        + f"Código da aula: {info['id']}"
     )
     meta = {"id": info["id"], "titulo": titulo, "descricao": descricao[:4900],
             "tags": ["concurso PMPE", "soldado PM-PE", "PMPE 2026", "Instituto AOCP", titulo_aula, "concurso público",

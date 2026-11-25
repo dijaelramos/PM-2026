@@ -36,7 +36,7 @@ Texto do Anexo II: *"4. Princípios e técnicas de contagem: princípio multipli
 
 Contar é descobrir **de quantas maneiras** algo pode acontecer. Quando uma escolha é feita **em etapas** (escolho isto **e** depois aquilo), **multiplicamos**. Quando escolho **uma coisa ou outra**, de grupos diferentes, **somamos**.
 
-> **Ex. 1** *(criado pelo tutor)* — Um soldado tem 2 coturnos e 3 gandolas. De quantas formas pode se vestir (um coturno **e** uma gandola)? 2 × 3 = **6**.
+> **Ex. 1** *(criado pelo tutor)* — Um soldado tem 2 coturnos e 3 gandolas. De quantas combinações diferentes ele pode montar (um coturno **e** uma gandola)? 2 × 3 = **6**.
 
 ### 🟡 Intermediário — aplicar
 

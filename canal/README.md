@@ -11,6 +11,8 @@ com o nome da seção, a barra de progresso e capítulos clicáveis no YouTube. 
 | `config.json` | Nome do canal, voz e privacidade |
 | `../.github/workflows/canal.yml` | Roda tudo às 07:05 (dias úteis) ou quando você pedir na aba Actions |
 
+**Canal:** https://www.youtube.com/@infinityCursosBeberibe (`nome_canal` e `url_canal` em `config.json`).
+
 **O que vai para o vídeo:** só as seções de conteúdo (1, 2, 3…, quadros e pegadinhas). Ficam de fora o roteiro,
 a cobertura do edital, a revisão espaçada, a redação e qualquer parágrafo sobre o seu perfil ou o Orquestrador.
 

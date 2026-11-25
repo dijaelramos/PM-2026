@@ -33,7 +33,7 @@
 
 ## 2. Raciocínio Lógico — revisão do item 2 (29/12)
 
-- **Válido** = impossível premissas V e conclusão F. Teste: suponha a conclusão **falsa** e tente deixar as premissas verdadeiras.
+- **Válido** = é impossível ter premissas V e conclusão F. Teste: suponha a conclusão **falsa** e tente deixar as premissas verdadeiras.
 - **Válidas:** ponens (p → q; p ⊢ q), tollens (p → q; ~q ⊢ ~p), cadeia, disjuntivo (p ∨ q; ~p ⊢ q). **Falácias:** afirmar o consequente, negar o antecedente.
 - **Ciclo** de condicionais (p → q → r → p): todas com o **mesmo** valor.
 - **~(p ∧ q)** ≡ ~p ∨ ~q ≡ p → ~q ≡ q → ~p (não obriga as duas a serem falsas).

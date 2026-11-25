@@ -100,7 +100,7 @@ De acordo com a Constituição Federal, assinale a alternativa que NÃO correspo
 - **(A)** Sancionar, promulgar e fazer publicar as leis, bem como expedir decretos e regulamentos para sua fiel execução.
 - **(B)** Vetar projetos de lei, total ou parcialmente.
 - **(C)** Dispor, mediante decreto, sobre extinção de funções ou cargos públicos, quando vagos.
-- **(D)** Exercer o comando supremo das Forças Armadas, nomear os Comandantes da Marinha, do Exército e da Aeronáutica, promover seus oficiais-generais e nomeá- los para os cargos que lhes são privativos.
+- **(D)** Exercer o comando supremo das Forças Armadas, nomear os Comandantes da Marinha, do Exército e da Aeronáutica, promover seus oficiais-generais e nomeá-los para os cargos que lhes são privativos.
 - **(E)** Autorizar operações externas de natureza financeira de interesse da União.
 
 ### Questão 6 — PC-ES 2019, Escrivão de Polícia (AOCP), Q27
