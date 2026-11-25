@@ -15,5 +15,5 @@
   ],
   "horario_aula": "07:00",
   "visibilidade_robo": "public",
-  "aceito_voz_edge_em_publico": false
+  "aceito_voz_edge_em_publico": true
 }
