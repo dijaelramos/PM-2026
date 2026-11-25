@@ -5,3 +5,5 @@ canal/.cache/
 canal/saida/
 canal/client_secret*.json
 canal/token*.json
+canal/.chrome_perfil/
+canal/.postados.json

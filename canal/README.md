@@ -92,6 +92,27 @@ envia o vídeo como privado. Para o canal monetizado, use a mesma voz (Antonio) 
 2. Cadastre os secrets `AZURE_SPEECH_KEY` e `AZURE_SPEECH_REGION` (ex.: `brazilsouth`).
 3. Em `config.json`, troque `"voz": "edge"` por `"voz": "azure"` e `"privacidade"` por `"public"`.
 
+## Robô no seu computador (posta pelo YouTube Studio, sem precisar da auditoria)
+
+`canal/robo.py` roda no seu PC, em loop. Todo dia útil, ele gera e posta a aula às 07:00 e os 3 Shorts às 12:00,
+18:00 e 21:00, pelo Chrome, no YouTube Studio. Ele precisa de `pip install playwright` e do Google Chrome instalado.
+
+1. `python canal/robo.py --login`: abre um Chrome só do robô. Entre na conta do canal, confira se o Studio abre
+   e feche a janela.
+2. `python canal/robo.py --simular`: mostra a agenda de hoje, sem postar nada.
+3. `python canal/robo.py`: liga o robô. Deixe o terminal aberto; Ctrl+C desliga. Enquanto ele roda, o PC não
+   entra em suspensão.
+
+Ligado tarde, ele posta o que estiver atrasado, com pelo menos 1 hora entre os Shorts. O que já foi postado fica em
+`canal/.postados.json`, para nunca postar duas vezes. Se der erro, a foto da tela vai para `canal/saida/_erros/`, e
+ele tenta de novo até 3 vezes.
+
+**Visibilidade:** `"visibilidade_robo": "public"`. Com a voz gratuita (`"voz": "edge"`), o robô posta como
+PRIVADO, a menos que você marque `"aceito_voz_edge_em_publico": true`, por sua conta e risco.
+
+⚠️ Os Termos do YouTube proíbem acessar o serviço por meios automatizados sem autorização. Usar o robô é por sua
+conta e risco, e o risco é para o canal. Ele também pode parar de funcionar quando o YouTube mudar a tela do Studio.
+
 ## Gerar um vídeo no seu computador
 ```
 pip install -r canal/requirements.txt
