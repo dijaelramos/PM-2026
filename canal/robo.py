@@ -84,7 +84,7 @@ def log(msg):
     _gravar_log(linha)
 
 
-def log_erro(onde):
+def log_erro(onde, tipo="ERRO"):
     """Grava no log.txt o erro completo (traceback), a foto da tela e as versões, para diagnóstico."""
     import platform
     try:
@@ -94,11 +94,11 @@ def log_erro(onde):
         pw = "?"
     fotos = sorted(ERROS.glob("erro_*.png"))[-1:] if ERROS.exists() else []
     _gravar_log("\n".join([
-        f"===== ERRO em {onde} — {agora():%d/%m/%Y %H:%M:%S} =====",
+        f"===== {tipo} em {onde} — {agora():%d/%m/%Y %H:%M:%S} =====",
         f"Python {platform.python_version()} · Playwright {pw} · Windows {platform.version()}",
         f"Última foto de erro: {fotos[0] if fotos else '(nenhuma)'}",
         traceback.format_exc().rstrip(),
-        "===== FIM DO ERRO =====",
+        f"===== FIM DO {tipo} =====",
     ]))
     print(f"(detalhes completos do erro gravados em {LOG})", flush=True)
 
@@ -164,7 +164,7 @@ def tarefas_do_dia(dia):
 
 
 def preparar(t):
-    """Gera o vídeo se ainda não existir. Devolve (arquivo, título, descrição, miniatura) ou None."""
+    """Gera o vídeo se ainda não existir. Devolve (arquivo, título, descrição, miniatura, extras) ou None."""
     pasta = V.SAIDA / t["material"].stem
     if t["tipo"] == "aula":
         if not (pasta / "video.mp4").exists():
@@ -172,7 +172,10 @@ def preparar(t):
             if not V.montar(t["material"].resolve()):
                 return None
         meta = json.loads((pasta / "video.json").read_text(encoding="utf-8"))
-        return pasta / "video.mp4", meta["titulo"], meta["descricao"], pasta / "miniatura.png"
+        if "questoes" not in meta:  # vídeo gerado antes desses campos existirem
+            qs = V.questoes_do_video(t["material"].resolve())
+            meta["questoes"], meta["questoes_abertas"] = len(qs), bool(qs) and not qs[0]["alts"]
+        return pasta / "video.mp4", meta["titulo"], meta["descricao"], pasta / "miniatura.png", extras_da_aula(meta)
     js = pasta / "shorts" / f"short_{t['n']}.json"
     if not js.exists():
         log(f"gerando os Shorts de {t['material'].name}…")
@@ -182,7 +185,28 @@ def preparar(t):
     meta = json.loads(js.read_text(encoding="utf-8"))
     aula = registro().get(t["material"].stem, {}).get("link")
     desc = meta["descricao"].replace("{link_aula}", aula or V.CONFIG.get("url_canal", "no canal"))
-    return js.with_suffix(".mp4"), meta["titulo"], desc, None
+    return js.with_suffix(".mp4"), meta["titulo"], desc, None, {}
+
+
+def extras_da_aula(meta):
+    """Playlist da disciplina e comentário fixado (pedindo as respostas das questões e, se houver, o Pix)."""
+    disciplina = meta.get("disciplina") or meta["titulo"].split(":")[0]
+    playlist = f"{disciplina} | {V.CONFIG.get('concurso', 'Soldado PM-PE 2026')}" if V.CONFIG.get("playlists", True) else None
+    if not V.CONFIG.get("comentario_fixado", True):
+        return {"playlist": playlist, "comentario": None}
+    n = meta.get("questoes", 0)
+    if n and not meta.get("questoes_abertas"):
+        partes = [f"Responda aqui as {n} questões do fim da aula: escreva o número e a letra de cada uma "
+                  "(por exemplo: 1-B). O gabarito comentado está no capítulo \"Gabarito comentado\"."]
+    elif n:
+        partes = ["Escolha uma das perguntas do fim da aula e responda aqui com as suas palavras. "
+                  "As respostas-modelo estão no capítulo \"Gabarito comentado\"."]
+    else:
+        partes = ["Ficou alguma dúvida sobre a aula? Pergunte aqui nos comentários."]
+    partes.append("Se a aula ajudou, inscreva-se e ative o sininho: tem aula nova todo dia útil.")
+    if V.CONFIG.get("pix_chave"):
+        partes.append(f"Quer apoiar o canal? Pix (qualquer valor): {V.CONFIG['pix_chave']}")
+    return {"playlist": playlist, "comentario": "\n\n".join(partes)}
 
 
 # ---------------------------------------------------------------- Chrome / YouTube Studio
@@ -312,7 +336,100 @@ def conferir_depois_de_publicar(page, link, minutos=5):
     log("  aviso: o Studio não confirmou o fim do processamento em 5 min; confira o vídeo no Studio")
 
 
-def postar(arquivo, titulo, descricao, visib, miniatura=None):
+def _aviso(page, onde):
+    """Falha num extra (playlist/comentário): fecha janelas abertas, registra com foto e segue a postagem."""
+    log(f"  aviso: não consegui {onde}; a postagem segue (detalhes no log.txt)")
+    try:
+        ERROS.mkdir(parents=True, exist_ok=True)
+        page.screenshot(path=str(ERROS / f"aviso_{agora():%Y%m%d_%H%M%S}.png"), full_page=True)
+    except Exception:
+        pass
+    log_erro(onde, "AVISO")
+    for _ in range(2):
+        try:
+            page.keyboard.press("Escape")
+            page.wait_for_timeout(500)
+        except Exception:
+            pass
+
+
+def escolher_playlist(page, nome):
+    """Na tela de detalhes do envio: marca a playlist `nome` (cria se ainda não existir)."""
+    page.locator("ytcp-video-metadata-playlists ytcp-text-dropdown-trigger, "
+                 "ytcp-video-metadata-playlists #basics").first.click(timeout=15_000)
+    dlg = page.locator("ytcp-playlist-dialog").first
+    dlg.wait_for(timeout=15_000)
+    page.wait_for_timeout(1500)
+    item = dlg.get_by_text(nome, exact=True)
+    if item.count() == 0:
+        dlg.get_by_role("button", name=re.compile(r"nova playlist|new playlist|criar playlist", re.I)).first.click()
+        try:  # em algumas versões abre um menu com "Nova playlist"
+            page.get_by_role("menuitem", name=re.compile(r"nova playlist|new playlist", re.I)).first.click(timeout=3000)
+        except Exception:
+            pass
+        caixa = page.locator("ytcp-playlist-creation-dialog #title-textarea #textbox, "
+                             "ytcp-playlist-creation-dialog textarea, ytcp-playlist-creation-dialog #textbox").first
+        caixa.wait_for(timeout=15_000)
+        caixa.click()
+        page.keyboard.type(nome[:150])
+        page.locator("ytcp-playlist-creation-dialog").get_by_role(
+            "button", name=re.compile(r"^\s*(criar|create)\s*$", re.I)).first.click()
+        page.wait_for_timeout(4000)
+        item = dlg.get_by_text(nome, exact=True)
+    caixinha = dlg.locator("ytcp-checkbox-lit, tp-yt-paper-checkbox").filter(has_text=nome).first
+    try:
+        marcado = (caixinha.get_attribute("aria-checked", timeout=3000) == "true"
+                   or caixinha.locator("[aria-checked='true']").count() > 0)
+    except Exception:
+        marcado = False
+    if not marcado:
+        item.first.click()
+    dlg.get_by_role("button", name=re.compile(r"conclu[íi]do|done", re.I)).first.click()
+    page.wait_for_timeout(1500)
+    log(f"  playlist: {nome}")
+
+
+def comentar_e_fixar(ctx, link, texto):
+    """Publica `texto` como comentário no vídeo e fixa no topo."""
+    vid = (link or "").rstrip("/").rsplit("/", 1)[-1]
+    page = ctx.new_page()
+    try:
+        page.goto(f"https://www.youtube.com/watch?v={vid}", wait_until="domcontentloaded", timeout=120_000)
+        page.wait_for_timeout(5000)
+        try:
+            page.locator("video").first.evaluate("v => v.pause()")
+        except Exception:
+            pass
+        caixa = page.locator("ytd-comments #simplebox-placeholder").first
+        for _ in range(20):  # os comentários só carregam depois de rolar a página
+            if caixa.is_visible():
+                break
+            page.mouse.wheel(0, 700)
+            page.wait_for_timeout(1500)
+        caixa.click(timeout=15_000)
+        page.locator("ytd-comments #contenteditable-root").first.click()
+        for i, par in enumerate(texto.split("\n")):
+            if i:
+                page.keyboard.press("Shift+Enter")
+            page.keyboard.type(par)
+        page.locator("ytd-comments #submit-button").first.click()
+        page.wait_for_timeout(5000)
+        trecho = texto.split("\n")[0][:40]
+        fio = page.locator("ytd-comment-thread-renderer").filter(has_text=trecho).first
+        fio.wait_for(timeout=30_000)
+        fio.locator("#action-menu button, #action-menu yt-icon-button").first.click()
+        page.locator("ytd-menu-service-item-renderer, tp-yt-paper-item").filter(
+            has_text=re.compile(r"^\s*(fixar|pin)\s*$", re.I)).first.click(timeout=10_000)
+        page.locator("yt-confirm-dialog-renderer #confirm-button, #confirm-button").first.click(timeout=10_000)
+        page.wait_for_timeout(3000)
+        log("  comentário publicado e fixado")
+    except Exception:
+        _aviso(page, "comentar e fixar")
+    finally:
+        page.close()
+
+
+def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
         ctx = abrir_chrome(pw)
@@ -330,6 +447,12 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None):
                     page.locator("input#file-loader").first.set_input_files(str(miniatura), timeout=10_000)
                 except Exception:
                     log("  (miniatura não enviada: o canal precisa de verificação por telefone)")
+            extras = extras or {}
+            if extras.get("playlist"):
+                try:
+                    escolher_playlist(page, extras["playlist"])
+                except Exception:
+                    _aviso(page, f"colocar na playlist {extras['playlist']}")
             page.wait_for_timeout(3000)
             recusa = recusa_do_youtube(page)
             if recusa:
@@ -353,6 +476,8 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None):
             page.locator("#done-button").first.click()
             confirmar_publicacao(page)
             conferir_depois_de_publicar(page, link)
+            if extras.get("comentario") and link and visib != "PRIVATE":
+                comentar_e_fixar(ctx, link, extras["comentario"])
             return link or "(link não capturado)"
         except Exception:
             ERROS.mkdir(parents=True, exist_ok=True)
@@ -460,7 +585,7 @@ def ligar():
                     log("  nada para postar neste material; pulando")
                     registrar(t["chave"], None)
                     continue
-                link = postar(*item[:3], visibilidade(), item[3])
+                link = postar(*item[:3], visibilidade(), item[3], item[4])
                 registrar(t["chave"], link)
                 if t["tipo"] == "short":
                     ultimo_short = agora()
@@ -491,6 +616,7 @@ def main():
     g.add_argument("--login", action="store_true")
     g.add_argument("--testar", action="store_true")
     g.add_argument("--simular", action="store_true")
+    g.add_argument("--comentar", metavar="LINK", help="publica e fixa o comentário da aula de hoje no vídeo LINK")
     a = ap.parse_args()
     if not dependencias.garantir(log):
         return 1
@@ -500,6 +626,20 @@ def main():
         return testar()
     if a.simular:
         return simular()
+    if a.comentar:
+        aula = next((t for t in tarefas_do_dia(agora().date()) if t["tipo"] == "aula"), None)
+        if not aula:
+            print("Hoje não há aula.")
+            return 1
+        item = preparar(aula)
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as pw:
+            ctx = abrir_chrome(pw)
+            try:
+                comentar_e_fixar(ctx, a.comentar, item[4]["comentario"])
+            finally:
+                ctx.close()
+        return 0
     try:
         return ligar() or 0
     except KeyboardInterrupt:

@@ -549,7 +549,7 @@ def desenhar_tela(info, tela, progresso, destino):
     img.save(destino)
 
 
-def desenhar_capa(info, titulo, destino, tamanho=(LARG, ALT), subtitulo="", chamada=""):
+def desenhar_capa(info, titulo, destino, tamanho=(LARG, ALT), subtitulo="", chamada="", pix=False):
     from PIL import Image, ImageDraw
     w, h = tamanho
     img = Image.new("RGB", (w, h), COR["fundo"])
@@ -563,15 +563,31 @@ def desenhar_capa(info, titulo, destino, tamanho=(LARG, ALT), subtitulo="", cham
            fill=COR["texto"])
     f = fonte(int(120 * esc), True)
     y = int(260 * esc)
-    for l in quebrar(d, titulo, f, w - int(160 * esc))[:3]:
+    largura = w - int(160 * esc) - (int(460 * esc) if pix else 0)  # com Pix, o texto não invade o QR Code
+    for l in quebrar(d, titulo, f, largura)[:3]:
         d.text((int(70 * esc), y), l, font=f, fill=COR["destaque"])
         y += int(140 * esc)
     if subtitulo:
-        for l in quebrar(d, subtitulo, fonte(int(54 * esc)), w - int(160 * esc))[:3]:
+        for l in quebrar(d, subtitulo, fonte(int(54 * esc)), largura)[:3]:
             d.text((int(70 * esc), y + int(20 * esc)), l, font=fonte(int(54 * esc)), fill=COR["texto"])
             y += int(70 * esc)
     if chamada:
         d.text((int(70 * esc), h - int(180 * esc)), chamada, font=fonte(int(56 * esc), True), fill=COR["destaque"])
+    if pix:  # tela final: QR Code do Pix à direita
+        import pix as P
+        lado = int(380 * esc)
+        x0, y0 = w - int(70 * esc) - lado, int(300 * esc)
+        img.paste(P.qr(lado), (x0, y0))
+        d.text((x0, y0 - int(70 * esc)), "Apoie o canal: Pix", font=fonte(int(48 * esc), True), fill=COR["destaque"])
+        fc, linhas, atual = fonte(int(30 * esc)), [], ""
+        for ch in P.chave():  # quebra por letra: chave aleatória não tem espaços
+            if d.textlength(atual + ch, font=fc) > lado:
+                linhas.append(atual)
+                atual = ""
+            atual += ch
+        linhas.append(atual)
+        for k, l in enumerate(linhas[:3]):
+            d.text((x0, y0 + lado + int(20 * esc) + k * int(40 * esc)), l, font=fonte(int(30 * esc)), fill=COR["texto"])
     d.text((int(70 * esc), h - int(90 * esc)), "Aula narrada · material de estudo não oficial", font=fonte(int(40 * esc)),
            fill=COR["suave"])
     img.save(destino)
@@ -619,6 +635,8 @@ def montar(caminho, limite_telas=None):
                    + "Revise os quadros e as pegadinhas. "
                    + ("Se esta aula ajudou, inscreva-se no canal e ative o sininho para receber a aula de cada dia. "
                       if CONFIG.get("nome_canal") else "")
+                   + ("E, se quiser apoiar o canal, o Pix está na tela e na descrição: qualquer valor ajuda. "
+                      if CONFIG.get("pix_chave") else "")
                    + "Até a próxima aula!"}
     telas = [abertura] + info["telas"][:limite_telas] + telas_de_questoes(questoes) + [fim]
 
@@ -630,7 +648,8 @@ def montar(caminho, limite_telas=None):
         img = pasta / "telas" / f"{i:04d}.png"
         if tela["tipo"] == "capa":
             desenhar_capa(info, titulo_aula, img, subtitulo=assuntos if i == 0 else "Fim da aula",
-                          chamada=chamada if i == 0 else ("Conte nos comentários quantas você acertou!" if questoes else ""))
+                          chamada=chamada if i == 0 else ("Conte nos comentários quantas você acertou!" if questoes else ""),
+                          pix=(i > 0 and bool(CONFIG.get("pix_chave"))))
         else:
             desenhar_tela(info, tela, (i + 1) / len(telas), img)
         if tela["secao"] != ultima_secao:
@@ -667,19 +686,26 @@ def montar(caminho, limite_telas=None):
         "Governo do Estado ou com a banca. Confira sempre o edital e a legislação oficial.\n"
         f"{CONFIG.get('creditos', '')}\n"
         f"Narração com voz sintética.\n\n"
-        + (f"Inscreva-se para receber a aula de cada dia: {CONFIG['url_canal']}\n\n" if CONFIG.get("url_canal") else "")
+        + (f"Inscreva-se para receber a aula de cada dia: {CONFIG['url_canal']}\n" if CONFIG.get("url_canal") else "")
+        + linha_pix() + "\n"
         + f"Código da aula: {info['id']}"
     )
     meta = {"id": info["id"], "titulo": titulo, "descricao": descricao[:4900],
             "tags": ["concurso PMPE", "soldado PM-PE", "PMPE 2026", "Instituto AOCP", titulo_aula, "concurso público",
                      "polícia militar de Pernambuco"],
-            "duracao": round(t), "data": dia.isoformat()}
+            "duracao": round(t), "data": dia.isoformat(), "disciplina": titulo_aula,
+            "questoes": len(questoes), "questoes_abertas": bool(questoes) and not questoes[0]["alts"]}
     (pasta / "video.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     shutil.rmtree(pasta / "telas")
     (pasta / "lista.txt").unlink()
     (pasta / "audio.mp3").unlink()
     print(f"  pronto: {pasta / 'video.mp4'} ({tempo(t)})")
     return pasta
+
+
+def linha_pix():
+    import pix as P
+    return P.linha_descricao()
 
 
 def materiais_do_dia(dia):

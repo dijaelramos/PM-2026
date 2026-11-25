@@ -24,6 +24,7 @@ PACOTES = [
     ("imageio_ffmpeg", "imageio-ffmpeg"),
     ("playwright", "playwright"),
     ("requests", "requests"),
+    ("qrcode", "qrcode"),
 ]
 
 

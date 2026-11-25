@@ -252,6 +252,7 @@ def montar(caminho):
             "(banca Instituto AOCP).\n\n"
             "Aula completa do dia: {link_aula}\n"
             + (f"Inscreva-se: {url}\n" if url else "")
+            + V.linha_pix()
             + "\nMaterial de estudo independente e não oficial, sem vínculo com a Polícia Militar de Pernambuco, com o "
               "Governo do Estado ou com a banca. Narração com voz sintética.\n\n"
               "#Shorts #ConcursoPMPE #PMPE2026 #SoldadoPMPE #Concursos\n\n"

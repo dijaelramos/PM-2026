@@ -39,7 +39,7 @@ def main():
             if not item:
                 R.log("  nada para postar neste material")
                 continue
-            link = R.postar(*item[:3], vis, item[3])
+            link = R.postar(*item[:3], vis, item[3], item[4])
         except Exception as erro:
             R.log(f"  ERRO: {str(erro).splitlines()[0][:300]}")
             R.log_erro(t["nome"])

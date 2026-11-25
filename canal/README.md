@@ -122,6 +122,15 @@ ele tenta de novo até 3 vezes.
 Cada computador tem o próprio login, o próprio registro de postagens e o próprio `log.txt`. **Deixe o robô ligado
 em um computador só**, senão os dois postam o mesmo vídeo.
 
+**Extras de cada aula:**
+- **Playlist:** o robô coloca a aula na playlist da disciplina, por exemplo "História de Pernambuco | Soldado PM-PE 2026", e cria a playlist se ela não existir. Use `"playlists": false` para desligar.
+- **Comentário fixado:** pede as respostas das questões do fim da aula e, se houver, traz o Pix. Use `"comentario_fixado": false` para desligar.
+- **Testar o comentário num vídeo já postado:** `python canal/robo.py --comentar https://youtu.be/ID`.
+
+Se a playlist ou o comentário falharem, o vídeo é postado mesmo assim, e o motivo fica no `log.txt` como AVISO.
+
+**Pix:** com `"pix_chave"`, `"pix_nome"` e `"pix_cidade"` preenchidos, a tela final das aulas mostra o QR Code do Pix, gerado no padrão do Banco Central e sem valor fixo. A chave também vai na descrição das aulas e dos Shorts e no comentário fixado. Prefira uma **chave aleatória**, para não expor CPF, telefone ou e-mail.
+
 **Visibilidade:** `"visibilidade_robo": "public"`. Com a voz gratuita (`"voz": "edge"`), o robô posta como
 PRIVADO, a menos que você marque `"aceito_voz_edge_em_publico": true`, por sua conta e risco.
 
