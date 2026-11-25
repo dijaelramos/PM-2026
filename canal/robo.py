@@ -231,6 +231,42 @@ def esperar_envio(page, limite_min=90):
     raise TimeoutError("o upload não terminou no tempo esperado")
 
 
+CONFIRMACAO = re.compile(r"processando v[íi]deo|v[íi]deo publicado|v[íi]deo salvo|v[íi]deo agendado|"
+                        r"video published|video saved|processing video|still being processed|ainda est[áa] sendo processado",
+                        re.I)
+
+
+def confirmar_publicacao(page, limite_s=180):
+    """Depois de clicar em Publicar/Salvar: espera a janela de confirmação do Studio (os textos mudam conforme o
+    caso: "Processando vídeo", "Vídeo publicado"…) ou a janela de envio sumir; depois fecha o aviso."""
+    fim = time.time() + limite_s
+    while time.time() < fim:
+        recusa = recusa_do_youtube(page)
+        if recusa:
+            raise FalhaDefinitiva(recusa)
+        try:
+            if page.get_by_text(CONFIRMACAO).first.is_visible(timeout=1000):
+                break
+        except Exception:
+            pass
+        try:
+            if not page.locator("ytcp-uploads-dialog #done-button").first.is_visible(timeout=1000):
+                break  # a janela de envio fechou: o Studio aceitou
+        except Exception:
+            pass
+        time.sleep(2)
+    else:
+        raise TimeoutError("o Studio não confirmou a publicação")
+    page.wait_for_timeout(2000)
+    for nome in ("Fechar", "Close"):
+        try:
+            page.get_by_role("button", name=nome).first.click(timeout=3000)
+            break
+        except Exception:
+            pass
+    page.wait_for_timeout(2000)
+
+
 def postar(arquivo, titulo, descricao, visib, miniatura=None):
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
@@ -270,8 +306,7 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None):
             estado = esperar_envio(page)
             log(f"  envio concluído ({estado[:60]})")
             page.locator("#done-button").first.click()
-            page.locator("ytcp-video-share-dialog, ytcp-uploads-still-processing-dialog").first.wait_for(timeout=180_000)
-            page.wait_for_timeout(3000)
+            confirmar_publicacao(page)
             return link or "(link não capturado)"
         except Exception:
             ERROS.mkdir(parents=True, exist_ok=True)
