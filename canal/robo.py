@@ -267,6 +267,31 @@ def confirmar_publicacao(page, limite_s=180):
     page.wait_for_timeout(2000)
 
 
+def conferir_depois_de_publicar(page, link, minutos=5):
+    """Algumas recusas (ex.: "vídeo muito longo") só aparecem quando o processamento começa, depois de publicar.
+    Abre a página do vídeo no Studio e confere por alguns minutos; se o YouTube recusou, levanta FalhaDefinitiva
+    (e o vídeo NÃO é registrado como postado)."""
+    vid = (link or "").rstrip("/").rsplit("/", 1)[-1]
+    if not re.fullmatch(r"[\w-]{11}", vid):
+        return
+    page.goto(f"https://studio.youtube.com/video/{vid}/edit", wait_until="domcontentloaded", timeout=120_000)
+    fim = time.time() + minutos * 60
+    while time.time() < fim:
+        page.wait_for_timeout(20_000)
+        try:
+            txt = page.locator("body").inner_text(timeout=10_000)
+        except Exception:
+            continue
+        for padrao, explicacao in RECUSAS:
+            if re.search(padrao, txt, re.I):
+                raise FalhaDefinitiva(f"{explicacao} (vídeo {link}; apague-o no Studio)")
+        if re.search(r"processamento conclu[íi]do|verifica[çc][õo]es conclu[íi]das|processing complete|checks complete",
+                     txt, re.I):
+            return
+        page.reload(wait_until="domcontentloaded")
+    log("  aviso: o Studio não confirmou o fim do processamento em 5 min; confira o vídeo no Studio")
+
+
 def postar(arquivo, titulo, descricao, visib, miniatura=None):
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
@@ -307,6 +332,7 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None):
             log(f"  envio concluído ({estado[:60]})")
             page.locator("#done-button").first.click()
             confirmar_publicacao(page)
+            conferir_depois_de_publicar(page, link)
             return link or "(link não capturado)"
         except Exception:
             ERROS.mkdir(parents=True, exist_ok=True)
