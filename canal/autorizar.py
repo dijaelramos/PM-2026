@@ -30,3 +30,9 @@ print("\nCopie para os secrets do GitHub (Settings > Secrets and variables > Act
 print(f"YT_CLIENT_ID     = {dados['client_id']}")
 print(f"YT_CLIENT_SECRET = {dados['client_secret']}")
 print(f"YT_REFRESH_TOKEN = {cred.refresh_token}")
+
+# os mesmos valores num arquivo local (fica fora do GitHub: .gitignore tem canal/token*.json)
+arquivo = SEGREDO.parent / "token_secrets_github.json"
+arquivo.write_text(json.dumps({"YT_CLIENT_ID": dados["client_id"], "YT_CLIENT_SECRET": dados["client_secret"],
+                               "YT_REFRESH_TOKEN": cred.refresh_token}, indent=2), encoding="utf-8")
+print(f"\nOs 3 valores também foram salvos em {arquivo} (abra no VS Code para copiar).")
