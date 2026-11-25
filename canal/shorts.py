@@ -275,7 +275,7 @@ def principal_do_dia(dia):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--data", type=dt.date.fromisoformat, default=None)
+    ap.add_argument("--data", type=V.data_iso, default=None)
     ap.add_argument("--arquivo", type=Path, default=None)
     a = ap.parse_args()
     arquivos = [a.arquivo] if a.arquivo else principal_do_dia(a.data or V.hoje_recife())

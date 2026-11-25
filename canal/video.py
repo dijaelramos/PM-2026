@@ -685,9 +685,18 @@ def materiais_do_dia(dia):
             if not p.stem.endswith("_Questoes")]
 
 
+def data_iso(texto):
+    """Data AAAA-MM-DD (aceita sobras depois da data, como "2026-11-28-1225" ou "2026-11-28 ")."""
+    import argparse as _ap
+    try:
+        return dt.date.fromisoformat(texto.strip()[:10])
+    except ValueError:
+        raise _ap.ArgumentTypeError(f"data inválida: {texto!r}. Use o formato AAAA-MM-DD, por exemplo 2026-11-28")
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--data", type=dt.date.fromisoformat, default=None)
+    ap.add_argument("--data", type=data_iso, default=None)
     ap.add_argument("--arquivo", type=Path, default=None)
     ap.add_argument("--amostra", type=int, default=None, help="só as N primeiras telas (para testar rápido)")
     a = ap.parse_args()
