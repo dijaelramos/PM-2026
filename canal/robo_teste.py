@@ -38,8 +38,9 @@ def main():
                 continue
             link = R.postar(*item[:3], vis, item[3])
         except Exception as erro:
-            R.log(f"  ERRO: {erro}")
-            R.log("  O teste parou aqui. Mande a mensagem acima e a foto de canal/saida/_erros/ para ajuste.")
+            R.log(f"  ERRO: {str(erro).splitlines()[0][:300]}")
+            R.log_erro(t["nome"])
+            R.log("  O teste parou aqui. O erro completo está em canal/log.txt: é só pedir para a IA ler o log.")
             return 1
         R.registrar(t["chave"], link)
         R.log(f"  postado: {link}")

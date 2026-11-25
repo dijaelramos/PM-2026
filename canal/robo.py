@@ -47,8 +47,59 @@ def hora(txt, dia):
     return dt.datetime.combine(dia, dt.time(h, m))
 
 
+LOG = V.CANAL / "log.txt"  # tudo o que o robô faz, com os erros completos (para a IA ler e corrigir)
+
+
+def _gravar_log(texto):
+    try:
+        if LOG.exists() and LOG.stat().st_size > 2_000_000:  # guarda só a parte mais recente
+            LOG.write_text(LOG.read_text(encoding="utf-8", errors="replace")[-1_000_000:], encoding="utf-8")
+        with LOG.open("a", encoding="utf-8") as f:
+            f.write(texto + "\n")
+    except Exception:
+        pass
+
+
 def log(msg):
-    print(f"[{agora():%d/%m %H:%M}] {msg}", flush=True)
+    linha = f"[{agora():%d/%m %H:%M:%S}] {msg}"
+    print(linha, flush=True)
+    _gravar_log(linha)
+
+
+def log_erro(onde):
+    """Grava no log.txt o erro completo (traceback), a foto da tela e as versões, para diagnóstico."""
+    import platform
+    try:
+        from importlib.metadata import version
+        pw = version("playwright")
+    except Exception:
+        pw = "?"
+    fotos = sorted(ERROS.glob("erro_*.png"))[-1:] if ERROS.exists() else []
+    _gravar_log("\n".join([
+        f"===== ERRO em {onde} — {agora():%d/%m/%Y %H:%M:%S} =====",
+        f"Python {platform.python_version()} · Playwright {pw} · Windows {platform.version()}",
+        f"Última foto de erro: {fotos[0] if fotos else '(nenhuma)'}",
+        traceback.format_exc().rstrip(),
+        "===== FIM DO ERRO =====",
+    ]))
+    print(f"(detalhes completos do erro gravados em {LOG})", flush=True)
+
+
+def fechar_chrome_do_robo():
+    """Fecha só os Chrome abertos com o perfil do robô (por exemplo, o do --login que ficou em segundo plano).
+    O seu Chrome normal não é tocado."""
+    cmd = ("$p = Get-CimInstance Win32_Process -Filter \"Name='chrome.exe'\" | "
+           "Where-Object { $_.CommandLine -like '*.chrome_perfil*' }; "
+           "$p | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }; "
+           "@($p).Count")
+    try:
+        r = subprocess.run(["powershell", "-NoProfile", "-Command", cmd], capture_output=True, text=True, timeout=60)
+        n = int((r.stdout or "0").strip().splitlines()[-1] or 0)
+        if n:
+            log(f"  fechei {n} processo(s) do Chrome do robô que tinham ficado abertos")
+            time.sleep(3)
+    except Exception:
+        pass
 
 
 def registro():
@@ -122,6 +173,7 @@ def limpo(texto, limite):
 
 def abrir_chrome(pw):
     PERFIL.mkdir(parents=True, exist_ok=True)
+    fechar_chrome_do_robo()
     return pw.chromium.launch_persistent_context(str(PERFIL), channel="chrome", headless=False,
                                                  viewport={"width": 1400, "height": 900}, args=["--lang=pt-BR"])
 
@@ -209,6 +261,7 @@ def login():
           "abre e depois FECHE essa janela do Chrome.")
     subprocess.Popen([str(CHROME), f"--user-data-dir={PERFIL}", "https://studio.youtube.com"]).wait()
     input("Quando tiver fechado a janela, aperte Enter para eu conferir o login… ")
+    fechar_chrome_do_robo()
     return testar()
 
 
@@ -267,8 +320,8 @@ def ligar():
                 raise
             except Exception as erro:
                 falhas[t["chave"]] = falhas.get(t["chave"], 0) + 1
-                log(f"  ERRO ({falhas[t['chave']]}/{MAX_TENTATIVAS}): {erro}")
-                traceback.print_exc()
+                log(f"  ERRO ({falhas[t['chave']]}/{MAX_TENTATIVAS}): {str(erro).splitlines()[0][:300]}")
+                log_erro(t["nome"])
                 time.sleep(15 * 60)
             continue
         proxima = min(pendentes, key=lambda t: t["quando"], default=None)
