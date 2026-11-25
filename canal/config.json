@@ -6,5 +6,11 @@
   "privacidade": "private",
   "creditos": "Fontes: Constituição Federal e leis citadas (texto oficial), edital PMPE 2026 e bibliografia de apoio citada na aula.",
   "questoes_no_final": 5,
-  "url_canal": "https://www.youtube.com/@infinityCursosBeberibe"
+  "url_canal": "https://www.youtube.com/@infinityCursosBeberibe",
+  "api_auditada": false,
+  "horarios_shorts": [
+    "12:00",
+    "18:00",
+    "21:00"
+  ]
 }

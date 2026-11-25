@@ -1,6 +1,6 @@
 name: Canal do YouTube (vídeo do material do dia)
 
-# Todo dia às 07:05 de Pernambuco (10:05 UTC) e quando pedido à mão. Gera o vídeo dos materiais do dia e, se as
+# Todo dia útil às 07:05 de Pernambuco (10:05 UTC) e quando pedido à mão. Gera a aula e os 3 Shorts do dia e, se as
 # credenciais do YouTube estiverem cadastradas nos secrets, publica. Sem credenciais, o vídeo fica disponível para
 # download na aba Actions (artefato), para você subir pelo YouTube Studio.
 on:
@@ -41,10 +41,15 @@ jobs:
           AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
           AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
         run: python canal/video.py ${{ inputs.data && format('--data {0}', inputs.data) || '' }}
+      - name: Gerar os Shorts do dia
+        env:
+          AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+          AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
+        run: python canal/shorts.py ${{ inputs.data && format('--data {0}', inputs.data) || '' }}
       - name: Guardar o vídeo (download na aba Actions)
         uses: actions/upload-artifact@v4
         with:
-          name: video-${{ inputs.data || github.run_id }}
+          name: videos-${{ inputs.data || github.run_id }}
           path: canal/saida/
           retention-days: 7
           if-no-files-found: ignore

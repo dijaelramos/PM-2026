@@ -130,6 +130,14 @@ Para isso funcionar, mantenha os formatos da 1.5:
 
 Cada caderno deve ter pelo menos 3 questões de múltipla escolha que não dependam de texto de apoio.
 
+Depois da aula do dia, o mesmo material gera **3 Shorts** (`canal/shorts.py`), agendados para 12:00, 18:00 e 21:00:
+
+1. **Pegadinha da banca:** sai do quadro de pegadinhas.
+2. **Questão relâmpago:** usa a questão mais curta do caderno.
+3. **Resumo de 30 segundos:** usa um "**Para levar para a prova:**" de 60 a 420 caracteres.
+
+Por isso, todo material precisa ter o quadro "A banca escreve… | O certo é…" e um resumo "Para levar para a prova" em cada seção numerada.
+
 ## Parte 2 — Correção
 
 Vale para questões oficiais, autorais, exercícios do tutor e estudo dirigido. **Explique todos os itens, inclusive os que o estudante acertou e os que deixou em branco.**

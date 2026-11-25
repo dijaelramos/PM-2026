@@ -6,12 +6,21 @@ com o nome da seção, a barra de progresso e capítulos clicáveis no YouTube. 
 | Arquivo | Para quê |
 |---|---|
 | `video.py` | Gera `canal/saida/<aula>/video.mp4`, `miniatura.png` e `video.json` (título, descrição com capítulos, tags) |
-| `publicar.py` | Envia os vídeos pela API do YouTube; não repete aula já publicada |
+| `shorts.py` | Gera os 3 Shorts do dia em `canal/saida/<aula>/shorts/` (pegadinha, questão relâmpago, resumo de 30 s) |
+| `publicar.py` | Envia a aula e os Shorts pela API do YouTube (Shorts agendados), sem repetir o que já foi publicado; `--testar` confere a conexão |
 | `autorizar.py` | Autorização única do canal (gera o `YT_REFRESH_TOKEN`) |
 | `config.json` | Nome do canal, voz e privacidade |
 | `../.github/workflows/canal.yml` | Roda tudo às 07:05 (dias úteis) ou quando você pedir na aba Actions |
 
 **Canal:** https://www.youtube.com/@infinityCursosBeberibe (`nome_canal` e `url_canal` em `config.json`).
+
+**Shorts (3 por dia):** vídeos verticais de até 1 minuto, feitos do material do dia:
+1. **Pegadinha da banca:** linhas do quadro "A banca escreve… | O certo é…".
+2. **Questão relâmpago:** a voz lê o enunciado, as alternativas ficam na tela, há uma pausa e depois vem o gabarito.
+3. **Resumo de 30 segundos:** o "Para levar para a prova" de uma seção.
+
+Cada Short termina chamando para a aula completa, e a descrição traz o link da aula do dia. Os Shorts ficam
+agendados para os horários de `"horarios_shorts"` (12:00, 18:00 e 21:00, hora do Recife).
 
 **O que vai para o vídeo:** só as seções de conteúdo (1, 2, 3…, quadros e pegadinhas). Ficam de fora o roteiro,
 a cobertura do edital, a revisão espaçada, a redação e qualquer parágrafo sobre o seu perfil ou o Orquestrador.
@@ -31,19 +40,49 @@ A quantidade fica em `config.json` (`"questoes_no_final"`).
    mais de 15 minutos e miniatura personalizada; os vídeos têm de 20 a 70 minutos).
 4. Coloque o nome do canal em `config.json` (`"nome_canal"`).
 
-### 2. Liberar a API do YouTube (Google Cloud)
-1. Em console.cloud.google.com, crie um projeto e ative a **YouTube Data API v3**.
-2. Em "Tela de consentimento OAuth": tipo **Externo**; adicione seu e-mail como usuário de teste e depois clique em
-   **Publicar app** (em "Teste", a autorização vence em 7 dias).
-3. Em "Credenciais", crie um **ID do cliente OAuth** do tipo **App para computador** e baixe o JSON como
-   `canal/client_secret.json` (esse arquivo não vai para o GitHub).
-4. No seu computador: `pip install google-auth-oauthlib` e `python canal/autorizar.py`.
-5. No GitHub: Settings > Secrets and variables > Actions > New repository secret: `YT_CLIENT_ID`,
-   `YT_CLIENT_SECRET` e `YT_REFRESH_TOKEN`.
+### 2. Liberar a API do YouTube (Google Cloud), cerca de 20 minutos
+Entre em console.cloud.google.com **com a mesma conta Google do canal**.
 
-⚠️ **Auditoria do Google:** projetos novos e não auditados só conseguem enviar vídeos **privados** pela API. Para
-publicar como público automaticamente, peça a auditoria no formulário "YouTube API Services - Audit and Quota
-Extension". Enquanto isso, os vídeos sobem privados e você muda para "Público" no YouTube Studio (1 clique).
+1. **Projeto:** no seletor de projetos (alto da página), clique em **Novo projeto**. Dê um nome, por exemplo
+   `canal-pmpe`, e clique em **Criar**. Depois, selecione o projeto.
+2. **Ativar a API:** no menu, abra **APIs e serviços > Biblioteca**, procure **YouTube Data API v3** e clique em
+   **Ativar**.
+3. **Tela de consentimento:** abra **APIs e serviços > Tela de consentimento OAuth** (em algumas contas, o nome é
+   **Google Auth Platform**) e clique em **Começar**.
+   - Nome do app: `Publicador do canal`. E-mail de suporte: o seu.
+   - Público: **Externo**.
+   - Contato: o seu e-mail. Aceite os termos e clique em **Criar**.
+4. **Publicar o app:** em **Público** (Audience), clique em **Publicar app** e confirme. Se ficar em "Teste", a
+   autorização vence em 7 dias.
+5. **Credencial:** em **Clientes** (ou **Credenciais > Criar credenciais > ID do cliente OAuth**), escolha o tipo
+   **App para computador**, dê um nome e clique em **Criar**. Depois, clique em **Baixar JSON** e salve o arquivo
+   como `canal/client_secret.json`. Esse arquivo não vai para o GitHub.
+6. **Autorizar o canal**, no seu computador, na pasta do projeto:
+   ```
+   pip install google-auth-oauthlib google-api-python-client
+   python canal/autorizar.py
+   ```
+   - O navegador abre. Entre com a conta do canal. Se aparecer **"O Google não verificou este app"**, clique em
+     **Avançado > Acessar Publicador do canal (não seguro)**. É o seu próprio app, então é seguro.
+   - Marque as permissões e clique em **Continuar**.
+   - O terminal mostra "Conexão OK com o canal: …" e, em seguida, 3 valores.
+7. **Guardar no GitHub:** no repositório, abra **Settings > Secrets and variables > Actions > New repository
+   secret** e crie três secrets, colando cada valor: `YT_CLIENT_ID`, `YT_CLIENT_SECRET` e `YT_REFRESH_TOKEN`.
+8. **Testar no GitHub:** na aba **Actions**, abra o workflow "Canal do YouTube" e clique em **Run workflow**. O passo
+   "Publicar no YouTube" deve dizer que o projeto ainda não está auditado. Antes disso, ele mostra "Conexão OK: canal …", sinal de que os secrets estão certos.
+
+### 2.1 Auditoria do Google (obrigatória para publicar pela API)
+Projetos novos da API **não podem publicar**. O YouTube **trava como privado, sem volta**, todo vídeo enviado por
+projeto não auditado. Por isso, `config.json` vem com `"api_auditada": false`, e o `publicar.py` não envia nada.
+
+1. Peça a auditoria no formulário **"YouTube API Services - Audit and Quota Extension Form"** (procure esse nome no
+   Google). Descreva o uso: um app interno que envia, todo dia, os vídeos do seu próprio canal (1 aula e 3 Shorts).
+2. A resposta pode levar semanas. **Enquanto isso:** baixe os vídeos no artefato de cada execução (aba Actions) e
+   envie pelo **YouTube Studio**. Lá dá para **agendar** os 3 Shorts para 12:00, 18:00 e 21:00. Os títulos e as
+   descrições estão nos arquivos `.json` ao lado de cada vídeo.
+3. Aprovada a auditoria, troque `"api_auditada"` para `true`. A partir daí, o envio é automático.
+
+**Cota:** cada envio gasta cerca de 1.600 das 10.000 unidades diárias. A aula e os 3 Shorts (4 envios) cabem no limite.
 
 ### 3. Voz com licença comercial (obrigatório para monetizar)
 A voz padrão (`"voz": "edge"`) é gratuita, mas **não tem licença para uso comercial**: com ela o `publicar.py` sempre

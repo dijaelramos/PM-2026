@@ -17,6 +17,13 @@ SEGREDO = Path(__file__).resolve().parent / "client_secret.json"
 
 fluxo = InstalledAppFlow.from_client_secrets_file(str(SEGREDO), scopes=ESCOPOS)
 cred = fluxo.run_local_server(port=0, prompt="consent", access_type="offline")
+try:  # confere a conexão: mostra o canal autorizado
+    from googleapiclient.discovery import build
+    canal = build("youtube", "v3", credentials=cred, cache_discovery=False).channels().list(
+        part="snippet", mine=True).execute()["items"][0]["snippet"]
+    print(f"\nConexão OK com o canal: {canal['title']} ({canal.get('customUrl', '')})")
+except Exception as erro:
+    print(f"\nAviso: não consegui ler o canal ({erro}). Confira se entrou com a conta do canal.")
 dados = json.loads(SEGREDO.read_text(encoding="utf-8"))
 dados = dados.get("installed") or dados.get("web")
 print("\nCopie para os secrets do GitHub (Settings > Secrets and variables > Actions):")
