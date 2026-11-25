@@ -38,7 +38,7 @@
 
 Sobre a origem do frevo, assinale a alternativa correta.
 
-- **(A)** A dança do frevo, chamada passo, é considerada uma evolução dos movimentos dos capoeiristas que acompanhavam as bandas de música no Recife.
+- **(A)** O passo, a dança do frevo, é visto como um desdobramento dos movimentos dos capoeiristas que seguiam as bandas de música pelas ruas do Recife.
 - **(B)** O frevo surgiu nas festas juninas do Agreste, como variação do xote.
 - **(C)** A música do frevo nasceu dos tambores do maracatu, sem relação com as bandas militares.
 - **(D)** Os primeiros clubes de frevo foram fundados por usineiros da Zona da Mata nos anos 1950.

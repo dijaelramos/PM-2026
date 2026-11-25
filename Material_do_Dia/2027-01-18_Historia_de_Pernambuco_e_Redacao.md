@@ -34,7 +34,7 @@
 
 ### 🟢 Iniciante — entender
 
-Os africanos escravizados e seus descendentes **resistiram** de muitas formas: fugas, formação de **quilombos**, preservação de **religiões, danças e saberes**. Pela apostila, cerca de **60% da população** de Pernambuco se declara **parda ou negra**, e manifestações como **frevo, maracatu, afoxé e capoeira** nasceram da "**luta e organização popular afro-brasileira**".
+Os africanos escravizados e seus descendentes **resistiram** de muitas formas: fugas, formação de **quilombos**, preservação de **religiões, danças e saberes**. Pela apostila, cerca de **60% da população** de Pernambuco se declara **parda ou negra**, e manifestações como **frevo, maracatu, afoxé e capoeira** nasceram da **resistência e da organização do povo negro**.
 
 ### 🟡 Intermediário — aplicar
 
@@ -81,7 +81,7 @@ Os africanos escravizados e seus descendentes **resistiram** de muitas formas: f
 | Manifestação | O que saber (apostila, salvo indicação) |
 |---|---|
 | **Capoeira** | Jogo, dança e luta. Nos **primeiros tempos da República**, a repressão foi **sistemática**: capoeiras foram **presos e deportados para Fernando de Noronha**, acusados de **vadiagem**; a capoeira quase desapareceu no Recife no início do século XX, deixando marcas no **passo do frevo**; sobreviveu em academias na **Bahia** e voltou a se difundir depois |
-| **Passo do frevo** | Considerado **evolução dos movimentos da capoeira**: por isso a apostila o chama de "dança **afro-brasileira** em Pernambuco"; ela alerta que o passo tradicional está em **processo de extinção**, substituído por versões de academia ("frevo aeróbico") |
+| **Passo do frevo** | Considerado **evolução dos movimentos da capoeira**: por isso a apostila o classifica como dança de **origem afro-brasileira**; ela também alerta que o passo tradicional está em **processo de extinção**, substituído por versões de academia ("frevo aeróbico") |
 | **Maracatu nação** | Cortejo real nascido das **coroações de reis negros** (Rei do Congo); calungas; percussão |
 | **Coco** | Traços **indígenas** e **africanos** (umbigada); presente em **quilombos contemporâneos**; levado ao rádio por **Jackson do Pandeiro** nos anos 1950 |
 | **Afoxé** | Cortejo de rua ligado ao **candomblé/xangô**, com cânticos em iorubá; está entre as manifestações de origem afro citadas pela apostila *(detalhes fora da base local)* |

@@ -150,7 +150,7 @@ Nassau transformou o **Recife**, um povoado de porto, numa **cidade moderna** pa
 
 ### 🔴 Avançado — acertar a prova
 
-- A apostila resume: Nassau transformou o **pequeno vilarejo em moderno centro urbano**, com um ambiente cultural "semelhante ao que se desfrutava na Europa". A ideia vem da **formação humanista** dele.
+- A apostila resume: Nassau transformou o **pequeno vilarejo em moderno centro urbano**, com uma vida cultural comparável à das cidades europeias da época. A ideia vem da **formação humanista** dele.
 - **Artistas** (Post, Eckhout) **retrataram** o Brasil; **cientistas** (Marcgrave, Piso) o **estudaram**. A prova pode trocar os papéis.
 - O Recife **não foi fundado** por Nassau: o porto existia desde o século XVI (25/11). Nassau o **remodelou** e o ampliou.
 
