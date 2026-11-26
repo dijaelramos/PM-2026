@@ -129,10 +129,49 @@ def registro():
         return {}
 
 
-def registrar(chave, link):
+def registrar(chave, link, comentario=None):
     r = registro()
     r[chave] = {"link": link, "quando": agora().isoformat(timespec="minutes")}
+    if comentario:  # comentário fixado: sai mais tarde, quando o vídeo já foi processado
+        r[chave]["comentario_pendente"] = comentario
+        r[chave]["comentario_tentativas"] = 0
     REGISTRO.write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def atualizar_registro(chave, **campos):
+    r = registro()
+    if chave in r:
+        r[chave].update(campos)
+        for k in [k for k, v in campos.items() if v is None]:
+            r[chave].pop(k, None)
+        REGISTRO.write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+ESPERA_COMENTARIO = dt.timedelta(minutes=20)
+
+
+def comentarios_pendentes():
+    """Publica os comentários fixados pendentes (aulas postadas há pelo menos 20 min). Até 3 tentativas cada."""
+    for chave, item in registro().items():
+        texto = item.get("comentario_pendente")
+        if not texto or not item.get("link") or item.get("comentario_tentativas", 0) >= 3:
+            continue
+        if agora() - dt.datetime.fromisoformat(item["quando"]) < ESPERA_COMENTARIO:
+            continue
+        log(f"Comentário fixado: {chave}")
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as pw:
+            ctx = abrir_chrome(pw)
+            try:
+                ok = comentar_e_fixar(ctx, item["link"], texto)
+            finally:
+                ctx.close()
+        if ok:
+            atualizar_registro(chave, comentario_pendente=None, comentario_tentativas=None, comentario="fixado")
+        else:
+            atualizar_registro(chave, comentario_tentativas=item.get("comentario_tentativas", 0) + 1)
+        return True  # um por vez
+    return False
 
 
 def visibilidade():
@@ -426,12 +465,15 @@ def comentar_e_fixar(ctx, link, texto):
         except Exception:
             pass
         caixa = page.locator("ytd-comments #simplebox-placeholder").first
-        for _ in range(20):  # os comentários só carregam depois de rolar a página
+        for _ in range(30):  # os comentários só carregam quando a seção aparece na tela
             if caixa.is_visible():
                 break
-            page.mouse.wheel(0, 700)
-            page.wait_for_timeout(1500)
-        caixa.click(timeout=15_000)
+            try:
+                page.locator("ytd-comments#comments, #comments").first.scroll_into_view_if_needed(timeout=2000)
+            except Exception:
+                page.mouse.wheel(0, 600)
+            page.wait_for_timeout(2000)
+        caixa.click(timeout=30_000)
         page.locator("ytd-comments #contenteditable-root").first.click()
         for i, par in enumerate(texto.split("\n")):
             if i:
@@ -448,8 +490,10 @@ def comentar_e_fixar(ctx, link, texto):
         page.locator("yt-confirm-dialog-renderer #confirm-button, #confirm-button").first.click(timeout=10_000)
         page.wait_for_timeout(3000)
         log("  comentário publicado e fixado")
+        return True
     except Exception:
         _aviso(page, "comentar e fixar")
+        return False
     finally:
         page.close()
 
@@ -501,8 +545,6 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
             page.locator("#done-button").first.click()
             confirmar_publicacao(page)
             conferir_depois_de_publicar(page, link)
-            if extras.get("comentario") and link and visib != "PRIVATE":
-                comentar_e_fixar(ctx, link, extras["comentario"])
             return link or "(link não capturado)"
         except Exception:
             ERROS.mkdir(parents=True, exist_ok=True)
@@ -611,7 +653,8 @@ def ligar():
                     registrar(t["chave"], None)
                     continue
                 link = postar(*item[:3], visibilidade(), item[3], item[4])
-                registrar(t["chave"], link)
+                comentario = item[4].get("comentario") if visibilidade() != "PRIVATE" else None
+                registrar(t["chave"], link, comentario)
                 if t["tipo"] == "short":
                     ultimo_short = agora()
                 log(f"  postado: {link}")
@@ -627,6 +670,11 @@ def ligar():
                 log_erro(t["nome"])
                 time.sleep(15 * 60)
             continue
+        try:
+            if comentarios_pendentes():
+                continue
+        except Exception:
+            log_erro("comentários pendentes", "AVISO")
         proxima = min(pendentes, key=lambda t: t["quando"], default=None)
         aviso = f"Próximo: {proxima['nome']} às {proxima['quando']:%H:%M}" if proxima else "Tudo postado hoje; amanhã recomeça."
         if aviso != ultimo_aviso:

@@ -46,7 +46,7 @@ def main():
             R.log("  O erro completo está em canal/log.txt: é só pedir para a IA ler o log.")
             erros += 1
             continue  # segue para o próximo (o Short testa o caminho mesmo se a aula falhar)
-        R.registrar(t["chave"], link)
+        R.registrar(t["chave"], link, item[4].get("comentario") if vis != "PRIVATE" else None)
         R.log(f"  postado: {link}")
     R.log("Teste concluído" + (f" com {erros} erro(s)." if erros else ".")
           + " Confira em YouTube Studio > Conteúdo (aba Vídeos e aba Shorts).")
