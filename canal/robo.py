@@ -342,7 +342,7 @@ def confirmar_publicacao(page, limite_s=180):
         except Exception:
             pass
         try:
-            if not page.locator("ytcp-uploads-dialog #done-button").first.is_visible(timeout=1000):
+            if not page.locator("ytcp-uploads-dialog").first.is_visible(timeout=1000):
                 break  # a janela de envio fechou: o Studio aceitou
         except Exception:
             pass
@@ -509,6 +509,22 @@ def comentar_e_fixar(ctx, link, texto):
         page.close()
 
 
+def confirmar_publico(page, link, minutos=10):
+    """Garante que o vídeo ficou visível ao público (e não parado como rascunho)."""
+    if not link or "youtu" not in link:
+        return
+    fim = time.time() + minutos * 60
+    while time.time() < fim:
+        try:
+            r = page.request.get(f"https://www.youtube.com/oembed?url={link}&format=json", timeout=30_000)
+            if r.ok:
+                return
+        except Exception:
+            pass
+        page.wait_for_timeout(20_000)
+    raise RuntimeError(f"o vídeo {link} não ficou público (pode ter ficado como rascunho no Studio)")
+
+
 def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
@@ -547,15 +563,28 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
                 if link:
                     break
                 page.wait_for_timeout(2000)
-            for _ in range(3):  # Detalhes -> Elementos do vídeo -> Verificações -> Visibilidade
-                page.locator("#next-button").first.click()
-                page.wait_for_timeout(2000)
-            page.locator(f'tp-yt-paper-radio-button[name="{visib}"]').first.click()
+            radio = page.locator(f'tp-yt-paper-radio-button[name="{visib}"]').first
+            for _ in range(60):  # Detalhes -> Elementos do vídeo -> Verificação inicial -> Visibilidade (até ~5 min)
+                if radio.is_visible():
+                    break
+                checar_recusa(page)
+                botao = page.locator("#next-button").first
+                try:
+                    if botao.is_visible() and botao.get_attribute("aria-disabled") != "true":
+                        botao.click()
+                except Exception:
+                    pass
+                page.wait_for_timeout(5000)
+            else:
+                raise TimeoutError("não cheguei à etapa Visibilidade (o botão Avançar não liberou)")
+            radio.click()
             estado = esperar_envio(page)
             log(f"  envio concluído ({estado[:60]})")
             page.locator("#done-button").first.click()
             confirmar_publicacao(page)
             conferir_depois_de_publicar(page, link)
+            if visib != "PRIVATE":
+                confirmar_publico(page, link)
             return link or "(link não capturado)"
         except Exception:
             ERROS.mkdir(parents=True, exist_ok=True)
