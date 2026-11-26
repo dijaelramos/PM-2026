@@ -354,6 +354,7 @@ def _aviso(page, onde):
     except Exception:
         pass
     log_erro(onde, "AVISO")
+    fechar_painel_playlist(page)  # o painel aberto cobre o resto da tela (foi o que travou a postagem)
     for _ in range(2):
         try:
             page.keyboard.press("Escape")
@@ -362,38 +363,53 @@ def _aviso(page, onde):
             pass
 
 
+CONCLUIR = re.compile(r"^\s*(concluir|conclu[íi]do|done)\s*$", re.I)
+
+
+def fechar_painel_playlist(page):
+    """Fecha o painel de playlists (botão "Concluir"); sem ele aberto, não faz nada."""
+    try:
+        botao = page.get_by_role("button", name=CONCLUIR).first
+        if botao.is_visible(timeout=1500):
+            botao.click()
+            page.wait_for_timeout(1000)
+    except Exception:
+        pass
+
+
 def escolher_playlist(page, nome):
-    """Na tela de detalhes do envio: marca a playlist `nome` (cria se ainda não existir)."""
+    """Na tela de detalhes do envio: marca a playlist `nome` (cria se ainda não existir).
+
+    Tela do Studio (nov/2026): o campo "Selecionar" abre um painel com a lista de playlists (caixas de seleção),
+    um botão "Criar playlist ▾" (menu com "Nova playlist") e o botão "Concluir".
+    """
     page.locator("ytcp-video-metadata-playlists ytcp-text-dropdown-trigger, "
                  "ytcp-video-metadata-playlists #basics").first.click(timeout=15_000)
-    dlg = page.locator("ytcp-playlist-dialog").first
-    dlg.wait_for(timeout=15_000)
+    concluir = page.get_by_role("button", name=CONCLUIR).first
+    concluir.wait_for(timeout=15_000)
     page.wait_for_timeout(1500)
-    item = dlg.get_by_text(nome, exact=True)
-    if item.count() == 0:
-        dlg.get_by_role("button", name=re.compile(r"nova playlist|new playlist|criar playlist", re.I)).first.click()
-        try:  # em algumas versões abre um menu com "Nova playlist"
-            page.get_by_role("menuitem", name=re.compile(r"nova playlist|new playlist", re.I)).first.click(timeout=3000)
+    caixa = page.get_by_role("checkbox", name=nome, exact=True)
+    if caixa.count() == 0:  # ainda não existe: cria
+        page.get_by_role("button", name=re.compile(r"criar playlist|nova playlist|new playlist|create playlist",
+                                                   re.I)).first.click(timeout=10_000)
+        try:  # o botão "Criar playlist ▾" abre um menu com "Nova playlist"
+            page.get_by_text(re.compile(r"^\s*(nova playlist|new playlist)\s*$", re.I)).first.click(timeout=4000)
         except Exception:
             pass
-        caixa = page.locator("ytcp-playlist-creation-dialog #title-textarea #textbox, "
-                             "ytcp-playlist-creation-dialog textarea, ytcp-playlist-creation-dialog #textbox").first
-        caixa.wait_for(timeout=15_000)
-        caixa.click()
+        dialogo = page.get_by_role("dialog").filter(
+            has_text=re.compile(r"nova playlist|new playlist|criar playlist|t[íi]tulo|title", re.I)).last
+        titulo = dialogo.get_by_role("textbox").first
+        titulo.wait_for(timeout=15_000)
+        titulo.click()
         page.keyboard.type(nome[:150])
-        page.locator("ytcp-playlist-creation-dialog").get_by_role(
-            "button", name=re.compile(r"^\s*(criar|create)\s*$", re.I)).first.click()
+        dialogo.get_by_role("button", name=re.compile(r"^\s*(criar|create)\s*$", re.I)).first.click(timeout=10_000)
         page.wait_for_timeout(4000)
-        item = dlg.get_by_text(nome, exact=True)
-    caixinha = dlg.locator("ytcp-checkbox-lit, tp-yt-paper-checkbox").filter(has_text=nome).first
-    try:
-        marcado = (caixinha.get_attribute("aria-checked", timeout=3000) == "true"
-                   or caixinha.locator("[aria-checked='true']").count() > 0)
-    except Exception:
-        marcado = False
-    if not marcado:
-        item.first.click()
-    dlg.get_by_role("button", name=re.compile(r"conclu[íi]do|done", re.I)).first.click()
+        caixa = page.get_by_role("checkbox", name=nome, exact=True)
+    caixa.first.wait_for(timeout=15_000)
+    if caixa.first.get_attribute("aria-checked") != "true":
+        caixa.first.click()
+        page.wait_for_timeout(800)
+    concluir.click()
     page.wait_for_timeout(1500)
     log(f"  playlist: {nome}")
 
