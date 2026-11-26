@@ -235,11 +235,16 @@ class FalhaDefinitiva(RuntimeError):
     """Recusa do YouTube que não adianta tentar de novo (vídeo longo demais, limite diário…)."""
 
 
+class LimiteDiario(FalhaDefinitiva):
+    """O canal atingiu o limite de envios do dia: nada mais pode ser enviado até amanhã."""
+
+
 RECUSAS = [
     (r"muito longo|too long", "O YouTube recusou: vídeo longo demais. Canais sem verificação por telefone só aceitam "
      "até 15 minutos. Verifique o telefone do canal em https://www.youtube.com/verify e rode de novo."),
     (r"limite di[áa]rio|daily upload limit", "O YouTube recusou: limite diário de envios do canal atingido. "
-     "Tente amanhã."),
+     "Os envios de hoje ficam pausados até amanhã. Para aumentar o limite, faça a verificação do canal em "
+     "YouTube Studio > Configurações > Canal > Qualificação de recursos."),
     (r"processamento interrompido|processing abandoned|falha no (envio|upload)|upload failed",
      "O YouTube interrompeu o envio/processamento do vídeo."),
 ]
@@ -247,14 +252,22 @@ RECUSAS = [
 
 def recusa_do_youtube(page):
     """Se a janela de envio mostra um erro do YouTube, devolve a explicação; senão, None."""
-    try:
-        txt = page.locator("ytcp-uploads-dialog").first.inner_text(timeout=3000)
-    except Exception:
-        return None
+    txt = ""
+    for seletor in ("ytcp-uploads-dialog", "body"):  # o aviso pode ficar fora da janela de envio
+        try:
+            txt += " " + page.locator(seletor).first.inner_text(timeout=3000)
+        except Exception:
+            pass
     for padrao, explicacao in RECUSAS:
         if re.search(padrao, txt, re.I):
             return explicacao
     return None
+
+
+def checar_recusa(page):
+    recusa = recusa_do_youtube(page)
+    if recusa:
+        raise (LimiteDiario if "limite diário" in recusa else FalhaDefinitiva)(recusa)
 
 
 def esperar_envio(page, limite_min=90):
@@ -266,9 +279,7 @@ def esperar_envio(page, limite_min=90):
             txt = rotulo.inner_text(timeout=5000)
         except Exception:
             txt = ""
-        recusa = recusa_do_youtube(page)
-        if recusa:
-            raise FalhaDefinitiva(recusa)
+        checar_recusa(page)
         if txt and not re.search(r"\d+\s*%|enviando|uploading|carregando", txt, re.I):
             return txt.strip()
         time.sleep(5)
@@ -285,9 +296,7 @@ def confirmar_publicacao(page, limite_s=180):
     caso: "Processando vídeo", "Vídeo publicado"…) ou a janela de envio sumir; depois fecha o aviso."""
     fim = time.time() + limite_s
     while time.time() < fim:
-        recusa = recusa_do_youtube(page)
-        if recusa:
-            raise FalhaDefinitiva(recusa)
+        checar_recusa(page)
         try:
             if page.get_by_text(CONFIRMACAO).first.is_visible(timeout=1000):
                 break
@@ -440,6 +449,8 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
             if "accounts.google.com" in page.url:
                 raise RuntimeError("o Chrome do robô não está logado. Rode: python canal/robo.py --login")
             page.locator('input[type="file"]').first.set_input_files(str(arquivo))
+            page.wait_for_timeout(5000)
+            checar_recusa(page)
             preencher(page, "#title-textarea #textbox", limpo(titulo, 100))
             preencher(page, "#description-textarea #textbox", limpo(descricao, 4900))
             if miniatura and miniatura.exists():
@@ -454,9 +465,7 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
                 except Exception:
                     _aviso(page, f"colocar na playlist {extras['playlist']}")
             page.wait_for_timeout(3000)
-            recusa = recusa_do_youtube(page)
-            if recusa:
-                raise FalhaDefinitiva(recusa)
+            checar_recusa(page)
             page.locator('tp-yt-paper-radio-button[name="VIDEO_MADE_FOR_KIDS_NOT_MFK"]').first.click()
             link = None
             for _ in range(60):  # o link aparece depois que o upload começa
@@ -594,6 +603,10 @@ def ligar():
                 raise
             except Exception as erro:
                 falhas[t["chave"]] = MAX_TENTATIVAS if isinstance(erro, FalhaDefinitiva) else falhas.get(t["chave"], 0) + 1
+                if isinstance(erro, LimiteDiario):  # nada mais sai hoje: evita criar rascunhos inúteis
+                    for outra in tarefas_do_dia(dia):
+                        falhas[outra["chave"]] = MAX_TENTATIVAS
+                    log("  Limite diário do YouTube: envios pausados até amanhã.")
                 log(f"  ERRO ({falhas[t['chave']]}/{MAX_TENTATIVAS}): {str(erro).splitlines()[0][:300]}")
                 log_erro(t["nome"])
                 time.sleep(15 * 60)
