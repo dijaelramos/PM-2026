@@ -484,23 +484,46 @@ def comentar_e_fixar(ctx, link, texto):
             except Exception:
                 page.mouse.wheel(0, 600)
             page.wait_for_timeout(2000)
-        caixa.click(timeout=30_000)
-        page.locator("ytd-comments #contenteditable-root").first.click()
-        for i, par in enumerate(texto.split("\n")):
-            if i:
-                page.keyboard.press("Shift+Enter")
-            page.keyboard.type(par)
-        page.locator("ytd-comments #submit-button").first.click()
-        page.wait_for_timeout(5000)
         trecho = texto.split("\n")[0][:40]
-        fio = page.locator("ytd-comment-thread-renderer").filter(has_text=trecho).first
-        fio.wait_for(timeout=30_000)
-        fio.locator("#action-menu button, #action-menu yt-icon-button").first.click()
-        page.locator("ytd-menu-service-item-renderer, tp-yt-paper-item").filter(
-            has_text=re.compile(r"^\s*(fixar|pin)\s*$", re.I)).first.click(timeout=10_000)
-        page.locator("yt-confirm-dialog-renderer #confirm-button, #confirm-button").first.click(timeout=10_000)
+        fios = page.locator("ytd-comment-thread-renderer").filter(has_text=trecho)
         page.wait_for_timeout(3000)
-        log("  comentário publicado e fixado")
+        if fios.count() == 0:  # só comenta se o comentário ainda não existe (evita repetir a cada tentativa)
+            caixa.click(timeout=30_000)
+            page.locator("ytd-comments #contenteditable-root").first.click()
+            for i, par in enumerate(texto.split("\n")):
+                if i:
+                    page.keyboard.press("Shift+Enter")
+                page.keyboard.type(par)
+            page.locator("ytd-comments #submit-button").first.click()
+            page.wait_for_timeout(5000)
+            log("  comentário publicado")
+        fio = fios.first
+        fio.wait_for(timeout=30_000)
+        if re.search(r"fixado por|pinned by", fio.inner_text(), re.I):
+            log("  comentário já estava fixado")
+            return True
+        fio.hover()
+        fio.locator("#action-menu button, #action-menu yt-icon-button, #action-menu").first.click()
+        page.wait_for_timeout(1500)
+        fixar = re.compile(r"^\s*(fixar|pin)\s*$", re.I)
+        for alvo in (lambda: page.get_by_role("menuitem", name=fixar).first,
+                     lambda: page.locator("tp-yt-iron-dropdown").get_by_text(fixar).first,
+                     lambda: page.locator("ytd-menu-service-item-renderer, tp-yt-paper-item, "
+                                          "yt-list-item-view-model").filter(has_text=re.compile(r"fixar|pin", re.I)).first):
+            try:
+                alvo().click(timeout=4000)
+                break
+            except Exception:
+                continue
+        else:
+            raise RuntimeError("não achei a opção Fixar no menu do comentário")
+        page.wait_for_timeout(1500)
+        try:  # janela de confirmação ("Fixar este comentário?")
+            page.get_by_role("button", name=fixar).last.click(timeout=8000)
+        except Exception:
+            page.locator("yt-confirm-dialog-renderer #confirm-button, #confirm-button").first.click(timeout=8000)
+        page.wait_for_timeout(3000)
+        log("  comentário fixado")
         return True
     except Exception:
         _aviso(page, "comentar e fixar")
