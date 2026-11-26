@@ -465,6 +465,17 @@ def comentar_e_fixar(ctx, link, texto):
         except Exception:
             pass
         caixa = page.locator("ytd-comments #simplebox-placeholder").first
+        try:
+            page.locator("ytd-comments#comments, #comments").first.scroll_into_view_if_needed(timeout=5000)
+            page.wait_for_timeout(3000)
+            if re.search(r"coment[áa]rios est[ãa]o desativados|comments are turned off",
+                         page.locator("body").inner_text(timeout=5000), re.I):
+                log("  os comentários deste vídeo estão DESATIVADOS. Ative em YouTube Studio > Configurações > "
+                    "Padrões de envio > Configurações avançadas > Comentários, e no próprio vídeo "
+                    "(Detalhes > Mostrar mais > Comentários). O robô tenta de novo depois.")
+                return False
+        except Exception:
+            pass
         for _ in range(30):  # os comentários só carregam quando a seção aparece na tela
             if caixa.is_visible():
                 break
