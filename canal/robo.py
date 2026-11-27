@@ -331,7 +331,7 @@ class LimiteDiario(FalhaDefinitiva):
 
 RECUSAS = [
     (r"confirme sua identidade|confirm it.s you|verify it.s you|verifique se [ée] voc[êe]",
-     "O Google pediu para CONFIRMAR SUA IDENTIDADE. Os envios ficam pausados. Rode canal\iniciar_robo.bat --login, "
+     "O Google pediu para CONFIRMAR SUA IDENTIDADE. Os envios ficam pausados. Rode canal/iniciar_robo.bat --login, "
      "confirme a identidade no Chrome do robô (senha ou celular), feche a janela e ligue o robô de novo."),
     (r"muito longo|too long", "O YouTube recusou: vídeo longo demais. Canais sem verificação por telefone só aceitam "
      "até 15 minutos. Verifique o telefone do canal em https://www.youtube.com/verify e rode de novo."),
