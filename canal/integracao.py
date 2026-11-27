@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 import sys
 import unicodedata
+from urllib.parse import urlsplit
 
 import motor
 import perfil_chrome
@@ -70,6 +71,27 @@ def titulo_local(R, tarefa):
     return motor.ler_json(arquivo).get("titulo", "")
 
 
+
+def videos_identificados(R):
+    """Só associa IDs a tarefas com link confirmado no histórico; não presume ausência."""
+    identificados = {}
+    estado = motor.ler_json(motor.diretorio_estado(R.V.RAIZ, R.V.CONFIG) / "estado.json")
+    registros = [(ident, item) for ident, item in estado.get("tarefas", {}).items()
+                 if item.get("estado") == "concluido"]
+    if getattr(R, "REGISTRO", None) is not None:
+        registros.extend((motor.identidade(R.V.CONFIG, chave), item)
+                         for chave, item in motor.ler_json(R.REGISTRO).items())
+    for ident, item in registros:
+        link = motor.link_padrao(item.get("link"))
+        if link:
+            vid = link.rsplit("/", 1)[-1]
+            anterior = identificados.get(vid)
+            if anterior and anterior != ident:
+                raise RuntimeError("O histórico associa o mesmo vídeo a tarefas diferentes. Confira os registros antes de enviar.")
+            identificados[vid] = ident
+    return identificados
+
+
 def buscar_no_studio(R, tarefa, nova_aba):
     """Consulta vídeos E Shorts, incluindo privados/rascunhos, no próprio canal autenticado."""
     page = nova_aba()
@@ -95,6 +117,8 @@ def buscar_no_studio(R, tarefa, nova_aba):
         if not esperado:
             motor.salvar_json(arquivo_canal, {"id": canal, "url_configurada": R.V.CONFIG["url_canal"]})
         vistos = set()
+        conhecidos = videos_identificados(R)
+        procurado = motor.identidade(R.V.CONFIG, tarefa["chave"])
         esperado_titulo = titulo_local(R, tarefa)
         detalhe = page.context.new_page()
         for aba in ("upload", "short"):
@@ -116,8 +140,12 @@ def buscar_no_studio(R, tarefa, nova_aba):
                     vid = ids[0]
                     ids_pagina.append(vid)
                     if vid not in vistos:
-                        candidatos.append((vid, linha.inner_text()))
                         vistos.add(vid)
+                        # Este ID já foi confirmado para OUTRA tarefa. Não abra de novo
+                        # seu editor, mas continue verificando todos os IDs desconhecidos.
+                        if vid in conhecidos and conhecidos[vid] != procurado:
+                            continue
+                        candidatos.append((vid, linha.inner_text()))
                 assinatura = tuple(ids_pagina)
                 if assinatura in paginas:
                     raise RuntimeError("A paginação do Studio repetiu a mesma página.")
@@ -139,13 +167,21 @@ def buscar_no_studio(R, tarefa, nova_aba):
                     break
         return None
     except Exception:
+        if hasattr(R, "log"):
+            with contextlib.suppress(Exception):
+                u = urlsplit(atual.url)
+                endereco = (u.scheme + "://" + u.netloc + u.path) if u.netloc else "(sem URL confirmada)"
+                R.log("  Consulta interrompida; URL confirmada pelo navegador: " + endereco)
         # Fotografe a consulta que falhou antes de fechar a aba; nunca declare ausência.
         if getattr(R, "ERROS", None) is not None:
-            with contextlib.suppress(Exception):
+            try:
                 R.ERROS.mkdir(parents=True, exist_ok=True)
                 foto = R.ERROS / ("erro_" + motor.agora().strftime("%Y%m%d_%H%M%S") + "_consulta.png")
                 atual.screenshot(path=str(foto), full_page=False, timeout=5000)
                 R.log("  Foto da consulta que falhou: " + str(foto))
+            except Exception as erro_foto:
+                with contextlib.suppress(Exception):
+                    R.log("  Não foi possível fotografar a consulta: " + str(erro_foto).splitlines()[0])
         raise
     finally:
         if detalhe:
@@ -198,8 +234,14 @@ class Executor:
         try:
             return self._chamar(op, **dados)
         finally:
-            if getattr(self.R, "PERFIL_COMPARTILHADO", False):
-                self.liberar_perfil()
+            if getattr(self.R, "PERFIL_COMPARTILHADO", False) and self.perfil:
+                try:
+                    # Apenas o executor que possui a trava mantém conexão CDP.
+                    # O Chrome externo e seu login continuam abertos.
+                    if hasattr(self.R, "encerrar_chrome"):
+                        self.R.encerrar_chrome()
+                finally:
+                    self.liberar_perfil()
 
     def liberar_perfil(self):
         if self.perfil:

@@ -349,7 +349,9 @@ def nova_aba():
 
 
 def encerrar_chrome():
-    """Fecha o Chrome do jeito certo (salva cookies e login). Só quando o robô é desligado."""
+    """Desconecta o executor compartilhado; o Chrome externo e o login ficam abertos.
+    No modo isolado antigo, fecha também o contexto persistente.
+    """
     try:
         if not PERFIL_COMPARTILHADO and _SESSAO["ctx"] is not None:
             _SESSAO["ctx"].close()
