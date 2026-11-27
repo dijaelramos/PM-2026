@@ -483,7 +483,14 @@ def principal(arquivo):
     provedores = {c["id"]: Processo(c, log) for c in cadastros}
     try:
         if a.login:
+            import perfil_chrome
+            vistos = set()
             for c in cadastros:
+                cfg = ler_json(c["pasta"] / "canal/config.json")
+                perfil, _ = perfil_chrome.resolver(c["pasta"], cfg)
+                if perfil.resolve() in vistos:
+                    continue
+                vistos.add(perfil.resolve())
                 resultado = subprocess.run([sys.executable, "-B", "-X", "utf8",
                                             str(c["pasta"] / "canal" / "robo.py"), "--login"])
                 if resultado.returncode:

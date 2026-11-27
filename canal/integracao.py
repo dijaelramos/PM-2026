@@ -181,6 +181,18 @@ class Executor:
                 self.ctx = self.pw = None
 
     def chamar(self, op, **dados):
+        try:
+            return self._chamar(op, **dados)
+        finally:
+            if getattr(self.R, "PERFIL_COMPARTILHADO", False):
+                self.liberar_perfil()
+
+    def liberar_perfil(self):
+        if self.perfil:
+            self.perfil.__exit__(None, None, None)
+            self.perfil = None
+
+    def _chamar(self, op, **dados):
         R = self.R
         if op == "agenda":
             dia = dt.date.fromisoformat(dados["dia"])
@@ -226,9 +238,7 @@ class Executor:
         if self.ctx:
             self.ctx.close()
             self.pw.stop()
-        if self.perfil:
-            self.perfil.__exit__(None, None, None)
-            self.perfil = None
+        self.liberar_perfil()
 
 
 def comando_manual(R, funcao):

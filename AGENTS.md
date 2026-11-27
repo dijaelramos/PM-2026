@@ -70,3 +70,12 @@ As regras são as mesmas para qualquer IA. Este arquivo só aponta para elas:
 ## 6. Manutenção dos robôs pelo principal
 
 Correções e melhorias comuns devem ser feitas nas fontes de canal_youtube/ e propagadas com sincronizar_robos.py, sem esperar outro pedido. Este concurso recebe o mesmo código do modelo; suas configurações, histórico, credenciais e materiais permanecem próprios. Confira a versão com sincronizar_robos.py --verificar, execute testes e simulações e faça commit e push das alterações aplicáveis.
+
+## Login compartilhado autorizado pelo estudante
+
+Os robôs atuais e futuros, no mesmo computador e usuário do Windows, usam
+canal_youtube/.chrome_perfil e publicam no mesmo canal. O perfil original da
+PMPE fica preservado. Não distribua cópias dos cookies para os concursos nem
+versione o perfil. O Chrome central permanece aberto e os executores alternam
+o acesso usando a trava do perfil por operação. Login pelo principal atende
+todos os concursos. As configurações, históricos e progressos continuam separados.

@@ -13,7 +13,7 @@ Se o robô for ligado tarde, ele posta o que estiver atrasado, com pelo menos 10
 Os registros existentes ficam em canal/.postados.json; motor.py compartilha a trava e consulta o Studio.
 
 Atenção: os Termos do YouTube proíbem acessar o serviço por meios automatizados sem autorização. O uso deste robô
-é por sua conta e risco, e o risco é para o canal. O robô usa um perfil de Chrome só dele (canal/.chrome_perfil).
+é por sua conta e risco, e o risco é para o canal. Os concursos cadastrados usam o perfil central quando configurado na raiz.
 """
 import argparse
 import ctypes
@@ -26,6 +26,7 @@ import subprocess
 import sys
 import time
 import motor
+import perfil_chrome
 import traceback
 from pathlib import Path
 
@@ -34,7 +35,7 @@ import dependencias  # noqa: E402
 import shorts as S  # noqa: E402
 import video as V  # noqa: E402
 
-PERFIL = V.CANAL / ".chrome_perfil"
+PERFIL, PERFIL_COMPARTILHADO = perfil_chrome.resolver(V.RAIZ, V.CONFIG)
 REGISTRO = V.CANAL / ".postados.json"
 ERROS = V.SAIDA / "_erros"
 REINICIAR = 3  # código de saída que pede ao iniciar_robo.bat para abrir o robô de novo (depois de atualizar)
@@ -107,7 +108,7 @@ def log_erro(onde, tipo="ERRO"):
 def fechar_chrome_do_robo():
     """Fecha só os Chrome abertos com o perfil do robô (por exemplo, o do --login que ficou em segundo plano).
     O seu Chrome normal não é tocado."""
-    if os.name != "nt":
+    if PERFIL_COMPARTILHADO or os.name != "nt":
         return
     # 1º: pede para fechar (como clicar no X: o Chrome salva cookies e login); 2º: só o que sobrar, à força
     cmd = ("$f = { Get-CimInstance Win32_Process | Where-Object { $_.Name -in 'chrome.exe','msedge.exe' } | "
@@ -302,7 +303,7 @@ def limpo(texto, limite):
     return texto.replace("<", "‹").replace(">", "›")[:limite]  # o YouTube não aceita < e >
 
 
-_SESSAO = {"pw": None, "ctx": None}
+_SESSAO = {"pw": None, "ctx": None, "browser": None}
 
 
 def chrome():
@@ -311,6 +312,8 @@ def chrome():
     ctx = _SESSAO["ctx"]
     if ctx is not None:
         try:
+            if _SESSAO["browser"] is not None and not _SESSAO["browser"].is_connected():
+                raise RuntimeError("O navegador foi fechado.")
             ctx.pages  # ainda vivo?
             if ctx.pages:
                 ctx.pages[0].title()
@@ -320,9 +323,14 @@ def chrome():
     if _SESSAO["pw"] is None:
         from playwright.sync_api import sync_playwright
         _SESSAO["pw"] = sync_playwright().start()
-    fechar_chrome_do_robo()  # só se sobrou um Chrome do robô de outra execução
-    _SESSAO["ctx"] = abrir_chrome(_SESSAO["pw"])
-    log("  Chrome do robô aberto (fica aberto enquanto o robô estiver ligado)")
+    if PERFIL_COMPARTILHADO:
+        _SESSAO["browser"], _SESSAO["ctx"] = perfil_chrome.conectar(
+            _SESSAO["pw"], PERFIL, navegador()[1], V.CONFIG.get("pausa_entre_acoes_ms", 1500))
+        log("  Chrome central conectado; login compartilhado entre os concursos")
+    else:
+        fechar_chrome_do_robo()
+        _SESSAO["ctx"] = abrir_chrome(_SESSAO["pw"])
+        log("  Chrome do robô aberto (fica aberto enquanto o robô estiver ligado)")
     return _SESSAO["ctx"]
 
 
@@ -343,7 +351,7 @@ def nova_aba():
 def encerrar_chrome():
     """Fecha o Chrome do jeito certo (salva cookies e login). Só quando o robô é desligado."""
     try:
-        if _SESSAO["ctx"] is not None:
+        if not PERFIL_COMPARTILHADO and _SESSAO["ctx"] is not None:
             _SESSAO["ctx"].close()
     except Exception:
         pass
@@ -352,7 +360,7 @@ def encerrar_chrome():
             _SESSAO["pw"].stop()
     except Exception:
         pass
-    _SESSAO.update(pw=None, ctx=None)
+    _SESSAO.update(pw=None, ctx=None, browser=None)
 
 
 def abrir_chrome(pw):
@@ -809,6 +817,15 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
 # ---------------------------------------------------------------- comandos
 
 def login():
+    if PERFIL_COMPARTILHADO:
+        page = nova_aba()
+        try:
+            page.goto("https://studio.youtube.com", wait_until="domcontentloaded", timeout=120_000)
+            print("Entre na conta e selecione o canal no Chrome central. Mantenha a janela aberta.")
+            input("Quando o YouTube Studio estiver pronto, aperte Enter para conferir o login: ")
+        finally:
+            page.close()
+        return testar()
     PERFIL.mkdir(parents=True, exist_ok=True)
     print("Abrindo o Chrome do robô. Entre na conta do canal (infinitycursosbeberibe), confira se o YouTube Studio "
           "abre e depois FECHE essa janela do Chrome.")
@@ -825,6 +842,7 @@ def testar():
     page.goto("https://studio.youtube.com", wait_until="domcontentloaded", timeout=120_000)
     page.wait_for_timeout(6000)
     ok = "studio.youtube.com" in page.url and "accounts.google.com" not in page.url
+    page.close()
     encerrar_chrome()
     print("Login OK: o robô abre o YouTube Studio." if ok else "Sem login: rode python canal/robo.py --login")
     return 0 if ok else 1
@@ -891,16 +909,19 @@ def main():
         from integracao import comando_manual
         return comando_manual(sys.modules[__name__], login if a.login else testar)
     if a.comentar:
-        aula = next((t for t in tarefas_do_dia(agora().date()) if t["tipo"] == "aula"), None)
-        if not aula:
-            print("Hoje não há aula.")
-            return 1
-        item = preparar(aula)
-        try:
-            comentar_e_fixar(chrome(), a.comentar, item[4]["comentario"])
-        finally:
-            encerrar_chrome()
-        return 0
+        from integracao import comando_manual
+        def executar_comentario():
+            aula = next((t for t in tarefas_do_dia(agora().date()) if t["tipo"] == "aula"), None)
+            if not aula:
+                print("Hoje não há aula.")
+                return 1
+            item = preparar(aula)
+            try:
+                comentar_e_fixar(chrome(), a.comentar, item[4]["comentario"])
+            finally:
+                encerrar_chrome()
+            return 0
+        return comando_manual(sys.modules[__name__], executar_comentario)
     try:
         return ligar() or 0
     except KeyboardInterrupt:

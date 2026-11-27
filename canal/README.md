@@ -167,4 +167,15 @@ Quando o estudante informar que criou um concurso, o agente da raiz deve prepara
 
 ## Atualizações vindas do robô principal
 
-Correções e melhorias são feitas no código comum de canal_youtube/ e aplicadas a este robô por sincronizar_robos.py. A rotina mantém configuração, credenciais, perfil e histórico próprios de cada concurso e salva uma cópia do código substituído. Os atalhos reiniciam entre postagens ao detectar uma nova versão compartilhada. O modelo recebe a mesma correção para os concursos futuros.
+Correções e melhorias são feitas no código comum de canal_youtube/ e aplicadas a este robô por sincronizar_robos.py. A rotina mantém configurações e históricos próprios de cada concurso e preserva o perfil central compartilhado e salva uma cópia do código substituído. Os atalhos reiniciam entre postagens ao detectar uma nova versão compartilhada. O modelo recebe a mesma correção para os concursos futuros.
+
+## Perfil central do Chrome
+
+Na instalação com canal_youtube/, este concurso usa o mesmo login central da
+PMPE, Bombeiro e concursos futuros: canal_youtube/.chrome_perfil. Faça login
+uma vez pelo iniciar_robo.bat --login do principal. O Chrome fica aberto e
+os robôs alternam o acesso pela trava, sem copiar cookies para cada concurso.
+Encerrar um robô desconecta seu executor e preserva a janela e os demais.
+O Google pode exigir nova autenticação; ela vale para todos ao ser renovada
+no perfil central. Os históricos, configurações e progresso continuam separados.
+O perfil original da PMPE foi preservado. Nunca envie esses dados ao Git.
