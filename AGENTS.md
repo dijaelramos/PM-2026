@@ -66,3 +66,7 @@ As regras são as mesmas para qualquer IA. Este arquivo só aponta para elas:
 - canal/motor.py e canal/integracao.py são cópias do núcleo principal e devem permanecer sincronizados. O robô respeita registros existentes, trava compartilhada e consulta ao Studio. Não chame postar diretamente nem apague históricos para destravar um envio.
 - canal/robo_teste.py agora apenas simula. Nunca publique vídeos para testar a automação.
 - Ao criar um novo concurso, siga o AGENTS.md da raiz e o agente orquestrador-concursos: prepare o robô individual e atualize o cadastro geral na mesma tarefa.
+
+## 6. Manutenção dos robôs pelo principal
+
+Correções e melhorias comuns devem ser feitas nas fontes de canal_youtube/ e propagadas com sincronizar_robos.py, sem esperar outro pedido. Este concurso recebe o mesmo código do modelo; suas configurações, histórico, credenciais e materiais permanecem próprios. Confira a versão com sincronizar_robos.py --verificar, execute testes e simulações e faça commit e push das alterações aplicáveis.

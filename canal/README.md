@@ -164,3 +164,7 @@ Os registros antigos são preservados. Sem registro confirmado, a automação co
 Use python canal/robo.py --simular --data AAAA-MM-DD para conferir a agenda sem abrir navegador ou publicar. robo_teste.py também passou a ser somente uma simulação. Se a versão antiga do robô estiver ligada, feche-a e abra o novo atalho.
 
 Quando o estudante informar que criou um concurso, o agente da raiz deve preparar o novo robô e acrescentá-lo a canal_youtube/config.json. A fila em execução relê esse cadastro automaticamente. As instruções completas ficam em canal_youtube/COMO_USAR.txt, na raiz compartilhada.
+
+## Atualizações vindas do robô principal
+
+Correções e melhorias são feitas no código comum de canal_youtube/ e aplicadas a este robô por sincronizar_robos.py. A rotina mantém configuração, credenciais, perfil e histórico próprios de cada concurso e salva uma cópia do código substituído. Os atalhos reiniciam entre postagens ao detectar uma nova versão compartilhada. O modelo recebe a mesma correção para os concursos futuros.

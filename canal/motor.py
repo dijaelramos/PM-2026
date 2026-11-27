@@ -346,6 +346,10 @@ def exibir(fila, nomes):
     print("Intervalo mínimo real entre envios: 10 minutos. Uploads demorados podem atrasar os próximos.")
 
 
+def versao_instalada():
+    return ler_json(Path(__file__).with_name("versao_compartilhada.json")).get("versao", "")
+
+
 def rodar(provedores, cadastros, log, data=None, simular=False, recarregar=None):
     nomes = {c["id"]: c.get("nome", c["id"]) for c in cadastros}
     if simular:
@@ -355,9 +359,13 @@ def rodar(provedores, cadastros, log, data=None, simular=False, recarregar=None)
         import ctypes
         ctypes.windll.kernel32.SetThreadExecutionState(0x80000001)
     avisos, tentativas, atualizados = {}, {}, set()
+    versao_inicial = versao_instalada()
     try:
         log("Fila ligada: aulas a partir das 07h; Shorts às 12h, 18h e 21h; intervalo de 10 minutos.")
         while True:
+            if versao_instalada() != versao_inicial:
+                log("Atualização compartilhada instalada. Reiniciando entre postagens para aplicar a nova versão.")
+                return 3
             if recarregar:
                 try:
                     novos = recarregar()
@@ -393,6 +401,9 @@ def rodar(provedores, cadastros, log, data=None, simular=False, recarregar=None)
                 continue
             trabalhou = False
             for t in fila:
+                if versao_instalada() != versao_inicial:
+                    log("Atualização compartilhada instalada. Reiniciando antes do próximo envio.")
+                    return 3
                 if t.get("postado") or dt.datetime.fromisoformat(t["quando"]) > agora():
                     continue
                 chave = (dia, t["concurso"], t["chave"])

@@ -29,7 +29,7 @@ CACHE = CANAL / ".cache"
 SAIDA = CANAL / "saida"
 CONFIG = json.loads((CANAL / "config.json").read_text(encoding="utf-8"))
 
-VERSAO_SAIDA = 3  # o robô gera de novo vídeos com versão mais velha (ou amostras de teste)
+VERSAO_SAIDA = 4  # o robô gera de novo vídeos com versão mais velha (ou amostras de teste)
 BYTES_POR_SEGUNDO = 48000 // 8  # MP3 24 kHz, 48 kbit/s, CBR (edge-tts e Azure, no formato pedido abaixo)
 FORMATO_AZURE = "audio-24khz-48kbitrate-mono-mp3"
 LARG, ALT = 1920, 1080
@@ -459,7 +459,7 @@ def cabecalho(d, info, tela, progresso):
         d.text((60, 200), tela["sub"], font=fonte(36), fill=COR["suave"])
     d.rectangle([0, ALT - 10, LARG, ALT], fill=COR["linha"])
     d.rectangle([0, ALT - 10, int(LARG * progresso), ALT], fill=COR["destaque"])
-    aviso = "Material de estudo independente · não oficial · sem vínculo com a PMPE ou a banca"
+    aviso = "Material de estudo independente · não oficial · sem vínculo com o órgão ou a banca"
     d.text((60, ALT - 58), aviso, font=fonte(24), fill=COR["suave"])
 
 
@@ -560,7 +560,7 @@ def desenhar_capa(info, titulo, destino, tamanho=(LARG, ALT), subtitulo="", cham
     if CONFIG.get("nome_canal"):
         nome, fn = CONFIG["nome_canal"], fonte(int(40 * esc))
         d.text((w - int(70 * esc) - d.textlength(nome, font=fn), int(48 * esc)), nome, font=fn, fill=COR["texto"])
-    d.text((int(70 * esc), int(40 * esc)), f"{info['data']:%d/%m/%Y} · Concurso Soldado PM-PE 2026", font=fonte(int(52 * esc), True),
+    d.text((int(70 * esc), int(40 * esc)), f"{info['data']:%d/%m/%Y} · {CONFIG['concurso']}", font=fonte(int(52 * esc), True),
            fill=COR["texto"])
     f = fonte(int(120 * esc), True)
     y = int(260 * esc)
@@ -626,7 +626,7 @@ def montar(caminho, limite_telas=None):
     assuntos = " · ".join(s for s in info["secoes"] if not re.search(r"quadro|pegadinha", s, re.I))
     assuntos_lista = assuntos.replace(" · ", "; ")  # (fora do f-string: compatível com Python antes do 3.12)
     abertura = {"secao": "Abertura", "sub": "", "tipo": "capa",
-                "fala": f"Aula de {titulo_aula}, para o concurso de soldado da Polícia Militar de Pernambuco, "
+                "fala": f"Aula de {titulo_aula}, para {CONFIG['concurso']}, "
                         f"de {data_extenso}. Nesta aula: {assuntos_lista}. "
                         + (f"Fique até o final: depois da explicação, há {len(questoes)} questões para você responder, "
                            f"com o gabarito comentado. " if questoes else "")
@@ -675,15 +675,15 @@ def montar(caminho, limite_telas=None):
     titulo = f"{titulo_aula}: {assuntos}"
     if len(titulo) > 70:
         titulo = titulo[:67].rsplit(" ", 1)[0] + "…"
-    titulo = f"{titulo} | Soldado PM-PE 2026 · {dia:%d/%m}"[:100]
+    titulo = f"{titulo} | {CONFIG['concurso']} · {dia:%d/%m}"[:100]
     caps = "\n".join(f"{tempo(s)} {nome}" for s, nome in capitulos)
     descricao = (
-        f"Aula narrada de {titulo_aula} para o concurso de Soldado da PM-PE 2026 (banca Instituto AOCP), "
+        f"Aula narrada de {titulo_aula} para {CONFIG['concurso']} ({CONFIG.get('banca') or 'banca do edital'}), "
         f"conforme o conteúdo do edital. Assuntos: {assuntos_lista}.\n\n"
         + (f"No final, {len(questoes)} questões para você responder, com gabarito comentado. Deixe as suas respostas "
            "nos comentários!\n\n" if questoes else "")
         + f"Capítulos:\n{caps}\n\n"
-        "Material de estudo independente e não oficial, sem vínculo com a Polícia Militar de Pernambuco, com o "
+        "Material de estudo independente e não oficial, sem vínculo com o órgão do concurso, com o "
         "Governo do Estado ou com a banca. Confira sempre o edital e a legislação oficial.\n"
         f"{CONFIG.get('creditos', '')}\n"
         f"Narração com voz sintética.\n\n"
@@ -692,8 +692,7 @@ def montar(caminho, limite_telas=None):
         + f"Código da aula: {info['id']}"
     )
     meta = {"id": info["id"], "titulo": titulo, "descricao": descricao[:4900],
-            "tags": ["concurso PMPE", "soldado PM-PE", "PMPE 2026", "Instituto AOCP", titulo_aula, "concurso público",
-                     "polícia militar de Pernambuco"],
+            "tags": [CONFIG["concurso"], CONFIG.get("banca", ""), titulo_aula, "concurso público"],
             "duracao": round(t), "data": dia.isoformat(), "disciplina": titulo_aula,
             "questoes": len(questoes), "questoes_abertas": bool(questoes) and not questoes[0]["alts"],
             "amostra": bool(limite_telas), "versao": VERSAO_SAIDA}

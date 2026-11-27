@@ -154,7 +154,7 @@ def desenhar(info, tela, progresso, destino):
     d = ImageDraw.Draw(img)
     d.rectangle([0, 0, LARG, 200], fill=COR["faixa"])
     d.text((60, 50), info["disciplina"], font=V.fonte(48, True), fill=COR["texto"])
-    d.text((60, 120), f"Concurso Soldado PM-PE · {info['data']:%d/%m}", font=V.fonte(34), fill=COR["suave"])
+    d.text((60, 120), f"{V.CONFIG['concurso']} · {info['data']:%d/%m}", font=V.fonte(34), fill=COR["suave"])
     y = 290
     for l in V.quebrar(d, tela["titulo"].upper(), V.fonte(68, True), LARG - 120)[:2]:
         d.text((60, y), l, font=V.fonte(68, True), fill=COR["destaque"])
@@ -248,19 +248,17 @@ def montar(caminho):
         if len(titulo) > 100:
             titulo = r["titulo"][:88].rsplit(" ", 1)[0] + "… #Shorts"
         descricao = (
-            f"{r['titulo']}{'' if r['titulo'][-1:] in '?!.' else '.'} Concurso de Soldado da PM-PE 2026 "
-            "(banca Instituto AOCP).\n\n"
+            f"{r['titulo']}{'' if r['titulo'][-1:] in '?!.' else '.'} {V.CONFIG['concurso']}.\n\n"
             "Aula completa do dia: {link_aula}\n"
             + (f"Inscreva-se: {url}\n" if url else "")
             + V.linha_pix()
-            + "\nMaterial de estudo independente e não oficial, sem vínculo com a Polícia Militar de Pernambuco, com o "
+            + "\nMaterial de estudo independente e não oficial, sem vínculo com o órgão do concurso, com o "
               "Governo do Estado ou com a banca. Narração com voz sintética.\n\n"
-              "#Shorts #ConcursoPMPE #PMPE2026 #SoldadoPMPE #Concursos\n\n"
+              "#Shorts #Concursos\n\n"
             f"Código do short: {info['id']}#short{n}"
         )
         meta = {"id": f"{info['id']}#short{n}", "aula": info["id"], "tipo": r["tipo"], "titulo": titulo,
-                "descricao": descricao, "tags": ["shorts", "concurso PMPE", "soldado PM-PE", "PMPE 2026",
-                                                 "Instituto AOCP", info["disciplina"]],
+                "descricao": descricao, "tags": ["shorts", V.CONFIG["concurso"], V.CONFIG.get("banca", ""), info["disciplina"]],
                 "data": info["data"].isoformat(), "horario": horarios[(n - 1) % len(horarios)], "duracao": round(dur, 1),
                 "versao": V.VERSAO_SAIDA}
         (pasta / f"short_{n}.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
