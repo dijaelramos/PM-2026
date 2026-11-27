@@ -312,6 +312,7 @@ def abrir_chrome(pw):
 
 
 def preencher(page, seletor, texto):
+    checar_recusa(page)
     caixa = page.locator(seletor).first
     caixa.wait_for(timeout=180_000)
     caixa.click()
@@ -329,6 +330,9 @@ class LimiteDiario(FalhaDefinitiva):
 
 
 RECUSAS = [
+    (r"confirme sua identidade|confirm it.s you|verify it.s you|verifique se [ée] voc[êe]",
+     "O Google pediu para CONFIRMAR SUA IDENTIDADE. Os envios ficam pausados. Rode canal\iniciar_robo.bat --login, "
+     "confirme a identidade no Chrome do robô (senha ou celular), feche a janela e ligue o robô de novo."),
     (r"muito longo|too long", "O YouTube recusou: vídeo longo demais. Canais sem verificação por telefone só aceitam "
      "até 15 minutos. Verifique o telefone do canal em https://www.youtube.com/verify e rode de novo."),
     (r"limite di[áa]rio|daily upload limit", "O YouTube recusou: limite diário de envios do canal atingido. "
@@ -356,7 +360,7 @@ def recusa_do_youtube(page):
 def checar_recusa(page):
     recusa = recusa_do_youtube(page)
     if recusa:
-        raise (LimiteDiario if "limite diário" in recusa else FalhaDefinitiva)(recusa)
+        raise (LimiteDiario if ("limite diário" in recusa or "IDENTIDADE" in recusa) else FalhaDefinitiva)(recusa)
 
 
 def esperar_envio(page, limite_min=90):
@@ -668,7 +672,14 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
             if visib != "PRIVATE":
                 confirmar_publico(page, link)
             return link or "(link não capturado)"
-        except Exception:
+        except Exception as erro:
+            if not isinstance(erro, FalhaDefinitiva):  # um aviso do YouTube por cima da tela explica o erro?
+                try:
+                    checar_recusa(page)
+                except FalhaDefinitiva as recusa:
+                    ERROS.mkdir(parents=True, exist_ok=True)
+                    page.screenshot(path=str(ERROS / f"erro_{agora():%Y%m%d_%H%M%S}.png"), full_page=True)
+                    raise recusa from erro
             ERROS.mkdir(parents=True, exist_ok=True)
             foto = ERROS / f"erro_{agora():%Y%m%d_%H%M%S}.png"
             try:
@@ -788,7 +799,7 @@ def ligar():
                 if isinstance(erro, LimiteDiario):  # nada mais sai hoje: evita criar rascunhos inúteis
                     for outra in tarefas_do_dia(dia):
                         falhas[outra["chave"]] = MAX_TENTATIVAS
-                    log("  Limite diário do YouTube: envios pausados até amanhã.")
+                    log("  Envios pausados até amanhã (ou até você ligar o robô de novo).")
                 log(f"  ERRO ({falhas[t['chave']]}/{MAX_TENTATIVAS}): {str(erro).splitlines()[0][:300]}")
                 log_erro(t["nome"])
                 time.sleep(15 * 60)
