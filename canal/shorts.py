@@ -261,7 +261,8 @@ def montar(caminho):
         meta = {"id": f"{info['id']}#short{n}", "aula": info["id"], "tipo": r["tipo"], "titulo": titulo,
                 "descricao": descricao, "tags": ["shorts", "concurso PMPE", "soldado PM-PE", "PMPE 2026",
                                                  "Instituto AOCP", info["disciplina"]],
-                "data": info["data"].isoformat(), "horario": horarios[(n - 1) % len(horarios)], "duracao": round(dur, 1)}
+                "data": info["data"].isoformat(), "horario": horarios[(n - 1) % len(horarios)], "duracao": round(dur, 1),
+                "versao": V.VERSAO_SAIDA}
         (pasta / f"short_{n}.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         feitos.append(destino)
         print(f"  short {n} ({r['tipo']}, {dur:.0f} s): {destino}")

@@ -29,6 +29,7 @@ CACHE = CANAL / ".cache"
 SAIDA = CANAL / "saida"
 CONFIG = json.loads((CANAL / "config.json").read_text(encoding="utf-8"))
 
+VERSAO_SAIDA = 3  # o robô gera de novo vídeos com versão mais velha (ou amostras de teste)
 BYTES_POR_SEGUNDO = 48000 // 8  # MP3 24 kHz, 48 kbit/s, CBR (edge-tts e Azure, no formato pedido abaixo)
 FORMATO_AZURE = "audio-24khz-48kbitrate-mono-mp3"
 LARG, ALT = 1920, 1080
@@ -694,7 +695,8 @@ def montar(caminho, limite_telas=None):
             "tags": ["concurso PMPE", "soldado PM-PE", "PMPE 2026", "Instituto AOCP", titulo_aula, "concurso público",
                      "polícia militar de Pernambuco"],
             "duracao": round(t), "data": dia.isoformat(), "disciplina": titulo_aula,
-            "questoes": len(questoes), "questoes_abertas": bool(questoes) and not questoes[0]["alts"]}
+            "questoes": len(questoes), "questoes_abertas": bool(questoes) and not questoes[0]["alts"],
+            "amostra": bool(limite_telas), "versao": VERSAO_SAIDA}
     (pasta / "video.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     shutil.rmtree(pasta / "telas")
     (pasta / "lista.txt").unlink()

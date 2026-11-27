@@ -206,6 +206,13 @@ def preparar(t):
     """Gera o vídeo se ainda não existir. Devolve (arquivo, título, descrição, miniatura, extras) ou None."""
     pasta = V.SAIDA / t["material"].stem
     if t["tipo"] == "aula":
+        try:
+            velho = json.loads((pasta / "video.json").read_text(encoding="utf-8"))
+            if velho.get("amostra") or velho.get("versao", 0) < V.VERSAO_SAIDA:
+                log("  o vídeo que existia era de teste ou de versão antiga: gerando de novo")
+                (pasta / "video.mp4").unlink()
+        except Exception:
+            pass
         if not (pasta / "video.mp4").exists():
             log(f"gerando a aula de {t['material'].name} (alguns minutos)…")
             if not V.montar(t["material"].resolve()):
@@ -216,6 +223,11 @@ def preparar(t):
             meta["questoes"], meta["questoes_abertas"] = len(qs), bool(qs) and not qs[0]["alts"]
         return pasta / "video.mp4", meta["titulo"], meta["descricao"], pasta / "miniatura.png", extras_da_aula(meta)
     js = pasta / "shorts" / f"short_{t['n']}.json"
+    try:
+        if json.loads(js.read_text(encoding="utf-8")).get("versao", 0) < V.VERSAO_SAIDA:
+            js.unlink()
+    except Exception:
+        pass
     if not js.exists():
         log(f"gerando os Shorts de {t['material'].name}…")
         S.montar(t["material"].resolve())
@@ -393,13 +405,13 @@ def _aviso(page, onde):
     except Exception:
         pass
     log_erro(onde, "AVISO")
-    fechar_painel_playlist(page)  # o painel aberto cobre o resto da tela (foi o que travou a postagem)
-    for _ in range(2):
+    for _ in range(2):  # fecha menus abertos
         try:
             page.keyboard.press("Escape")
             page.wait_for_timeout(500)
         except Exception:
             pass
+    fechar_painel_playlist(page)  # o painel aberto cobre o resto da tela (foi o que travou a postagem)
 
 
 CONCLUIR = re.compile(r"^\s*(concluir|conclu[íi]do|done)\s*$", re.I)
@@ -431,8 +443,12 @@ def escolher_playlist(page, nome):
     if caixa.count() == 0:  # ainda não existe: cria
         page.get_by_role("button", name=re.compile(r"criar playlist|nova playlist|new playlist|create playlist",
                                                    re.I)).first.click(timeout=10_000)
-        try:  # o botão "Criar playlist ▾" abre um menu com "Nova playlist"
-            page.get_by_text(re.compile(r"^\s*(nova playlist|new playlist)\s*$", re.I)).first.click(timeout=4000)
+        page.wait_for_timeout(1000)
+        item_menu = page.locator("tp-yt-paper-item, [role='menuitem'], [role='option'], "
+                                 "ytcp-text-menu tp-yt-paper-item").filter(
+            has_text=re.compile(r"^\s*(nova playlist|new playlist)\s*$", re.I))
+        try:  # o botão "Nova playlist ▾" abre um menu: Nova playlist / Novo podcast / Novo curso
+            item_menu.last.click(timeout=5000)
         except Exception:
             pass
         dialogo = page.get_by_role("dialog").filter(
@@ -576,7 +592,10 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
                     _aviso(page, f"colocar na playlist {extras['playlist']}")
             page.wait_for_timeout(3000)
             checar_recusa(page)
-            page.locator('tp-yt-paper-radio-button[name="VIDEO_MADE_FOR_KIDS_NOT_MFK"]').first.click()
+            fechar_painel_playlist(page)
+            kids = page.locator('tp-yt-paper-radio-button[name="VIDEO_MADE_FOR_KIDS_NOT_MFK"]').first
+            kids.scroll_into_view_if_needed(timeout=10_000)
+            kids.click()
             link = None
             for _ in range(60):  # o link aparece depois que o upload começa
                 try:
