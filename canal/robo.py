@@ -108,9 +108,12 @@ def fechar_chrome_do_robo():
     O seu Chrome normal não é tocado."""
     if os.name != "nt":
         return
-    cmd = ("$p = Get-CimInstance Win32_Process | Where-Object { $_.Name -in 'chrome.exe','msedge.exe' } | "
-           "Where-Object { $_.CommandLine -like '*.chrome_perfil*' }; "
-           "$p | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }; "
+    # 1º: pede para fechar (como clicar no X: o Chrome salva cookies e login); 2º: só o que sobrar, à força
+    cmd = ("$f = { Get-CimInstance Win32_Process | Where-Object { $_.Name -in 'chrome.exe','msedge.exe' } | "
+           "Where-Object { $_.CommandLine -like '*.chrome_perfil*' } }; $p = & $f; "
+           "$p | ForEach-Object { try { (Get-Process -Id $_.ProcessId).CloseMainWindow() | Out-Null } catch {} }; "
+           "if (@($p).Count) { Start-Sleep -Seconds 15 }; "
+           "& $f | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }; "
            "@($p).Count")
     try:
         r = subprocess.run(["powershell", "-NoProfile", "-Command", cmd], capture_output=True, text=True, timeout=60)
@@ -161,25 +164,26 @@ def playlists_pendentes():
             continue
         vid = item["link"].rstrip("/").rsplit("/", 1)[-1]
         log(f"Playlist pendente: {chave} -> {nome}")
-        from playwright.sync_api import sync_playwright
         ok = False
-        with sync_playwright() as pw:
-            ctx = abrir_chrome(pw)
-            page = ctx.pages[0] if ctx.pages else ctx.new_page()
+        page = nova_aba()
+        try:
+            page.goto(f"https://studio.youtube.com/video/{vid}/edit", wait_until="domcontentloaded",
+                      timeout=120_000)
+            page.wait_for_timeout(6000)
+            esperar_identidade(page)
+            escolher_playlist(page, nome)
+            salvar = page.locator("ytcp-button#save, #save").first
+            salvar.click(timeout=15_000)
+            page.wait_for_timeout(5000)
+            ok = True
+            log("  vídeo colocado na playlist")
+        except Exception:
+            _aviso(page, f"colocar {chave} na playlist {nome}")
+        finally:
             try:
-                page.goto(f"https://studio.youtube.com/video/{vid}/edit", wait_until="domcontentloaded",
-                          timeout=120_000)
-                page.wait_for_timeout(6000)
-                escolher_playlist(page, nome)
-                salvar = page.locator("ytcp-button#save, #save").first
-                salvar.click(timeout=15_000)
-                page.wait_for_timeout(5000)
-                ok = True
-                log("  vídeo colocado na playlist")
+                page.close()
             except Exception:
-                _aviso(page, f"colocar {chave} na playlist {nome}")
-            finally:
-                ctx.close()
+                pass
         if ok:
             atualizar_registro(chave, playlist_pendente=None, playlist_tentativas=None, playlist=nome)
         else:
@@ -197,13 +201,7 @@ def comentarios_pendentes():
         if agora() - dt.datetime.fromisoformat(item["quando"]) < ESPERA_COMENTARIO:
             continue
         log(f"Comentário fixado: {chave}")
-        from playwright.sync_api import sync_playwright
-        with sync_playwright() as pw:
-            ctx = abrir_chrome(pw)
-            try:
-                ok = comentar_e_fixar(ctx, item["link"], texto)
-            finally:
-                ctx.close()
+        ok = comentar_e_fixar(chrome(), item["link"], texto)
         if ok:
             atualizar_registro(chave, comentario_pendente=None, comentario_tentativas=None, comentario="fixado")
         else:
@@ -304,9 +302,61 @@ def limpo(texto, limite):
     return texto.replace("<", "‹").replace(">", "›")[:limite]  # o YouTube não aceita < e >
 
 
+_SESSAO = {"pw": None, "ctx": None}
+
+
+def chrome():
+    """O Chrome do robô, aberto UMA vez e mantido aberto (abrir e fechar toda hora faz o Google pedir a identidade
+    e derrubar o login). Se tiver sido fechado, abre de novo."""
+    ctx = _SESSAO["ctx"]
+    if ctx is not None:
+        try:
+            ctx.pages  # ainda vivo?
+            if ctx.pages:
+                ctx.pages[0].title()
+            return ctx
+        except Exception:
+            _SESSAO["ctx"] = None
+    if _SESSAO["pw"] is None:
+        from playwright.sync_api import sync_playwright
+        _SESSAO["pw"] = sync_playwright().start()
+    fechar_chrome_do_robo()  # só se sobrou um Chrome do robô de outra execução
+    _SESSAO["ctx"] = abrir_chrome(_SESSAO["pw"])
+    log("  Chrome do robô aberto (fica aberto enquanto o robô estiver ligado)")
+    return _SESSAO["ctx"]
+
+
+def nova_aba():
+    """Aba nova no Chrome do robô; a primeira aba fica sempre aberta (com o Studio), para a janela não fechar."""
+    ctx = chrome()
+    if not ctx.pages:
+        ctx.new_page()
+    try:
+        base = ctx.pages[0]
+        if base.url in ("about:blank", ""):
+            base.goto("https://studio.youtube.com", wait_until="domcontentloaded", timeout=120_000)
+    except Exception:
+        pass
+    return ctx.new_page()
+
+
+def encerrar_chrome():
+    """Fecha o Chrome do jeito certo (salva cookies e login). Só quando o robô é desligado."""
+    try:
+        if _SESSAO["ctx"] is not None:
+            _SESSAO["ctx"].close()
+    except Exception:
+        pass
+    try:
+        if _SESSAO["pw"] is not None:
+            _SESSAO["pw"].stop()
+    except Exception:
+        pass
+    _SESSAO.update(pw=None, ctx=None)
+
+
 def abrir_chrome(pw):
     PERFIL.mkdir(parents=True, exist_ok=True)
-    fechar_chrome_do_robo()
     return pw.chromium.launch_persistent_context(str(PERFIL), channel=navegador()[0], headless=False,
                                                  no_viewport=True,  # a página ocupa a janela inteira
                                                  args=["--lang=pt-BR", "--start-maximized"])
@@ -646,15 +696,15 @@ def confirmar_publico(page, link, minutos=10):
 
 
 def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
-    from playwright.sync_api import sync_playwright
-    with sync_playwright() as pw:
-        ctx = abrir_chrome(pw)
-        page = ctx.pages[0] if ctx.pages else ctx.new_page()
+    if True:  # (bloco mantido para não reindentar o resto)
+        page = nova_aba()
         try:
             page.goto("https://www.youtube.com/upload", wait_until="domcontentloaded", timeout=120_000)
             page.wait_for_timeout(4000)
+            esperar_identidade(page)
             if "accounts.google.com" in page.url:
-                raise RuntimeError("o Chrome do robô não está logado. Rode: python canal/robo.py --login")
+                raise LimiteDiario("o Chrome do robô saiu da conta do Google. Entre de novo NA JANELA DO CHROME DO "
+                                   "ROBÔ (ela fica aberta) ou rode canal/iniciar_robo.bat --login. Envios pausados.")
             page.locator('input[type="file"]').first.set_input_files(str(arquivo))
             page.wait_for_timeout(5000)
             checar_recusa(page)
@@ -728,7 +778,10 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
                 pass
             raise
         finally:
-            ctx.close()
+            try:
+                page.close()  # fecha só a aba; o Chrome continua aberto e logado
+            except Exception:
+                pass
 
 
 # ---------------------------------------------------------------- comandos
@@ -741,19 +794,16 @@ def login():
     print(f"Navegador do robô: {'Google Chrome' if canal == 'chrome' else 'Microsoft Edge'} ({exe})")
     subprocess.Popen([str(exe), f"--user-data-dir={PERFIL}", "https://studio.youtube.com"]).wait()
     input("Quando tiver fechado a janela, aperte Enter para eu conferir o login… ")
-    fechar_chrome_do_robo()
+    fechar_chrome_do_robo()  # só se a janela ainda estiver aberta: fecha com calma (o login fica salvo)
     return testar()
 
 
 def testar():
-    from playwright.sync_api import sync_playwright
-    with sync_playwright() as pw:
-        ctx = abrir_chrome(pw)
-        page = ctx.pages[0] if ctx.pages else ctx.new_page()
-        page.goto("https://studio.youtube.com", wait_until="domcontentloaded", timeout=120_000)
-        page.wait_for_timeout(6000)
-        ok = "studio.youtube.com" in page.url and "accounts.google.com" not in page.url
-        ctx.close()
+    page = nova_aba()
+    page.goto("https://studio.youtube.com", wait_until="domcontentloaded", timeout=120_000)
+    page.wait_for_timeout(6000)
+    ok = "studio.youtube.com" in page.url and "accounts.google.com" not in page.url
+    encerrar_chrome()
     print("Login OK: o robô abre o YouTube Studio." if ok else "Sem login: rode python canal/robo.py --login")
     return 0 if ok else 1
 
@@ -882,18 +932,17 @@ def main():
             print("Hoje não há aula.")
             return 1
         item = preparar(aula)
-        from playwright.sync_api import sync_playwright
-        with sync_playwright() as pw:
-            ctx = abrir_chrome(pw)
-            try:
-                comentar_e_fixar(ctx, a.comentar, item[4]["comentario"])
-            finally:
-                ctx.close()
+        try:
+            comentar_e_fixar(chrome(), a.comentar, item[4]["comentario"])
+        finally:
+            encerrar_chrome()
         return 0
     try:
         return ligar() or 0
     except KeyboardInterrupt:
         log("Robô desligado.")
+    finally:
+        encerrar_chrome()
     return 0
 
 

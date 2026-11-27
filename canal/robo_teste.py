@@ -55,4 +55,7 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    finally:
+        R.encerrar_chrome()  # fecha o Chrome do jeito certo (o login fica salvo)
