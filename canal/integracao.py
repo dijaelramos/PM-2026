@@ -9,6 +9,7 @@ import sys
 import unicodedata
 
 import motor
+import perfil_chrome
 
 
 def normalizar(texto):
@@ -73,8 +74,9 @@ def buscar_no_studio(R, tarefa, nova_aba):
     """Consulta vídeos E Shorts, incluindo privados/rascunhos, no próprio canal autenticado."""
     page = nova_aba()
     detalhe = None
+    atual = page
     try:
-        page.goto("https://studio.youtube.com", wait_until="domcontentloaded", timeout=120_000)
+        perfil_chrome.abrir_pagina(page, "https://studio.youtube.com", log=getattr(R, "log", None))
         if hasattr(R, "esperar_identidade"):
             R.esperar_identidade(page)
         try:
@@ -96,8 +98,9 @@ def buscar_no_studio(R, tarefa, nova_aba):
         esperado_titulo = titulo_local(R, tarefa)
         detalhe = page.context.new_page()
         for aba in ("upload", "short"):
-            page.goto("https://studio.youtube.com/channel/{}/videos/{}".format(canal, aba),
-                      wait_until="domcontentloaded", timeout=120_000)
+            atual = page
+            perfil_chrome.abrir_pagina(page, "https://studio.youtube.com/channel/{}/videos/{}".format(canal, aba),
+                                       log=getattr(R, "log", None))
             _carregou_lista(page)
             paginas = set()
             while True:
@@ -120,8 +123,10 @@ def buscar_no_studio(R, tarefa, nova_aba):
                     raise RuntimeError("A paginação do Studio repetiu a mesma página.")
                 paginas.add(assinatura)
                 for vid, resumo in candidatos:
-                    detalhe.goto("https://studio.youtube.com/video/{}/edit".format(vid),
-                                 wait_until="domcontentloaded", timeout=120_000)
+                    atual = detalhe
+                    perfil_chrome.abrir_pagina(
+                        detalhe, "https://studio.youtube.com/video/{}/edit".format(vid),
+                        pronto="#description-textarea #textbox", log=getattr(R, "log", None))
                     caixa = detalhe.locator("#description-textarea #textbox").first
                     caixa.wait_for(state="visible", timeout=60_000)
                     descricao = caixa.inner_text()
@@ -133,6 +138,15 @@ def buscar_no_studio(R, tarefa, nova_aba):
                 if not _proxima_pagina(page):
                     break
         return None
+    except Exception:
+        # Fotografe a consulta que falhou antes de fechar a aba; nunca declare ausência.
+        if getattr(R, "ERROS", None) is not None:
+            with contextlib.suppress(Exception):
+                R.ERROS.mkdir(parents=True, exist_ok=True)
+                foto = R.ERROS / ("erro_" + motor.agora().strftime("%Y%m%d_%H%M%S") + "_consulta.png")
+                atual.screenshot(path=str(foto), full_page=False, timeout=5000)
+                R.log("  Foto da consulta que falhou: " + str(foto))
+        raise
     finally:
         if detalhe:
             with contextlib.suppress(Exception):

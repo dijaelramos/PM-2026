@@ -159,3 +159,28 @@ def login_manual(perfil, executavel, perguntar=input, informar=print):
         informar("O Chrome desse perfil ainda está aberto. Feche apenas essa janela.")
         perguntar("Depois de fechar a janela do perfil, aperte Enter: ")
     informar("Etapa manual encerrada. Use iniciar_robo.bat --testar para conferir a sessão.")
+
+def _timeout_de_navegacao(erro):
+    if isinstance(erro, TimeoutError):
+        return True
+    try:
+        from playwright.sync_api import TimeoutError as TimeoutPlaywright
+    except ImportError:
+        return False
+    return isinstance(erro, TimeoutPlaywright)
+
+
+def abrir_pagina(page, url, pronto="body", log=None):
+    """Repete somente a abertura GET da página, antes de qualquer ação de envio."""
+    for tentativa in range(2):
+        try:
+            page.bring_to_front()
+            page.goto(url, wait_until="commit", timeout=45000)
+            # A resposta da navegação não basta: confirme o elemento que será usado.
+            page.locator(pronto).first.wait_for(state="visible", timeout=60000)
+            return
+        except Exception as erro:
+            if not _timeout_de_navegacao(erro) or tentativa == 1:
+                raise
+            if log:
+                log("  A página demorou a abrir; repetindo somente a navegação (2/2).")

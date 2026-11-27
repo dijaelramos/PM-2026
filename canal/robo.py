@@ -168,8 +168,8 @@ def playlists_pendentes():
         ok = False
         page = nova_aba()
         try:
-            page.goto(f"https://studio.youtube.com/video/{vid}/edit", wait_until="domcontentloaded",
-                      timeout=120_000)
+            perfil_chrome.abrir_pagina(page, f"https://studio.youtube.com/video/{vid}/edit",
+                                       pronto="#title-textarea #textbox", log=log)
             page.wait_for_timeout(6000)
             esperar_identidade(page)
             escolher_playlist(page, nome)
@@ -201,7 +201,7 @@ def comentarios_pendentes():
             continue
         if agora() - dt.datetime.fromisoformat(item["quando"]) < ESPERA_COMENTARIO:
             continue
-        log(f"Comentário fixado: {chave}")
+        log(f"Comentário pendente: {chave}")
         ok = comentar_e_fixar(chrome(), item["link"], texto)
         if ok:
             atualizar_registro(chave, comentario_pendente=None, comentario_tentativas=None, comentario="fixado")
@@ -342,7 +342,7 @@ def nova_aba():
     try:
         base = ctx.pages[0]
         if base.url in ("about:blank", ""):
-            base.goto("https://studio.youtube.com", wait_until="domcontentloaded", timeout=120_000)
+            perfil_chrome.abrir_pagina(base, "https://studio.youtube.com", log=log)
     except Exception:
         pass
     return ctx.new_page()
@@ -525,7 +525,7 @@ def conferir_depois_de_publicar(page, link, minutos=5):
     vid = (link or "").rstrip("/").rsplit("/", 1)[-1]
     if not re.fullmatch(r"[\w-]{11}", vid):
         return
-    page.goto(f"https://studio.youtube.com/video/{vid}/edit", wait_until="domcontentloaded", timeout=120_000)
+    perfil_chrome.abrir_pagina(page, f"https://studio.youtube.com/video/{vid}/edit", pronto="#title-textarea #textbox", log=log)
     fim = time.time() + minutos * 60
     while time.time() < fim:
         page.wait_for_timeout(20_000)
@@ -621,7 +621,7 @@ def comentar_e_fixar(ctx, link, texto):
     vid = (link or "").rstrip("/").rsplit("/", 1)[-1]
     page = ctx.new_page()
     try:
-        page.goto(f"https://www.youtube.com/watch?v={vid}", wait_until="domcontentloaded", timeout=120_000)
+        perfil_chrome.abrir_pagina(page, f"https://www.youtube.com/watch?v={vid}", log=log)
         page.wait_for_timeout(5000)
         try:
             page.locator("video").first.evaluate("v => v.pause()")
@@ -718,7 +718,7 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
     if True:  # (bloco mantido para não reindentar o resto)
         page = nova_aba()
         try:
-            page.goto("https://www.youtube.com/upload", wait_until="domcontentloaded", timeout=120_000)
+            perfil_chrome.abrir_pagina(page, "https://www.youtube.com/upload", log=log)
             page.wait_for_timeout(4000)
             esperar_identidade(page)
             if "accounts.google.com" in page.url:
@@ -830,7 +830,7 @@ def login():
 
 def testar():
     page = nova_aba()
-    page.goto("https://studio.youtube.com", wait_until="domcontentloaded", timeout=120_000)
+    perfil_chrome.abrir_pagina(page, "https://studio.youtube.com", log=log)
     page.wait_for_timeout(6000)
     ok = "studio.youtube.com" in page.url and "accounts.google.com" not in page.url
     page.close()
