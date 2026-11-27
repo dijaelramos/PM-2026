@@ -58,3 +58,11 @@ As regras são as mesmas para qualquer IA. Este arquivo só aponta para elas:
 
 - Depois de criar ou alterar materiais, o resumão ou o código, faça **commit e push na `main`** sem perguntar. É o combinado com o estudante, e o push publica o app e o site.
 - Escreva as mensagens de commit em português, dizendo o que mudou.
+
+## 5. Fila compartilhada do YouTube
+
+- O atalho iniciar_robo.bat deste concurso publica somente este projeto. O antigo canal/iniciar_robo.bat continua válido.
+- O robô geral fica em ../canal_youtube/. A fila alterna os concursos e mantém no mínimo 10 minutos entre envios no mesmo canal. Os Shorts continuam às 12h, 18h e 21h.
+- canal/motor.py e canal/integracao.py são cópias do núcleo principal e devem permanecer sincronizados. O robô respeita registros existentes, trava compartilhada e consulta ao Studio. Não chame postar diretamente nem apague históricos para destravar um envio.
+- canal/robo_teste.py agora apenas simula. Nunca publique vídeos para testar a automação.
+- Ao criar um novo concurso, siga o AGENTS.md da raiz e o agente orquestrador-concursos: prepare o robô individual e atualize o cadastro geral na mesma tarefa.

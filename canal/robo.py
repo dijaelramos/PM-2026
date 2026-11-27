@@ -9,8 +9,8 @@ Uso (no terminal, na pasta do projeto):
 Agenda de cada dia útil (horários em config.json):
     "horario_aula" (07:00)            gera e posta a aula de cada material do dia
     "horarios_shorts" (12, 18, 21 h)  gera e posta os Shorts 1/3, 2/3 e 3/3
-Se o robô for ligado tarde, ele posta o que estiver atrasado, com pelo menos 1 hora entre um Short e outro.
-O registro do que já foi postado fica em canal/.postados.json, para nunca postar duas vezes.
+Se o robô for ligado tarde, ele posta o que estiver atrasado, com pelo menos 10 minutos entre os envios no mesmo canal.
+Os registros existentes ficam em canal/.postados.json; motor.py compartilha a trava e consulta o Studio.
 
 Atenção: os Termos do YouTube proíbem acessar o serviço por meios automatizados sem autorização. O uso deste robô
 é por sua conta e risco, e o risco é para o canal. O robô usa um perfil de Chrome só dele (canal/.chrome_perfil).
@@ -25,6 +25,7 @@ import shutil
 import subprocess
 import sys
 import time
+import motor
 import traceback
 from pathlib import Path
 
@@ -110,13 +111,14 @@ def fechar_chrome_do_robo():
         return
     # 1º: pede para fechar (como clicar no X: o Chrome salva cookies e login); 2º: só o que sobrar, à força
     cmd = ("$f = { Get-CimInstance Win32_Process | Where-Object { $_.Name -in 'chrome.exe','msedge.exe' } | "
-           "Where-Object { $_.CommandLine -like '*.chrome_perfil*' } }; $p = & $f; "
+           "Where-Object { $_.CommandLine -and $_.CommandLine.IndexOf($env:CONCURSOS_PERFIL, [StringComparison]::OrdinalIgnoreCase) -ge 0 } }; $p = & $f; "
            "$p | ForEach-Object { try { (Get-Process -Id $_.ProcessId).CloseMainWindow() | Out-Null } catch {} }; "
            "if (@($p).Count) { Start-Sleep -Seconds 15 }; "
            "& $f | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }; "
            "@($p).Count")
     try:
-        r = subprocess.run(["powershell", "-NoProfile", "-Command", cmd], capture_output=True, text=True, timeout=60)
+        r = subprocess.run(["powershell", "-NoProfile", "-Command", cmd], capture_output=True, text=True, timeout=60,
+                           env=dict(os.environ, CONCURSOS_PERFIL=str(PERFIL.resolve())))
         n = int((r.stdout or "0").strip().splitlines()[-1] or 0)
         if n:
             log(f"  fechei {n} processo(s) do Chrome do robô que tinham ficado abertos")
@@ -126,10 +128,8 @@ def fechar_chrome_do_robo():
 
 
 def registro():
-    try:
-        return json.loads(REGISTRO.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
+    from motor import ler_json
+    return ler_json(REGISTRO)
 
 
 def registrar(chave, link, comentario=None, playlist=None):
@@ -141,7 +141,7 @@ def registrar(chave, link, comentario=None, playlist=None):
     if comentario:  # comentário fixado: sai mais tarde, quando o vídeo já foi processado
         r[chave]["comentario_pendente"] = comentario
         r[chave]["comentario_tentativas"] = 0
-    REGISTRO.write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
+    motor.salvar_json(REGISTRO, r)
 
 
 def atualizar_registro(chave, **campos):
@@ -150,7 +150,7 @@ def atualizar_registro(chave, **campos):
         r[chave].update(campos)
         for k in [k for k, v in campos.items() if v is None]:
             r[chave].pop(k, None)
-        REGISTRO.write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
+        motor.salvar_json(REGISTRO, r)
 
 
 ESPERA_COMENTARIO = dt.timedelta(minutes=20)
@@ -704,6 +704,9 @@ def confirmar_publico(page, link, minutos=10):
 
 
 def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
+    extras = extras or {}
+    if not callable(extras.get("antes_do_envio")):
+        raise RuntimeError("Envio sem proteção: use iniciar_robo.bat para respeitar a fila e evitar duplicações.")
     if True:  # (bloco mantido para não reindentar o resto)
         page = nova_aba()
         try:
@@ -717,17 +720,9 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
             page.get_by_role("button", name=re.compile(r"selecionar arquivos|select files", re.I)).first.wait_for(
                 timeout=60_000)  # a janela "Enviar vídeos" terminou de carregar
             pausa()
-            for tentativa in range(3):
-                page.locator('input[type="file"]').first.set_input_files(str(arquivo))
-                try:
-                    page.locator("#title-textarea #textbox").first.wait_for(timeout=60_000)
-                    break  # o envio começou: apareceu a tela de detalhes
-                except Exception:
-                    esperar_identidade(page)
-                    log(f"  o envio não começou; escolhendo o arquivo de novo ({tentativa + 2}/3)")
-                    pausa()
-            else:
-                raise RuntimeError("o Studio não aceitou o arquivo (a tela de detalhes não abriu)")
+            extras["antes_do_envio"]()
+            page.locator('input[type="file"]').first.set_input_files(str(arquivo))
+            page.locator("#title-textarea #textbox").first.wait_for(timeout=120_000)
             pausa()
             page.wait_for_timeout(5000)
             checar_recusa(page)
@@ -835,16 +830,10 @@ def testar():
     return 0 if ok else 1
 
 
-def simular():
-    dia, r = agora().date(), registro()
-    tarefas = tarefas_do_dia(dia)
-    print(f"Agenda de {dia:%d/%m/%Y} (visibilidade: {visibilidade()}):")
-    if not tarefas:
-        print("  nada hoje (fim de semana ou sem material)")
-    for t in tarefas:
-        situacao = "já postado" if t["chave"] in r else ("atrasado: posta ao ligar" if agora() >= t["quando"] else "aguardando")
-        print(f"  {t['quando']:%H:%M}  {t['nome']}  [{situacao}]")
-    return 0
+def simular(data=None):
+    """Mostra a agenda sem gerar áudio, abrir navegador ou postar."""
+    import motor
+    return motor.individual(sys.modules[__name__], simular=True, data=data)
 
 
 def atualizar_repositorio():
@@ -874,63 +863,9 @@ def atualizar_repositorio():
 
 
 def ligar():
-    try:  # mantém o Windows acordado enquanto o robô roda (sem suspender)
-        ctypes.windll.kernel32.SetThreadExecutionState(0x80000000 | 0x00000001)
-    except Exception:
-        pass
-    log("Robô ligado. Deixe este terminal aberto; Ctrl+C desliga.")
-    falhas, ultimo_short, ultimo_aviso, dia_atualizado = {}, None, None, None
-    while True:
-        dia, r = agora().date(), registro()
-        if dia_atualizado != dia:  # uma vez por dia (e ao ligar): baixa materiais novos e correções do robô
-            dia_atualizado = dia
-            if atualizar_repositorio():
-                log("O código do robô mudou: reiniciando com a versão nova…")
-                return REINICIAR
-            if not dependencias.garantir(log, atualizar=False):
-                log("Sem as dependências não dá para gerar os vídeos; tento de novo amanhã.")
-        pendentes = [t for t in tarefas_do_dia(dia) if t["chave"] not in r and falhas.get(t["chave"], 0) < MAX_TENTATIVAS]
-        prontas = [t for t in pendentes if agora() >= t["quando"]
-                   and not (t["tipo"] == "short" and ultimo_short and agora() - ultimo_short < INTERVALO_SHORTS)]
-        if prontas:
-            t = prontas[0]
-            log(f"Postando: {t['nome']}")
-            try:
-                item = preparar(t)
-                if not item:
-                    log("  nada para postar neste material; pulando")
-                    registrar(t["chave"], None)
-                    continue
-                link = postar(*item[:3], visibilidade(), item[3], item[4])
-                comentario = item[4].get("comentario") if visibilidade() != "PRIVATE" else None
-                pendente = item[4].get("playlist") if item[4].get("playlist_ok") is False else None
-                registrar(t["chave"], link, comentario, pendente)
-                if t["tipo"] == "short":
-                    ultimo_short = agora()
-                log(f"  postado: {link}")
-            except KeyboardInterrupt:
-                raise
-            except Exception as erro:
-                falhas[t["chave"]] = MAX_TENTATIVAS if isinstance(erro, FalhaDefinitiva) else falhas.get(t["chave"], 0) + 1
-                if isinstance(erro, LimiteDiario):  # nada mais sai hoje: evita criar rascunhos inúteis
-                    for outra in tarefas_do_dia(dia):
-                        falhas[outra["chave"]] = MAX_TENTATIVAS
-                    log("  Envios pausados até amanhã (ou até você ligar o robô de novo).")
-                log(f"  ERRO ({falhas[t['chave']]}/{MAX_TENTATIVAS}): {str(erro).splitlines()[0][:300]}")
-                log_erro(t["nome"])
-                time.sleep(15 * 60)
-            continue
-        try:
-            if playlists_pendentes() or comentarios_pendentes():
-                continue
-        except Exception:
-            log_erro("playlists/comentários pendentes", "AVISO")
-        proxima = min(pendentes, key=lambda t: t["quando"], default=None)
-        aviso = f"Próximo: {proxima['nome']} às {proxima['quando']:%H:%M}" if proxima else "Tudo postado hoje; amanhã recomeça."
-        if aviso != ultimo_aviso:
-            log(aviso)
-            ultimo_aviso = aviso
-        time.sleep(60)
+    """Executa somente este concurso com trava, consulta e intervalo compartilhados."""
+    import motor
+    return motor.individual(sys.modules[__name__])
 
 
 def main():
@@ -944,15 +879,17 @@ def main():
     g.add_argument("--testar", action="store_true")
     g.add_argument("--simular", action="store_true")
     g.add_argument("--comentar", metavar="LINK", help="publica e fixa o comentário da aula de hoje no vídeo LINK")
+    ap.add_argument("--data", type=dt.date.fromisoformat, help="data da simulação (AAAA-MM-DD)")
     a = ap.parse_args()
+    if a.data and not a.simular:
+        ap.error("--data só pode ser usado com --simular")
+    if a.simular:
+        return simular(a.data)
     if not dependencias.garantir(log):
         return 1
-    if a.login:
-        return login()
-    if a.testar:
-        return testar()
-    if a.simular:
-        return simular()
+    if a.login or a.testar:
+        from integracao import comando_manual
+        return comando_manual(sys.modules[__name__], login if a.login else testar)
     if a.comentar:
         aula = next((t for t in tarefas_do_dia(agora().date()) if t["tipo"] == "aula"), None)
         if not aula:

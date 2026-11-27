@@ -152,3 +152,15 @@ O vídeo fica em `canal/saida/2026-11-24_.../video.mp4`.
   Pernambuco do Prof. Robson Alves; a Cartilha do CERT.br, de licença não comercial). Citação curta com a fonte é
   permitida para estudo, mas num canal monetizado o ideal é reescrever esses trechos com suas palavras.
   Leis, a Constituição e o edital são textos oficiais e podem ser lidos à vontade.
+
+## Fila geral e robô individual (27/11/2026)
+
+O iniciar_robo.bat na pasta deste concurso executa somente seu canal. O atalho antigo dentro de canal/ também funciona. Para executar todos, use ../canal_youtube/iniciar_robo.bat a partir da pasta do projeto.
+
+A fila geral alterna PMPE, Bombeiro e novos concursos: aulas a partir das 07h e Shorts às 12h, 18h e 21h, com pelo menos 10 minutos reais entre os envios no mesmo canal. Geração e upload demorados podem atrasar o próximo item. O robô individual usa os mesmos horários e a mesma proteção compartilhada.
+
+Os registros antigos são preservados. Sem registro confirmado, a automação consulta os vídeos e Shorts no próprio Studio antes do upload. Rascunho, consulta incompleta, histórico danificado ou resultado de envio incerto impedem um novo envio daquele item.
+
+Use python canal/robo.py --simular --data AAAA-MM-DD para conferir a agenda sem abrir navegador ou publicar. robo_teste.py também passou a ser somente uma simulação. Se a versão antiga do robô estiver ligada, feche-a e abra o novo atalho.
+
+Quando o estudante informar que criou um concurso, o agente da raiz deve preparar o novo robô e acrescentá-lo a canal_youtube/config.json. A fila em execução relê esse cadastro automaticamente. As instruções completas ficam em canal_youtube/COMO_USAR.txt, na raiz compartilhada.

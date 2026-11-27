@@ -24,5 +24,11 @@
   "comentario_fixado": true,
   "pausa_entre_acoes_ms": 1500,
   "pausa_entre_etapas_s": 4,
-  "atraso_digitacao_ms": 15
+  "atraso_digitacao_ms": 15,
+  "id_concurso": "pmpe-2026",
+  "identificadores_legados": [
+    "PM-PE",
+    "PMPE",
+    "Polícia Militar de Pernambuco"
+  ]
 }
