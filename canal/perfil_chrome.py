@@ -131,3 +131,31 @@ def conectar(pw, perfil, executavel, pausa_ms=1500):
     if not browser.contexts:
         raise RuntimeError("O Chrome central não disponibilizou o contexto do perfil.")
     return browser, browser.contexts[0]
+
+
+def abrir_login_manual(perfil, executavel):
+    """Abre o Chrome normal; o chamador deve manter a trava do perfil."""
+    perfil = Path(perfil)
+    if em_uso(perfil):
+        from motor import Ocupado
+        raise Ocupado(
+            "Feche somente a janela do Chrome central antes de iniciar o login manual. "
+            "Não feche um navegador que esteja enviando um vídeo; aguarde o término.")
+    perfil.mkdir(parents=True, exist_ok=True)
+    # Autenticação humana, sem Playwright, depuração remota ou opções de automação.
+    return subprocess.Popen([
+        str(executavel), "--user-data-dir=" + str(perfil), "--new-window",
+        "https://studio.youtube.com",
+    ])
+
+
+def login_manual(perfil, executavel, perguntar=input, informar=print):
+    informar("O login será feito no Chrome normal, sem conexão com o robô.")
+    informar("Entre na conta, selecione o canal e confira se o YouTube Studio abre.")
+    informar("Depois, FECHE a janela do Chrome desse perfil para salvar a sessão.")
+    abrir_login_manual(perfil, executavel)
+    perguntar("Após concluir o login e fechar essa janela, aperte Enter: ")
+    while em_uso(perfil):
+        informar("O Chrome desse perfil ainda está aberto. Feche apenas essa janela.")
+        perguntar("Depois de fechar a janela do perfil, aperte Enter: ")
+    informar("Etapa manual encerrada. Use iniciar_robo.bat --testar para conferir a sessão.")

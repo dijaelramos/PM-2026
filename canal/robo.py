@@ -817,24 +817,15 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
 # ---------------------------------------------------------------- comandos
 
 def login():
-    if PERFIL_COMPARTILHADO:
-        page = nova_aba()
-        try:
-            page.goto("https://studio.youtube.com", wait_until="domcontentloaded", timeout=120_000)
-            print("Entre na conta e selecione o canal no Chrome central. Mantenha a janela aberta.")
-            input("Quando o YouTube Studio estiver pronto, aperte Enter para conferir o login: ")
-        finally:
-            page.close()
-        return testar()
-    PERFIL.mkdir(parents=True, exist_ok=True)
-    print("Abrindo o Chrome do robô. Entre na conta do canal (infinitycursosbeberibe), confira se o YouTube Studio "
-          "abre e depois FECHE essa janela do Chrome.")
-    canal, exe = navegador()
-    print(f"Navegador do robô: {'Google Chrome' if canal == 'chrome' else 'Microsoft Edge'} ({exe})")
-    subprocess.Popen([str(exe), f"--user-data-dir={PERFIL}", "https://studio.youtube.com"]).wait()
-    input("Quando tiver fechado a janela, aperte Enter para eu conferir o login… ")
-    fechar_chrome_do_robo()  # só se a janela ainda estiver aberta: fecha com calma (o login fica salvo)
-    return testar()
+    # comando_manual mantém a trava do perfil; nenhum executor pode se conectar
+    # enquanto a pessoa autentica e fecha a janela normal do Chrome.
+    encerrar_chrome()
+    try:
+        perfil_chrome.login_manual(PERFIL, navegador()[1])
+    except motor.Ocupado as erro:
+        print(str(erro))
+        return 1
+    return 0
 
 
 def testar():

@@ -179,3 +179,12 @@ Encerrar um robô desconecta seu executor e preserva a janela e os demais.
 O Google pode exigir nova autenticação; ela vale para todos ao ser renovada
 no perfil central. Os históricos, configurações e progresso continuam separados.
 O perfil original da PMPE foi preservado. Nunca envie esses dados ao Git.
+
+### Login sem automação
+
+Use fazer_login.bat na pasta canal_youtube (ou canal/fazer_login.bat deste
+concurso). Feche apenas o Chrome do perfil central após qualquer upload.
+O atalho abre o Chrome normal no mesmo perfil, sem Playwright e sem depuração
+remota. Entre na conta, selecione o canal, confira o Studio e feche essa janela.
+Confirme no terminal; depois use --testar ou inicie a fila. A autenticação
+humana não publica vídeos e não muda o histórico.

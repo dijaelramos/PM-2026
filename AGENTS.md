@@ -79,3 +79,9 @@ PMPE fica preservado. Não distribua cópias dos cookies para os concursos nem
 versione o perfil. O Chrome central permanece aberto e os executores alternam
 o acesso usando a trava do perfil por operação. Login pelo principal atende
 todos os concursos. As configurações, históricos e progressos continuam separados.
+
+Para autenticar, use canal_youtube/fazer_login.bat: feche o Chrome central após
+o fim de qualquer upload, entre pela janela normal (sem Playwright e sem
+depuração remota), feche-a e confirme no terminal. A verificação --testar e a
+fila só devem se conectar depois dessa etapa. Não tente autenticar pela janela
+já controlada pela automação nem prometa que o Google aceitará o login.
