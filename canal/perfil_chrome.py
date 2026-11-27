@@ -7,7 +7,7 @@ import subprocess
 import time
 from urllib.parse import urlsplit
 
-from motor import ler_json
+from motor import ler_json, Ocupado
 
 
 def canal_normalizado(url):
@@ -99,14 +99,23 @@ def conectar(pw, perfil, executavel, pausa_ms=1500):
         if not url:
             return None
         try:
-            return pw.chromium.connect_over_cdp(url, timeout=3000, slow_mo=pausa_ms)
+            return pw.chromium.connect_over_cdp(url, timeout=15000, slow_mo=pausa_ms)
         except Exception:
             return None
 
     browser = tentar()
     if browser is None:
         if em_uso(perfil):
-            raise RuntimeError("O perfil central está aberto sem conexão disponível. Feche somente o Chrome do robô e tente novamente.")
+            # A conexão local pode responder lentamente; não abra outro Chrome.
+            browser = tentar()
+            if browser is None:
+                raise Ocupado(
+                    "O perfil central está aberto sem conexão disponível. "
+                    "Se ficou aberta a janela usada no login manual, saia dela pelo menu do Chrome > Sair. "
+                    "A fila aguardará sem reenviar vídeos.")
+            if not browser.contexts:
+                raise RuntimeError("O Chrome central não disponibilizou o contexto do perfil.")
+            return browser, browser.contexts[0]
         anterior = endpoint(perfil)
         argumentos = [
             str(executavel), "--user-data-dir=" + str(perfil),
@@ -127,7 +136,12 @@ def conectar(pw, perfil, executavel, pausa_ms=1500):
                     break
             time.sleep(0.5)
         if browser is None:
-            raise RuntimeError("O Chrome central não disponibilizou a conexão local. Consulte o log e feche apenas a janela do robô antes de tentar novamente.")
+            if em_uso(perfil):
+                raise Ocupado(
+                    "O Chrome central abriu, mas não disponibilizou a conexão local em 60 segundos. "
+                    "A fila aguardará. Se a janela estiver parada, feche somente o Chrome desse perfil "
+                    "pelo menu > Sair, depois de terminar qualquer upload.")
+            raise RuntimeError("O Chrome central não abriu ou não disponibilizou a conexão local. Confira se o navegador está instalado e atualizado.")
     if not browser.contexts:
         raise RuntimeError("O Chrome central não disponibilizou o contexto do perfil.")
     return browser, browser.contexts[0]

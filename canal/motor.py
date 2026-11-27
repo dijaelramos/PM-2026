@@ -261,8 +261,8 @@ def publicar(R, tarefa, verificar):
                         estado["pausado_ate"] = (agora().date() + dt.timedelta(days=1)).isoformat() + "T00:00:00"
                     salvar_json(arquivo, estado)
                 raise
-    except Ocupado:
-        return {"estado": "ocupado", "mensagem": "Outro robô está verificando ou enviando. Aguardando a fila."}
+    except Ocupado as erro:
+        return {"estado": "ocupado", "mensagem": str(erro)}
 
 
 class Processo:

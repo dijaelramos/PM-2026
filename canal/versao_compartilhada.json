@@ -1,5 +1,5 @@
 {
-  "versao": "f47abd371c74f7fa96da4a4c5f0da9fa01c3c1b973fb6f68386dcc32859e50d8",
+  "versao": "05814eb6f463c935915689d296fc477c6a8924dc5a339b81b3846e6a0c9eb45a",
   "gerador": "82fcb3d0925ec29893929f8eaf96e75b255eb9f407c9b36e6e5b9311a8bbf0aa",
   "versao_gerador": 5,
   "arquivos": {
@@ -7,8 +7,8 @@
     "fazer_login.bat": "0e668482653921c10c23e846d01d543817e24b1b129125da645babc71bb45f1c",
     "iniciar_robo.bat": "240c73457d11193fa5230c71c2691f5e5e2d8efc0802d73ec4b77c8c83f7a696",
     "integracao.py": "b6cd459442f17ab75396f9e6b741da30014cba327ba72409f76db1d2580aa4a5",
-    "motor.py": "310864f4d94efba13c4e0318d5d671517f5062534aa727820053118204169227",
-    "perfil_chrome.py": "eb7d655d9cc52e0e4926cb37b912fc2a3f955620e4ba58efa87ae6cff84a12e8",
+    "motor.py": "f4d9d66517372a6332f93ac325c23aefdd174f33bbaa6ae671ae426c6093cda2",
+    "perfil_chrome.py": "9a7e8449ce052fc36fe70a37dba0de51eebf47440ffadfc99e0ec661c7bfb37c",
     "pix.py": "4a6b551a7490e44edb2e234667f062f24ad2662c1535b5eca7b4cdf5f67882f9",
     "requirements-robo.txt": "eb843268ec2a17d41d2565a9ff2201d96a571979e962c103574d9689dbcb8850",
     "requirements.txt": "97bf4d0088718dec3f13acc93b5e9e3bd21c66bd5c236c1ef54a4cca2024cf69",
