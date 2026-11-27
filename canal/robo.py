@@ -359,7 +359,15 @@ def abrir_chrome(pw):
     PERFIL.mkdir(parents=True, exist_ok=True)
     return pw.chromium.launch_persistent_context(str(PERFIL), channel=navegador()[0], headless=False,
                                                  no_viewport=True,  # a página ocupa a janela inteira
+                                                 slow_mo=V.CONFIG.get("pausa_entre_acoes_ms", 1500),
                                                  args=["--lang=pt-BR", "--start-maximized"])
+
+
+def pausa(segundos=None):
+    """Respiro entre uma etapa e outra (aleatório, como uma pessoa), para a tela do Studio terminar de carregar."""
+    import random
+    base = segundos if segundos is not None else V.CONFIG.get("pausa_entre_etapas_s", 4)
+    time.sleep(base + random.uniform(0, base / 2))
 
 
 def preencher(page, seletor, texto):
@@ -369,7 +377,7 @@ def preencher(page, seletor, texto):
     caixa.click()
     page.keyboard.press("Control+A")
     page.keyboard.press("Delete")
-    page.keyboard.type(texto)
+    page.keyboard.type(texto, delay=V.CONFIG.get("atraso_digitacao_ms", 15))
 
 
 class FalhaDefinitiva(RuntimeError):
@@ -705,16 +713,33 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
             if "accounts.google.com" in page.url:
                 raise LimiteDiario("o Chrome do robô saiu da conta do Google. Entre de novo NA JANELA DO CHROME DO "
                                    "ROBÔ (ela fica aberta) ou rode canal/iniciar_robo.bat --login. Envios pausados.")
-            page.locator('input[type="file"]').first.set_input_files(str(arquivo))
+            pausa()
+            page.get_by_role("button", name=re.compile(r"selecionar arquivos|select files", re.I)).first.wait_for(
+                timeout=60_000)  # a janela "Enviar vídeos" terminou de carregar
+            pausa()
+            for tentativa in range(3):
+                page.locator('input[type="file"]').first.set_input_files(str(arquivo))
+                try:
+                    page.locator("#title-textarea #textbox").first.wait_for(timeout=60_000)
+                    break  # o envio começou: apareceu a tela de detalhes
+                except Exception:
+                    esperar_identidade(page)
+                    log(f"  o envio não começou; escolhendo o arquivo de novo ({tentativa + 2}/3)")
+                    pausa()
+            else:
+                raise RuntimeError("o Studio não aceitou o arquivo (a tela de detalhes não abriu)")
+            pausa()
             page.wait_for_timeout(5000)
             checar_recusa(page)
             preencher(page, "#title-textarea #textbox", limpo(titulo, 100))
+            pausa()
             preencher(page, "#description-textarea #textbox", limpo(descricao, 4900))
             if miniatura and miniatura.exists():
                 try:
                     page.locator("input#file-loader").first.set_input_files(str(miniatura), timeout=10_000)
                 except Exception:
                     log("  (miniatura não enviada: o canal precisa de verificação por telefone)")
+            pausa()
             extras = extras or {}
             if extras.get("playlist"):
                 try:
@@ -752,9 +777,11 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
                 page.wait_for_timeout(5000)
             else:
                 raise TimeoutError("não cheguei à etapa Visibilidade (o botão Avançar não liberou)")
+            pausa()
             radio.click()
             estado = esperar_envio(page)
             log(f"  envio concluído ({estado[:60]})")
+            pausa()
             page.locator("#done-button").first.click()
             confirmar_publicacao(page)
             conferir_depois_de_publicar(page, link)

@@ -21,5 +21,8 @@
   "pix_nome": "DIJAEL RAMOS FERREIRA",
   "pix_cidade": "Recife",
   "playlists": true,
-  "comentario_fixado": true
+  "comentario_fixado": true,
+  "pausa_entre_acoes_ms": 1500,
+  "pausa_entre_etapas_s": 4,
+  "atraso_digitacao_ms": 15
 }
