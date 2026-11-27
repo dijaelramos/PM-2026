@@ -308,7 +308,8 @@ def abrir_chrome(pw):
     PERFIL.mkdir(parents=True, exist_ok=True)
     fechar_chrome_do_robo()
     return pw.chromium.launch_persistent_context(str(PERFIL), channel=navegador()[0], headless=False,
-                                                 viewport={"width": 1400, "height": 900}, args=["--lang=pt-BR"])
+                                                 no_viewport=True,  # a página ocupa a janela inteira
+                                                 args=["--lang=pt-BR", "--start-maximized"])
 
 
 def preencher(page, seletor, texto):
