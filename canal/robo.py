@@ -357,7 +357,45 @@ def recusa_do_youtube(page):
     return None
 
 
+IDENTIDADE = re.compile(r"confirme sua identidade|confirm it.s you|verify it.s you|verifique se [ée] voc[êe]", re.I)
+ESPERA_IDENTIDADE_MIN = 20
+
+
+def _pede_identidade(page):
+    try:
+        return bool(IDENTIDADE.search(page.locator("body").inner_text(timeout=3000)))
+    except Exception:
+        return False
+
+
+def esperar_identidade(page):
+    """O Google pediu "Confirme sua identidade": deixa o Chrome aberto e espera a pessoa confirmar."""
+    if not _pede_identidade(page):
+        return
+    log(f"  O GOOGLE PEDIU PARA CONFIRMAR SUA IDENTIDADE. O Chrome do robô ficou aberto: clique em Avançar e "
+        f"confirme (senha ou celular). Espero até {ESPERA_IDENTIDADE_MIN} minutos e depois continuo o envio.")
+    try:
+        page.bring_to_front()
+    except Exception:
+        pass
+    try:
+        import winsound  # aviso sonoro no Windows
+        winsound.MessageBeep()
+    except Exception:
+        pass
+    fim = time.time() + ESPERA_IDENTIDADE_MIN * 60
+    while time.time() < fim:
+        page.wait_for_timeout(10_000)
+        if not _pede_identidade(page):
+            log("  identidade confirmada: continuando")
+            page.wait_for_timeout(5000)
+            return
+    raise LimiteDiario("Ninguém confirmou a identidade a tempo: envios pausados. Ligue o robô de novo depois de "
+                       "confirmar (canal/iniciar_robo.bat --login).")
+
+
 def checar_recusa(page):
+    esperar_identidade(page)
     recusa = recusa_do_youtube(page)
     if recusa:
         raise (LimiteDiario if ("limite diário" in recusa or "IDENTIDADE" in recusa) else FalhaDefinitiva)(recusa)
