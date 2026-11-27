@@ -29,7 +29,7 @@ CACHE = CANAL / ".cache"
 SAIDA = CANAL / "saida"
 CONFIG = json.loads((CANAL / "config.json").read_text(encoding="utf-8"))
 
-VERSAO_SAIDA = 4  # o robô gera de novo vídeos com versão mais velha (ou amostras de teste)
+VERSAO_SAIDA = 5  # o robô gera de novo vídeos com versão mais velha (ou amostras de teste)
 BYTES_POR_SEGUNDO = 48000 // 8  # MP3 24 kHz, 48 kbit/s, CBR (edge-tts e Azure, no formato pedido abaixo)
 FORMATO_AZURE = "audio-24khz-48kbitrate-mono-mp3"
 LARG, ALT = 1920, 1080
@@ -385,6 +385,23 @@ async def _edge(texto):
     raise RuntimeError("não foi possível sintetizar a voz")
 
 
+
+def _edge_sincrono(texto):
+    """Gera voz mesmo quando o Playwright mantém um loop ativo nesta thread."""
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(_edge(texto))
+
+    from concurrent.futures import ThreadPoolExecutor
+
+    def gerar():
+        # Crie a corrotina na thread que executará seu próprio loop.
+        return asyncio.run(_edge(texto))
+
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        return executor.submit(gerar).result()
+
 def _azure(texto):
     import requests
     from xml.sax.saxutils import escape
@@ -409,7 +426,7 @@ def sintetizar(texto):
     arq = CACHE / f"{_chave(texto)}.mp3"
     if arq.exists():
         return arq.read_bytes()
-    mp3 = _azure(texto) if CONFIG["voz"] == "azure" else asyncio.run(_edge(texto))
+    mp3 = _azure(texto) if CONFIG["voz"] == "azure" else _edge_sincrono(texto)
     arq.write_bytes(mp3)
     return mp3
 
