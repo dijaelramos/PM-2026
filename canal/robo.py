@@ -129,9 +129,12 @@ def registro():
         return {}
 
 
-def registrar(chave, link, comentario=None):
+def registrar(chave, link, comentario=None, playlist=None):
     r = registro()
     r[chave] = {"link": link, "quando": agora().isoformat(timespec="minutes")}
+    if playlist:  # a playlist falhou no envio: o robô coloca depois, pela página de edição do vídeo
+        r[chave]["playlist_pendente"] = playlist
+        r[chave]["playlist_tentativas"] = 0
     if comentario:  # comentário fixado: sai mais tarde, quando o vídeo já foi processado
         r[chave]["comentario_pendente"] = comentario
         r[chave]["comentario_tentativas"] = 0
@@ -148,6 +151,41 @@ def atualizar_registro(chave, **campos):
 
 
 ESPERA_COMENTARIO = dt.timedelta(minutes=20)
+
+
+def playlists_pendentes():
+    """Coloca na playlist certa os vídeos em que isso falhou no envio (página de edição do Studio). Até 3 tentativas."""
+    for chave, item in registro().items():
+        nome = item.get("playlist_pendente")
+        if not nome or not item.get("link") or item.get("playlist_tentativas", 0) >= 3:
+            continue
+        vid = item["link"].rstrip("/").rsplit("/", 1)[-1]
+        log(f"Playlist pendente: {chave} -> {nome}")
+        from playwright.sync_api import sync_playwright
+        ok = False
+        with sync_playwright() as pw:
+            ctx = abrir_chrome(pw)
+            page = ctx.pages[0] if ctx.pages else ctx.new_page()
+            try:
+                page.goto(f"https://studio.youtube.com/video/{vid}/edit", wait_until="domcontentloaded",
+                          timeout=120_000)
+                page.wait_for_timeout(6000)
+                escolher_playlist(page, nome)
+                salvar = page.locator("ytcp-button#save, #save").first
+                salvar.click(timeout=15_000)
+                page.wait_for_timeout(5000)
+                ok = True
+                log("  vídeo colocado na playlist")
+            except Exception:
+                _aviso(page, f"colocar {chave} na playlist {nome}")
+            finally:
+                ctx.close()
+        if ok:
+            atualizar_registro(chave, playlist_pendente=None, playlist_tentativas=None, playlist=nome)
+        else:
+            atualizar_registro(chave, playlist_tentativas=item.get("playlist_tentativas", 0) + 1)
+        return True  # um por vez
+    return False
 
 
 def comentarios_pendentes():
@@ -588,8 +626,10 @@ def postar(arquivo, titulo, descricao, visib, miniatura=None, extras=None):
             if extras.get("playlist"):
                 try:
                     escolher_playlist(page, extras["playlist"])
+                    extras["playlist_ok"] = True
                 except Exception:
-                    _aviso(page, f"colocar na playlist {extras['playlist']}")
+                    extras["playlist_ok"] = False
+                    _aviso(page, f"colocar na playlist {extras['playlist']} (tento de novo depois)")
             page.wait_for_timeout(3000)
             checar_recusa(page)
             fechar_painel_playlist(page)
@@ -736,7 +776,8 @@ def ligar():
                     continue
                 link = postar(*item[:3], visibilidade(), item[3], item[4])
                 comentario = item[4].get("comentario") if visibilidade() != "PRIVATE" else None
-                registrar(t["chave"], link, comentario)
+                pendente = item[4].get("playlist") if item[4].get("playlist_ok") is False else None
+                registrar(t["chave"], link, comentario, pendente)
                 if t["tipo"] == "short":
                     ultimo_short = agora()
                 log(f"  postado: {link}")
@@ -753,10 +794,10 @@ def ligar():
                 time.sleep(15 * 60)
             continue
         try:
-            if comentarios_pendentes():
+            if playlists_pendentes() or comentarios_pendentes():
                 continue
         except Exception:
-            log_erro("comentários pendentes", "AVISO")
+            log_erro("playlists/comentários pendentes", "AVISO")
         proxima = min(pendentes, key=lambda t: t["quando"], default=None)
         aviso = f"Próximo: {proxima['nome']} às {proxima['quando']:%H:%M}" if proxima else "Tudo postado hoje; amanhã recomeça."
         if aviso != ultimo_aviso:
